@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.teacherforboss"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.teacherforboss"
@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         viewBinding=true
+        //dataBinding=true
         compose = true
     }
     composeOptions {
@@ -51,10 +52,39 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.collection:collection-ktx:1.3.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
     // To use constraintlayout in compose
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha07")
+
+    //retrofit2
+    val retrofit_version="2.9.0"
+    implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+    //okhttp3
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    // Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    //coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC2")
+
+    // ViewModel, lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.collection:collection-ktx:1.3.0")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    //navigation
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

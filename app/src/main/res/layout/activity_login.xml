@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     android:background="@color/white"
     android:orientation="vertical"
@@ -17,12 +18,13 @@
 
     </View>
 
+
     <LinearLayout
-        android:id="@+id/loginTextBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
+
 
         <TextView
             android:textStyle="bold"
@@ -73,9 +75,10 @@
         android:layout_height="wrap_content">
 
         <EditText
+
             android:id="@+id/idBox"
             android:padding="12dp"
-            android:background="@drawable/radius"
+            android:background="@drawable/selector_login"
             android:hint="아이디/이메일"
             android:textColorHint="@color/lightGrey"
             android:layout_width="match_parent"
@@ -92,8 +95,9 @@
         <EditText
             android:id="@+id/pwBox"
             android:padding="12dp"
-            android:background="@drawable/radius"
+            android:background="@drawable/selector_login"
             android:hint="비밀번호"
+            android:inputType="textPassword"
             android:textColorHint="@color/lightGrey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -109,7 +113,7 @@
     </View>
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/radius_purple_button"
@@ -127,7 +131,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/아이디찾기"
+            android:id="@+id/findId"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="아이디 찾기"
@@ -137,7 +141,7 @@
         </Button>
 
         <Button
-            android:id="@+id/비밀번호찾기"
+            android:id="@+id/findPw"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="비밀번호 찾기"
@@ -147,7 +151,7 @@
         </Button>
 
         <Button
-            android:id="@+id/회원가입"
+            android:id="@+id/singup"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="회원가입"

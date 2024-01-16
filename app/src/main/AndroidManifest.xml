@@ -31,6 +31,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".signup.SignupActivity"
+            android:exported="false"  />
+        <activity android:name=".BeginActivity"
+            android:exported="false"  />
+
     </application>
 
 </manifest>

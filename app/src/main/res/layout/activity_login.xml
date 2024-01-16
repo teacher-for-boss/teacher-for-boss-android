@@ -9,8 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".login.LoginActivity"
-    android:padding="16dp"
-    >
+    android:padding="16dp">
 
     <View
         android:layout_width="match_parent"
@@ -151,7 +150,7 @@
         </Button>
 
         <Button
-            android:id="@+id/singup"
+            android:id="@+id/signup"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="회원가입"

@@ -1,6 +1,7 @@
 package com.example.teacherforboss.login
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 
 data class LoginRequest(
     @SerializedName("email")
@@ -9,3 +10,4 @@ data class LoginRequest(
     var password:String
 
 )
+

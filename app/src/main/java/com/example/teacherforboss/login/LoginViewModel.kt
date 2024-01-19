@@ -19,6 +19,7 @@ class LoginViewModel(): ViewModel(){
                     password=pwd
                 )
                 val response=userRepo.loginUser(loginRequest=loginRequest)
+                //val res=UserApi.getApi()?.loginUser(loginRequest=loginRequest)
 
                 if(response?.code()==200){
                     loginResult.value=BaseResponse.Success(response.body())

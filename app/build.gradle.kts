@@ -1,13 +1,22 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
+
 plugins {
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
+
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-
 android {
     namespace = "com.example.teacherforboss"
     compileSdk = 34
 
     defaultConfig {
+        buildConfigField("String","KAKAO_APPKEY",getApiKey("KAKAO_APPKEY"))
+        //manifest
+        manifestPlaceholders["KAKAO_APPKEY"]=getApiKey("KAKAO_APPKEY")
+
         applicationId = "com.example.teacherforboss"
         minSdk = 24
         targetSdk = 33
@@ -40,6 +49,7 @@ android {
         viewBinding=true
         //dataBinding=true
         compose = true
+        buildConfig=true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -51,11 +61,26 @@ android {
     }
 }
 
+fun getApiKey(propertyKey:String):String{
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
+}
+
+
+
 dependencies {
     implementation("androidx.collection:collection-ktx:1.3.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
     // To use constraintlayout in compose
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha07")
+
+    // DataStore
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("javax.inject:javax.inject:1")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
+
 
     //retrofit2
     val retrofit_version="2.9.0"
@@ -85,6 +110,9 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
+    //kakao
+    implementation ("com.kakao.sdk:v2-all:2.19.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
+    implementation ("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

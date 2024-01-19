@@ -22,7 +22,9 @@ import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
     @ApplicationContext val context: Context,
+//    val context: Context,
     private val tokenManager:TokenManager
+
 ):Interceptor{
     val CODE_ERROR=401 //나중에 수정
     override fun intercept(chain: Interceptor.Chain): Response {

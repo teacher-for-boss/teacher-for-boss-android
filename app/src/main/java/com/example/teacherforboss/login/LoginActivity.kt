@@ -28,8 +28,8 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ActivityContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 //import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,8 +42,9 @@ class LoginActivity : AppCompatActivity() {
     private val kakaoViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
     private lateinit var kakaoOauthViewModel: KaKaoOauthViewModel
-    @ApplicationContext val appContext=GlobalApplication.instance
+//    @ApplicationContext val appContext=GlobalApplication.instance
 
+    val appContext=GlobalApplication.instance
 //    @Inject
 //    lateinit var tokenManager: TokenManager
 
@@ -94,10 +95,14 @@ class LoginActivity : AppCompatActivity() {
                 kakaoViewModel.socialLoginUiState.collect(){uiState->
                     when(uiState){
                         SocialLoginUiState.KakaoLogin->{
+                            showToast("login handling")
+                            Log.d("kakao","kakao login handling")
                             handleKakaoLogin()
                         }
                         SocialLoginUiState.LoginSuccess->{
                             showToast("kakao Login Success")
+                            //getAgreement()
+
                         }
                         SocialLoginUiState.LoginFail->{
                             showToast("kakao Login Fail")
@@ -133,6 +138,10 @@ class LoginActivity : AppCompatActivity() {
             kakaoViewModel.kakaoLogin()
             //kakaoOauthViewModel.kakaoLogin()
         }
+
+//        binding.logoutBtn.setOnClickListener {
+//            handleKakaoLogout()
+//        }
         
     }
     fun doLogin(){
@@ -170,7 +179,9 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
 
+    // kakao
     private fun handleKakaoLogin(){
+//        Log.d("kakao","handleKakaoLogin():")
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -201,6 +212,66 @@ class LoginActivity : AppCompatActivity() {
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+        }
+    }
+
+    private fun handleKakaoLogout(){
+        UserApiClient.instance.logout { error ->
+            if (error != null) {
+                Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
+
+            }
+            else {
+                Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
+
+            }
+        }
+
+    }
+
+    private fun getAgreement(){
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                var scopes = mutableListOf<String>()
+
+                if (user.kakaoAccount?.emailNeedsAgreement == true) { scopes.add("account_email") }
+                if (user.kakaoAccount?.birthdayNeedsAgreement == true) { scopes.add("birthday") }
+                if (user.kakaoAccount?.birthyearNeedsAgreement == true) { scopes.add("birthyear") }
+                if (user.kakaoAccount?.genderNeedsAgreement == true) { scopes.add("gender") }
+                if (user.kakaoAccount?.phoneNumberNeedsAgreement == true) { scopes.add("phone_number") }
+                if (user.kakaoAccount?.profileNeedsAgreement == true) { scopes.add("profile") }
+
+                if (scopes.count() > 0) {
+                    Log.d(TAG, "사용자에게 추가 동의를 받아야 합니다.")
+
+                    // OpenID Connect 사용 시
+                    // scope 목록에 "openid" 문자열을 추가하고 요청해야 함
+                    // 해당 문자열을 포함하지 않은 경우, ID 토큰이 재발급되지 않음
+                    // scopes.add("openid")
+
+                    //scope 목록을 전달하여 카카오 로그인 요청
+                    UserApiClient.instance.loginWithNewScopes(context, scopes) { token, error ->
+                        if (error != null) {
+                            Log.e(TAG, "사용자 추가 동의 실패", error)
+                        } else {
+                            Log.d(TAG, "allowed scopes: ${token!!.scopes}")
+
+                            // 사용자 정보 재요청
+                            UserApiClient.instance.me { user, error ->
+                                if (error != null) {
+                                    Log.e(TAG, "사용자 정보 요청 실패", error)
+                                }
+                                else if (user != null) {
+                                    Log.i(TAG, "사용자 정보 요청 성공")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

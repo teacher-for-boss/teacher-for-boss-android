@@ -2,8 +2,8 @@ package com.example.teacherforboss.login
 
 import android.content.Context
 import com.example.teacherforboss.GlobalApplication
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ActivityContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,8 +13,7 @@ import javax.inject.Inject
 val BASEURL="http://13.209.77.233:8080"
 
 object ApiClient{
-    @Inject lateinit var tokenManager: TokenManager
-
+    private val tokenManager:TokenManager=TokenManager
     var mHttpLoggingInterceptor=HttpLoggingInterceptor()
         .setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -22,7 +21,7 @@ object ApiClient{
         .Builder()
         .addInterceptor(mHttpLoggingInterceptor)
         .addInterceptor(AuthInterceptor(getAppContenxt(), tokenManager))
-        .authenticator(AuthAuthenticator(tokenManager, getAppContenxt()))
+        .authenticator(AuthAuthenticator(TokenManager, getAppContenxt()))
         .build()
 
     var mRetrofit:Retrofit?=null

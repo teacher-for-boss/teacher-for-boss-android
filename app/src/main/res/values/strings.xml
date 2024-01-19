@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">티쳐 포 보스</string>
-    "
+
+    <string name="pwSame">비밀번호가 일치합니다</string>
+    <string name="pwDifferent">비밀번호가 일치하지않습니다</string>
 </resources>

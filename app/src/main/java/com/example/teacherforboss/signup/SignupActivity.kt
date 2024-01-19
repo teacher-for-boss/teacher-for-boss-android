@@ -4,39 +4,90 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.teacherforboss.BeginActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupBinding
+import org.apache.commons.lang3.mutable.Mutable
+import java.util.regex.Pattern
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
+    private val viewModel:SignupViewModel by viewModels()
 
     var tempTime = 0  //타이머 임시시간
     var code = "45689"  //임시 인증번호
 
+    //pw check 정규식
+    val num_regex:Regex=Regex("[0-9]+")
+    val eng_regex:Regex=Regex("[a-zA-z]+")
+    val special_regex:Regex= Regex("[^a-zA-Z0-9가-힣]+")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivitySignupBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+//        binding= ActivitySignupBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+
+        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
+        binding.signupViewModel=viewModel
+        binding.lifecycleOwner=this
+
+        viewModel.livePw.observe(this, Observer {
+            Log.d("live","live pw:${it}")
+
+            viewModel.eng_check.value=(eng_regex.find(it)!=null)
+            Log.d("regex","eng regx:${viewModel.special_check.value}")
+
+            viewModel.num_check.value=(num_regex.find(it)!=null)
+            Log.d("regex","num check:${viewModel.num_check.value}")
+
+            viewModel.special_check.value=(special_regex.find(it)!=null)
+            Log.d("regex","special regx:${viewModel.special_check.value}")
+
+            viewModel.length_check.value=(it.toString().length>8 && it.toString().length<20)
+            Log.d("regex","length regx:${viewModel.length_check.value}")
+
+            viewModel.all_check.value=(viewModel.eng_check.value!!&& viewModel.num_check.value!! && viewModel.special_check.value!!&& viewModel.length_check.value!!)
+            Log.d("rePw","all check:${viewModel.all_check.value}")
+
+        })
+
+        viewModel.liveRePw.observe(this,Observer{
+            if(viewModel.all_check.value==true)binding.pwInfo.visibility = View.VISIBLE
+
+            viewModel.rePw_check.value=(viewModel.livePw.value.equals(it.toString()))
+                Log.d("rePw","repw_check:${viewModel.rePw_check.value}")
+        })
+
 
 
         checkPW()   //패스워드 같은지 확인
         checkCode() //인증번호 같은지 확인
 
         //인증하기버튼 누르면 타이머 시작
-        binding.verify.setOnClickListener {
-            binding.verify.visibility = View.INVISIBLE
+        binding.emailVerifyBtn.setOnClickListener {
+            binding.emailVerifyBtn.visibility = View.INVISIBLE
+            binding.veryInfo.visibility=View.VISIBLE
             startTimer()
+        }
+
+        //핸드폰 인증하기 버튼 누르기
+        binding.phoneVerifyBtn.setOnClickListener {
+            binding.phoneVeryInfo.visibility=View.VISIBLE
         }
 
 
 
         //회원가입 버튼 누르면 초기화면으로 이동
-        binding.signup.setOnClickListener {
+        binding.signupBtn.setOnClickListener {
 
             if (checkPW() && checkCode()) {
                 val intent = Intent(this, BeginActivity::class.java)

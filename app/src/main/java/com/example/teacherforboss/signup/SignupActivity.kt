@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.teacherforboss.BeginActivity
@@ -31,10 +32,16 @@ class SignupActivity : AppCompatActivity() {
     val eng_regex:Regex=Regex("[a-zA-z]+")
     val special_regex:Regex= Regex("[^a-zA-Z0-9가-힣]+")
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        binding= ActivitySignupBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
+
+        var email=""
+        var emailCode=""
+        var isEmailVerified=false
+        var confirmedEmailMap= mutableMapOf<String,Boolean>()
 
         binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
         binding.signupViewModel=viewModel
@@ -62,9 +69,8 @@ class SignupActivity : AppCompatActivity() {
 
         viewModel.liveRePw.observe(this,Observer{
             if(viewModel.all_check.value==true)binding.pwInfo.visibility = View.VISIBLE
-
             viewModel.rePw_check.value=(viewModel.livePw.value.equals(it.toString()))
-                Log.d("rePw","repw_check:${viewModel.rePw_check.value}")
+            Log.d("rePw","repw_check:${viewModel.rePw_check.value}")
         })
 
 
@@ -77,6 +83,25 @@ class SignupActivity : AppCompatActivity() {
             binding.emailVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
             startTimer()
+            email=binding.idBox.text.toString()
+        }
+
+        //이메일 코드 입력 후 확인 버튼
+        binding.emailVerifyBtn.setOnClickListener {
+            emailCode=binding.emailCodeBox.text.toString()
+            //서버와 통신 /auth/email/check
+
+            // isSuccess
+            isEmailVerified=true
+            confirmedEmailMap[email]=isEmailVerified
+            //후에 회원가입 버튼 클릭시 현재입력되어있는(liveEmail)값이 저 map에 있는지 확인 후
+            //없다면 이메일 인증을 다시 받아야 하니 그거에 맞는 안내 알림 설정!
+            //ex) 사용자가 a라는 이메일로 인증받고 b라는 이메일을 다시 입력했을 경우 방지를 위함
+
+//            viewModel.setEmailVerifiedStatus(isVefiried = true)
+//            var tempEmailMap= mutableMapOf<String,LiveData<Boolean>>()
+//            tempEmailMap[email]=viewModel.isEmailVerified
+//            viewModel.confirmedEmail.postValue(tempEmailMap)
         }
 
         //핸드폰 인증하기 버튼 누르기
@@ -88,6 +113,9 @@ class SignupActivity : AppCompatActivity() {
 
         //회원가입 버튼 누르면 초기화면으로 이동
         binding.signupBtn.setOnClickListener {
+            //서버와 통신
+
+            confirmedEmailMap.containsKey(viewModel.liveEmail.value.toString())
 
             if (checkPW() && checkCode()) {
                 val intent = Intent(this, BeginActivity::class.java)
@@ -158,7 +186,7 @@ class SignupActivity : AppCompatActivity() {
 
     //인증번호가 같은지 확인
     fun checkCode(): Boolean {
-        val input_code = binding.codeBox.text.toString()
+        val input_code = binding.emailCodeBox.text.toString()
 
         //사용자가 인증번호를 입력한다면
         if (input_code.isNotEmpty()) {

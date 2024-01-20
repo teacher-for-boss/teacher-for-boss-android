@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SignupViewModel:ViewModel() {
+    var liveEmail=MutableLiveData<String>("")
     var livePw=MutableLiveData<String>("")
     var liveRePw=MutableLiveData<String>("")
 
@@ -15,12 +16,24 @@ class SignupViewModel:ViewModel() {
     val rePw_check=MutableLiveData<Boolean>(false)
     val all_check=MutableLiveData<Boolean>(false)
 
-    private var _isEmailVerified=MutableLiveData<Boolean>(false)
-    val isEmailVerified:LiveData<Boolean>
-        get() = _isEmailVerified
-
-    fun setEmailVerifiedStatus(isVefiried:Boolean){
-        _isEmailVerified.value=isVefiried
-    }
+//    private var _isEmailVerified=MutableLiveData<Boolean>(false)
+//    val isEmailVerified:LiveData<Boolean>
+//        get() = _isEmailVerified
+//
+//    val confirmedEmail=MutableLiveData<MutableMap<String,LiveData<Boolean>>>()
+//
+//    private var _isPhoneVerified=MutableLiveData<Boolean>(false)
+//    val isPhoneVerified:LiveData<Boolean>
+//        get()=_isPhoneVerified
+//
+//    val confirmedPhone=MutableLiveData<MutableMap<String,Boolean>>()
+//
+//    fun setEmailVerifiedStatus(isVefiried:Boolean){
+//        _isEmailVerified.value=isVefiried
+//    }
+//
+//    fun setPhoneVerifiedStatus(isVefiried: Boolean){
+//        _isPhoneVerified.value=isVefiried
+//    }
 
 }

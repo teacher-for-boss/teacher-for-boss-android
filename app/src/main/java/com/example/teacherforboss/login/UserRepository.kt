@@ -1,14 +1,12 @@
 package com.example.teacherforboss.login
 
-import com.example.teacherforboss.signup.EmailCheckRequest
-import com.example.teacherforboss.signup.EmailCheckResponse
-import com.example.teacherforboss.signup.EmailRequest
-import com.example.teacherforboss.signup.EmailResponse
-import com.example.teacherforboss.signup.SignupRequest
-import com.example.teacherforboss.signup.SignupResponse
-import com.kakao.sdk.user.model.User
+import com.example.teacherforboss.signup.api.EmailCheckRequest
+import com.example.teacherforboss.signup.api.EmailCheckResponse
+import com.example.teacherforboss.signup.api.EmailRequest
+import com.example.teacherforboss.signup.api.EmailResponse
+import com.example.teacherforboss.signup.api.SignupRequest
+import com.example.teacherforboss.signup.api.SignupResponse
 import retrofit2.Response
-import retrofit2.http.Header
 
 class UserRepository {
     suspend fun loginUser(loginRequest: LoginRequest):

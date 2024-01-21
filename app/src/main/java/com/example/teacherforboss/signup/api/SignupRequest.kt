@@ -1,4 +1,6 @@
-package com.example.teacherforboss.signup
+package com.example.teacherforboss.signup.api
+
+import com.google.gson.annotations.SerializedName
 
 data class SignupRequest (
     @SerializedName("email")
@@ -20,7 +22,7 @@ data class SignupRequest (
     @SerializedName("phone")
     var phone:String,
     @SerializedName("emailAuth")
-    var emailAuth:Long,
+    var emailAuthId:Long,
     @SerializedName("phoneAuthId")
     var phoneAuthId:Long
 )

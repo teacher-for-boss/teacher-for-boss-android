@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
-val BASEURL="http://13.209.77.233:8080"
+val BASEURL="https://dev.teacherforboss.store/api/v1"
 
 object ApiClient{
     private val tokenManager:TokenManager=TokenManager

@@ -1,6 +1,6 @@
-package com.example.teacherforboss.signup
+package com.example.teacherforboss.signup.api
 
-import java.util.Date
+import com.google.gson.annotations.SerializedName
 
 data class EmailCheckResponse (
     @SerializedName("code")
@@ -13,7 +13,7 @@ data class EmailCheckResponse (
     var message:String,
 
     @SerializedName("result")
-    var `result`: Result
+    var result: Result?
 ) {
     data class Result (
         @SerializedName("checked")

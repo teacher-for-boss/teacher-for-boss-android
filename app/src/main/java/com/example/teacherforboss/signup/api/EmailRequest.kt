@@ -1,4 +1,6 @@
-package com.example.teacherforboss.signup
+package com.example.teacherforboss.signup.api
+
+import com.google.gson.annotations.SerializedName
 
 data class EmailRequest (
     @SerializedName("email")

@@ -20,7 +20,7 @@ data class LoginResponse(
         var accessToken:String,
 
         @SerializedName("refreshToken")
-        var refreshToken:Stringg,
+        var refreshToken:String,
 
 //        @SerializedName("login")
 //        var login:String

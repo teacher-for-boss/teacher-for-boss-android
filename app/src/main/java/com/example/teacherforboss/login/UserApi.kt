@@ -1,11 +1,11 @@
 package com.example.teacherforboss.login
 
-import com.example.teacherforboss.signup.EmailCheckRequest
-import com.example.teacherforboss.signup.EmailCheckResponse
-import com.example.teacherforboss.signup.EmailRequest
-import com.example.teacherforboss.signup.EmailResponse
-import com.example.teacherforboss.signup.SignupRequest
-import com.example.teacherforboss.signup.SignupResponse
+import com.example.teacherforboss.signup.api.EmailCheckRequest
+import com.example.teacherforboss.signup.api.EmailCheckResponse
+import com.example.teacherforboss.signup.api.EmailRequest
+import com.example.teacherforboss.signup.api.EmailResponse
+import com.example.teacherforboss.signup.api.SignupRequest
+import com.example.teacherforboss.signup.api.SignupResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -30,16 +30,19 @@ interface UserApi {
 
     @POST("auth/email")
     suspend fun emailUser(
-        @Body emailRequest: EmailRequest)
+        @Body emailRequest: EmailRequest
+    )
     : Response<EmailResponse>
 
     @POST("auth/email/check")
     suspend fun emailCheck(
-        @Body emailCheckRequest: EmailCheckRequest)
+        @Body emailCheckRequest: EmailCheckRequest
+    )
     : Response<EmailCheckResponse>
 
     @POST("auth/signup")
     suspend fun signupUser(
-        @Body signupRequest: SignupRequest)
+        @Body signupRequest: SignupRequest
+    )
     : Response<SignupResponse>
 }

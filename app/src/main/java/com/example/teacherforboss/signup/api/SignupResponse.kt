@@ -1,5 +1,6 @@
-package com.example.teacherforboss.signup
+package com.example.teacherforboss.signup.api
 
+import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
 data class SignupResponse(

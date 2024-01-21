@@ -41,6 +41,7 @@ class AuthAuthenticator @Inject constructor(
 
         val newAccessToken=reissueToken(refreshToken)
         Log.d("token","access_token 재발급 완료:${newAccessToken}")
+        tokenManager.saveAccessToken(context,newAccessToken)
         return replaceToken(newAccessToken,response.request)
         //401에러로 받은 response에 대한 request
 

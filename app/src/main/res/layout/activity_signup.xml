@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/idBox"
+                        android:id="@+id/emailBox"
                         android:padding="12dp"
                         android:background="@drawable/selector_login"
                         android:hint="이메일"
@@ -408,6 +408,7 @@
             </View>
 
             <RadioGroup
+                android:id="@+id/genderGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -456,6 +457,7 @@
             </TextView>
 
             <DatePicker
+                android:id="@+id/birthDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:datePickerMode="spinner"

@@ -7,6 +7,8 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +42,13 @@ class SignupActivity : AppCompatActivity() {
 
         var email=""
         var emailCode=""
+        var password=""
+        var rePassword=""
+        var name=""
+        var gender=""
+        var birthDate=""
+        var phone=""
+
         var isEmailVerified=false
         var confirmedEmailMap= mutableMapOf<String,Boolean>()
 
@@ -78,18 +87,21 @@ class SignupActivity : AppCompatActivity() {
         checkPW()   //패스워드 같은지 확인
         checkCode() //인증번호 같은지 확인
 
-        //인증하기버튼 누르면 타이머 시작
+        //이메일 인증하기버튼 눌렀을때
         binding.emailVerifyBtn.setOnClickListener {
             binding.emailVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
-            startTimer()
-            email=binding.idBox.text.toString()
+            startTimer()  //타이머 시작
+
+            email=binding.emailBox.text.toString()
+            viewModel.emailUser(email)
         }
 
         //이메일 코드 입력 후 확인 버튼
         binding.emailVerifyBtn.setOnClickListener {
             emailCode=binding.emailCodeBox.text.toString()
             //서버와 통신 /auth/email/check
+            viewModel.emailCheckUser(emailCode)
 
             // isSuccess
             isEmailVerified=true
@@ -114,6 +126,14 @@ class SignupActivity : AppCompatActivity() {
         //회원가입 버튼 누르면 초기화면으로 이동
         binding.signupBtn.setOnClickListener {
             //서버와 통신
+            password=binding.pwBox.text.toString()
+            rePassword=binding.pwReEnterBox.text.toString()
+            name=binding.nameBox.text.toString()
+            gender=getGender()
+            birthDate = getBirthDate()
+            phone=binding.phoneNumBox.text.toString()
+
+            viewModel.signupUser(email, password, rePassword, name, gender, birthDate, phone)
 
             confirmedEmailMap.containsKey(viewModel.liveEmail.value.toString())
 
@@ -209,4 +229,31 @@ class SignupActivity : AppCompatActivity() {
         return false
     }
 
+    fun getGender(): String {
+        val genderRadioGroup : RadioGroup = binding.genderGroup
+        val maleRadioButton: RadioButton = binding.genderMale
+        val femaleRadioButton: RadioButton = binding.genderFemale
+        val noGenderRadioButton: RadioButton = binding.genderNo
+
+        val selectedGenderId : RadioButton = genderRadioGroup.checkedRadioButtonId
+        val selectedGender: String = when (selectedGenderId) {
+            binding.genderMale -> maleRadioButton.text.toString().trim()
+            binding.genderFemale -> femaleRadioButton.text.toString().trim()
+            binding.genderNo -> noGenderRadioButton.text.toString().trim()
+        }
+
+        return selectedGender
+    }
+
+    fun getBirthDate(): String {
+        val getBirthDate = binding.birthDate
+
+        val year = getBirthDate.year
+        val month = getBirthDate.month + 1
+        val day = getBirthDate.dayOfMonth
+
+        val birthDate = "$year-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}"
+
+        return birthDate
+    }
 }

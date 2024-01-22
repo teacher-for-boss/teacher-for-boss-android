@@ -24,5 +24,4 @@ class GlobalApplication: Application() {
         //KakaoSdk.init(this,appkey)
 
     }
-
 }

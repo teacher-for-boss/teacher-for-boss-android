@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.login.BaseResponse
+import com.example.teacherforboss.signup.SignupActivity
 import com.example.teacherforboss.signup.SignupViewModel
+import javax.inject.Inject
 
 class EmailFragment : Fragment() {
     private lateinit var binding:FragmentEmailBinding
@@ -36,6 +39,11 @@ class EmailFragment : Fragment() {
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
+
+        val activity=activity as SignupActivity
+        binding.nextBtn.setOnClickListener {
+            activity.gotoNextFragment(PasswordFragment())
+        }
 
         //이메일 인증하기버튼 눌렀을때
         binding.emailVerifyBtn.setOnClickListener {

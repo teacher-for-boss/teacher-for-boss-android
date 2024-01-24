@@ -44,6 +44,7 @@
             android:orientation="vertical">
 
             <RadioButton
+                android:id="@+id/allCheckBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전체 동의합니다."
@@ -59,6 +60,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/btn1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="이용약관 동의 (필수)"
@@ -97,6 +99,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/btn2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="개인정보 수집 및 이용 동의 (필수)"
@@ -133,6 +136,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/btn3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="위치기반서비스 이용 동의 (필수)"
@@ -169,6 +173,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/btn4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="다양한 혜택/정보 수신 동의 (선택)"
@@ -190,12 +195,14 @@
                     android:layout_marginTop="5dp">
 
                     <RadioButton
+                        android:id="@+id/btn5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SMS"
                         android:textSize="14dp" />
 
                     <RadioButton
+                        android:id="@+id/btn6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="이메일"
@@ -207,6 +214,7 @@
             </LinearLayout>
 
             <RadioButton
+                android:id="@+id/btn7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="본인은 만 14세 이상입니다 (필수)"
@@ -223,7 +231,7 @@
         </View>
 
         <Button
-            android:id="@+id/nextBtn"
+            android:id="@+id/finishBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/radius_purple_button"

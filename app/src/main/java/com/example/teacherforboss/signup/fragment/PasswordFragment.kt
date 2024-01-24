@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentPasswordBinding
+import com.example.teacherforboss.signup.SignupActivity
 import com.example.teacherforboss.signup.SignupViewModel
 
 
@@ -52,13 +54,26 @@ class PasswordFragment : Fragment() {
         })
 
         viewModel.liveRePw.observe(viewLifecycleOwner,Observer{
-            if(viewModel.all_check.value==true)binding.pwInfo.visibility = View.VISIBLE
-            viewModel.rePw_check.value=(viewModel.livePw.value.equals(it.toString()))
-            Log.d("rePw","repw_check:${viewModel.rePw_check.value}")
+            if(viewModel.all_check.value==true){
+                binding.pwInfo.visibility = View.VISIBLE
+                viewModel.rePw_check.value=(viewModel.livePw.value.equals(it.toString()))
+                Log.d("rePw","repw_check:${viewModel.rePw_check.value}")
+            }
         })
+
+        val activity=activity as SignupActivity
+        binding.nextBtn.setOnClickListener {
+            if(viewModel.all_check.value==false) showToast("비밀번호 조건을 충족시키지 않습니다")
+            else if(viewModel.rePw_check.value==true)activity.gotoNextFragment(NamePhoneFragment())
+            else showToast("재입력한 비밀번호가 일치하지 않습니다.")
+        }
 
         return binding.root
 
+    }
+
+    fun showToast(msg:String){
+        Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
     }
 
 }

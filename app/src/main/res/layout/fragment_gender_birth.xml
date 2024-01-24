@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".signup.fragment.GenderBirthFragment"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".signup.fragment.GenderBirthFragment">
 
     <data>
         <variable
@@ -12,162 +11,152 @@
 
     </data>
 
-    <LinearLayout
-        android:background="@color/white"
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <ImageView
-            android:id="@+id/backBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/back"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="30dp">
-
-        </View>
-
-        <ProgressBar
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/lightGrey"
-            android:progressTint="@color/main_purple"
-            android:progress="80"
-            android:max="100"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="14dp">
-
-        </View>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearlayout"
+            android:background="@color/white"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="성별과 생년월일을\n입력해주세요 (선택)"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/lightGrey"
+                android:progressTint="@color/main_purple"
+                android:progress="80"
+                android:max="100"/>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="14dp">
 
             </View>
 
-            <TextView
-                android:text="성별"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:textStyle="bold"
+            <LinearLayout
+                android:id="@+id/linearlayout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                >
 
-            </TextView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp">
-
-            </View>
-
-            <RadioGroup
-                android:id="@+id/genderGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <RadioButton
-                    android:id="@+id/gender_male"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" 남자"
-                    android:textSize="16dp"
-                    android:backgroundTint="@color/main_purple"
-                    />
+                    android:text="성별과 생년월일을\n입력해주세요 (선택)"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
 
-                <RadioButton
-                    android:id="@+id/gender_female"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp">
+
+                </View>
+
+                <TextView
+                    android:text="성별"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp">
+
+                </View>
+
+                <RadioGroup
+                    android:id="@+id/genderGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" 여자"
-                    android:textSize="16dp"
-                    android:layout_marginStart="30dp"
-                    android:backgroundTint="@color/main_purple"
-                    />
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
 
-                <RadioButton
-                    android:id="@+id/gender_no"
-                    android:layout_width="wrap_content"
+                    <RadioButton
+                        android:id="@+id/gender_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 남자"
+                        android:textSize="16dp"
+                        android:backgroundTint="@color/main_purple"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/gender_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 여자"
+                        android:textSize="16dp"
+                        android:layout_marginStart="30dp"
+                        android:backgroundTint="@color/main_purple"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/gender_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 선택안함"
+                        android:textSize="16dp"
+                        android:layout_marginStart="30dp"
+                        android:backgroundTint="@color/main_purple"
+                        />
+
+                </RadioGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp">
+
+                </View>
+
+                <TextView
+                    android:text="생년원일"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <DatePicker
+                    android:id="@+id/birthDate"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=" 선택안함"
-                    android:textSize="16dp"
-                    android:layout_marginStart="30dp"
-                    android:backgroundTint="@color/main_purple"
+                    android:datePickerMode="spinner"
+                    android:calendarViewShown="false"
                     />
 
-            </RadioGroup>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="25dp">
 
-            </View>
-
-            <TextView
-                android:text="생년원일"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </TextView>
-
-            <DatePicker
-                android:id="@+id/birthDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
-                />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/nextBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/radius_purple_button"
-                android:text="다음"
-                android:textColor="@color/white"
-                android:textSize="18dp"
-                android:layout_marginBottom="16dp">
-
-            </Button>
-
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <Button
+            android:background="@drawable/radius_purple_button"
+            android:text="다음"
+            android:textColor="@color/white"
+            android:id="@+id/nextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+        </Button>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </layout>

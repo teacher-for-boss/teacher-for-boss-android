@@ -6,8 +6,14 @@
     tools:context=".signup.SignupActivity"
 
     >
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.signup.SignupViewModel" />
 
-    <LinearLayout
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -16,91 +22,36 @@
 
     <ImageView
         android:id="@+id/backBtn"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/back"
-        android:layout_marginTop="5dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-    </View>
-
-    <LinearLayout
-        android:id="@+id/signupTextBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:textStyle="bold"
-            android:textSize="30sp"
-            android:textColor="@color/black"
-            android:text="회원가입"
-            android:fontFamily="@font/lineseed_rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
+        android:layout_marginTop="5dp"
+        tools:ignore="MissingConstraints" />
 
 
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="10dp">
-
-        </View>
-
-        <TextView
-            android:text="혼자 고민하지 마세요"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
-
-        <TextView
-            android:text="선생님의 노하우로 사장님을 성공 궤도로!"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
-
-    </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="30dp"
+            app:layout_constraintTop_toBottomOf="@id/backBtn"
+            tools:layout_editor_absoluteX="16dp">
 
         </View>
 
         <androidx.fragment.app.FragmentContainerView
+
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="400dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            tools:layout_editor_absoluteX="16dp">
 
         </androidx.fragment.app.FragmentContainerView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
 
-        </View>
-
-        <Button
-            android:background="@drawable/radius_purple_button"
-            android:text="다음"
-            android:id="@+id/nextBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </Button>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

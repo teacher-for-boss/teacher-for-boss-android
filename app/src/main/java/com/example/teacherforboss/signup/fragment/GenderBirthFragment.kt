@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.databinding.FragmentGenderBirthBinding
+import com.example.teacherforboss.signup.SignupActivity
 import com.example.teacherforboss.signup.SignupViewModel
 
 
@@ -29,6 +30,12 @@ class GenderBirthFragment : Fragment() {
         binding.lifecycleOwner=this
 
         //gender birth 입력값 받아서 viewmodel에 저장 추가하기
+
+        val activity=activity as SignupActivity
+        binding.nextBtn.setOnClickListener {
+            val dialog=AgreementFragment()
+            dialog.show(activity.supportFragmentManager,"agreement")
+        }
 
         // Inflate the layout for this fragment
         return binding.root

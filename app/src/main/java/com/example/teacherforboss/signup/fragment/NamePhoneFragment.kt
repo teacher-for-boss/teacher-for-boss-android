@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
+import com.example.teacherforboss.signup.SignupActivity
 import com.example.teacherforboss.signup.SignupViewModel
 
 class NamePhoneFragment : Fragment() {
@@ -28,6 +29,11 @@ class NamePhoneFragment : Fragment() {
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
+
+        val activity=activity as SignupActivity
+        binding.nextBtn.setOnClickListener {
+            activity.gotoNextFragment(GenderBirthFragment())
+        }
 
         //폰 인증 api email과 동일하게 구현하기
         //viewModel에 phone, isPhoneVerified 추가

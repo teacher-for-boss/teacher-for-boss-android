@@ -24,9 +24,11 @@ import com.example.teacherforboss.login.kakao.KaKaoOauthViewModel
 import com.example.teacherforboss.login.kakao.SocialLoginUiState
 import com.example.teacherforboss.login.kakao.SocialLoginViewModel
 import com.example.teacherforboss.signup.SignupActivity
+import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 //import dagger.hilt.android.qualifiers.ActivityContext
 //import dagger.hilt.android.qualifiers.ApplicationContext
@@ -75,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success->{
                     processLogin(it.data)//respponse.result
+
                 }
                 is BaseResponse.Error->{
                     processError(it.msg)
@@ -89,19 +92,23 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //카카오 로그인 1
-
+        val intent=Intent(this,BeginActivity::class.java)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 kakaoViewModel.socialLoginUiState.collect(){uiState->
                     when(uiState){
                         SocialLoginUiState.KakaoLogin->{
-                            showToast("login handling")
+                            showToast("kakao login handling")
                             Log.d("kakao","kakao login handling")
                             handleKakaoLogin()
                         }
                         SocialLoginUiState.LoginSuccess->{
+
                             showToast("kakao Login Success")
                             //getAgreement()
+                            getToken()
+                            getUserInfo()
+                            startActivity(intent)
 
                         }
                         SocialLoginUiState.LoginFail->{
@@ -181,6 +188,7 @@ class LoginActivity : AppCompatActivity() {
 
     // kakao
     private fun handleKakaoLogin(){
+        Log.d("kakao",checkTokenState().toString())
 //        Log.d("kakao","handleKakaoLogin():")
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
@@ -189,6 +197,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+                kakaoViewModel.kakaoLoginSuccess()
             }
         }
 
@@ -208,6 +217,8 @@ class LoginActivity : AppCompatActivity() {
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    kakaoViewModel.kakaoLoginSuccess()
+
                 }
             }
         } else {
@@ -227,6 +238,29 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+    }
+    fun checkTokenState(){
+        if (AuthApiClient.instance.hasToken()) {
+            UserApiClient.instance.accessTokenInfo { _, error ->
+                if (error != null) {
+                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
+                        //로그인 필요
+                        handleKakaoLogin()
+                    }
+                    else {
+                        //기타 에러
+                    }
+                }
+                else {
+                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
+                    //로그인된 상태로 바로가기?
+                }
+            }
+        }
+        else {
+            handleKakaoLogin()
+            //로그인 필요
+        }
     }
 
     private fun getAgreement(){
@@ -271,6 +305,41 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun getToken(){
+        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+            if (error != null) {
+                Log.e(TAG, "토큰 정보 보기 실패", error)
+            }
+            else if (tokenInfo != null) {
+                Log.i(TAG, "토큰 정보 보기 성공" +
+                        "\n회원번호: ${tokenInfo.id}" +
+                        "\n만료시간: ${tokenInfo.expiresIn} 초")
+            }
+        }
+    }
+
+    private fun getUserInfo(){
+        // 사용자 정보 요청 (기본)
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i(TAG, "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n이름: ${user.kakaoAccount?.name}" +
+                        "\n폰번호: ${user.kakaoAccount?.phoneNumber}" +
+
+                        "\n성별: ${user.kakaoAccount?.gender}" +
+                        "\n생일: ${user.kakaoAccount?.birthday}" +
+                        "\n년도: ${user.kakaoAccount?.birthyear}" +
+                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+                )
             }
         }
     }

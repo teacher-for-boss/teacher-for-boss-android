@@ -20,7 +20,7 @@ class GlobalApplication: Application() {
         Log.e("hash","key:${keyHash}")
 
 
-        KakaoSdk.init(this,"42b7099d84917d3e71d68005595043b5")
+        KakaoSdk.init(this,appkey)
         //KakaoSdk.init(this,appkey)
 
     }

@@ -42,6 +42,7 @@
         <!--카카오로그인-->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -50,7 +51,7 @@
 
                 <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
                 <data android:host="oauth"
-                    android:scheme="kakao${KAKAO_APPKEY}" />
+                    android:scheme="kakao50baba15ac88207a1244824c310190e1" />
 
             </intent-filter>
         </activity>

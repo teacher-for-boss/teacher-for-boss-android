@@ -2,10 +2,10 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.util.Properties
 
 plugins {
-    id("com.google.dagger.hilt.android")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 val properties = Properties().apply {
@@ -45,11 +45,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "1.8"
     }
     buildFeatures {
         viewBinding = true
@@ -87,6 +87,7 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.47")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.47")
 
     // retrofit2
     val retrofit_version = "2.9.0"

@@ -1,18 +1,16 @@
-package com.example.teacherforboss.signup.fragment
+package com.example.teacherforboss.presentation.ui.auth.signup.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.databinding.FragmentGenderBirthBinding
-import com.example.teacherforboss.signup.SignupActivity
-import com.example.teacherforboss.signup.SignupViewModel
-
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 
 class GenderBirthFragment : Fragment() {
     private lateinit var binding: FragmentGenderBirthBinding
@@ -24,7 +22,7 @@ class GenderBirthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_gender_birth,container,false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_gender_birth,container,false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this

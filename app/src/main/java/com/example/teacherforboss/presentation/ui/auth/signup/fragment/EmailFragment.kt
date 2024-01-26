@@ -1,25 +1,24 @@
-package com.example.teacherforboss.signup.fragment
+package com.example.teacherforboss.presentation.ui.auth.signup.fragment
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentEmailBinding
-import com.example.teacherforboss.login.BaseResponse
-import com.example.teacherforboss.signup.SignupActivity
-import com.example.teacherforboss.signup.SignupViewModel
-import javax.inject.Inject
+import com.example.teacherforboss.presentation.ui.auth.login.BaseResponse
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.fragment.PasswordFragment
 
 class EmailFragment : Fragment() {
-    private lateinit var binding:FragmentEmailBinding
+    private lateinit var binding: FragmentEmailBinding
     private val viewModel: SignupViewModel by viewModels()
 
     var tempTime = 0  //타이머 임시시간
@@ -35,7 +34,7 @@ class EmailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_email,container,false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_email,container,false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
@@ -48,7 +47,7 @@ class EmailFragment : Fragment() {
         //이메일 인증하기버튼 눌렀을때
         binding.emailVerifyBtn.setOnClickListener {
             binding.emailVerifyBtn.visibility = View.INVISIBLE
-            binding.veryInfo.visibility=View.VISIBLE
+            binding.veryInfo.visibility= View.VISIBLE
             startTimer()  //타이머 시작
 
             email=binding.emailBox.text.toString()
@@ -84,7 +83,7 @@ class EmailFragment : Fragment() {
                 }
                 is BaseResponse.Success->{
                     viewModel.setEmailVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
-                    binding.checkVery.visibility=View.VISIBLE
+                    binding.checkVery.visibility= View.VISIBLE
 
                     //후에 회원가입 버튼 클릭시 현재입력되어있는(liveEmail,viewModel email)값이 confirmed map에 있는지 확인 후
                     //없다면 이메일 인증을 다시 받아야 하니 그거에 맞는 안내 알림 설정!

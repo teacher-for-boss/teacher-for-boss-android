@@ -1,11 +1,11 @@
 package com.example.teacherforboss.presentation.ui.auth.login
 
-import com.example.teacherforboss.signup.api.EmailCheckRequest
-import com.example.teacherforboss.signup.api.EmailCheckResponse
-import com.example.teacherforboss.signup.api.EmailRequest
-import com.example.teacherforboss.signup.api.EmailResponse
-import com.example.teacherforboss.signup.api.SignupRequest
-import com.example.teacherforboss.signup.api.SignupResponse
+import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
+import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
+import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
+import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailResponse
+import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupRequest
+import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
 import retrofit2.Response
 
 class UserRepository {

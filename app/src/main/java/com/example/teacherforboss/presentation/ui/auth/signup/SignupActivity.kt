@@ -1,39 +1,17 @@
-package com.example.teacherforboss.signup
+package com.example.teacherforboss.presentation.ui.auth.signup
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.add
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.example.teacherforboss.BeginActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupBinding
-import com.example.teacherforboss.login.BaseResponse
-import com.example.teacherforboss.login.LoginActivity
-import com.example.teacherforboss.login.LoginResponse
-import com.example.teacherforboss.login.TokenManager
-import com.example.teacherforboss.signup.api.SignupResponse
-import com.example.teacherforboss.signup.fragment.AgreementFragment
-import com.example.teacherforboss.signup.fragment.EmailFragment
-import com.example.teacherforboss.signup.fragment.GenderBirthFragment
-import com.example.teacherforboss.signup.fragment.NamePhoneFragment
-import com.example.teacherforboss.signup.fragment.PasswordFragment
-import org.apache.commons.lang3.mutable.Mutable
-import java.util.regex.Pattern
+import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
+import com.example.teacherforboss.presentation.ui.auth.signup.fragment.EmailFragment
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding

@@ -1,23 +1,23 @@
-package com.example.teacherforboss.signup.fragment
+package com.example.teacherforboss.presentation.ui.auth.signup.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentPasswordBinding
-import com.example.teacherforboss.signup.SignupActivity
-import com.example.teacherforboss.signup.SignupViewModel
-
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.fragment.NamePhoneFragment
 
 class PasswordFragment : Fragment() {
-    private lateinit var binding:FragmentPasswordBinding
+    private lateinit var binding: FragmentPasswordBinding
     private val viewModel: SignupViewModel by viewModels()
 
     //pw check 정규식
@@ -28,7 +28,7 @@ class PasswordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_password, container, false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_password, container, false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
@@ -53,7 +53,7 @@ class PasswordFragment : Fragment() {
 
         })
 
-        viewModel.liveRePw.observe(viewLifecycleOwner,Observer{
+        viewModel.liveRePw.observe(viewLifecycleOwner, Observer{
             if(viewModel.all_check.value==true){
                 binding.pwInfo.visibility = View.VISIBLE
                 viewModel.rePw_check.value=(viewModel.livePw.value.equals(it.toString()))

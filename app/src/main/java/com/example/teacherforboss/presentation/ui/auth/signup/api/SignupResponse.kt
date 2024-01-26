@@ -1,9 +1,9 @@
-package com.example.teacherforboss.signup.api
+package com.example.teacherforboss.presentation.ui.auth.signup.api
 
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
-data class EmailResponse (
+data class SignupResponse(
     @SerializedName("code")
     var code:String,
 
@@ -14,19 +14,12 @@ data class EmailResponse (
     var message:String,
 
     @SerializedName("result")
-    var result: Result
-) {
+    var `result`: Result
+){
     data class Result (
-        @SerializedName("emailAuthId")
-        var emailAuthId:Long?,
-
+        @SerializedName("memberId")
+        var memberId:Long,
         @SerializedName("createdAt")
-        var createdAt:LocalDateTime?,
-
-        @SerializedName("email")
-        var email:String?,
-
-        @SerializedName("purpose")
-        var purpose:String?
+        var createdAt: LocalDateTime
     )
 }

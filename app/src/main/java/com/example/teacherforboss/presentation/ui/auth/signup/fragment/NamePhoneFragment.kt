@@ -1,19 +1,18 @@
-package com.example.teacherforboss.signup.fragment
+package com.example.teacherforboss.presentation.ui.auth.signup.fragment
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
-import com.example.teacherforboss.signup.SignupActivity
-import com.example.teacherforboss.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 
 class NamePhoneFragment : Fragment() {
     private lateinit var binding: FragmentNamePhoneBinding
@@ -25,7 +24,7 @@ class NamePhoneFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_name_phone,container,false)
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_name_phone,container,false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
@@ -41,7 +40,7 @@ class NamePhoneFragment : Fragment() {
         //이메일 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
             binding.phoneVerifyBtn.visibility = View.INVISIBLE
-            binding.veryInfo.visibility=View.VISIBLE
+            binding.veryInfo.visibility= View.VISIBLE
             startTimer()  //타이머 시작
 
         }

@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="@color/gray_02"
-                android:progressTint="@color/main_purple"
+                android:progressTint="@color/main_purple_00"
                 android:progress="55"
                 android:max="100"/>
 

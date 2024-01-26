@@ -3,13 +3,13 @@ package com.example.teacherforboss.login.kakao
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.teacherforboss.login.kakao.KaKaoOauthViewModel.Companion.TAG
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 
 class AuthCodeHandlerActivity:AppCompatActivity() {
+    val TAG="kakaoAuthCodeHandler"
     private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e(TAG, "로그인 실패 $error")

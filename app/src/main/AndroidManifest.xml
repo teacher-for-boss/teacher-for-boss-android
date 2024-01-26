@@ -22,7 +22,7 @@
             android:name=".SplashActivity"
             android:exported="false" />
         <activity
-            android:name=".signup.SignupActivity"
+            android:name=".login.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".signup.SignupActivity"
             android:exported="false"  />
         <activity android:name=".BeginActivity"
             android:exported="false"  />

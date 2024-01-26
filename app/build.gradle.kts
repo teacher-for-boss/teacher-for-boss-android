@@ -6,12 +6,13 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
-    kotlin("kapt")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
+
 android {
     namespace = "com.example.teacherforboss"
     compileSdk = 34
@@ -24,9 +25,9 @@ android {
         manifestPlaceholders["KAKAO_APPKEY"] = getApiKey("KAKAO_APPKEY")
 
         applicationId = "com.example.teacherforboss"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
+        minSdk = 28
+        targetSdk = 34
+        versionCode = 13
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -52,8 +53,8 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        viewBinding=true
-        dataBinding=true
+        viewBinding = true
+        dataBinding = true
         compose = true
         buildConfig = true
     }

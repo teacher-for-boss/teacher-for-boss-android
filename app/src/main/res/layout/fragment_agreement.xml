@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".signup.fragment.AgreementFragment"
+>
+
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.signup.SignupViewModel" />
+
+    </data>
+
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        >
+
+        <TextView
+            android:text="이용약관에 동의하시면\n티쳐 포 보스를 시작할 수 있어요"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
+
+        </View>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/allCheckBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체 동의합니다."
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"  />
+
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이용약관 동의 (필수)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"  />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="약관보기"
+                        android:textColor="@color/main_purple_00"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="25dp"/>
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/more_arrow"
+                        android:layout_marginTop="2dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="8dp" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="개인정보 수집 및 이용 동의 (필수)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"  />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="약관보기"
+                        android:textColor="@color/main_purple_00"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="25dp"/>
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/more_arrow"
+                        android:layout_marginTop="2dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="8dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="위치기반서비스 이용 동의 (필수)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"  />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="약관보기"
+                        android:textColor="@color/main_purple_00"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="25dp"/>
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/more_arrow"
+                        android:layout_marginTop="2dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="8dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="다양한 혜택/정보 수신 동의 (선택)"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"  />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+
+                    <RadioButton
+                        android:id="@+id/btn5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SMS"
+                        android:textSize="14dp" />
+
+                    <RadioButton
+                        android:id="@+id/btn6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이메일"
+                        android:layout_marginStart="20dp"
+                        android:textSize="14dp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/btn7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="본인은 만 14세 이상입니다 (필수)"
+                android:textColor="@color/black"
+                android:textSize="14dp"  />
+
+        </RadioGroup>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
+
+        </View>
+
+        <Button
+            android:id="@+id/finishBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_purple_button"
+            android:text="회원가입 완료하기"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:layout_marginBottom="16dp">
+
+        </Button>
+
+    </LinearLayout>
+</layout>

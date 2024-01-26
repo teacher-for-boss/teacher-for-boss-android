@@ -1,4 +1,4 @@
-package com.example.teacherforboss
+package com.example.teacherforboss.presentation.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

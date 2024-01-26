@@ -1,6 +1,7 @@
 package com.example.teacherforboss.login
 
 import android.content.Context
+import com.example.teacherforboss.BuildConfig
 import com.example.teacherforboss.GlobalApplication
 //import dagger.hilt.android.qualifiers.ActivityContext
 //import dagger.hilt.android.qualifiers.ApplicationContext
@@ -9,8 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
-
-val BASEURL="https://dev.teacherforboss.store/api/v1"
 
 object ApiClient{
     private val tokenManager:TokenManager=TokenManager
@@ -29,7 +28,7 @@ object ApiClient{
         get(){
             if(mRetrofit==null){
                 mRetrofit=Retrofit.Builder()
-                    .baseUrl(BASEURL)
+                    .baseUrl(BuildConfig.BASE_URL)
                     .client(mOkHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())//gson:google에서 만든 java용 json
                     .build()

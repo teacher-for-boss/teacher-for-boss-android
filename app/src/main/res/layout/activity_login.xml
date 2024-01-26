@@ -79,7 +79,7 @@
             android:padding="12dp"
             android:background="@drawable/selector_login"
             android:hint="아이디/이메일"
-            android:textColorHint="@color/lightGrey"
+            android:textColorHint="@color/gray_02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -97,7 +97,7 @@
             android:background="@drawable/selector_login"
             android:hint="비밀번호"
             android:inputType="textPassword"
-            android:textColorHint="@color/lightGrey"
+            android:textColorHint="@color/gray_02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -176,7 +176,7 @@
 
         <TextView
             android:textSize="14dp"
-            android:textColor="@color/grey"
+            android:textColor="@color/gray_01"
             android:layout_gravity="center"
             android:text="아래 방법으로도 로그인 가능해요!"
             android:layout_width="wrap_content"

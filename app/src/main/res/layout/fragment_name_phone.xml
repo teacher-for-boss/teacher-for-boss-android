@@ -27,7 +27,7 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:background="@color/lightGrey"
+                android:background="@color/gray_02"
                 android:progressTint="@color/main_purple"
                 android:progress="55"
                 android:max="100"/>
@@ -64,7 +64,7 @@
                     android:padding="12dp"
                     android:background="@drawable/selector_login"
                     android:hint="이름"
-                    android:textColorHint="@color/lightGrey"
+                    android:textColorHint="@color/gray_02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -85,7 +85,7 @@
                         android:padding="12dp"
                         android:background="@drawable/selector_login"
                         android:hint="휴대폰 번호 ('-' 제외)"
-                        android:textColorHint="@color/lightGrey"
+                        android:textColorHint="@color/gray_02"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -137,7 +137,7 @@
                             android:padding="12dp"
                             android:background="@drawable/selector_login"
                             android:hint="인증번호 입력"
-                            android:textColorHint="@color/lightGrey"
+                            android:textColorHint="@color/gray_02"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -177,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text='@{signupViewModel.isPhoneVerified()?"인증되었습니다.":"인증번호가 올바르지 않습니다."}'
-                    android:textColor="@{signupViewModel.isPhoneVerified()?@color/lime:@color/red}"
+                    android:textColor="@{signupViewModel.isPhoneVerified()?@color/sub_green:@color/sub_red}"
                     android:textSize="12dp"
                     android:visibility="invisible"
                     android:layout_marginStart="5dp"

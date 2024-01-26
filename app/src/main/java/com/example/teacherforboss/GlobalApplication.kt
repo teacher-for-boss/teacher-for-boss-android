@@ -1,0 +1,27 @@
+package com.example.teacherforboss
+
+import android.app.Application
+import android.util.Log
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
+//import dagger.hilt.android.HiltAndroidApp
+
+//@HiltAndroidApp
+class GlobalApplication: Application() {
+    companion object{
+        lateinit var instance: GlobalApplication
+        private set
+    }
+    override fun onCreate() {
+        super.onCreate()
+        instance =this
+        var appkey= com.example.teacherforboss.BuildConfig.KAKAO_APPKEY
+        var keyHash=Utility.getKeyHash(this)
+        Log.e("hash","key:${keyHash}")
+
+
+        KakaoSdk.init(this,appkey)
+        //KakaoSdk.init(this,appkey)
+
+    }
+}

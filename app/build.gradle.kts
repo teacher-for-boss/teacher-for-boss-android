@@ -12,7 +12,6 @@ plugins {
 val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
-
 android {
     namespace = "com.example.teacherforboss"
     compileSdk = 34
@@ -41,7 +40,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }

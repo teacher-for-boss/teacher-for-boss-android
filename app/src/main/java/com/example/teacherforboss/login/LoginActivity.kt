@@ -188,7 +188,7 @@ class LoginActivity : AppCompatActivity() {
 
     // kakao
     private fun handleKakaoLogin(){
-        Log.d("kakao",checkTokenState().toString())
+        //Log.d("kakao",checkTokenState().toString())
 //        Log.d("kakao","handleKakaoLogin():")
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨

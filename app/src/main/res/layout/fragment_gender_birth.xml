@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text=" 남자"
                         android:textSize="16dp"
-                        android:backgroundTint="@color/main_purple"
+                        android:backgroundTint="@color/main_purple_00"
                         />
 
                     <RadioButton

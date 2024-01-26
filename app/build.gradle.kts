@@ -52,8 +52,8 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        viewBinding = true
-        dataBinding = true
+        viewBinding=true
+        dataBinding=true
         compose = true
         buildConfig = true
     }
@@ -121,6 +121,9 @@ dependencies {
     // kakao
     implementation("com.kakao.sdk:v2-all:2.19.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
     implementation("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
+
+    // progress Bar
+    implementation("com.github.skydoves:progressview:1.1.3")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

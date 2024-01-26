@@ -1,4 +1,4 @@
-package com.example.teacherforboss.login
+package com.example.teacherforboss.presentation.ui.auth.login
 
 import com.example.teacherforboss.signup.api.EmailCheckRequest
 import com.example.teacherforboss.signup.api.EmailCheckResponse
@@ -13,13 +13,14 @@ import retrofit2.http.POST
 
 interface UserApi {
     companion object{
-        fun getApi():UserApi?{
+        fun getApi(): UserApi?{
             return ApiClient.client?.create(UserApi::class.java)
         }
     }
     @POST("auth/login")
     suspend fun loginUser(
-        @Body loginRequest:LoginRequest)
+        @Body loginRequest: LoginRequest
+    )
     : Response<LoginResponse>
 
 

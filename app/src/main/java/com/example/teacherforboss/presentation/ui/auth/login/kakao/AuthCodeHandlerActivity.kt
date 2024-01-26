@@ -1,4 +1,4 @@
-package com.example.teacherforboss.login.kakao
+package com.example.teacherforboss.presentation.ui.auth.login.kakao
 
 import android.os.Bundle
 import android.util.Log

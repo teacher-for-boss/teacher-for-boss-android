@@ -1,4 +1,4 @@
-package com.example.teacherforboss.login
+package com.example.teacherforboss.presentation.ui.auth.login
 
 import com.google.gson.annotations.SerializedName
 
@@ -13,7 +13,7 @@ data class LoginResponse(
     var message:String,
 
     @SerializedName("result")
-    var `result`:Result
+    var `result`: Result
 ){
     data class Result(
         @SerializedName("accessToken")

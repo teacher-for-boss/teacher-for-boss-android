@@ -1,29 +1,21 @@
-package com.example.teacherforboss.login
+package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Intent
 import android.content.ContentValues.TAG
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.teacherforboss.BeginActivity
-import androidx.compose.runtime.collectAsState
-import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.teacherforboss.presentation.ui.main.BeginActivity
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
-import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityLoginBinding
-import com.example.teacherforboss.login.kakao.KaKaoOauthViewModel
-import com.example.teacherforboss.login.kakao.SocialLoginUiState
-import com.example.teacherforboss.login.kakao.SocialLoginViewModel
-import com.example.teacherforboss.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginUiState
+import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -34,7 +26,6 @@ import com.kakao.sdk.user.UserApiClient
 //import dagger.hilt.android.qualifiers.ApplicationContext
 //import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 //@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -43,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel>()
     private val kakaoViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
-    private lateinit var kakaoOauthViewModel: KaKaoOauthViewModel
+    //private lateinit var kakaoOauthViewModel: KaKaoOauthViewModel
 //    @ApplicationContext val appContext=GlobalApplication.instance
 
     val appContext=GlobalApplication.instance
@@ -58,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         //기본 로그인
 
 
-        val token=TokenManager.getAccessToken(this)//ver1. shared preference
+        val token= TokenManager.getAccessToken(this)//ver1. shared preference
         //ver 1. shared prefs
         if(!token.isNullOrBlank()){
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
@@ -72,14 +63,14 @@ class LoginActivity : AppCompatActivity() {
 //        }
         viewModel.loginResult.observe(this){
             when(it){
-                is BaseResponse.Loading->{
+                is BaseResponse.Loading ->{
                     // 기다려주세요 메시지?로고?
                 }
-                is BaseResponse.Success->{
+                is BaseResponse.Success ->{
                     processLogin(it.data)//respponse.result
 
                 }
-                is BaseResponse.Error->{
+                is BaseResponse.Error ->{
                     processError(it.msg)
 
                 }
@@ -149,18 +140,18 @@ class LoginActivity : AppCompatActivity() {
 //        binding.logoutBtn.setOnClickListener {
 //            handleKakaoLogout()
 //        }
-        
+
     }
     fun doLogin(){
         val email=binding.idBox.text.toString()
         val password=binding.pwBox.text.toString()
         viewModel.loginUser(email,password)
     }
-    fun processLogin(data:LoginResponse?){
+    fun processLogin(data: LoginResponse?){
         showToast("success:"+data?.message)
         if(!data?.result?.accessToken.isNullOrEmpty()){
             data?.result?.accessToken.let{
-                TokenManager.saveAccessToken(appContext,it!!)
+                TokenManager.saveAccessToken(appContext, it!!)
             }
 //            lifecycleScope.launch {
 //                tokenManager.saveAccessToken(data?.result?.accessToken!!)
@@ -169,7 +160,7 @@ class LoginActivity : AppCompatActivity() {
         }
         if(!data?.result?.refreshToken.isNullOrEmpty()){
             data?.result?.refreshToken.let{
-                TokenManager.saveRefreshToken(appContext,it!!)
+                TokenManager.saveRefreshToken(appContext, it!!)
             }
 //            lifecycleScope.launch {
 //                tokenManager.saveRefreshToken(data?.result?.refreshToken!!)

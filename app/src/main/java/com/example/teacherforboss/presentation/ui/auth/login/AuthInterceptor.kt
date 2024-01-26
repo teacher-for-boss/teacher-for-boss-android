@@ -1,35 +1,24 @@
-package com.example.teacherforboss.login
+package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Context
-import android.media.session.MediaSession.Token
-import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import okhttp3.Dispatcher
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
-import java.net.HttpURLConnection.HTTP_OK
-import java.util.Timer
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
     @ApplicationContext val context: Context,
 //    val context: Context,
-    private val tokenManager:TokenManager
+    private val tokenManager: TokenManager
 
 ):Interceptor{
     val CODE_ERROR=401 //나중에 수정
     override fun intercept(chain: Interceptor.Chain): Response {
         val AUTHORIZATION="Authorization"
-        val token=TokenManager.getAccessToken(context)
+        val token= TokenManager.getAccessToken(context)
 //        val token:String= runBlocking {
 //            tokenManager.getAccessToken().first()
 //        }?:return errorResponse(chain.request())

@@ -1,4 +1,4 @@
-package com.example.teacherforboss.login
+package com.example.teacherforboss.presentation.ui.auth.login
 
 import com.example.teacherforboss.signup.api.EmailCheckRequest
 import com.example.teacherforboss.signup.api.EmailCheckResponse

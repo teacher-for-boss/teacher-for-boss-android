@@ -1,15 +1,7 @@
-package com.example.teacherforboss.login
+package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
 
 //ver1. shared preference
@@ -27,7 +19,8 @@ object TokenManager {
 
     }
      fun getRefreshToken(context: Context):String?{
-        val prefs:SharedPreferences=context.getSharedPreferences(USER_INFO,
+        val prefs:SharedPreferences=context.getSharedPreferences(
+            USER_INFO,
             Context.MODE_PRIVATE)
         return prefs.getString(ACCESS_TOKEN,null)
      }
@@ -40,7 +33,8 @@ object TokenManager {
 
      }
      fun getAccessToken(context: Context):String?{
-         val prefs:SharedPreferences=context.getSharedPreferences(USER_INFO,
+         val prefs:SharedPreferences=context.getSharedPreferences(
+             USER_INFO,
              Context.MODE_PRIVATE)
          return prefs.getString(REFRESH_TOKEN,null)
      }

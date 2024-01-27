@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.presentation.ui.auth.common
 
 
 //basic logig views에서 result.kt

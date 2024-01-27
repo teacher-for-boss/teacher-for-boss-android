@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.databinding.ActivityLoginBinding
+import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
 import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginUiState
 import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity

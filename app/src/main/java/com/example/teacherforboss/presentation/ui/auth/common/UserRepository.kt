@@ -1,5 +1,7 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.presentation.ui.auth.common
 
+import com.example.teacherforboss.presentation.ui.auth.login.LoginRequest
+import com.example.teacherforboss.presentation.ui.auth.login.LoginResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.presentation.ui.auth.login.BaseResponse
-import com.example.teacherforboss.presentation.ui.auth.login.UserRepository
+import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
+import com.example.teacherforboss.presentation.ui.auth.common.UserRepository
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest

@@ -1,6 +1,7 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.presentation.ui.auth.common
 
 import android.content.Context
+import com.example.teacherforboss.presentation.ui.auth.login.TokenManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Protocol

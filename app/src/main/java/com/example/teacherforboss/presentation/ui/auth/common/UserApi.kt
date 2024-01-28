@@ -2,6 +2,8 @@ package com.example.teacherforboss.presentation.ui.auth.common
 
 import com.example.teacherforboss.presentation.ui.auth.login.LoginRequest
 import com.example.teacherforboss.presentation.ui.auth.login.LoginResponse
+import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginRequest
+import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
@@ -31,6 +33,11 @@ interface UserApi {
         @Header("Authorization") refreshToken: String)
     : Response<LoginResponse>
 
+    @POST("auth/login/social")
+    fun socialLogin(
+        @Body socialLoginRequest: socialLoginRequest
+    )
+    :Response<socialLoginResponse>
     @POST("auth/email")
     suspend fun emailUser(
         @Body emailRequest: EmailRequest

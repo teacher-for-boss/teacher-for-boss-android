@@ -2,6 +2,8 @@ package com.example.teacherforboss.presentation.ui.auth.common
 
 import com.example.teacherforboss.presentation.ui.auth.login.LoginRequest
 import com.example.teacherforboss.presentation.ui.auth.login.LoginResponse
+import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginRequest
+import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
@@ -18,6 +20,11 @@ class UserRepository {
     fun loginReissue(refreshToken:String):
             Response<LoginResponse>?{
         return UserApi.getApi()?.loginReissue(refreshToken ="Bearer ${refreshToken}" )
+    }
+
+    fun socialLogin(socialLoginRequest: socialLoginRequest):
+            Response<socialLoginResponse>?{
+        return UserApi.getApi()?.socialLogin(socialLoginRequest=socialLoginRequest)
     }
 
     suspend fun emailUser(emailRequest: EmailRequest):

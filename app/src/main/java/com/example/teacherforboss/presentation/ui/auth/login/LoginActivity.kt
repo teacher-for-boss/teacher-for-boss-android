@@ -2,6 +2,8 @@ package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Intent
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +16,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.databinding.ActivityLoginBinding
 import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
-import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginUiState
-import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginViewModel
+import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
+import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
+import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -27,20 +30,21 @@ import com.kakao.sdk.user.UserApiClient
 //import dagger.hilt.android.qualifiers.ApplicationContext
 //import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import retrofit2.Response
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 //@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
+    val KAKAOLOGIN="KAKAOLOGIN"
     private lateinit var binding: ActivityLoginBinding
 
     private val viewModel by viewModels<LoginViewModel>()
     private val kakaoViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
-    //private lateinit var kakaoOauthViewModel: KaKaoOauthViewModel
-//    @ApplicationContext val appContext=GlobalApplication.instance
 
     val appContext=GlobalApplication.instance
-//    @Inject
-//    lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,27 +52,19 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //기본 로그인
-
-
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
         //ver 1. shared prefs
         if(!token.isNullOrBlank()){
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
         }
-//        lifecycleScope.launch {
-//            tokenManager.getAccessToken().collect(){ accessToken->
-//                if(accessToken.isNullOrBlank()){
-//                    showToast("로그인이 제대로 진행되지 않았습니다!")
-//                }
-//            }
-//        }
+
         viewModel.loginResult.observe(this){
             when(it){
                 is BaseResponse.Loading ->{
                     // 기다려주세요 메시지?로고?
                 }
                 is BaseResponse.Success ->{
-                    processLogin(it.data)//respponse.result
+                    saveToken(it.data)//respponse.result
 
                 }
                 is BaseResponse.Error ->{
@@ -82,6 +78,27 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
+        viewModel.socialLoginResult.observe(this){
+            when(it){is BaseResponse.Loading ->{
+                showToast("카카오로 로그인 중입니다.조금만 더 기다려주세요 🐣")
+                // 기다려주세요 메시지?로고?
+            }
+                is BaseResponse.Success ->{
+                    showToast("카카오로 로그인 완료!🐣")
+                    saveToken(it.data)//respponse.result
+                    startActivity(intent)
+
+                }
+                is BaseResponse.Error ->{
+                    processError(it.msg)
+
+                }
+                else->{
+                    //loading 종료시
+
+                }
+            }
+        }
 
         //카카오 로그인 1
         val intent=Intent(this,BeginActivity::class.java)
@@ -90,17 +107,13 @@ class LoginActivity : AppCompatActivity() {
                 kakaoViewModel.socialLoginUiState.collect(){uiState->
                     when(uiState){
                         SocialLoginUiState.KakaoLogin->{
-                            showToast("kakao login handling")
-                            Log.d("kakao","kakao login handling")
                             handleKakaoLogin()
                         }
                         SocialLoginUiState.LoginSuccess->{
-
                             showToast("kakao Login Success")
                             //getAgreement()
-                            getToken()
+                            getToken() //개발 확인용 나중엔 삭제
                             getUserInfo()
-                            startActivity(intent)
 
                         }
                         SocialLoginUiState.LoginFail->{
@@ -115,19 +128,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        //kakao login 2
-//        kakaoOauthViewModel=ViewModelProvider(this,KaKaoOauthViewModelFactory(application)).get(KaKaoOauthViewModel::class.java)
-//
-//        kakaoOauthViewModel.isLoggedIn.asLiveData().observe(this){ isLoggedIn->
-//            val loginState=if (isLoggedIn) "logged in"  else "logout"
-//            showToast(loginState)
-//        }
         binding.loginBtn.setOnClickListener {
             doLogin()
         }
 
         binding.signup.setOnClickListener {
-
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
 
@@ -135,12 +140,8 @@ class LoginActivity : AppCompatActivity() {
 
         binding.kakaoBtn.setOnClickListener {
             kakaoViewModel.kakaoLogin()
-            //kakaoOauthViewModel.kakaoLogin()
         }
 
-//        binding.logoutBtn.setOnClickListener {
-//            handleKakaoLogout()
-//        }
 
     }
     fun doLogin(){
@@ -148,35 +149,22 @@ class LoginActivity : AppCompatActivity() {
         val password=binding.pwBox.text.toString()
         viewModel.loginUser(email,password)
     }
-    fun processLogin(data: LoginResponse?){
-        showToast("success:"+data?.message)
+    fun <T:loginInterface>saveToken(data: T?){
+        showToast("login success:"+data?.message)
         if(!data?.result?.accessToken.isNullOrEmpty()){
             data?.result?.accessToken.let{
                 TokenManager.saveAccessToken(appContext, it!!)
             }
-//            lifecycleScope.launch {
-//                tokenManager.saveAccessToken(data?.result?.accessToken!!)
-//            }
 
         }
         if(!data?.result?.refreshToken.isNullOrEmpty()){
             data?.result?.refreshToken.let{
                 TokenManager.saveRefreshToken(appContext, it!!)
             }
-//            lifecycleScope.launch {
-//                tokenManager.saveRefreshToken(data?.result?.refreshToken!!)
-//            }
-            //로그인 다음화면으로 navigation
         }
 
     }
 
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
-    fun showToast(msg:String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
-    }
 
     // kakao
     private fun handleKakaoLogin(){
@@ -255,6 +243,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    //우선 나중에 추가
     private fun getAgreement(){
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -315,6 +304,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getUserInfo(){
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(KAKAOLOGIN, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        var email:String=""
+        var phoneNumber:String=""
+        var name:String=""
+        var gender:Int?=0
+        var birthDate: LocalDate?
+        var birthDate_str:String?=""
+        var imageUrl:String?=""
+
+
         // 사용자 정보 요청 (기본)
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -332,9 +334,47 @@ class LoginActivity : AppCompatActivity() {
                         "\n년도: ${user.kakaoAccount?.birthyear}" +
                         "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                 )
+
+                //ver 1. sharedpreference에 저장후 다른 함수(getUserInfo다음에 바로 호출)에서 api요청시 sharedpreference에서 값들을 가져와서 사용
+                editor.putString("email",user.kakaoAccount?.email)
+                editor.putString("name",user.kakaoAccount?.name)
+                editor.putString("phoneNumber",user.kakaoAccount?.phoneNumber)
+                editor.putString("gender",user.kakaoAccount?.gender.toString())
+                editor.putString("birthDate",user.kakaoAccount?.birthyear+user.kakaoAccount?.birthday)
+                editor.putString("imageUrl",user.kakaoAccount?.profile?.thumbnailImageUrl)
+
+                editor.apply()
+
+                //ver 2. 그냥 여기서 바로 api 요청한다.
+                email=user.kakaoAccount?.email!!
+                name=user.kakaoAccount?.name!!
+                phoneNumber=user.kakaoAccount?.phoneNumber!!
+
+                if(user.kakaoAccount?.gender.toString()=="남자"){
+                    gender=1
+                }
+                else{
+                    gender=2
+                }
+                birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
+                val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
+                val birthDate=LocalDate.parse(birthDate_str,formatter)
+
+                imageUrl=user.kakaoAccount?.profile?.thumbnailImageUrl
+
+                viewModel.socialLogin(email,name,phoneNumber,gender, birthDate = birthDate,imageUrl)
             }
         }
     }
+
+    fun processError(msg:String?){
+        showToast("error:"+msg)
+    }
+    fun showToast(msg:String){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+
+
 
 
 }

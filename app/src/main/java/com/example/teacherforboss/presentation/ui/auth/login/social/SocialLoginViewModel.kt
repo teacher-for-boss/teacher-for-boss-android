@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login.kakao
+package com.example.teacherforboss.presentation.ui.auth.login.social
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,4 +22,5 @@ class SocialLoginViewModel:ViewModel() {
     fun setUiStateIdle(){
         _socialLoginUiState.tryEmit(SocialLoginUiState.Idle)
     }
+
 }

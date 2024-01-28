@@ -1,8 +1,9 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.presentation.ui.auth.login.social
 
+import com.example.teacherforboss.presentation.ui.auth.login.loginInterface
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
+data class socialLoginResponse(
     @SerializedName("code")
     override var code:Int,
 
@@ -14,4 +15,4 @@ data class LoginResponse(
 
     @SerializedName("result")
     override var result: loginInterface.Result
-):loginInterface
+): loginInterface

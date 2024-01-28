@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login.kakao
+package com.example.teacherforboss.presentation.ui.auth.login.social
 
 sealed interface SocialLoginUiState{
     object LoginSuccess: SocialLoginUiState

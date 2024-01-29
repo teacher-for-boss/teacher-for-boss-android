@@ -60,12 +60,13 @@ class LoginViewModel(): ViewModel(){
                     birthDate = birthDate,
                     profileImg = imageUrl
                 )
-                val response=userRepo.socialLogin(socialLoginRequest)
+                val response=userRepo.kakaoLogin(socialLoginRequest)
 
                 if(response?.code()==200){
                     socialLoginResult.value=BaseResponse.Success(response.body())
                 }
                 else{
+                    Log.d("kakao?",response?.body().toString())
                     socialLoginResult.value=BaseResponse.Error(response?.message())
                 }
             }catch (exception:Exception){

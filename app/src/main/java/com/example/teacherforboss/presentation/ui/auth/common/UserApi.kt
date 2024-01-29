@@ -35,7 +35,7 @@ interface UserApi {
     : Response<LoginResponse>
 
     @POST("auth/login/social")
-    fun socialLogin(
+    suspend fun socialLogin(
         @Query("socialType") socialType:Int,
         @Body socialLoginRequest: socialLoginRequest
     )

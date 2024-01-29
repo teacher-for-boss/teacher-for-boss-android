@@ -92,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)
+                    Log.e("kakao",it.msg.toString())
 
                 }
                 else->{

@@ -64,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
                     // 기다려주세요 메시지?로고?
                 }
                 is BaseResponse.Success ->{
+                    showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
 
                 }

@@ -14,6 +14,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserApi {
     companion object{
@@ -35,6 +36,7 @@ interface UserApi {
 
     @POST("auth/login/social")
     fun socialLogin(
+        @Query("socialType") socialType:Int,
         @Body socialLoginRequest: socialLoginRequest
     )
     :Response<socialLoginResponse>

@@ -5,8 +5,6 @@ import java.time.LocalDate
 import java.util.Date
 
 data class socialLoginRequest(
-    @SerializedName("socialType")
-    var socialType:Int,
     @SerializedName("email")
     var email:String,
     @SerializedName("name")

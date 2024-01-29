@@ -2,6 +2,7 @@ package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,6 +36,9 @@ class LoginViewModel(): ViewModel(){
                     loginResult.value= BaseResponse.Success(response.body())
                 }
                 else{
+                    Log.d("login test",response?.body().toString())
+                    Log.d("login test",response?.code().toString())
+
                     loginResult.value= BaseResponse.Error(response?.message())
                 }
             }catch(ex:Exception){
@@ -49,7 +53,6 @@ class LoginViewModel(): ViewModel(){
         viewModelScope.launch{
             try{
                 val socialLoginRequest=socialLoginRequest(
-                    socialType=2,
                     email=email,
                     name=name,
                     phone=phoneNumber,

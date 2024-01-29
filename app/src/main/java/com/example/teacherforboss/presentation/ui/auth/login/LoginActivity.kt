@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.databinding.ActivityLoginBinding
 import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
+import com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity
 import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginUiState
 import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
@@ -137,6 +138,19 @@ class LoginActivity : AppCompatActivity() {
             kakaoViewModel.kakaoLogin()
             //kakaoOauthViewModel.kakaoLogin()
         }
+
+        binding.findEmailBtn.setOnClickListener {
+            val intent=Intent(this,FindPwActivity::class.java)
+            intent.putExtra("destination","email")
+            startActivity(intent)
+        }
+
+        binding.findPwBtn.setOnClickListener {
+            val intent=Intent(this,FindPwActivity::class.java)
+            intent.putExtra("destination","pw")
+            startActivity(intent)
+        }
+
 
 //        binding.logoutBtn.setOnClickListener {
 //            handleKakaoLogout()

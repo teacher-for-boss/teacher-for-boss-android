@@ -130,6 +130,10 @@ dependencies {
     // progress Bar
     implementation("com.github.skydoves:progressview:1.1.3")
 
+    //view pager 2
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    //etc
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.2")

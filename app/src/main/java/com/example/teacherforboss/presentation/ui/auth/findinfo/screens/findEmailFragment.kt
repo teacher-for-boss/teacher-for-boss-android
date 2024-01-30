@@ -26,7 +26,17 @@ class findEmailFragment : Fragment() {
         binding.findPwviewModel=viewModel
         binding.lifecycleOwner=this
 
+
+        val activity=activity as FindPwActivity
+        binding.findEmailBtn.setOnClickListener {
+            //서버로 이메일 찾기 api 요청-> 응답이 성공일 시에 다음 fragment 전환
+            activity.gotoNextFragment(findEmailFragment2())
+
+        }
+
         return binding.root
+
+
     }
 
     //verify 버튼을 누르면 3분 타이머

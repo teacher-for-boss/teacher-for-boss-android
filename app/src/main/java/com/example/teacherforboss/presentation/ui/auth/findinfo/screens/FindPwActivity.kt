@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityFindPwBinding
 import com.example.teacherforboss.presentation.ui.auth.findinfo.viewPagerAdapter
@@ -24,12 +28,38 @@ class FindPwActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(true)
         }
 
-
         //이전 로그인 화면에서 도착 경로 받기
         var destination=intent.getStringExtra("destination")
 
         initView(destination?:"email")
     }
+
+//    private fun test(){
+//        val viewPager=binding.viewPager
+//        val tabLayout=binding.tabLayout
+//
+//        viewPager.adapter=viewPagerAdapter(fragmentList,this)
+//
+//        TabLayoutMediator(tabLayout,viewPager){tab,position->
+//            if(position==0) tab.text="이메일 찾기"
+//            else if(position==1) tab.text="비밀번호 찾기"
+//        }.attach()
+//
+//        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                when (position) {
+//                    0 -> supportFragmentManager.beginTransaction()
+//                        .replace(R.id.nav_host_fragment_container, NavHostFragment::class.java, null)
+//                        .commit()
+//                    1 -> supportFragmentManager.beginTransaction()
+//                        .replace(R.id.navHostFragmentB, NavHostFragment::class.java, null)
+//                        .commit()
+//                }
+//            }
+//        })
+
+    //}
 
     private fun initView(destination:String){
         val viewPager=binding.viewPager

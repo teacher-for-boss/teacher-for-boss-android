@@ -66,6 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
+                    // 설문조사 여부에 따라 다른 activity로 이동
 
                 }
                 is BaseResponse.Error ->{
@@ -74,7 +75,6 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else->{
                     //loading 종료시
-
                 }
             }
 
@@ -87,13 +87,12 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     showToast("카카오로 로그인 완료!🐣")
                     saveToken(it.data)//respponse.result
-                    startActivity(intent)
+                    // 설문조사 여부에 따라 다른 activity로 이동
 
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)
                     Log.e("kakao",it.msg.toString())
-
                 }
                 else->{
                     //loading 종료시
@@ -102,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        //카카오 로그인 1
+        //카카오 자체 로그인 1
         val intent=Intent(this,BeginActivity::class.java)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -112,9 +111,7 @@ class LoginActivity : AppCompatActivity() {
                             handleKakaoLogin()
                         }
                         SocialLoginUiState.LoginSuccess->{
-                            showToast("kakao Login Success")
-                            //getAgreement()
-                            getToken() //개발 확인용 나중엔 삭제
+                            //getToken() //개발 확인용 나중엔 삭제
                             getUserInfo()
 
                         }
@@ -131,13 +128,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.loginBtn.setOnClickListener {
-            doLogin()
+            val email=binding.idBox.text.toString()
+            val password=binding.pwBox.text.toString()
+            viewModel.loginUser(email,password)
         }
 
         binding.signup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
-
         }
 
         binding.kakaoBtn.setOnClickListener {
@@ -146,13 +144,10 @@ class LoginActivity : AppCompatActivity() {
 
 
     }
-    fun doLogin(){
-        val email=binding.idBox.text.toString()
-        val password=binding.pwBox.text.toString()
-        viewModel.loginUser(email,password)
-    }
+
+    //access, refresh token 저장
     fun <T:loginInterface>saveToken(data: T?){
-        showToast("login success:"+data?.message)
+//        showToast("login success:"+data?.message)
         if(!data?.result?.accessToken.isNullOrEmpty()){
             data?.result?.accessToken.let{
                 TokenManager.saveAccessToken(appContext, it!!)
@@ -170,8 +165,6 @@ class LoginActivity : AppCompatActivity() {
 
     // kakao
     private fun handleKakaoLogin(){
-        //Log.d("kakao",checkTokenState().toString())
-//        Log.d("kakao","handleKakaoLogin():")
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -245,7 +238,84 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    //우선 나중에 추가
+
+
+    private fun getUserInfo(){
+//        val prefs: SharedPreferences =
+//            context.getSharedPreferences(KAKAOLOGIN, Context.MODE_PRIVATE)
+//        val editor = prefs.edit()
+
+        var email:String=""
+        var phoneNumber:String=""
+        var name:String=""
+        var gender:Int?=0
+        var birthDate: LocalDate?
+        var birthDate_str:String?=""
+        var imageUrl:String?=""
+
+
+        // 사용자 정보 요청 (기본)
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i(TAG, "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n이름: ${user.kakaoAccount?.name}" +
+                        "\n폰번호: ${user.kakaoAccount?.phoneNumber}" +
+
+                        "\n성별: ${user.kakaoAccount?.gender}" +
+                        "\n생일: ${user.kakaoAccount?.birthday}" +
+                        "\n년도: ${user.kakaoAccount?.birthyear}" +
+                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+                )
+
+                //ver 1. sharedpreference에 저장후 다른 함수(getUserInfo다음에 바로 호출)에서 api요청시 sharedpreference에서 값들을 가져와서 사용
+//                editor.putString("email",user.kakaoAccount?.email)
+//                editor.putString("name",user.kakaoAccount?.name)
+//                editor.putString("phoneNumber",user.kakaoAccount?.phoneNumber)
+//                editor.putString("gender",user.kakaoAccount?.gender.toString())
+//                editor.putString("birthDate",user.kakaoAccount?.birthyear+user.kakaoAccount?.birthday)
+//                editor.putString("imageUrl",user.kakaoAccount?.profile?.thumbnailImageUrl)
+//
+//                editor.apply()
+
+                //ver 2. 그냥 여기서 바로 api 요청한다.
+                email=user.kakaoAccount?.email!!
+                name=user.kakaoAccount?.name!!
+                phoneNumber=user.kakaoAccount?.phoneNumber!!
+                phoneNumber=phoneNumber.replace("+82","0")
+                    .replace("-","")
+                    .replace(" ","")
+
+                if(user.kakaoAccount?.gender.toString()=="남자"){
+                    gender=1
+                }
+                else{
+                    gender=2
+                }
+                birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
+                val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
+                val birthDate=LocalDate.parse(birthDate_str,formatter)
+                Log.d("kakao birthDate",birthDate.toString())
+
+                imageUrl=user.kakaoAccount?.profile?.thumbnailImageUrl
+
+                viewModel.socialLogin(email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
+            }
+        }
+    }
+
+    fun processError(msg:String?){
+        showToast("error:"+msg)
+    }
+    fun showToast(msg:String){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+
+    //나중에 사용할수도
     private fun getAgreement(){
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -303,77 +373,6 @@ class LoginActivity : AppCompatActivity() {
                         "\n만료시간: ${tokenInfo.expiresIn} 초")
             }
         }
-    }
-
-    private fun getUserInfo(){
-        val prefs: SharedPreferences =
-            context.getSharedPreferences(KAKAOLOGIN, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-
-        var email:String=""
-        var phoneNumber:String=""
-        var name:String=""
-        var gender:Int?=0
-        var birthDate: LocalDate?
-        var birthDate_str:String?=""
-        var imageUrl:String?=""
-
-
-        // 사용자 정보 요청 (기본)
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e(TAG, "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
-                Log.i(TAG, "사용자 정보 요청 성공" +
-                        "\n회원번호: ${user.id}" +
-                        "\n이메일: ${user.kakaoAccount?.email}" +
-                        "\n이름: ${user.kakaoAccount?.name}" +
-                        "\n폰번호: ${user.kakaoAccount?.phoneNumber}" +
-
-                        "\n성별: ${user.kakaoAccount?.gender}" +
-                        "\n생일: ${user.kakaoAccount?.birthday}" +
-                        "\n년도: ${user.kakaoAccount?.birthyear}" +
-                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
-                )
-
-                //ver 1. sharedpreference에 저장후 다른 함수(getUserInfo다음에 바로 호출)에서 api요청시 sharedpreference에서 값들을 가져와서 사용
-                editor.putString("email",user.kakaoAccount?.email)
-                editor.putString("name",user.kakaoAccount?.name)
-                editor.putString("phoneNumber",user.kakaoAccount?.phoneNumber)
-                editor.putString("gender",user.kakaoAccount?.gender.toString())
-                editor.putString("birthDate",user.kakaoAccount?.birthyear+user.kakaoAccount?.birthday)
-                editor.putString("imageUrl",user.kakaoAccount?.profile?.thumbnailImageUrl)
-
-                editor.apply()
-
-                //ver 2. 그냥 여기서 바로 api 요청한다.
-                email=user.kakaoAccount?.email!!
-                name=user.kakaoAccount?.name!!
-                phoneNumber=user.kakaoAccount?.phoneNumber!!
-
-                if(user.kakaoAccount?.gender.toString()=="남자"){
-                    gender=1
-                }
-                else{
-                    gender=2
-                }
-                birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
-                val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
-                val birthDate=LocalDate.parse(birthDate_str,formatter)
-
-                imageUrl=user.kakaoAccount?.profile?.thumbnailImageUrl
-
-                viewModel.socialLogin(email,name,phoneNumber,gender, birthDate = birthDate,imageUrl)
-            }
-        }
-    }
-
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
-    fun showToast(msg:String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
 
 

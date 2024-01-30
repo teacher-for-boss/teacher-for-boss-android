@@ -14,7 +14,7 @@ data class socialLoginRequest(
     @SerializedName("gender")
     var gender:Int?,
     @SerializedName("birthDate")
-    var birthDate: LocalDate?,
+    var birthDate: String?,
     @SerializedName("profileImg")
     var profileImg:String?
 

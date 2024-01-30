@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
     @SerializedName("code")
-    override var code:Int,
+    override var code:String,
 
     @SerializedName("isSuccess")
     override var isSuccess:Boolean,

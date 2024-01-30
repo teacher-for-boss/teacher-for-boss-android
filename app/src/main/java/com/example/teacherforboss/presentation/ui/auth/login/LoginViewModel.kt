@@ -30,15 +30,13 @@ class LoginViewModel(): ViewModel(){
                     password=pwd
                 )
                 val response=userRepo.loginUser(loginRequest=loginRequest)
-                //val res=UserApi.getApi()?.loginUser(loginRequest=loginRequest)
 
-                if(response?.code()==200){
+                if(response?.body()?.code=="COMMON200"){
                     loginResult.value= BaseResponse.Success(response.body())
                 }
                 else{
                     Log.d("login test",response?.body().toString())
                     Log.d("login test",response?.code().toString())
-
                     loginResult.value= BaseResponse.Error(response?.message())
                 }
             }catch(ex:Exception){
@@ -47,7 +45,7 @@ class LoginViewModel(): ViewModel(){
         }
     }
 
-    fun socialLogin(email:String, name:String, phoneNumber: String, gender:Int?, birthDate: LocalDate?,imageUrl:String?){
+    fun socialLogin(email:String, name:String, phoneNumber: String, gender:Int?, birthDate: String?,imageUrl:String?){
         socialLoginResult.value=BaseResponse.Loading()
 
         viewModelScope.launch{
@@ -61,8 +59,10 @@ class LoginViewModel(): ViewModel(){
                     profileImg = imageUrl
                 )
                 val response=userRepo.kakaoLogin(socialLoginRequest)
+                Log.d("kakao response body",response?.body().toString())
 
-                if(response?.code()==200){
+
+                if(response?.body()?.code=="COMMON200"){
                     socialLoginResult.value=BaseResponse.Success(response.body())
                 }
                 else{

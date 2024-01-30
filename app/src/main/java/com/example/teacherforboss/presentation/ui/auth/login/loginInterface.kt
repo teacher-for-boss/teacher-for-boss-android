@@ -3,7 +3,7 @@ package com.example.teacherforboss.presentation.ui.auth.login
 import com.google.gson.annotations.SerializedName
 
 interface loginInterface {
-    var code:Int
+    var code:String
     var isSuccess:Boolean
     var message:String
     var result: Result

@@ -9,15 +9,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiClient{
+object AuthApiClient {
     private val tokenManager: TokenManager = TokenManager
     var mHttpLoggingInterceptor= HttpLoggingInterceptor()
         .setLevel(HttpLoggingInterceptor.Level.BODY)
 
     var mOkHttpClient= OkHttpClient.Builder()
         .addInterceptor(mHttpLoggingInterceptor)
-//        .addInterceptor(AuthInterceptor(getAppContenxt(), tokenManager))
-//        .authenticator(AuthAuthenticator(TokenManager, getAppContenxt()))
+        .addInterceptor(AuthInterceptor(getAppContenxt(), tokenManager))
+        .authenticator(AuthAuthenticator(TokenManager, getAppContenxt()))
         .build()
 
     var mRetrofit: Retrofit?=null
@@ -37,3 +37,4 @@ object ApiClient{
 private fun getAppContenxt(): Context {
     return GlobalApplication.instance.applicationContext
 }
+

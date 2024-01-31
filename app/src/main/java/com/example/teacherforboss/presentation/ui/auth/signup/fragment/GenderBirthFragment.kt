@@ -1,16 +1,21 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.fragment
+package com.example.teacherforboss.signup.fragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
+import com.example.teacherforboss.R.style.AppBottomSheetDialogTheme
+import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.databinding.FragmentGenderBirthBinding
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.signup.SignupActivity
+import com.example.teacherforboss.signup.SignupViewModel
+
 
 class GenderBirthFragment : Fragment() {
     private lateinit var binding: FragmentGenderBirthBinding
@@ -22,7 +27,7 @@ class GenderBirthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_gender_birth,container,false)
+        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_gender_birth,container,false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
@@ -31,12 +36,39 @@ class GenderBirthFragment : Fragment() {
 
         val activity=activity as SignupActivity
         binding.nextBtn.setOnClickListener {
-            val dialog=AgreementFragment()
-            dialog.show(activity.supportFragmentManager,"agreement")
+            val bottomSheetDialog=AgreementFragment()
+            bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
+            bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
 
-        // Inflate the layout for this fragment
+        //체크박스 단일선택
+        var maleCheckBox = binding.maleCheckbox
+        var femaleCheckBox = binding.femaleCheckbox
+        var noCheckBox = binding.noCheckbox
+
+        maleCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                femaleCheckBox.isChecked = false
+                noCheckBox.isChecked = false
+            }
+        }
+
+        femaleCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                maleCheckBox.isChecked = false
+                noCheckBox.isChecked = false
+            }
+        }
+
+        noCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                maleCheckBox.isChecked = false
+                femaleCheckBox.isChecked = false
+            }
+        }
+
         return binding.root
+
     }
 
 

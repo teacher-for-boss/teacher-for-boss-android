@@ -1,8 +1,8 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.api
+package com.example.teacherforboss.signup.api
 
 import com.google.gson.annotations.SerializedName
 
-data class EmailCheckResponse (
+data class PhoneCheckResponse(
     @SerializedName("code")
     var code:String,
 
@@ -13,10 +13,13 @@ data class EmailCheckResponse (
     var message:String,
 
     @SerializedName("result")
-    var result: Result?
+    var result: Result
 ) {
     data class Result (
         @SerializedName("checked")
-        var checked:Boolean?
+        var checked:Boolean?,
+
+        @SerializedName("phoneAuthCode")
+        var phoneAuthCode:String?
     )
 }

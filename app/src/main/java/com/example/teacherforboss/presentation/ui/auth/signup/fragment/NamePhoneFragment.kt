@@ -1,7 +1,11 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.fragment
+package com.example.teacherforboss.signup.fragment
 
+import AppSignatureHelper
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,22 +13,28 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.login.BaseResponse
+import com.example.teacherforboss.signup.SignupActivity
+import com.example.teacherforboss.signup.SignupViewModel
 
 class NamePhoneFragment : Fragment() {
     private lateinit var binding: FragmentNamePhoneBinding
     private val viewModel: SignupViewModel by viewModels()
 
-    var tempTime = 0  //타이머 임시시간
+    //사용자입력값
+    var phone=""
+    var phoneCode=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_name_phone,container,false)
+        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_name_phone,container,false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
@@ -37,13 +47,55 @@ class NamePhoneFragment : Fragment() {
         //폰 인증 api email과 동일하게 구현하기
         //viewModel에 phone, isPhoneVerified 추가
 
-        //이메일 인증하기버튼 눌렀을때
+        //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
             binding.phoneVerifyBtn.visibility = View.INVISIBLE
-            binding.veryInfo.visibility= View.VISIBLE
-            startTimer()  //타이머 시작
+            binding.veryInfo.visibility=View.VISIBLE
+            binding.inputPhoneCode.visibility=View.VISIBLE
+            startTimer()
+
+            phone = binding.phoneNumBox.text.toString()
+            viewModel.phoneUser(viewModel.phone.value.toString())
 
         }
+
+        //휴대폰 인증결과 수신
+        viewModel.phoneResult.observe(viewLifecycleOwner) {
+            when(it) {
+                is BaseResponse.Loading->{}
+                is BaseResponse.Success->{
+                    viewModel.phoneAuthId=it.data?.result?.phoneAuthId!!
+                }
+                is BaseResponse.Error->{
+                    showToast("error"+it.msg)
+                }
+            }
+        }
+
+        //휴대폰 코드 입력 후 확인 버튼
+        binding.phoneConfirmBtn.setOnClickListener {
+            phoneCode = binding.phoneCodeBox.text.toString()
+            viewModel.phoneCheckUser(viewModel.phoneAuthId, phoneCode)
+        }
+
+        viewModel.phoneCheckResult.observe(viewLifecycleOwner) {
+            when(it){
+                is BaseResponse.Loading->{ }
+                is BaseResponse.Success->{
+                    viewModel.setPhoneVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
+                    binding.checkVery.visibility=View.VISIBLE
+
+                    var tempPhoneMap = mutableMapOf<String, LiveData<Boolean>>()
+                    tempPhoneMap[phone]=viewModel.isPhoneVerified
+                    viewModel.confirmedPhone.postValue(tempPhoneMap)
+                }
+                is BaseResponse.Error->{
+                    showToast("error:"+it.msg)
+                }
+            }
+        }
+
+
         return binding.root
     }
 
@@ -53,27 +105,24 @@ class NamePhoneFragment : Fragment() {
 
         binding.timer.visibility = View.VISIBLE
 
-        timer = object : CountDownTimer(180000, 1000) {
+        val timer = object : CountDownTimer(181000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                tempTime = millisUntilFinished.toInt()
-                updateTime()
+                updateTime(millisUntilFinished)
             }
 
-            override fun onFinish() {}
+            override fun onFinish() { }
+        }
 
-        }.start()
-
+        timer.start()
     }
 
-    fun updateTime() {
-        val min = tempTime % 3600000 / 60000
-        val sec = tempTime % 3600000 % 60000 / 1000
+    fun updateTime(millisUntilFinished: Long) {
+        val min = millisUntilFinished / 60000
+        val sec = (millisUntilFinished % 60000) / 1000
+        val formattedMin = String.format("%02d", min)
+        val formattedSec = String.format("%02d", sec)
 
-        var timeLeft = "$min : "
-
-        if (sec < 10) timeLeft += "0"
-
-        timeLeft += sec
+        val timeLeft = "$formattedMin:$formattedSec"
 
         binding.timer.text = timeLeft
     }

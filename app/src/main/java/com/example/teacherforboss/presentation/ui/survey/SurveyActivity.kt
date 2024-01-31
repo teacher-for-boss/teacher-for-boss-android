@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySurveyBinding
@@ -15,6 +16,7 @@ import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemF
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemReasonFragment
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyStudyFragment
 import com.example.teacherforboss.util.base.BindingActivity
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class SurveyActivity :
@@ -28,10 +30,10 @@ class SurveyActivity :
 
         binding.viewModel = surveyViewModel
 
+        setFragmentStateAdapter()
         initLayout()
         addListeners()
         collectData()
-        setFragmentStateAdapter()
     }
 
     private fun initLayout() {
@@ -60,7 +62,7 @@ class SurveyActivity :
     private fun collectData() {
         surveyViewModel.currentPage.flowWithLifecycle(lifecycle).onEach { currentPage ->
             binding.progressbarSurvey.progress = currentPage.toFloat() + DEFAULT_PROGRESSBAR
-            when(currentPage) {
+            when (currentPage) {
                 fragmentList.size - 1 -> {
                     binding.btnSurveyNext.text = getString(R.string.survey_button_start)
                 }
@@ -71,10 +73,11 @@ class SurveyActivity :
                     binding.btnSurveyNext.text = getString(R.string.survey_button_next)
                 }
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun setFragmentStateAdapter() {
+        fragmentList = ArrayList()
         fragmentList.apply {
             add(SurveyJobFragment())
             add(SurveyStudyFragment())

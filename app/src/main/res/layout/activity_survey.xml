@@ -67,6 +67,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_survey_next"
             tools:text="다음"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+            android:textColor="@color/white"
             android:enabled="true"
             style="@style/Theme.TeacherForBoss.Button.Survey"
             app:layout_constraintStart_toStartOf="@id/gl_survey_start"

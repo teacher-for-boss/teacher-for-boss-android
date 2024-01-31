@@ -5,4 +5,8 @@
     <dimen name="spacing16">16dp</dimen>
     <dimen name="spacing20">20dp</dimen>
     <dimen name="spacing30">30dp</dimen>
+
+    <!-- button -->
+    <dimen name="button_survey_height">49dp</dimen>
+    <dimen name="button_survey_radius">5dp</dimen>
 </resources>

@@ -4,6 +4,10 @@ import com.example.teacherforboss.signup.api.EmailCheckRequest
 import com.example.teacherforboss.signup.api.EmailCheckResponse
 import com.example.teacherforboss.signup.api.EmailRequest
 import com.example.teacherforboss.signup.api.EmailResponse
+import com.example.teacherforboss.signup.api.PhoneCheckRequest
+import com.example.teacherforboss.signup.api.PhoneCheckResponse
+import com.example.teacherforboss.signup.api.PhoneRequest
+import com.example.teacherforboss.signup.api.PhoneResponse
 import com.example.teacherforboss.signup.api.SignupRequest
 import com.example.teacherforboss.signup.api.SignupResponse
 import retrofit2.Response
@@ -45,4 +49,16 @@ interface UserApi {
         @Body signupRequest: SignupRequest
     )
     : Response<SignupResponse>
+
+    @POST("auth/phone")
+    suspend fun phoneUser(
+        @Body phoneRequest: PhoneRequest
+    )
+    :Response<PhoneResponse>
+
+    @POST("auth/phone/check")
+    suspend fun phoneCheck(
+        @Body phoneCheckRequest: PhoneCheckRequest
+    )
+    :Response<PhoneCheckResponse>
 }

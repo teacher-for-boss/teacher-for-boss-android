@@ -108,8 +108,8 @@
                     android:id="@+id/veryInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="해당 휴대폰으로 인증 번호가 발송되었습니다."
-                    android:textColor="#00ff00"
+                    android:text="인증번호가 발송되었습니다."
+                    android:textColor="@color/black"
                     android:textSize="12dp"
                     android:visibility="invisible"
                     android:layout_marginStart="5dp"
@@ -122,8 +122,10 @@
                 </View>
 
                 <RelativeLayout
+                    android:id="@+id/input_phoneCode"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
 
                     <RelativeLayout
 
@@ -133,7 +135,7 @@
                         >
 
                         <EditText
-                            android:id="@+id/emailCodeBox"
+                            android:id="@+id/phoneCodeBox"
                             android:padding="12dp"
                             android:background="@drawable/selector_login"
                             android:hint="인증번호 입력"

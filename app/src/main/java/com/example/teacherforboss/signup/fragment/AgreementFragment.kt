@@ -18,8 +18,9 @@ import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.login.LoginActivity
 import com.example.teacherforboss.signup.SignupActivity
 import com.example.teacherforboss.signup.SignupViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class AgreementFragment : DialogFragment() {
+class AgreementFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAgreementBinding
     private val viewModel: SignupViewModel by viewModels()
 
@@ -34,18 +35,57 @@ class AgreementFragment : DialogFragment() {
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        binding.allCheckBtn.setOnClickListener {
-            val isAllChecked=binding.allCheckBtn.isChecked
-            val otherRadisButtons= arrayOf(
-                binding.btn1,binding.btn2,binding.btn3,binding.btn4,
-                binding.btn5,binding.btn6,binding.btn7,
-            )
+        //전체 동의
+        binding.allCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val otherCheckboxs = arrayOf(
+                    binding.agreementCheckbox, binding.personalInformationCheckbox,
+                    binding.locationServiceCheckbox, binding.benefitInformationCheckbox,
+                    binding.smsCheckbox, binding.emailCheckbox, binding.ageCheckbox
+                )
 
-            for(radioBUtton in otherRadisButtons){
-                radioBUtton.isChecked=isAllChecked
+                for(checkBox in otherCheckboxs) {
+                    checkBox.isChecked = true
+                }
             }
-
         }
+        //혜택정보 수신 동의
+        var benefitInfo = binding.benefitInformationCheckbox
+        var sms = binding.smsCheckbox
+        var email = binding.emailCheckbox
+
+        benefitInfo.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                if(sms.isChecked || email.isChecked) {}
+                else {
+                    sms.isChecked = true
+                    email.isChecked = true
+                }
+            } else {
+                sms.isChecked = false
+                email.isChecked = false
+            }
+        }
+
+        sms.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                benefitInfo.isChecked = true
+            }
+            else {
+                if (!email.isChecked) benefitInfo.isChecked = false
+            }
+        }
+
+        email.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                benefitInfo.isChecked = true
+            }
+            else {
+                if (!sms.isChecked) benefitInfo.isChecked = false
+            }
+        }
+
+
         binding.finishBtn.setOnClickListener {
             //서버로 회원가입 api 보내기
             //성공시 아래작업 진행
@@ -53,8 +93,6 @@ class AgreementFragment : DialogFragment() {
             val intent = Intent(activity, BeginActivity::class.java)
             startActivity(intent)
         }
-
-
 
         return binding.root
     }

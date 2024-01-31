@@ -1,5 +1,6 @@
 package com.example.teacherforboss.signup
 
+import AppSignatureHelper
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
@@ -46,9 +48,12 @@ class SignupActivity : AppCompatActivity() {
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val helper = AppSignatureHelper(getApplication())
+        val hash = helper.getAppSignatures()?.get(0)
+        Log.d("hash test",hash.toString())
+
 //        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
 //        binding.signupViewModel=viewModel
-
 
         fragmentManager
             .beginTransaction()
@@ -62,7 +67,6 @@ class SignupActivity : AppCompatActivity() {
             else{
                 //메인 홈화면으로 이동
             }
-
         }
 
 

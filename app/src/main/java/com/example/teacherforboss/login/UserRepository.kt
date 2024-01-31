@@ -4,6 +4,10 @@ import com.example.teacherforboss.signup.api.EmailCheckRequest
 import com.example.teacherforboss.signup.api.EmailCheckResponse
 import com.example.teacherforboss.signup.api.EmailRequest
 import com.example.teacherforboss.signup.api.EmailResponse
+import com.example.teacherforboss.signup.api.PhoneCheckRequest
+import com.example.teacherforboss.signup.api.PhoneCheckResponse
+import com.example.teacherforboss.signup.api.PhoneRequest
+import com.example.teacherforboss.signup.api.PhoneResponse
 import com.example.teacherforboss.signup.api.SignupRequest
 import com.example.teacherforboss.signup.api.SignupResponse
 import retrofit2.Response
@@ -31,5 +35,15 @@ class UserRepository {
     suspend fun signupUser(signupRequest: SignupRequest):
             Response<SignupResponse>?{
         return UserApi.getApi()?.signupUser(signupRequest = signupRequest)
+    }
+
+    suspend fun phoneUser(phoneRequest: PhoneRequest):
+            Response<PhoneResponse>?{
+        return UserApi.getApi()?.phoneUser(phoneRequest = phoneRequest)
+    }
+
+    suspend fun phoneCheck(phoneCheckRequest: PhoneCheckRequest):
+            Response<PhoneCheckResponse>?{
+        return UserApi.getApi()?.phoneCheck(phoneCheckRequest = phoneCheckRequest)
     }
 }

@@ -20,7 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityLoginBinding
-import com.example.teacherforboss.login.kakao.KaKaoOauthViewModel
+//import com.example.teacherforboss.login.kakao.KaKaoOauthViewModel
 import com.example.teacherforboss.login.kakao.SocialLoginUiState
 import com.example.teacherforboss.login.kakao.SocialLoginViewModel
 import com.example.teacherforboss.signup.SignupActivity
@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel>()
     private val kakaoViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
-    private lateinit var kakaoOauthViewModel: KaKaoOauthViewModel
+//    private lateinit var kakaoOauthViewModel:KaKaoOauthViewModel
 //    @ApplicationContext val appContext=GlobalApplication.instance
 
     val appContext=GlobalApplication.instance

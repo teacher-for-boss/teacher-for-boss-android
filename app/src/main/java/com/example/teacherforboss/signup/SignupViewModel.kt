@@ -1,8 +1,12 @@
 package com.example.teacherforboss.signup
 
+import AppSignatureHelper
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.login.BaseResponse
 import com.example.teacherforboss.login.UserRepository
@@ -10,14 +14,22 @@ import com.example.teacherforboss.signup.api.EmailCheckRequest
 import com.example.teacherforboss.signup.api.EmailCheckResponse
 import com.example.teacherforboss.signup.api.EmailRequest
 import com.example.teacherforboss.signup.api.EmailResponse
+import com.example.teacherforboss.signup.api.PhoneCheckRequest
+import com.example.teacherforboss.signup.api.PhoneCheckResponse
+import com.example.teacherforboss.signup.api.PhoneRequest
+import com.example.teacherforboss.signup.api.PhoneResponse
 import com.example.teacherforboss.signup.api.SignupRequest
 import com.example.teacherforboss.signup.api.SignupResponse
+import dagger.hilt.android.internal.Contexts.getApplication
 import kotlinx.coroutines.launch
 
-class SignupViewModel:ViewModel() {
+class SignupViewModel(application: Application): AndroidViewModel(application) {
     var liveEmail=MutableLiveData<String>("")
+    var livePhone=MutableLiveData<String>("")
     val email:LiveData<String>
         get() = liveEmail
+    val phone:LiveData<String>
+        get() = livePhone
 
     var livePw=MutableLiveData<String>("")
     var liveRePw=MutableLiveData<String>("")
@@ -29,7 +41,7 @@ class SignupViewModel:ViewModel() {
     var name:String=""
     var gender:String=""
     var birthDate:String=""
-    var phone:String=""//추후 api 연결하며 email 방식대로 수정
+
     var emailAuthId:Long=0
     var phoneAuthId:Long=0
 
@@ -49,21 +61,21 @@ class SignupViewModel:ViewModel() {
     //이메일인증확인 맵
     val confirmedEmail=MutableLiveData<MutableMap<String,LiveData<Boolean>>>()
 
-    //휴대폰인증
+    //휴대폰인증 여부
     private var _isPhoneVerified=MutableLiveData<Boolean>(false)
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
     //휴대폰인증확인 맵
-    val confirmedPhone=MutableLiveData<MutableMap<String,Boolean>>()
+    val confirmedPhone=MutableLiveData<MutableMap<String,LiveData<Boolean>>>()
 
 
-    fun setEmailVerifiedStatus(isVefiried:Boolean){
-        _isEmailVerified.value=isVefiried
+    fun setEmailVerifiedStatus(isVerified:Boolean){
+        _isEmailVerified.value=isVerified
 
     }
-    fun setPhoneVerifiedStatus(isVefiried: Boolean){
-        _isPhoneVerified.value=isVefiried
+    fun setPhoneVerifiedStatus(isVerified: Boolean){
+        _isPhoneVerified.value=isVerified
     }
 
 
@@ -94,7 +106,7 @@ class SignupViewModel:ViewModel() {
     }
 
     val emailCheckResult: MutableLiveData<BaseResponse<EmailCheckResponse>> = MutableLiveData()
-    fun emailCheckUser(emailAuthId:Int,emailAuthCode:String) {
+    fun emailCheckUser(emailAuthId:Long,emailAuthCode:String) {
         emailCheckResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
@@ -102,7 +114,6 @@ class SignupViewModel:ViewModel() {
                 val emailCheckRequest = EmailCheckRequest(
                     emailAuthId = emailAuthId,
                     emailAuthCode = emailAuthCode
-                    //이메일인증객체id에는 뭘 넣어줘야하는지?-> /auth/email 시 response 받은 값 넣어주기
                 )
                 val response = userRepo.emailCheck(emailCheckRequest = emailCheckRequest)
 
@@ -119,10 +130,6 @@ class SignupViewModel:ViewModel() {
 
     val signupResult: MutableLiveData<BaseResponse<SignupResponse>> = MutableLiveData()
 
-    //isChecked, emailAuth, phoneAuth 파라미터로 넣어야하는지?
-//    fun signupUser(email:String, isChecked:String,password:String, rePassword:String, name:String,
-//                   gender:String, birthDate:String, phone:String,emailAuthId:Long,phoneAuthId:Long)
-//
     //viewmodel 값으로 직접 넣는것으로 수정중
     fun signupUser()
     {
@@ -150,7 +157,7 @@ class SignupViewModel:ViewModel() {
                     name = name,
                     gender = gender,
                     birthDate = birthDate,
-                    phone = phone,
+                    phone = phone.value.toString(),
                     emailAuthId = emailAuthId,//이메일인증식별자,
                     phoneAuthId = phoneAuthId //전화번호인증식별자
                 )
@@ -163,6 +170,57 @@ class SignupViewModel:ViewModel() {
                 }
             } catch (ex: Exception) {
                 signupResult.value = BaseResponse.Error(ex.message)
+            }
+        }
+    }
+
+//    val helper = AppSignatureHelper(getApplication())
+//    val hash = helper.getAppSignatures()?.get(0)
+//    Log.d("hash test",hash.toString())
+
+    val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
+    fun phoneUser(phone: String) {
+        phoneResult.value = BaseResponse.Loading()
+
+        viewModelScope.launch {
+            try {
+                val phoneRequest = PhoneRequest(
+                    phone = phone,
+                    purpose = 1,
+                    appHash = ""
+                )
+                val response = userRepo.phoneUser(phoneRequest = phoneRequest)
+
+                if (response?.code() == 200) {
+                    phoneResult.value = BaseResponse.Success(response.body())
+                } else {
+                    phoneResult.value = BaseResponse.Error(response?.message())
+                }
+            } catch (ex: Exception) {
+                phoneResult.value = BaseResponse.Error(ex.message)
+            }
+        }
+    }
+
+    val phoneCheckResult: MutableLiveData<BaseResponse<PhoneCheckResponse>> = MutableLiveData()
+    fun phoneCheckUser(phoneAuthId: Long, phoneAuthCode: String) {
+        phoneCheckResult.value = BaseResponse.Loading()
+
+        viewModelScope.launch {
+            try {
+                val phoneCheckRequest = PhoneCheckRequest(
+                    phoneAuthId = phoneAuthId,
+                    phoneAuthCode = phoneAuthCode
+                )
+                val response = userRepo.phoneCheck(phoneCheckRequest = phoneCheckRequest)
+
+                if(response?.code() == 200) {
+                    phoneCheckResult.value = BaseResponse.Success(response.body())
+                } else {
+                    phoneCheckResult.value = BaseResponse.Error(response?.message())
+                }
+            } catch (ex: Exception) {
+                phoneCheckResult.value = BaseResponse.Error(ex.message)
             }
         }
     }

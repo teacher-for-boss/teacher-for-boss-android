@@ -2,13 +2,14 @@ package com.example.teacherforboss.signup.fragment
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
@@ -16,19 +17,14 @@ import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.login.BaseResponse
 import com.example.teacherforboss.signup.SignupActivity
 import com.example.teacherforboss.signup.SignupViewModel
-import javax.inject.Inject
 
 class EmailFragment : Fragment() {
     private lateinit var binding:FragmentEmailBinding
     private val viewModel: SignupViewModel by viewModels()
 
-    var tempTime = 0  //타이머 임시시간
-    var code = "45689"  //임시 인증번호
-    //email
-    var email="" //viewModel에서 가져올지 이렇게 가져올지 고민중
+    //사용자입력값
+    var email=""
     var emailCode=""
-
-    var emailAuthId=0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +37,7 @@ class EmailFragment : Fragment() {
         binding.lifecycleOwner=this
 
         val activity=activity as SignupActivity
+
         binding.nextBtn.setOnClickListener {
             activity.gotoNextFragment(PasswordFragment())
         }
@@ -49,25 +46,23 @@ class EmailFragment : Fragment() {
         binding.emailVerifyBtn.setOnClickListener {
             binding.emailVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
+            binding.inputEmailCode.visibility=View.VISIBLE
             startTimer()  //타이머 시작
 
             email=binding.emailBox.text.toString()
             viewModel.emailUser(viewModel.email.value.toString()) //서버로 auth/email
 
         }
-
         //이메일 인증결과 수신
         viewModel.emailResult.observe(viewLifecycleOwner){
             when(it){
-                is BaseResponse.Loading->{
-                }
+                is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
                     viewModel.emailAuthId=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
 
                 }
                 is BaseResponse.Error->{
                     showToast("error:"+it.msg)
-
                 }
             }
         }
@@ -75,13 +70,12 @@ class EmailFragment : Fragment() {
         //이메일 코드 입력 후 확인 버튼
         binding.emailConfirmBtn.setOnClickListener {
             emailCode=binding.emailCodeBox.text.toString()
-            viewModel.emailCheckUser(emailAuthId,emailCode) //서버로 /auth/email/check
+            viewModel.emailCheckUser(viewModel.emailAuthId,emailCode) //서버로 /auth/email/check
         }
 
         viewModel.emailCheckResult.observe(viewLifecycleOwner){
             when(it){
-                is BaseResponse.Loading->{
-                }
+                is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
                     viewModel.setEmailVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
                     binding.checkVery.visibility=View.VISIBLE
@@ -96,7 +90,6 @@ class EmailFragment : Fragment() {
                 }
                 is BaseResponse.Error->{
                     showToast("error:"+it.msg)
-
                 }
             }
         }
@@ -108,31 +101,26 @@ class EmailFragment : Fragment() {
     }
     //verify 버튼을 누르면 3분 타이머
     fun startTimer() {
-        lateinit var timer: CountDownTimer
-
         binding.timer.visibility = View.VISIBLE
 
-        timer = object : CountDownTimer(180000, 1000) {
+        val timer = object : CountDownTimer(181000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                tempTime = millisUntilFinished.toInt()
-                updateTime()
+                updateTime(millisUntilFinished)
             }
 
-            override fun onFinish() {}
+            override fun onFinish() { }
+        }
 
-        }.start()
-
+        timer.start()
     }
 
-    fun updateTime() {
-        val min = tempTime % 3600000 / 60000
-        val sec = tempTime % 3600000 % 60000 / 1000
+    fun updateTime(millisUntilFinished: Long) {
+        val min = millisUntilFinished / 60000
+        val sec = (millisUntilFinished % 60000) / 1000
+        val formattedMin = String.format("%02d", min)
+        val formattedSec = String.format("%02d", sec)
 
-        var timeLeft = "$min : "
-
-        if (sec < 10) timeLeft += "0"
-
-        timeLeft += sec
+        val timeLeft = "$formattedMin:$formattedSec"
 
         binding.timer.text = timeLeft
     }

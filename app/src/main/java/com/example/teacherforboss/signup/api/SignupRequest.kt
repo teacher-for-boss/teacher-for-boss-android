@@ -1,8 +1,9 @@
 package com.example.teacherforboss.signup.api
 
+import androidx.lifecycle.LiveData
 import com.google.gson.annotations.SerializedName
 
-data class SignupRequest (
+data class SignupRequest(
     @SerializedName("email")
     var email:String,
     //설명에는 T,F로 쓰여있는데 Boolean?
@@ -20,7 +21,7 @@ data class SignupRequest (
     @SerializedName("birthDate")
     var birthDate:String,
     @SerializedName("phone")
-    var phone:String,
+    var phone: String,
     @SerializedName("emailAuth")
     var emailAuthId:Long,
     @SerializedName("phoneAuthId")

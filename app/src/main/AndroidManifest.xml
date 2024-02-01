@@ -16,6 +16,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.ui.auth.findinfo.screens.FindPwActivity"
             android:exported="false" />
         <activity

@@ -17,5 +17,21 @@
         android:id="@+id/findEmailFragment2"
         android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment2"
         android:label="fragment_find_email2"
-        tools:layout="@layout/fragment_find_email2" />
+        tools:layout="@layout/fragment_find_email2" >
+        <action
+            android:id="@+id/action_findEmailFragment2_to_findPwFragment"
+            app:destination="@id/findPwFragment" />
+        <action
+            android:id="@+id/action_findEmailFragment2_to_loginActivity"
+            app:destination="@id/loginActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/findPwFragment"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
+        android:label="findPwFragment" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.teacherforboss.presentation.ui.auth.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>

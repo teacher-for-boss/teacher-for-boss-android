@@ -2,14 +2,9 @@ package com.example.teacherforboss.presentation.ui.auth.findinfo.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toolbar
-import androidx.fragment.app.Fragment
+import android.view.MenuItem
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityFindPwBinding
 import com.example.teacherforboss.presentation.ui.auth.findinfo.viewPagerAdapter
@@ -17,7 +12,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class FindPwActivity : AppCompatActivity() {
     private lateinit var binding:ActivityFindPwBinding
-    val fragmentManager:FragmentManager=supportFragmentManager
+    val fragmentManager: FragmentManager =supportFragmentManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityFindPwBinding.inflate(layoutInflater)
@@ -33,18 +29,42 @@ class FindPwActivity : AppCompatActivity() {
         //이전 로그인 화면에서 도착 경로 받기
         var destination=intent.getStringExtra("destination")
 
+        //viewPager2 view 초기화
         initView(destination?:"email")
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                if(fragmentManager.backStackEntryCount>0){
+                    fragmentManager.popBackStack()
+                }
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initView(destination:String){
         val viewPager=binding.viewPager
         val tabLayout=binding.tabLayout
 
-        val fragmentList=ArrayList<Fragment>()
-        fragmentList.add(findEmailFragment())
-        fragmentList.add(findPwFragment())
+        val navHostFragmentList= listOf(
+            NavHostFragment.create(R.navigation.auth_findemail_nav_graph),
+            //시작 fragment를 호스팅하는 NavHostFragment 생성->xml에 명시하지 않고 host 생성
+            NavHostFragment.create(R.navigation.auth_findpw_nav_graph)
+        )
 
-        viewPager.adapter=viewPagerAdapter(fragmentList,this)
+
+        //단순 하나만 연결했던 viewPager2
+//        val fragmentList=ArrayList<Fragment>()
+//        fragmentList.add(findEmailFragment())
+//        fragmentList.add(findPwFragment())
+
+
+        viewPager.adapter=viewPagerAdapter(navHostFragmentList,this)
 
         TabLayoutMediator(tabLayout,viewPager){tab,position->
             if(position==0) tab.text="이메일 찾기"
@@ -62,11 +82,10 @@ class FindPwActivity : AppCompatActivity() {
         }
 
     }
-
-    fun gotoNextFragment(fragment:Fragment){
-        val transaction=fragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container,fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    fun changeTab(index:Int){
+        val viewPager=binding.viewPager
+        viewPager.setCurrentItem(index,false)
     }
+
+
 }

@@ -19,5 +19,14 @@
         android:id="@+id/findPwFragment2"
         android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment2"
         android:label="fragment_find_pw2"
-        tools:layout="@layout/fragment_find_pw2" />
+        tools:layout="@layout/fragment_find_pw2" >
+        <action
+            android:id="@+id/action_findPwFragment2_to_finishFindPwActivity"
+            app:destination="@id/finishFindPwActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/finishFindPwActivity"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
+        android:label="activity_finish_find_pw"
+        tools:layout="@layout/activity_finish_find_pw" />
 </navigation>

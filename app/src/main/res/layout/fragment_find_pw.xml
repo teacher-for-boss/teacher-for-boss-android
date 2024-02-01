@@ -148,7 +148,7 @@
 
             <Button
                 android:background="@drawable/radius_purple_button"
-                android:text="비밀번호 재설정"
+                android:text="비밀번호 재설정하러가기 임시버튼"
                 android:textColor="@color/white"
                 android:id="@+id/findEmailBtn"
                 android:layout_width="match_parent"

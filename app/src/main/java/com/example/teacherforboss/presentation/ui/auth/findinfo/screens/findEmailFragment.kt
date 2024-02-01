@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentFindEmailBinding
 import com.example.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel
@@ -18,6 +22,8 @@ class findEmailFragment : Fragment() {
     private val viewModel:FindPwViewModel by viewModels()
     var tempTime = 0  //타이머 임시시간
 
+    lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,15 +32,27 @@ class findEmailFragment : Fragment() {
         binding.findPwviewModel=viewModel
         binding.lifecycleOwner=this
 
-
         val activity=activity as FindPwActivity
         binding.findEmailBtn.setOnClickListener {
-            //서버로 이메일 찾기 api 요청-> 응답이 성공일 시에 다음 fragment 전환
-            activity.gotoNextFragment(findEmailFragment2())
-
+//            findNavController().navigate(R.id.action_findEmailFragment_to_findEmailFragment2)
         }
 
+
         return binding.root
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController=Navigation.findNavController(view)
+
+        binding.findEmailBtn.setOnClickListener {
+            //서버로 이메일 찾기 api 요청-> 응답이 성공일 시에 다음 fragment 전환
+            //activity.gotoNextFragment(findEmailFragment2())
+            navController.navigate(R.id.action_findEmailFragment_to_findEmailFragment2)
+
+        }
 
 
     }

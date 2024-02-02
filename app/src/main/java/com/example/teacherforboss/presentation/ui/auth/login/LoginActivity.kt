@@ -58,7 +58,6 @@ class LoginActivity : AppCompatActivity() {
 
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        //ver 1. shared prefs
         if(!token.isNullOrBlank()){
             showToast("재로그인이 필요합니다!")
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
@@ -68,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this){
             when(it){
                 is BaseResponse.Loading ->{
-                    // 기다려주세요 메시지?로고?
+                    // 로딩창
                 }
                 is BaseResponse.Success ->{
                     showToast("로그인 성공")
@@ -90,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.socialLoginResult.observe(this){
             when(it){is BaseResponse.Loading ->{
                 showToast("소셜 로그인 중입니다.조금만 더 기다려주세요 🐣")
-                // 기다려주세요 디자인 업데이트
+                //로딩창
             }
                 is BaseResponse.Success ->{
                     showToast("소셜 로그인 완료!🐣")
@@ -120,14 +119,12 @@ class LoginActivity : AppCompatActivity() {
                             handleNaverLogin()
                         }
                         SocialLoginUiState.KakaoLoginSuccess->{
-                            //getToken() //개발 확인용 나중엔 삭제
                             getKakaoUserInfo()
                         }
                         SocialLoginUiState.LoginFail->{
                             showToast("social Login Fail")
                         }
                         else->{
-
                         }
 
                     }

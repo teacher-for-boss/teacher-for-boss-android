@@ -5,4 +5,7 @@
     <string name="pwDifferent">비밀번호가 일치하지않습니다</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
+    <string name="naver_client_secret">tazdlVePfj</string>
+
 </resources>

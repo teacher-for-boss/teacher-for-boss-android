@@ -12,6 +12,7 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginR
 import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginResponse
 import kotlinx.coroutines.launch
 import org.apache.commons.lang3.mutable.Mutable
+import retrofit2.Response
 import java.time.LocalDate
 import java.util.Date
 
@@ -45,7 +46,7 @@ class LoginViewModel(): ViewModel(){
         }
     }
 
-    fun socialLogin(email:String, name:String, phoneNumber: String, gender:Int?, birthDate: String?,imageUrl:String?){
+    fun socialLogin(type:String,email:String, name:String, phoneNumber: String, gender:Int?, birthDate: String?,imageUrl:String?){
         socialLoginResult.value=BaseResponse.Loading()
 
         viewModelScope.launch{
@@ -58,15 +59,22 @@ class LoginViewModel(): ViewModel(){
                     birthDate = birthDate,
                     profileImg = imageUrl
                 )
-                val response=userRepo.kakaoLogin(socialLoginRequest)
-                Log.d("kakao response body",response?.body().toString())
 
+                var response: Response<socialLoginResponse>?=null
+
+                if(type=="kakao") {response=userRepo.kakaoLogin(socialLoginRequest)}
+                else if(type=="naver"){
+                    response=userRepo.naverLogin(socialLoginRequest)
+                }
+                else{
+                    socialLoginResult.value=BaseResponse.Error("not kakao or naver")
+                }
 
                 if(response?.body()?.code=="COMMON200"){
                     socialLoginResult.value=BaseResponse.Success(response.body())
                 }
                 else{
-                    Log.d("kakao?",response?.body().toString())
+                    Log.d("social?",response?.body().toString())
                     socialLoginResult.value=BaseResponse.Error(response?.message())
                 }
             }catch (exception:Exception){

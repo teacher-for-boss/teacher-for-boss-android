@@ -27,10 +27,10 @@ class UserRepository {
         return UserApi.getApi()?.socialLogin(socialType=2, socialLoginRequest=socialLoginRequest)
     }
 
-//    fun naverLogin(socialLoginRequest: socialLoginRequest):
-//            Response<socialLoginResponse>?{
-//        return UserApi.getApi()?.socialLogin(socialType=3, socialLoginRequest=socialLoginRequest)
-//    }
+    suspend fun naverLogin(socialLoginRequest: socialLoginRequest):
+            Response<socialLoginResponse>?{
+        return UserApi.getApi()?.socialLogin(socialType=3, socialLoginRequest=socialLoginRequest)
+    }
 
     suspend fun emailUser(emailRequest: EmailRequest):
             Response<EmailResponse>?{

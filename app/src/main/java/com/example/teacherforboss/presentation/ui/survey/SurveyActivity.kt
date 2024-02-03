@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySurveyBinding
+import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyCompleteFragment
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyJobFragment
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemFragment
@@ -51,6 +52,7 @@ class SurveyActivity :
         binding.btnSurveyNext.setOnClickListener {
             when (binding.vpSurvey.currentItem) {
                 fragmentList.size - 1 -> {
+                    navigateToMain()
                     // TODO 서버통신
                 }
 
@@ -66,9 +68,11 @@ class SurveyActivity :
                 fragmentList.size - 1 -> {
                     binding.btnSurveyNext.text = getString(R.string.survey_button_start)
                 }
+
                 fragmentList.size - 2 -> {
                     binding.btnSurveyNext.text = getString(R.string.survey_button_complete)
                 }
+
                 else -> {
                     binding.btnSurveyNext.text = getString(R.string.survey_button_next)
                 }
@@ -102,13 +106,20 @@ class SurveyActivity :
 
     private fun navigateToPreviousFragment() {
         when (binding.vpSurvey.currentItem) {
-            FIRST_FRAGMENT -> navigatoToSurveyStart()
+            FIRST_FRAGMENT -> navigateToSurveyStart()
             else -> binding.vpSurvey.currentItem--
         }
     }
 
-    private fun navigatoToSurveyStart() {
+    private fun navigateToSurveyStart() {
         Intent(this, SurveyStartActivity::class.java).apply {
+            startActivity(this)
+            finish()
+        }
+    }
+
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
             startActivity(this)
             finish()
         }

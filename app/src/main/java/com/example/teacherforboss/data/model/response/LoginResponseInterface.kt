@@ -1,8 +1,6 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.data.model.response
 
-import com.google.gson.annotations.SerializedName
-
-interface loginInterface {
+interface LoginResponseInterface {
     var code:String
     var isSuccess:Boolean
     var message:String

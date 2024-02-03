@@ -2,24 +2,21 @@ package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Intent
 import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.teacherforboss.presentation.ui.main.BeginActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
-import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityLoginBinding
-import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
+import com.example.teacherforboss.data.model.response.BaseResponse
+import com.example.teacherforboss.data.model.response.LoginResponseInterface
+import com.example.teacherforboss.data.tokenmanager.TokenManager
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
-import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -36,10 +33,8 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 //import dagger.hilt.android.qualifiers.ApplicationContext
 //import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 //@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -153,7 +148,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //access, refresh token 저장
-    fun <T:loginInterface>saveToken(data: T?){
+    fun <T: LoginResponseInterface>saveToken(data: T?){
         if(!data?.result?.accessToken.isNullOrEmpty()){
             data?.result?.accessToken.let{
                 TokenManager.saveAccessToken(appContext, it!!)

@@ -1,10 +1,10 @@
-package com.example.teacherforboss.presentation.ui.auth.login.social
+package com.example.teacherforboss.data.model.request
 
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 import java.util.Date
 
-data class socialLoginRequest(
+data class SocialLoginRequest(
     @SerializedName("email")
     var email:String,
     @SerializedName("name")

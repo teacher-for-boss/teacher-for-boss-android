@@ -1,8 +1,9 @@
-package com.example.teacherforboss.presentation.ui.auth.common
+package com.example.teacherforboss.data.intercepter
 
 import android.content.Context
 import android.util.Log
-import com.example.teacherforboss.presentation.ui.auth.login.TokenManager
+import com.example.teacherforboss.domain.repository.UserRepositoryImpl
+import com.example.teacherforboss.data.tokenmanager.TokenManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -54,7 +55,7 @@ class AuthAuthenticator @Inject constructor(
 //            .header("Authorization",token)
 //            .build()
     fun reissueToken(token:String):String{
-        val userRepo= UserRepository()
+        val userRepo= UserRepositoryImpl()
         val response=userRepo.loginReissue(token)
         if(response?.body()?.code=="COMMON200"){
             val newToken=response.body()?.result?.accessToken ?:""

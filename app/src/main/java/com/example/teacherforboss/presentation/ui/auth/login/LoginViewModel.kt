@@ -1,25 +1,23 @@
 package com.example.teacherforboss.presentation.ui.auth.login
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
-import com.example.teacherforboss.presentation.ui.auth.common.UserRepository
-import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginRequest
-import com.example.teacherforboss.presentation.ui.auth.login.social.socialLoginResponse
+import com.example.teacherforboss.data.model.request.LoginRequest
+import com.example.teacherforboss.data.model.request.SocialLoginRequest
+import com.example.teacherforboss.data.model.response.LoginResponse
+import com.example.teacherforboss.data.model.response.BaseResponse
+import com.example.teacherforboss.domain.repository.UserRepositoryImpl
+import com.example.teacherforboss.data.model.response.socialLoginResponse
 import kotlinx.coroutines.launch
-import org.apache.commons.lang3.mutable.Mutable
 import retrofit2.Response
-import java.time.LocalDate
-import java.util.Date
 
-class LoginViewModel(): ViewModel(){
-    val userRepo= UserRepository()//viewmodel 생성자?
+class LoginViewModel(
+): ViewModel(){
     val loginResult: MutableLiveData<BaseResponse<LoginResponse>> = MutableLiveData()
     val socialLoginResult: MutableLiveData<BaseResponse<socialLoginResponse>> = MutableLiveData()
+    val userRepo=UserRepositoryImpl()
 
     fun loginUser(email:String,pwd:String){
         loginResult.value= BaseResponse.Loading()
@@ -31,7 +29,12 @@ class LoginViewModel(): ViewModel(){
                     password=pwd
                 )
                 val response=userRepo.loginUser(loginRequest=loginRequest)
-
+//                if(response?.data!=null){
+//                    loginResult.value= response!!
+//                }
+//                else{
+//                    loginResult.value= BaseResponse.Error(response?.message.toString())
+//                }
                 if(response?.body()?.code=="COMMON200"){
                     loginResult.value= BaseResponse.Success(response.body())
                 }
@@ -41,17 +44,18 @@ class LoginViewModel(): ViewModel(){
                     loginResult.value= BaseResponse.Error(response?.message())
                 }
             }catch(ex:Exception){
-                loginResult.value= BaseResponse.Error(ex.message)
+                loginResult.value= BaseResponse.Error(ex.message.toString())
+//                loginResult.value= BaseResponse.Error(ex.message)
             }
         }
     }
 
     fun socialLogin(type:String,email:String, name:String, phoneNumber: String, gender:Int?, birthDate: String?,imageUrl:String?){
-        socialLoginResult.value=BaseResponse.Loading()
+        socialLoginResult.value= BaseResponse.Loading()
 
         viewModelScope.launch{
             try{
-                val socialLoginRequest=socialLoginRequest(
+                val socialLoginRequest= SocialLoginRequest(
                     email=email,
                     name=name,
                     phone=phoneNumber,
@@ -67,18 +71,18 @@ class LoginViewModel(): ViewModel(){
                     response=userRepo.naverLogin(socialLoginRequest)
                 }
                 else{
-                    socialLoginResult.value=BaseResponse.Error("not kakao or naver")
+                    socialLoginResult.value= BaseResponse.Error("not kakao or naver")
                 }
 
                 if(response?.body()?.code=="COMMON200"){
-                    socialLoginResult.value=BaseResponse.Success(response.body())
+                    socialLoginResult.value= BaseResponse.Success(response.body())
                 }
                 else{
                     Log.d("social?",response?.body().toString())
-                    socialLoginResult.value=BaseResponse.Error(response?.message())
+                    socialLoginResult.value= BaseResponse.Error(response?.message())
                 }
             }catch (exception:Exception){
-                socialLoginResult.value=BaseResponse.Error(exception.message)
+                socialLoginResult.value= BaseResponse.Error(exception.message)
 
             }
         }

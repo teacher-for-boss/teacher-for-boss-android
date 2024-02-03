@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentEmailBinding
-import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
+import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 

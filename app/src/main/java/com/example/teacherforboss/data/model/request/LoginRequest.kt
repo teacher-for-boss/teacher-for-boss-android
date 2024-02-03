@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.data.model.request
 
 import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody

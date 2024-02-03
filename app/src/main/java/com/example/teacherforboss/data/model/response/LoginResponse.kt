@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -13,5 +13,5 @@ data class LoginResponse(
     override var message:String,
 
     @SerializedName("result")
-    override var result: loginInterface.Result
-):loginInterface
+    override var result: LoginResponseInterface.Result
+): LoginResponseInterface

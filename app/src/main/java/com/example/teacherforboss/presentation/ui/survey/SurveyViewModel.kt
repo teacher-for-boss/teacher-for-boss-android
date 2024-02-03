@@ -18,7 +18,7 @@ class SurveyViewModel : ViewModel() {
     private val _selectedJob = MutableStateFlow(DEFAULT_SELECTED_NUMBER)
     val selectedJob get() = _selectedJob.asStateFlow()
 
-    private val _selectedStudy = MutableStateFlow(DEFAULT_SELECTED_NUMBER)
+    private val _selectedStudy = MutableStateFlow<ArrayList<Int>>(arrayListOf())
     val selectedStudy get() = _selectedStudy.asStateFlow()
 
     private val _selectedProblem = MutableStateFlow(DEFAULT_SELECTED_NUMBER)
@@ -37,12 +37,12 @@ class SurveyViewModel : ViewModel() {
         .map { values ->
             val currentPage = values[0] as Int
             val selectedJob = values[1] as Int
-            val selectedStudy = values[2] as Int
+            val selectedStudy = values[2] as ArrayList<Int>
             val selectedProblem = values[3] as Int
             val problemDescription = values[4] as String
 
             (currentPage == SurveyType.JOB.position && selectedJob != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
-                (currentPage == SurveyType.STUDY.position && selectedStudy != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
+                (currentPage == SurveyType.STUDY.position && selectedStudy.isNotEmpty()) ||
                 (currentPage == SurveyType.PROBLEM.position && selectedProblem != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
                 (currentPage == SurveyType.DESCRIPTION.position && problemDescription.isNotBlank()) ||
                 (currentPage == SurveyType.COMPLETE.position)
@@ -57,7 +57,12 @@ class SurveyViewModel : ViewModel() {
     }
 
     fun setSelectedStudy(answer: Int) {
-        _selectedStudy.value = answer
+        _selectedStudy.value.add(answer)
+    }
+
+    fun deleteSelectedStudy(answer: Int) {
+        if (_selectedStudy.value.size == 1) _selectedStudy.value.clear()
+        _selectedStudy.value.remove(answer)
     }
 
     fun setSelectedProblem(answer: Int) {

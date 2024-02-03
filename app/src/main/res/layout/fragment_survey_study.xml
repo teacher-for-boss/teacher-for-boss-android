@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.survey.question.SurveyStudyFragment">
+
+        <TextView
+            android:id="@+id/tv_survey_study_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/survey_question2"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_recipe"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_study_question" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer1"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_recipe"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_recipe"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_recipe" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_knowHow"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="@dimen/spacing19"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/check_box_survey_study_recipe" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_knowHow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer2"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_knowHow"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_knowHow"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_knowHow" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_app"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="@dimen/spacing19"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/check_box_survey_study_knowHow" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_app"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer3"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_app"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_app"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_app" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_small_capital"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="@dimen/spacing19"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/check_box_survey_study_app" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_small_capital"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer4"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_small_capital"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_small_capital"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_small_capital" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_delivery_specialist"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="@dimen/spacing19"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/check_box_survey_study_small_capital" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_delivery_specialist"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer5"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_delivery_specialist"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_delivery_specialist"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_delivery_specialist" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_interior"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="@dimen/spacing19"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/check_box_survey_study_delivery_specialist" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_interior"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer6"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_interior"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_interior"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_interior" />
+
+        <CheckBox
+            android:id="@+id/check_box_survey_study_marketing"
+            android:layout_width="@dimen/check_survey_width"
+            android:layout_height="@dimen/check_survey_height"
+            android:layout_marginTop="@dimen/spacing19"
+            android:background="@drawable/selector_survey_check_box"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/check_box_survey_study_interior" />
+
+        <TextView
+            android:id="@+id/tv_survey_study_marketing"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing15"
+            android:text="@string/survey_question2_answer7"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintBottom_toBottomOf="@id/check_box_survey_study_marketing"
+            app:layout_constraintStart_toEndOf="@id/check_box_survey_study_marketing"
+            app:layout_constraintTop_toTopOf="@id/check_box_survey_study_marketing" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

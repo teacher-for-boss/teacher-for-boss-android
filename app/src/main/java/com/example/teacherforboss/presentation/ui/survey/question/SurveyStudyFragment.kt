@@ -1,7 +1,6 @@
 package com.example.teacherforboss.presentation.ui.survey.question
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
@@ -17,6 +16,8 @@ class SurveyStudyFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.surveyViewModel = viewModel
 
         addListeners()
     }
@@ -37,7 +38,11 @@ class SurveyStudyFragment :
             setTextCheckClickListener(tvSurveyStudyKnowHow, checkBoxSurveyStudyKnowHow, 2)
             setTextCheckClickListener(tvSurveyStudyApp, checkBoxSurveyStudyApp, 3)
             setTextCheckClickListener(tvSurveyStudySmallCapital, checkBoxSurveyStudySmallCapital, 4)
-            setTextCheckClickListener(tvSurveyStudyDeliverySpecialist, checkBoxSurveyStudyDeliverySpecialist, 5)
+            setTextCheckClickListener(
+                tvSurveyStudyDeliverySpecialist,
+                checkBoxSurveyStudyDeliverySpecialist,
+                5,
+            )
             setTextCheckClickListener(tvSurveyStudyInterior, checkBoxSurveyStudyInterior, 6)
             setTextCheckClickListener(tvSurveyStudyMarketing, checkBoxSurveyStudyMarketing, 7)
         }
@@ -50,19 +55,17 @@ class SurveyStudyFragment :
             } else {
                 viewModel.deleteSelectedStudy(answerId)
             }
-            Log.d("gggg", viewModel.selectedStudy.value.toString())
         }
     }
 
     private fun setTextCheckClickListener(textView: TextView, checkbox: CheckBox, answerId: Int) {
         textView.setOnClickListener {
             checkbox.isChecked = !checkbox.isChecked
-            if(checkbox.isChecked) {
+            if (checkbox.isChecked) {
                 viewModel.setSelectedStudy(answerId)
             } else {
                 viewModel.deleteSelectedStudy(answerId)
             }
-            Log.d("gggg", viewModel.selectedStudy.value.toString())
         }
     }
 }

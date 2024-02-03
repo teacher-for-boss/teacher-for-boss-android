@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="surveyViewModel"
             type="com.example.teacherforboss.presentation.ui.survey.SurveyViewModel" />
@@ -91,55 +92,55 @@
             android:text="@string/survey_question1_answer1"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
             app:layout_constraintStart_toEndOf="@id/rg_survey_job"
-            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_question"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_question" />
 
         <TextView
             android:id="@+id/tv_survey_job_pre_boss"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:paddingVertical="@dimen/spacing3"
             android:layout_marginStart="@dimen/spacing15"
             android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing3"
             android:text="@string/survey_question1_answer2"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
             app:layout_constraintStart_toEndOf="@id/rg_survey_job"
-            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_boss"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_boss" />
 
         <TextView
             android:id="@+id/tv_survey_job_employee"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:paddingVertical="@dimen/spacing3"
             android:layout_marginStart="@dimen/spacing15"
             android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing3"
             android:text="@string/survey_question1_answer3"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
             app:layout_constraintStart_toEndOf="@id/rg_survey_job"
-            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_pre_boss"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_pre_boss" />
 
         <TextView
             android:id="@+id/tv_survey_job_official"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:paddingVertical="@dimen/spacing4"
             android:layout_marginStart="@dimen/spacing15"
             android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing4"
             android:text="@string/survey_question1_answer4"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
             app:layout_constraintStart_toEndOf="@id/rg_survey_job"
-            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_employee"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_employee" />
 
         <TextView
             android:id="@+id/tv_survey_job_public"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:paddingVertical="@dimen/spacing3"
             android:layout_marginStart="@dimen/spacing15"
             android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing3"
             android:text="@string/survey_question1_answer5"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
             app:layout_constraintStart_toEndOf="@id/rg_survey_job"
-            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_official"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_job_official" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

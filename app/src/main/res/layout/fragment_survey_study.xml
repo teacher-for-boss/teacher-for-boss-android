@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="surveyViewModel"
+            type="com.example.teacherforboss.presentation.ui.survey.SurveyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

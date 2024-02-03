@@ -1,12 +1,11 @@
-package com.example.teacherforboss.domain.repository
+package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.api.UserApi
-import com.example.teacherforboss.data.datasource.remote.UserRemoteDataSource
 import com.example.teacherforboss.data.model.request.LoginRequest
 import com.example.teacherforboss.data.model.request.SocialLoginRequest
 import com.example.teacherforboss.data.model.response.LoginResponse
-import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.model.response.socialLoginResponse
+import com.example.teacherforboss.domain.repository.UserRepository
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
@@ -44,7 +43,7 @@ import retrofit2.Response
 //        return userRemoteDataSource.signupUser(signupRequest = signupRequest)
 //    }
 
-class UserRepositoryImpl:UserRepository{
+class UserRepositoryImpl: UserRepository {
      override suspend fun loginUser(loginRequest: LoginRequest):
             Response<LoginResponse>?{
         return UserApi.getApi()?.loginUser(loginRequest=loginRequest)

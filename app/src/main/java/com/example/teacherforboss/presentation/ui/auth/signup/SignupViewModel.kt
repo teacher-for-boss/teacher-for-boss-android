@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.domain.repository.UserRepository
-import com.example.teacherforboss.domain.repository.UserRepositoryImpl
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest

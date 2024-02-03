@@ -8,7 +8,7 @@ import com.example.teacherforboss.data.model.request.LoginRequest
 import com.example.teacherforboss.data.model.request.SocialLoginRequest
 import com.example.teacherforboss.data.model.response.LoginResponse
 import com.example.teacherforboss.data.model.response.BaseResponse
-import com.example.teacherforboss.domain.repository.UserRepositoryImpl
+import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.data.model.response.socialLoginResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -17,7 +17,7 @@ class LoginViewModel(
 ): ViewModel(){
     val loginResult: MutableLiveData<BaseResponse<LoginResponse>> = MutableLiveData()
     val socialLoginResult: MutableLiveData<BaseResponse<socialLoginResponse>> = MutableLiveData()
-    val userRepo=UserRepositoryImpl()
+    val userRepo= UserRepositoryImpl()
 
     fun loginUser(email:String,pwd:String){
         loginResult.value= BaseResponse.Loading()

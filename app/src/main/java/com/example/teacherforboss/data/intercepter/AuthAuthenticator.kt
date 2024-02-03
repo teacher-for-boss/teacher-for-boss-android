@@ -2,7 +2,7 @@ package com.example.teacherforboss.data.intercepter
 
 import android.content.Context
 import android.util.Log
-import com.example.teacherforboss.domain.repository.UserRepositoryImpl
+import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.data.tokenmanager.TokenManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Authenticator

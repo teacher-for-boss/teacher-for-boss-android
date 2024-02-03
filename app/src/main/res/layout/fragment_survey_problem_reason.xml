@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="surveyViewModel"
+            type="com.example.teacherforboss.presentation.ui.survey.SurveyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.survey.question.SurveyProblemReasonFragment">
+
+        <TextView
+            android:id="@+id/tv_survey_problem_reason_question_known"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/survey_question4_known"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_survey_problem_reason_question_unknown"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/survey_question4_unknown"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_survey_problem_reason_answer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/spacing35"
+            android:layout_marginBottom="229dp"
+            android:background="@drawable/background_radius_20"
+            android:backgroundTint="@color/main_purple_02"
+            android:gravity="top"
+            android:hint="@string/survey_question4_hint"
+            android:maxLength="300"
+            android:padding="24dp"
+            android:text="@={surveyViewModel.problemDescription}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            android:textColorHint="@color/gray_02"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_survey_problem_reason_question_known"
+            tools:text="애플은 미국의 기술 기업으로, 스티브 잡스, 스티브 우저니악, 론 웨인 등에 의해 1976년에 설립되었습니다. 이 회사는 혁신적인 제품과 기술로 유명하며, 아이폰, 아이패드, 맥북, 애플 워치 등의 제품을 개발하고 판매하고 있습니다. 또한, iOS 운영체제와 앱 스토어를 통해 수많은 어플리케이션을 제공하며 글로벌 시장에서 큰 영향력을 가지고 있습니다. 애플은 디자인, 사용자 경험, 보안에 중점을 두고 제품을 개발하여 많은 소비자들로부터 사랑을 받고 있습니다. 최근에는 친환경적인 노력과 새로운 기술에 대한 연구 등 다양한 분야에서도 주목받고 있습니다. 전세계에서 수많은 팬들이 애플 제품을 사랑하고 사용하며, 기업의 성공은 기술 혁신과 창의성에 기인한 것으로 평가받고 있습니다." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

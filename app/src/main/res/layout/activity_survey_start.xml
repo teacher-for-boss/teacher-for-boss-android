@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_survey_start_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing16"
+            android:layout_marginTop="@dimen/spacing16"
+            android:src="@drawable/all_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_survey_start_welcome_img"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="125dp"
+            android:src="@drawable/survey_start_welcome_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_survey_start_back_btn" />
+
+        <TextView
+            android:id="@+id/survey_start_welcome_name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/spacing30"
+            android:text="@string/survey_start_name"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_survey_start_welcome_img" />
+
+        <TextView
+            android:id="@+id/survey_start_title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="66dp"
+            android:text="@string/survey_start_title"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/survey_start_welcome_name" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_survey_start_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing30"
+            android:background="@drawable/background_radius30"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/survey_start_title">
+
+            <TextView
+                android:id="@+id/survey_start_btn_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing20"
+                android:paddingVertical="@dimen/spacing10"
+                android:text="@string/survey_start_btn"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_survey_start_btn_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing10"
+                android:layout_marginEnd="@dimen/spacing20"
+                android:src="@drawable/btn_arrow_right_30"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/survey_start_btn_text"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -3,9 +3,48 @@
 
     <string name="pwSame">비밀번호가 일치합니다</string>
     <string name="pwDifferent">비밀번호가 일치하지않습니다</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
     <string name="naver_client_secret">tazdlVePfj</string>
+
+    <!-- survey start -->
+    <string name="survey_start_name">%s 사장님, 반갑습니다!</string>
+    <string name="survey_start_title">맞춤형 수업을 위한 반 배정을 진행할게요\n간단한 질문에 대한 답변을 해주세요</string>
+    <string name="survey_start_btn">반 배정 하러 가기</string>
+
+    <!-- survey -->
+    <string name="survey_button_next">다음</string>
+    <string name="survey_button_complete">반 배정 완료하기</string>
+    <string name="survey_button_start">티쳐 포 보스 시작하기</string>
+
+    <string name="survey_question1">현재 하시는 일은 무엇인가요?</string>
+    <string name="survey_question1_answer1">사장님</string>
+    <string name="survey_question1_answer2">예비 사장님</string>
+    <string name="survey_question1_answer3">외식업 직원</string>
+    <string name="survey_question1_answer4">프랜차이즈 관계자</string>
+    <string name="survey_question1_answer5">외식업에 관심있는 일반인</string>
+
+    <string name="survey_question2">배우고 싶은 분야를 선택해 주세요.\n중복 선택이 가능해요.</string>
+    <string name="survey_question2_answer1">요리 방법</string>
+    <string name="survey_question2_answer2">사장님들의 노하우</string>
+    <string name="survey_question2_answer3">배달 어플 활용법</string>
+    <string name="survey_question2_answer4">소자본/1인 창업</string>
+    <string name="survey_question2_answer5">배달 전문점</string>
+    <string name="survey_question2_answer6">셀프 인테리어</string>
+    <string name="survey_question2_answer7">SNS 마케팅</string>
+
+    <string name="survey_question3">사장님 자영업에 대한 문제점을\n정확히 알고 계신가요?</string>
+    <string name="survey_question3_answer1">매우 잘 알고 있다</string>
+    <string name="survey_question3_answer2">알고 있다</string>
+    <string name="survey_question3_answer3">모르겠다</string>
+    <string name="survey_question3_answer4">하나도 모르겠다</string>
+
+    <string name="survey_question4_known">문제가 무엇이라고 생각하시나요?</string>
+    <string name="survey_question4_unknown">문제를 왜 모른다고 생각하시나요?</string>
+    <string name="survey_question4_hint">자유롭게 기입해 주세요.</string>
+
+    <string name="survey_complete">문제가 있어도, 문제를 몰라도 괜찮아요!\n선생님과 함께 배워가봐요.</string>
 
 </resources>

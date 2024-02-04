@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.model.response.BaseResponse
+import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.domain.repository.UserRepository
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
@@ -15,7 +16,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
 import kotlinx.coroutines.launch
 
 class SignupViewModel(
-    private val userRepo: UserRepository
+//    private val userRepo: UserRepository
 ): ViewModel() {
     var liveEmail= MutableLiveData<String>("")
     val email: LiveData<String>
@@ -42,6 +43,8 @@ class SignupViewModel(
     val rePw_check= MutableLiveData<Boolean>(false)
     val all_check= MutableLiveData<Boolean>(false)
 
+
+    val userRepo= UserRepositoryImpl()
 
     //이메일인증 여부
     private var _isEmailVerified= MutableLiveData<Boolean>(false)

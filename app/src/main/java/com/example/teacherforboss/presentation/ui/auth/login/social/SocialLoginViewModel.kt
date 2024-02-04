@@ -17,7 +17,7 @@ class SocialLoginViewModel:ViewModel() {
         _socialLoginUiState.value= SocialLoginUiState.NaverLogin
     }
 
-        fun kakaoLoginSuccess(){
+    fun kakaoLoginSuccess(){
         _socialLoginUiState.tryEmit(SocialLoginUiState.KakaoLoginSuccess)
     }
     fun naverLoginSuccess(){

@@ -1,7 +1,9 @@
-package com.example.teacherforboss.presentation.ui.auth.common
+package com.example.teacherforboss.data.api
 
-import com.example.teacherforboss.presentation.ui.auth.login.LoginRequest
-import com.example.teacherforboss.presentation.ui.auth.login.LoginResponse
+import com.example.teacherforboss.data.model.request.LoginRequest
+import com.example.teacherforboss.data.model.request.SocialLoginRequest
+import com.example.teacherforboss.data.model.response.LoginResponse
+import com.example.teacherforboss.data.model.response.socialLoginResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
@@ -12,6 +14,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserApi {
     companion object{
@@ -31,6 +34,12 @@ interface UserApi {
         @Header("Authorization") refreshToken: String)
     : Response<LoginResponse>
 
+    @POST("auth/login/social")
+    suspend fun socialLogin(
+        @Query("socialType") socialType:Int,
+        @Body socialLoginRequest: SocialLoginRequest
+    )
+    :Response<socialLoginResponse>
     @POST("auth/email")
     suspend fun emailUser(
         @Body emailRequest: EmailRequest

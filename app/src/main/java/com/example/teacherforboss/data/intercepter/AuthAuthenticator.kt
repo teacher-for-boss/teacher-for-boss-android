@@ -1,8 +1,9 @@
-package com.example.teacherforboss.presentation.ui.auth.common
+package com.example.teacherforboss.data.intercepter
 
 import android.content.Context
 import android.util.Log
-import com.example.teacherforboss.presentation.ui.auth.login.TokenManager
+import com.example.teacherforboss.data.repository.UserRepositoryImpl
+import com.example.teacherforboss.data.tokenmanager.TokenManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -36,7 +37,7 @@ class AuthAuthenticator @Inject constructor(
         Log.d("token","access_token 재발급 완료:${newAccessToken}")
         TokenManager.saveAccessToken(context, newAccessToken)
         return replaceToken(newAccessToken,response.request)
-        //401에러로 받은 response에 대한 request
+        //401에러로 받은 response에 대한 request (access token 만료 code명:AUTH4007)
 
 
 //          return newRequestWithToken(refreshToken,response.request)
@@ -54,9 +55,9 @@ class AuthAuthenticator @Inject constructor(
 //            .header("Authorization",token)
 //            .build()
     fun reissueToken(token:String):String{
-        val userRepo= UserRepository()
+        val userRepo= UserRepositoryImpl()
         val response=userRepo.loginReissue(token)
-        if(response?.code()==200){
+        if(response?.body()?.code=="COMMON200"){
             val newToken=response.body()?.result?.accessToken ?:""
             if(!newToken.isBlank()) return newToken
             throw IllegalArgumentException("새로 발급 받은 토큰이 비어있음!")

@@ -6,6 +6,9 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
+    <string name="naver_client_secret">tazdlVePfj</string>
+
     <!-- survey start -->
     <string name="survey_start_name">%s 사장님, 반갑습니다!</string>
     <string name="survey_start_title">맞춤형 수업을 위한 반 배정을 진행할게요\n간단한 질문에 대한 답변을 해주세요</string>
@@ -43,4 +46,5 @@
     <string name="survey_question4_hint">자유롭게 기입해 주세요.</string>
 
     <string name="survey_complete">문제가 있어도, 문제를 몰라도 괜찮아요!\n선생님과 함께 배워가봐요.</string>
+
 </resources>

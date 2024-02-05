@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login.kakao
+package com.example.teacherforboss.presentation.ui.auth.login.social
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,14 +12,28 @@ class SocialLoginViewModel:ViewModel() {
     fun kakaoLogin(){
         _socialLoginUiState.value= SocialLoginUiState.KakaoLogin
     }
-    fun kakaoLoginSuccess(){
-        _socialLoginUiState.tryEmit(SocialLoginUiState.LoginSuccess)
+
+    fun naverLogin(){
+        _socialLoginUiState.value= SocialLoginUiState.NaverLogin
     }
+
+    fun kakaoLoginSuccess(){
+        _socialLoginUiState.tryEmit(SocialLoginUiState.KakaoLoginSuccess)
+    }
+    fun naverLoginSuccess(){
+        _socialLoginUiState.tryEmit(SocialLoginUiState.NaverLoginSuccess)
+    }
+
     fun kakaoLoginFail(){
+        _socialLoginUiState.tryEmit(SocialLoginUiState.LoginFail)
+    }
+
+    fun naverLoginFail(){
         _socialLoginUiState.tryEmit(SocialLoginUiState.LoginFail)
     }
 
     fun setUiStateIdle(){
         _socialLoginUiState.tryEmit(SocialLoginUiState.Idle)
     }
+
 }

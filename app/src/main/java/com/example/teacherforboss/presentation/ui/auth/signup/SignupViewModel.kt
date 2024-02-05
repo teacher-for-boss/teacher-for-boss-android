@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
-import com.example.teacherforboss.presentation.ui.auth.common.UserRepository
+import com.example.teacherforboss.data.model.response.BaseResponse
+import com.example.teacherforboss.data.repository.UserRepositoryImpl
+import com.example.teacherforboss.domain.repository.UserRepository
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
 import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
@@ -14,7 +15,9 @@ import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupRequest
 import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
 import kotlinx.coroutines.launch
 
-class SignupViewModel: ViewModel() {
+class SignupViewModel(
+//    private val userRepo: UserRepository
+): ViewModel() {
     var liveEmail= MutableLiveData<String>("")
     val email: LiveData<String>
         get() = liveEmail
@@ -40,6 +43,8 @@ class SignupViewModel: ViewModel() {
     val rePw_check= MutableLiveData<Boolean>(false)
     val all_check= MutableLiveData<Boolean>(false)
 
+
+    val userRepo= UserRepositoryImpl()
 
     //이메일인증 여부
     private var _isEmailVerified= MutableLiveData<Boolean>(false)
@@ -68,7 +73,6 @@ class SignupViewModel: ViewModel() {
 
 
 
-    val userRepo= UserRepository()
 
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
     fun emailUser(email:String) {

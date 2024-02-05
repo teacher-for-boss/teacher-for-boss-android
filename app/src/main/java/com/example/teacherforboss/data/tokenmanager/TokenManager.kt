@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.login
+package com.example.teacherforboss.data.tokenmanager
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -7,15 +7,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.teacherforboss.presentation.ui.main.BeginActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.databinding.ActivityLoginBinding
-import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
-import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginUiState
-import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginViewModel
+import com.example.teacherforboss.data.model.response.BaseResponse
+import com.example.teacherforboss.data.model.response.LoginResponseInterface
+import com.example.teacherforboss.data.tokenmanager.TokenManager
+import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
+import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -23,24 +24,27 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 //import dagger.hilt.android.qualifiers.ActivityContext
 //import dagger.hilt.android.qualifiers.ApplicationContext
 //import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 //@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
-    private val viewModel by viewModels<LoginViewModel>()
-    private val kakaoViewModel by viewModels<SocialLoginViewModel>()
+    private val loginViewModel by viewModels<LoginViewModel>()
+    private val socialLoginViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
-    //private lateinit var kakaoOauthViewModel: KaKaoOauthViewModel
-//    @ApplicationContext val appContext=GlobalApplication.instance
 
     val appContext=GlobalApplication.instance
-//    @Inject
-//    lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,27 +52,22 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //기본 로그인
-
-
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        //ver 1. shared prefs
         if(!token.isNullOrBlank()){
+            showToast("재로그인이 필요합니다!")
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
         }
-//        lifecycleScope.launch {
-//            tokenManager.getAccessToken().collect(){ accessToken->
-//                if(accessToken.isNullOrBlank()){
-//                    showToast("로그인이 제대로 진행되지 않았습니다!")
-//                }
-//            }
-//        }
-        viewModel.loginResult.observe(this){
+
+        //기본 로그인
+        loginViewModel.loginResult.observe(this){
             when(it){
                 is BaseResponse.Loading ->{
-                    // 기다려주세요 메시지?로고?
+                    // 로딩창
                 }
                 is BaseResponse.Success ->{
-                    processLogin(it.data)//respponse.result
+                    showToast("로그인 성공")
+                    saveToken(it.data)//respponse.result
+                    // 설문조사 여부에 따라 다른 activity로 이동
 
                 }
                 is BaseResponse.Error ->{
@@ -77,37 +76,50 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else->{
                     //loading 종료시
-
                 }
             }
 
         }
+        //소셜 로그인 후 서버로 로그인 요청
+        loginViewModel.socialLoginResult.observe(this){
+            when(it){is BaseResponse.Loading ->{
+                showToast("소셜 로그인 중입니다.조금만 더 기다려주세요 🐣")
+                //로딩창
+            }
+                is BaseResponse.Success ->{
+                    showToast("소셜 로그인 완료!🐣")
+                    saveToken(it.data)//respponse.result
+                    // 설문조사 여부에 따라 다른 activity로 이동
 
-        //카카오 로그인 1
-        val intent=Intent(this,BeginActivity::class.java)
+                }
+                is BaseResponse.Error ->{
+                    processError(it.msg)
+                    Log.e("social",it.msg.toString())
+                }
+                else->{
+                    //loading 종료시
+                }
+            }
+        }
+
+        // 소셜 로그인
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                kakaoViewModel.socialLoginUiState.collect(){uiState->
+                socialLoginViewModel.socialLoginUiState.collect(){uiState->
                     when(uiState){
                         SocialLoginUiState.KakaoLogin->{
-                            showToast("kakao login handling")
-                            Log.d("kakao","kakao login handling")
                             handleKakaoLogin()
                         }
-                        SocialLoginUiState.LoginSuccess->{
-
-                            showToast("kakao Login Success")
-                            //getAgreement()
-                            getToken()
-                            getUserInfo()
-                            startActivity(intent)
-
+                        SocialLoginUiState.NaverLogin->{
+                            handleNaverLogin()
+                        }
+                        SocialLoginUiState.KakaoLoginSuccess->{
+                            getKakaoUserInfo()
                         }
                         SocialLoginUiState.LoginFail->{
-                            showToast("kakao Login Fail")
+                            showToast("social Login Fail")
                         }
                         else->{
-
                         }
 
                     }
@@ -115,73 +127,112 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        //kakao login 2
-//        kakaoOauthViewModel=ViewModelProvider(this,KaKaoOauthViewModelFactory(application)).get(KaKaoOauthViewModel::class.java)
-//
-//        kakaoOauthViewModel.isLoggedIn.asLiveData().observe(this){ isLoggedIn->
-//            val loginState=if (isLoggedIn) "logged in"  else "logout"
-//            showToast(loginState)
-//        }
         binding.loginBtn.setOnClickListener {
-            doLogin()
+            val email=binding.idBox.text.toString()
+            val password=binding.pwBox.text.toString()
+            loginViewModel.loginUser(email,password)
         }
 
         binding.signup.setOnClickListener {
-
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
-
         }
 
         binding.kakaoBtn.setOnClickListener {
-            kakaoViewModel.kakaoLogin()
-            //kakaoOauthViewModel.kakaoLogin()
+            socialLoginViewModel.kakaoLogin()
+        }
+        binding.naverBtn.setOnClickListener {
+            socialLoginViewModel.naverLogin()
         }
 
-//        binding.logoutBtn.setOnClickListener {
-//            handleKakaoLogout()
-//        }
+    }
 
-    }
-    fun doLogin(){
-        val email=binding.idBox.text.toString()
-        val password=binding.pwBox.text.toString()
-        viewModel.loginUser(email,password)
-    }
-    fun processLogin(data: LoginResponse?){
-        showToast("success:"+data?.message)
+    //access, refresh token 저장
+    fun <T: LoginResponseInterface>saveToken(data: T?){
         if(!data?.result?.accessToken.isNullOrEmpty()){
             data?.result?.accessToken.let{
                 TokenManager.saveAccessToken(appContext, it!!)
             }
-//            lifecycleScope.launch {
-//                tokenManager.saveAccessToken(data?.result?.accessToken!!)
-//            }
 
         }
         if(!data?.result?.refreshToken.isNullOrEmpty()){
             data?.result?.refreshToken.let{
                 TokenManager.saveRefreshToken(appContext, it!!)
             }
-//            lifecycleScope.launch {
-//                tokenManager.saveRefreshToken(data?.result?.refreshToken!!)
-//            }
-            //로그인 다음화면으로 navigation
         }
 
     }
 
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
-    fun showToast(msg:String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    //naver
+    private fun handleNaverLogin(){
+        val oauthLoginCallback = object : OAuthLoginCallback {
+            override fun onSuccess() {
+                // 네이버 로그인 API 호출 성공 시 유저 정보를 가져옴
+                NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
+                    override fun onSuccess(result: NidProfileResponse) {
+                        var name = result.profile?.name.toString()
+                        var email = result.profile?.email.toString()
+                        var gender = result.profile?.gender.toString()
+                        var phoneNumber=result.profile?.mobile.toString()
+                        var birthYear=result.profile?.birthYear.toString()
+                        var birthDay=result.profile?.birthday.toString()
+                        var imageUrl=result.profile?.profileImage.toString()
+
+                        //사용자 정보 전처리
+                        var gender_int=1
+                        if(gender=="M"){
+                            var gender_int=2
+                        }
+                        else gender_int=1
+
+                        phoneNumber=phoneNumber.replace("-","")
+
+                        var birthDate_str=birthYear+"-"+birthDay
+
+                        Log.e("naver", "네이버 로그인한 유저 정보 - 이름 : $name")
+                        Log.e("naver", "네이버 로그인한 유저 정보 - 이메일 : $email")
+                        Log.e("naver", "네이버 로그인한 유저 정보 - 성별 : $gender")
+                        Log.e("naver", "네이버 로그인한 유저 정보 - 폰번호 : $phoneNumber")
+                        Log.e("naver", "네이버 로그인한 유저 정보 - 생년 월일 : $birthYear+${birthDay}")
+                        Log.e("naver", "네이버 로그인한 유저 정보 - 이미지 : $imageUrl")
+
+                        loginViewModel.socialLogin(type="naver",email,name,phoneNumber,gender_int, birthDate_str,imageUrl)
+                    }
+
+
+                    override fun onError(errorCode: Int, message: String) {
+                        //
+                    }
+
+                    override fun onFailure(httpStatus: Int, message: String) {
+                        //
+                    }
+                })
+//                Log.d("test", "AccessToken : " + NaverIdLoginSDK.getAccessToken())
+//                Log.d("test", "client id : " + getString(R.string.naver_client_id))
+//                Log.d("test", "ReFreshToken : " + NaverIdLoginSDK.getRefreshToken())
+//                Log.d("test", "Expires : " + NaverIdLoginSDK.getExpiresAt().toString())
+//                Log.d("test", "TokenType : " + NaverIdLoginSDK.getTokenType())
+//                Log.d("test", "State : " + NaverIdLoginSDK.getState().toString())
+            }
+
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Log.e("naver", "$errorCode $errorDescription")
+            }
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        }
+
+        NaverIdLoginSDK.authenticate(this, oauthLoginCallback)
+
     }
 
     // kakao
     private fun handleKakaoLogin(){
-        //Log.d("kakao",checkTokenState().toString())
-//        Log.d("kakao","handleKakaoLogin():")
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -189,7 +240,8 @@ class LoginActivity : AppCompatActivity() {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-                kakaoViewModel.kakaoLoginSuccess()
+                socialLoginViewModel.kakaoLoginSuccess()
+                //getKakaoUserInfo()
             }
         }
 
@@ -209,7 +261,8 @@ class LoginActivity : AppCompatActivity() {
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-                    kakaoViewModel.kakaoLoginSuccess()
+                    //getKakaoUserInfo()
+                    socialLoginViewModel.kakaoLoginSuccess()
 
                 }
             }
@@ -218,6 +271,70 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun getKakaoUserInfo(){
+
+        var email:String=""
+        var phoneNumber:String=""
+        var name:String=""
+        var gender:Int?=0
+        var birthDate: LocalDate?
+        var birthDate_str:String?=""
+        var imageUrl:String?=""
+
+
+        // 사용자 정보 요청 (기본)
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i(TAG, "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n이름: ${user.kakaoAccount?.name}" +
+                        "\n폰번호: ${user.kakaoAccount?.phoneNumber}" +
+
+                        "\n성별: ${user.kakaoAccount?.gender}" +
+                        "\n생일: ${user.kakaoAccount?.birthday}" +
+                        "\n년도: ${user.kakaoAccount?.birthyear}" +
+                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+                )
+
+
+                // 티쳐 포 보스 소셜 로그인 api 요청
+
+                //데이터 전처리
+                email=user.kakaoAccount?.email!!
+                name=user.kakaoAccount?.name!!
+                phoneNumber=user.kakaoAccount?.phoneNumber!!
+                phoneNumber=phoneNumber.replace("+82","0")
+                    .replace("-","")
+                    .replace(" ","")
+
+                if(user.kakaoAccount?.gender.toString()=="남자"){
+                    gender=1
+                }
+                else{
+                    gender=2
+                }
+                birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
+                val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
+                val birthDate=LocalDate.parse(birthDate_str,formatter)
+                imageUrl=user.kakaoAccount?.profile?.thumbnailImageUrl
+
+                loginViewModel.socialLogin(type="kakao",email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
+            }
+        }
+    }
+
+    fun processError(msg:String?){
+        showToast("error:"+msg)
+    }
+    fun showToast(msg:String){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+
+    //사용하지 않는 함수들 (나중에 사용할수도..?)
     private fun handleKakaoLogout(){
         UserApiClient.instance.logout { error ->
             if (error != null) {
@@ -241,6 +358,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     else {
                         //기타 에러
+                        handleKakaoLogin()
                     }
                 }
                 else {
@@ -254,7 +372,6 @@ class LoginActivity : AppCompatActivity() {
             //로그인 필요
         }
     }
-
     private fun getAgreement(){
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -310,28 +427,6 @@ class LoginActivity : AppCompatActivity() {
                 Log.i(TAG, "토큰 정보 보기 성공" +
                         "\n회원번호: ${tokenInfo.id}" +
                         "\n만료시간: ${tokenInfo.expiresIn} 초")
-            }
-        }
-    }
-
-    private fun getUserInfo(){
-        // 사용자 정보 요청 (기본)
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e(TAG, "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
-                Log.i(TAG, "사용자 정보 요청 성공" +
-                        "\n회원번호: ${user.id}" +
-                        "\n이메일: ${user.kakaoAccount?.email}" +
-                        "\n이름: ${user.kakaoAccount?.name}" +
-                        "\n폰번호: ${user.kakaoAccount?.phoneNumber}" +
-
-                        "\n성별: ${user.kakaoAccount?.gender}" +
-                        "\n생일: ${user.kakaoAccount?.birthday}" +
-                        "\n년도: ${user.kakaoAccount?.birthyear}" +
-                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
-                )
             }
         }
     }

@@ -1,9 +1,7 @@
-package com.example.teacherforboss.presentation.ui.auth.common
+package com.example.teacherforboss.data.api
 
-import android.content.Context
 import com.example.teacherforboss.BuildConfig
-import com.example.teacherforboss.GlobalApplication
-import com.example.teacherforboss.presentation.ui.auth.login.TokenManager
+import com.example.teacherforboss.data.tokenmanager.TokenManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,8 +14,8 @@ object ApiClient{
 
     var mOkHttpClient= OkHttpClient.Builder()
         .addInterceptor(mHttpLoggingInterceptor)
-        .addInterceptor(AuthInterceptor(getAppContenxt(), tokenManager))
-        .authenticator(AuthAuthenticator(TokenManager, getAppContenxt()))
+//        .addInterceptor(AuthInterceptor(getAppContenxt(), tokenManager))
+//        .authenticator(AuthAuthenticator(TokenManager, getAppContenxt()))
         .build()
 
     var mRetrofit: Retrofit?=null
@@ -32,8 +30,4 @@ object ApiClient{
             }
             return mRetrofit
         }
-}
-
-private fun getAppContenxt(): Context {
-    return GlobalApplication.instance.applicationContext
 }

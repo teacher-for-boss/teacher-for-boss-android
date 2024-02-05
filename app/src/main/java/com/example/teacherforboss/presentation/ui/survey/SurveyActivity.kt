@@ -17,9 +17,11 @@ import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemF
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemReasonFragment
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyStudyFragment
 import com.example.teacherforboss.util.base.BindingActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class SurveyActivity :
     BindingActivity<ActivitySurveyBinding>(R.layout.activity_survey) {
     private val surveyViewModel: SurveyViewModel by viewModels()
@@ -53,7 +55,7 @@ class SurveyActivity :
             when (binding.vpSurvey.currentItem) {
                 fragmentList.size - 1 -> {
                     navigateToMain()
-                    // TODO 서버통신
+                    surveyViewModel.postSurveyResult()
                 }
 
                 else -> binding.vpSurvey.currentItem++

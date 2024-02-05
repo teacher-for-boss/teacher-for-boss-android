@@ -11,9 +11,11 @@ import com.example.teacherforboss.databinding.FragmentSurveyProblemReasonBinding
 import com.example.teacherforboss.presentation.ui.survey.SurveyViewModel
 import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.util.context.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class SurveyProblemReasonFragment :
     BindingFragment<FragmentSurveyProblemReasonBinding>(R.layout.fragment_survey_problem_reason) {
     private val viewModel by activityViewModels<SurveyViewModel>()

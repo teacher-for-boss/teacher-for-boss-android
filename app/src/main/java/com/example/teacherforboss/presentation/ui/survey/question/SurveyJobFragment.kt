@@ -9,7 +9,9 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentSurveyJobBinding
 import com.example.teacherforboss.presentation.ui.survey.SurveyViewModel
 import com.example.teacherforboss.util.base.BindingFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SurveyJobFragment :
     BindingFragment<FragmentSurveyJobBinding>(R.layout.fragment_survey_job) {
     private val viewModel by activityViewModels<SurveyViewModel>()

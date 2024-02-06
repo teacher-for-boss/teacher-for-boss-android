@@ -35,6 +35,7 @@ class AgreementFragment : BottomSheetDialogFragment() {
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        //체크박스 설정
         //전체 동의
         binding.allCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -43,7 +44,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
                     binding.locationServiceCheckbox, binding.benefitInformationCheckbox,
                     binding.smsCheckbox, binding.emailCheckbox, binding.ageCheckbox
                 )
-
                 for(checkBox in otherCheckboxs) {
                     checkBox.isChecked = true
                 }
@@ -53,7 +53,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
         var benefitInfo = binding.benefitInformationCheckbox
         var sms = binding.smsCheckbox
         var email = binding.emailCheckbox
-
         benefitInfo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
                 if(sms.isChecked || email.isChecked) {}
@@ -66,7 +65,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
                 email.isChecked = false
             }
         }
-
         sms.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 benefitInfo.isChecked = true
@@ -75,7 +73,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
                 if (!email.isChecked) benefitInfo.isChecked = false
             }
         }
-
         email.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 benefitInfo.isChecked = true
@@ -83,6 +80,24 @@ class AgreementFragment : BottomSheetDialogFragment() {
             else {
                 if (!sms.isChecked) benefitInfo.isChecked = false
             }
+        }
+
+        val activity=activity as SignupActivity
+        //약관 전체보기
+        binding.agreementMore.setOnClickListener {
+            val bottomSheetDialog=AgreementMoreFragment()
+            //bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
+            bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
+        }
+        binding.personalInformationMore.setOnClickListener {
+            val bottomSheetDialog=PersonalInfoMoreFragment()
+            //bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
+            bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
+        }
+        binding.locationServiceMore.setOnClickListener {
+            val bottomSheetDialog=LocationServiceMoreFragment()
+            //bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
+            bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
 
 

@@ -65,7 +65,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
@@ -86,6 +86,30 @@
                 android:textColor="@color/black"
                 android:layout_marginLeft="13dp"
                 android:layout_toRightOf="@id/agreement_checkbox"/>
+
+            <FrameLayout
+                android:id="@+id/agreement_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
+
+            </FrameLayout>
 
         </RelativeLayout>
 
@@ -112,6 +136,30 @@
                 android:layout_marginLeft="13dp"
                 android:layout_toRightOf="@id/personalInformation_checkbox"/>
 
+            <FrameLayout
+                android:id="@+id/personalInformation_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
+
+            </FrameLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -136,6 +184,30 @@
                 android:textColor="@color/black"
                 android:layout_marginLeft="13dp"
                 android:layout_toRightOf="@id/locationService_checkbox"/>
+
+            <FrameLayout
+                android:id="@+id/locationService_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
+
+            </FrameLayout>
 
         </RelativeLayout>
 

@@ -6,5 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RequestSurveyDto(
     @SerialName("question1")
-    val question1: Long
+    val question1: Int,
+    @SerialName("question2")
+    val question2: List<Int>,
+    @SerialName("question3")
+    val question3: Int,
+    @SerialName("question4")
+    val question4: String
 )

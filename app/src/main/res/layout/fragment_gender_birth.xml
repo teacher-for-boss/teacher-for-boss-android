@@ -179,13 +179,40 @@
 
                 </TextView>
 
-                <DatePicker
-                    android:id="@+id/birthDate"
+<!--                <DatePicker-->
+<!--                    android:id="@+id/birthDate"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:datePickerMode="spinner"-->
+<!--                    android:calendarViewShown="false"-->
+<!--                    />-->
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:datePickerMode="spinner"
-                    android:calendarViewShown="false"
-                    />
+                    android:paddingStart="70dp"
+                    android:paddingEnd="70dp">
+
+                    <NumberPicker
+                        android:id="@+id/yearPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                    <NumberPicker
+                        android:id="@+id/monthPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"/>
+
+                    <NumberPicker
+                        android:id="@+id/dayPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"/>
+
+                </LinearLayout>
 
 
 

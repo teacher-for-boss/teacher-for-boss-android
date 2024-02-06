@@ -2,7 +2,7 @@
 <resources>
     <style name="Theme.TeacherForBoss.AppCompat" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
-    <style name="Theme.TeacherForBoss" parent="android:Theme.Material.Light.NoActionBar"/>
+    <style name="Theme.TeacherForBoss" parent="Theme.AppCompat.Light.NoActionBar"/>
 
     <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.Light.BottomSheetDialog">
@@ -13,5 +13,4 @@
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_background</item>
     </style>
-
 </resources>

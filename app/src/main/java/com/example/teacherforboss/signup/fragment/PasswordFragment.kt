@@ -112,13 +112,13 @@ class PasswordFragment : Fragment() {
 
     private fun updatePasswordInputType() {
         if (show_pwEnter) {
-            binding.pwBox.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.pwBox.inputType = InputType.TYPE_CLASS_TEXT
         } else {
             binding.pwBox.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
 
         if(show_PwReEnter) {
-            binding.pwReEnterBox.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.pwReEnterBox.inputType = InputType.TYPE_CLASS_TEXT
         } else {
             binding.pwReEnterBox.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }

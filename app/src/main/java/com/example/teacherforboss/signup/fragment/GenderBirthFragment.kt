@@ -35,6 +35,7 @@ class GenderBirthFragment : Fragment() {
         //gender birth 입력값 받아서 viewmodel에 저장 추가하기
 
         val activity=activity as SignupActivity
+
         binding.nextBtn.setOnClickListener {
             val bottomSheetDialog=AgreementFragment()
             bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
@@ -66,6 +67,26 @@ class GenderBirthFragment : Fragment() {
                 femaleCheckBox.isChecked = false
             }
         }
+
+        binding.yearPicker.apply {
+            minValue = 1940
+            maxValue = 2024
+            value = 1980
+        }
+
+        binding.monthPicker.apply {
+            minValue = 1
+            maxValue = 12
+            value = 1
+        }
+
+        binding.dayPicker.apply {
+            minValue = 1
+            maxValue = 31
+            value = 15
+        }
+
+
 
         return binding.root
 

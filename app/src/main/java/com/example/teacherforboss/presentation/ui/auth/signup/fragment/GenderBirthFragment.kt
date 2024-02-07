@@ -35,6 +35,9 @@ class GenderBirthFragment : Fragment() {
         val activity=activity as SignupActivity
 
         binding.nextBtn.setOnClickListener {
+            //birthDate 가져오기
+            viewModel.birthDate=binding.yearPicker.value.toString()+"-"+binding.monthPicker.value.toString()+"-"+binding.dayPicker.value.toString()
+
             val bottomSheetDialog= AgreementFragment()
             bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
             bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
@@ -49,6 +52,7 @@ class GenderBirthFragment : Fragment() {
             if (isChecked) {
                 femaleCheckBox.isChecked = false
                 noCheckBox.isChecked = false
+                viewModel.gender="1"
             }
         }
 
@@ -56,6 +60,7 @@ class GenderBirthFragment : Fragment() {
             if (isChecked) {
                 maleCheckBox.isChecked = false
                 noCheckBox.isChecked = false
+                viewModel.gender="2"
             }
         }
 
@@ -63,6 +68,7 @@ class GenderBirthFragment : Fragment() {
             if (isChecked) {
                 maleCheckBox.isChecked = false
                 femaleCheckBox.isChecked = false
+                viewModel.gender="3"
             }
         }
 

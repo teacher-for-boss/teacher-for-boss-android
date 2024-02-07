@@ -25,5 +25,24 @@ data class SignupRequest(
     @SerializedName("emailAuth")
     var emailAuthId:Long,
     @SerializedName("phoneAuthId")
-    var phoneAuthId:Long
+    var phoneAuthId:Long,
+
+    @SerializedName("agreementUsage")
+    var agreementUsage:String,
+
+    @SerializedName("agreementInfo")
+    var agreementInfo:String,
+
+    @SerializedName("agreementAge")
+    var agreementAge:String,
+
+    @SerializedName("agreementSms")
+    var agreementSms:String,
+
+    @SerializedName("agreementEmail")
+    var agreementEmail:String,
+
+    @SerializedName("agreementLocation")
+    var agreementLocation:String,
+
 )

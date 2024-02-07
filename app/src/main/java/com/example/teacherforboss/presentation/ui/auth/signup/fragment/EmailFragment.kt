@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,10 +61,12 @@ class EmailFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    viewModel.emailAuthId=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
+                    Log.d("auth",it.data?.result?.emailAuthId.toString())
+                    viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
 
                 }
                 is BaseResponse.Error->{
+                    Log.d("auth",it.msg.toString())
                     showToast("error:"+it.msg)
                 }
             }
@@ -72,7 +75,7 @@ class EmailFragment : Fragment() {
         //이메일 코드 입력 후 확인 버튼
         binding.emailConfirmBtn.setOnClickListener {
             emailCode=binding.emailCodeBox.text.toString()
-            viewModel.emailCheckUser(viewModel.emailAuthId,emailCode) //서버로 /auth/email/check
+            viewModel.emailCheckUser(viewModel.emailAuthId.value!!,emailCode) //서버로 /auth/email/check
         }
 
         viewModel.emailCheckResult.observe(viewLifecycleOwner){

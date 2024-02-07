@@ -21,7 +21,7 @@ data class EmailResponse (
         var emailAuthId:Long?,
 
         @SerializedName("createdAt")
-        var createdAt: LocalDateTime?,
+        var createdAt: String?,
 
         @SerializedName("email")
         var email:String?,

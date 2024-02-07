@@ -21,7 +21,7 @@ data class PhoneResponse(
         var phoneAuthId:Long?,
 
         @SerializedName("createdAt")
-        var createdAt: LocalDateTime?,
+        var createdAt: String?,
 
         @SerializedName("appHash")
         var appHash:String?,

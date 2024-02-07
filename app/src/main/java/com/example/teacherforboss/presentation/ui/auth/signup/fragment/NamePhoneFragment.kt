@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +37,14 @@ class NamePhoneFragment : Fragment() {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
+
+
         val activity=activity as SignupActivity
+
+        val helper=AppSignatureHelper(activity)
+        val hash=helper.getAppSignatures()?.get(0)
+        Log.d("auth hash",hash.toString())
+
         binding.nextBtn.setOnClickListener {
             activity.gotoNextFragment(GenderBirthFragment())
         }
@@ -52,7 +60,10 @@ class NamePhoneFragment : Fragment() {
             startTimer()
 
             phone = binding.phoneNumBox.text.toString()
-            viewModel.phoneUser(viewModel.phone.value.toString())
+            Log.d("auth hash",hash.toString())
+            Log.d("auth phone",phone)
+
+            viewModel.phoneUser(viewModel.phone.value.toString(),hash.toString())
 
         }
 
@@ -61,7 +72,8 @@ class NamePhoneFragment : Fragment() {
             when(it) {
                 is BaseResponse.Loading->{}
                 is BaseResponse.Success->{
-                    viewModel.phoneAuthId=it.data?.result?.phoneAuthId!!
+                    Log.d("auth",it.data?.result?.phoneAuthId.toString())
+                    viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
                     showToast("error"+it.msg)
@@ -72,7 +84,7 @@ class NamePhoneFragment : Fragment() {
         //휴대폰 코드 입력 후 확인 버튼
         binding.phoneConfirmBtn.setOnClickListener {
             phoneCode = binding.phoneCodeBox.text.toString()
-            viewModel.phoneCheckUser(viewModel.phoneAuthId, phoneCode)
+            viewModel.phoneCheckUser(viewModel.phoneAuthId.value!!, phoneCode)
         }
 
         viewModel.phoneCheckResult.observe(viewLifecycleOwner) {

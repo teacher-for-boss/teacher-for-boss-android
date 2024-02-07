@@ -65,6 +65,16 @@
 
             </intent-filter>
         </activity>
+
+        <!--        sms reciever-->
+        <receiver
+            android:name=".presentation.ui.auth.signup.SignupActivity$MySMSReceiver"
+            android:permission="com.google.android.gms.auth.api.phone.permission.SEND"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.Arrays
 
-class AppSignatureHelper(application: Application) : ContextWrapper(application) {
+class AppSignatureHelper(context: Context) : ContextWrapper(context) {
     val TAG = AppSignatureHelper::class.java.simpleName
     private val HASH_TYPE = "SHA-256"
     val NUM_HASHED_BYTES = 9

@@ -82,6 +82,7 @@
 
                     <EditText
                         android:id="@+id/phoneNumBox"
+                        android:text="@={signupViewModel.livePhone}"
                         android:padding="12dp"
                         android:background="@drawable/selector_login"
                         android:hint="휴대폰 번호 ('-' 제외)"

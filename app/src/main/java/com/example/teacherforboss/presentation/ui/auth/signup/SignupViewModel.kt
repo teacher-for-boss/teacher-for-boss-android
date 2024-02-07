@@ -16,6 +16,7 @@ import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.launch
 
 class SignupViewModel(
@@ -38,8 +39,9 @@ class SignupViewModel(
     var name:String=""
     var gender:String=""
     var birthDate:String=""
-    var emailAuthId:Long=0
-    var phoneAuthId:Long=0
+
+    var emailAuthId=MutableLiveData<Long>(0)
+    var phoneAuthId=MutableLiveData<Long>(0)
 
     val num_check= MutableLiveData<Boolean>(false)
     val eng_check= MutableLiveData<Boolean>(false)
@@ -48,6 +50,13 @@ class SignupViewModel(
     val rePw_check= MutableLiveData<Boolean>(false)
     val all_check= MutableLiveData<Boolean>(false)
 
+    //약관 동의
+    val agreementUsage=MutableLiveData<String>("")
+    val agreementInfo=MutableLiveData<String>("")
+    val agreementAge=MutableLiveData<String>("")
+    val agreementSms=MutableLiveData<String>("")
+    val agreementEmail=MutableLiveData<String>("")
+    val agreementLocation=MutableLiveData<String>("")
 
     val userRepo= UserRepositoryImpl()
 
@@ -88,7 +97,7 @@ class SignupViewModel(
                 )
                 val response = userRepo.emailUser(emailRequest = emailRequest)
 
-                if (response?.code() == 200) {
+                if (response?.body()?.code=="COMMON200") {
                     emailResult.value = BaseResponse.Success(response.body())
                 } else {
                     emailResult.value = BaseResponse.Error(response?.message())
@@ -111,7 +120,7 @@ class SignupViewModel(
                 )
                 val response = userRepo.emailCheck(emailCheckRequest = emailCheckRequest)
 
-                if (response?.code() == 200) {
+                if (response?.body()?.code=="COMMON200") {
                     emailCheckResult.value = BaseResponse.Success(response.body())
                 } else {
                     emailCheckResult.value = BaseResponse.Error(response?.message())
@@ -135,18 +144,6 @@ class SignupViewModel(
 
         viewModelScope.launch {
             try {
-//                val signupRequest = SignupRequest(
-//                    email = email,
-//                    isChecked = isChecked, //이메일인증여부,
-//                    password = password,
-//                    rePassword = rePassword,
-//                    name = name,
-//                    gender = gender,
-//                    birthDate = birthDate,
-//                    phone = phone,
-//                    emailAuthId = emailAuthId,//이메일인증식별자,
-//                    phoneAuthId = phoneAuthId //전화번호인증식별자
-//                )
                 val signupRequest = SignupRequest(
                     email = email.value.toString(),
                     isChecked = isEmailVerified.value.toString(), //이메일인증여부,
@@ -156,12 +153,18 @@ class SignupViewModel(
                     gender = gender,
                     birthDate = birthDate,
                     phone = phone.value.toString(),
-                    emailAuthId = emailAuthId,//이메일인증식별자,
-                    phoneAuthId = phoneAuthId //전화번호인증식별자
+                    emailAuthId = emailAuthId.value!!,//이메일인증식별자,
+                    phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
+                    agreementUsage = agreementUsage.value!!,
+                    agreementInfo=agreementInfo.value!!,
+                    agreementAge=agreementAge.value!!,
+                    agreementSms=agreementSms.value!!,
+                    agreementEmail=agreementEmail.value!!,
+                    agreementLocation=agreementLocation.value!!
                 )
                 val response = userRepo.signupUser(signupRequest = signupRequest)
 
-                if (response?.code() == 200) {
+                if (response?.body()?.code=="COMMON200") {
                     signupResult.value = BaseResponse.Success(response.body())
                 } else {
                     signupResult.value = BaseResponse.Error(response?.message())
@@ -177,7 +180,7 @@ class SignupViewModel(
 //    Log.d("hash test",hash.toString())
 
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
-    fun phoneUser(phone: String) {
+    fun phoneUser(phone: String,hash:String) {
         phoneResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
@@ -185,11 +188,11 @@ class SignupViewModel(
                 val phoneRequest = PhoneRequest(
                     phone = phone,
                     purpose = 1,
-                    appHash = ""
+                    appHash = hash
                 )
                 val response = userRepo.phoneUser(phoneRequest = phoneRequest)
 
-                if (response?.code() == 200) {
+                if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
                 } else {
                     phoneResult.value = BaseResponse.Error(response?.message())
@@ -212,7 +215,7 @@ class SignupViewModel(
                 )
                 val response = userRepo.phoneCheck(phoneCheckRequest = phoneCheckRequest)
 
-                if(response?.code() == 200) {
+                if(response?.body()?.code=="COMMON200") {
                     phoneCheckResult.value = BaseResponse.Success(response.body())
                 } else {
                     phoneCheckResult.value = BaseResponse.Error(response?.message())

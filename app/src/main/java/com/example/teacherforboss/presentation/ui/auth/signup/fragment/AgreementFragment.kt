@@ -4,12 +4,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.teacherforboss.R
+import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentAgreementBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
@@ -33,19 +38,39 @@ class AgreementFragment : BottomSheetDialogFragment() {
         binding.lifecycleOwner=this
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         //체크박스 설정
+
+        //agreement 체크 여부 저장
+        //for viewmodel
+        var agreementList= mutableListOf <MutableLiveData<String>>(
+            viewModel.agreementUsage,
+            viewModel.agreementInfo,
+            viewModel.agreementLocation,
+            viewModel.agreementSms,
+            viewModel.agreementEmail,
+            viewModel.agreementAge,
+        )
+
+        //for xml data bidning
+        val otherCheckboxs = arrayOf(
+            binding.agreementCheckbox, binding.personalInformationCheckbox,
+            binding.locationServiceCheckbox, binding.benefitInformationCheckbox,
+            binding.smsCheckbox, binding.emailCheckbox, binding.ageCheckbox
+        )
+
+        //위의 두 리스트 합친것
+        val combinedList=agreementList.zip(otherCheckboxs)
+
         //전체 동의
         binding.allCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val otherCheckboxs = arrayOf(
-                    binding.agreementCheckbox, binding.personalInformationCheckbox,
-                    binding.locationServiceCheckbox, binding.benefitInformationCheckbox,
-                    binding.smsCheckbox, binding.emailCheckbox, binding.ageCheckbox
-                )
                 for(checkBox in otherCheckboxs) {
                     checkBox.isChecked = true
                 }
+                //viewModel에서 값들도 업데이트
+//                for(agreement in agreementList){
+//                    agreement.value="T"
+//                }
             }
         }
         //혜택정보 수신 동의
@@ -99,9 +124,34 @@ class AgreementFragment : BottomSheetDialogFragment() {
             bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
 
+        //회원가입 인증결과 수신
+        viewModel.signupResult.observe(viewLifecycleOwner){
+            when(it){
+                is BaseResponse.Loading->{ }
+                is BaseResponse.Success->{
+                    showToast("")
+
+                }
+                is BaseResponse.Error->{
+                    showToast("error:"+it.msg)
+                }
+            }
+        }
+
 
         binding.finishBtn.setOnClickListener {
+            //체크된 agreemet 확인
+            combinedList.forEach{(livedata,checkbox)->
+                if(checkbox.isChecked==true){
+                    livedata.value="T"
+                }
+            }
+            viewModel.signupUser()
+
             //서버로 회원가입 api 보내기
+
+
+
             //성공시 아래작업 진행
             val activity=activity as SignupActivity
             val intent = Intent(activity, BeginActivity::class.java)
@@ -111,4 +161,7 @@ class AgreementFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    fun showToast(msg:String){
+        Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
+    }
 }

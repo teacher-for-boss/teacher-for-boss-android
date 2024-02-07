@@ -15,7 +15,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentPasswordBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.NamePhoneFragment
+import com.example.teacherforboss.signup.fragment.NamePhoneFragment
 
 class PasswordFragment : Fragment() {
     private lateinit var binding: FragmentPasswordBinding

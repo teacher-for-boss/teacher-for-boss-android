@@ -13,10 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
+import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentEmailBinding
-import com.example.teacherforboss.login.BaseResponse
-import com.example.teacherforboss.signup.SignupActivity
-import com.example.teacherforboss.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.fragment.PasswordFragment
+
 
 class EmailFragment : Fragment() {
     private lateinit var binding:FragmentEmailBinding

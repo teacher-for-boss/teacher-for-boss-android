@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".signup.fragment.AgreementFragment"
+    tools:context=".presentation.ui.auth.signup.fragment.AgreementFragment"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <data>
         <variable
             name="signupViewModel"
-            type="com.example.teacherforboss.signup.SignupViewModel" />
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
 
     </data>
 

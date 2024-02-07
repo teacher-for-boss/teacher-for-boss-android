@@ -11,16 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
+import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.login.BaseResponse
-import com.example.teacherforboss.signup.SignupActivity
-import com.example.teacherforboss.signup.SignupViewModel
 
 class NamePhoneFragment : Fragment() {
     private lateinit var binding: FragmentNamePhoneBinding
@@ -87,7 +84,7 @@ class NamePhoneFragment : Fragment() {
 
                     var tempPhoneMap = mutableMapOf<String, LiveData<Boolean>>()
                     tempPhoneMap[phone]=viewModel.isPhoneVerified
-                    viewModel.confirmedPhone.postValue(tempPhoneMap)
+                    //viewModel.confirmedPhone.postValue(tempPhoneMap)
                 }
                 is BaseResponse.Error->{
                     showToast("error:"+it.msg)
@@ -101,8 +98,6 @@ class NamePhoneFragment : Fragment() {
 
     //verify 버튼을 누르면 3분 타이머
     fun startTimer() {
-        lateinit var timer: CountDownTimer
-
         binding.timer.visibility = View.VISIBLE
 
         val timer = object : CountDownTimer(181000, 1000) {

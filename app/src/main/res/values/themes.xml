@@ -6,8 +6,6 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <style name="Theme.TeacherForBoss" parent="android:Theme.Material.Light.NoActionBar"/>
-
     <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>

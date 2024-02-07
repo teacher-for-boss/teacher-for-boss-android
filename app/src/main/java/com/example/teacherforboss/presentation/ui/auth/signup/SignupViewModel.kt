@@ -1,4 +1,4 @@
-package com.example.teacherforboss.signup
+package com.example.teacherforboss.presentation.ui.auth.signup
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

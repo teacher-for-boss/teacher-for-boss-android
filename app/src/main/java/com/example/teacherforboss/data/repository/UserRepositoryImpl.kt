@@ -6,12 +6,16 @@ import com.example.teacherforboss.data.model.request.SocialLoginRequest
 import com.example.teacherforboss.data.model.response.LoginResponse
 import com.example.teacherforboss.data.model.response.socialLoginResponse
 import com.example.teacherforboss.domain.repository.UserRepository
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailResponse
-import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupRequest
-import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
+import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
+import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
+import com.example.teacherforboss.data.model.request.signup.EmailRequest
+import com.example.teacherforboss.data.model.response.signup.EmailResponse
+import com.example.teacherforboss.data.model.request.signup.SignupRequest
+import com.example.teacherforboss.data.model.response.signup.SignupResponse
+import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
+import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
+import com.example.teacherforboss.data.model.request.signup.PhoneRequest
+import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import retrofit2.Response
 
 //class UserRepositoryImpl(private val userRemoteDataSource: UserRemoteDataSource):UserRepository {
@@ -76,5 +80,14 @@ class UserRepositoryImpl: UserRepository {
     override suspend fun signupUser(signupRequest: SignupRequest):
             Response<SignupResponse>?{
         return UserApi.getApi()?.signupUser(signupRequest = signupRequest)
+    }
+    override suspend fun phoneUser(phoneRequest: PhoneRequest):
+            Response<PhoneResponse>?{
+        return UserApi.getApi()?.phoneUser(phoneRequest = phoneRequest)
+    }
+
+    override suspend fun phoneCheck(phoneCheckRequest: PhoneCheckRequest):
+            Response<PhoneCheckResponse>?{
+        return UserApi.getApi()?.phoneCheck(phoneCheckRequest = phoneCheckRequest)
     }
 }

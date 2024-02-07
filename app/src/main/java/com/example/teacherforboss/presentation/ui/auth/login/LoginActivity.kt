@@ -17,7 +17,7 @@ import com.example.teacherforboss.data.model.response.LoginResponseInterface
 import com.example.teacherforboss.data.tokenmanager.TokenManager
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.signup.SignupActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError

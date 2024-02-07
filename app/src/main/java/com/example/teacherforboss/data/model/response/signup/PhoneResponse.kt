@@ -1,4 +1,4 @@
-package com.example.teacherforboss.signup.api
+package com.example.teacherforboss.data.model.response.signup
 
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime

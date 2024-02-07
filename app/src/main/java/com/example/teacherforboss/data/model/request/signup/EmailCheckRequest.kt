@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.api
+package com.example.teacherforboss.data.model.request.signup
 
 import com.google.gson.annotations.SerializedName
 

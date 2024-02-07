@@ -1,41 +1,28 @@
 package com.example.teacherforboss.signup
 
-import AppSignatureHelper
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
-import com.example.teacherforboss.domain.repository.UserRepository
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckRequest
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailCheckResponse
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailRequest
-import com.example.teacherforboss.presentation.ui.auth.signup.api.EmailResponse
-import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupRequest
-import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
-import com.example.teacherforboss.login.BaseResponse
-import com.example.teacherforboss.login.UserRepository
-import com.example.teacherforboss.signup.api.EmailCheckRequest
-import com.example.teacherforboss.signup.api.EmailCheckResponse
-import com.example.teacherforboss.signup.api.EmailRequest
-import com.example.teacherforboss.signup.api.EmailResponse
-import com.example.teacherforboss.signup.api.PhoneCheckRequest
-import com.example.teacherforboss.signup.api.PhoneCheckResponse
-import com.example.teacherforboss.signup.api.PhoneRequest
-import com.example.teacherforboss.signup.api.PhoneResponse
-import com.example.teacherforboss.signup.api.SignupRequest
-import com.example.teacherforboss.signup.api.SignupResponse
-import dagger.hilt.android.internal.Contexts.getApplication
+import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
+import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
+import com.example.teacherforboss.data.model.request.signup.EmailRequest
+import com.example.teacherforboss.data.model.response.signup.EmailResponse
+import com.example.teacherforboss.data.model.request.signup.SignupRequest
+import com.example.teacherforboss.data.model.response.signup.SignupResponse
+import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
+import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
+import com.example.teacherforboss.data.model.request.signup.PhoneRequest
+import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import kotlinx.coroutines.launch
 
 class SignupViewModel(
 //    private val userRepo: UserRepository
 ): ViewModel() {
     var liveEmail= MutableLiveData<String>("")
+    var livePhone=MutableLiveData<String>("")
     val email: LiveData<String>
         get() = liveEmail
     val phone:LiveData<String>
@@ -51,7 +38,6 @@ class SignupViewModel(
     var name:String=""
     var gender:String=""
     var birthDate:String=""
-    var phone:String=""//추후 api 연결하며 email 방식대로 수정
     var emailAuthId:Long=0
     var phoneAuthId:Long=0
 
@@ -89,10 +75,6 @@ class SignupViewModel(
     fun setPhoneVerifiedStatus(isVefiried: Boolean){
         _isPhoneVerified.value=isVefiried
     }
-
-
-
-    val userRepo= UserRepository()
 
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
     fun emailUser(email:String) {
@@ -173,7 +155,7 @@ class SignupViewModel(
                     name = name,
                     gender = gender,
                     birthDate = birthDate,
-                    phone = phone,
+                    phone = phone.value.toString(),
                     emailAuthId = emailAuthId,//이메일인증식별자,
                     phoneAuthId = phoneAuthId //전화번호인증식별자
                 )

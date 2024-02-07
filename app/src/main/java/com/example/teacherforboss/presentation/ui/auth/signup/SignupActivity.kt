@@ -20,19 +20,14 @@ import androidx.fragment.app.add
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.teacherforboss.BeginActivity
 import com.example.teacherforboss.R
+import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
-import com.example.teacherforboss.login.BaseResponse
-import com.example.teacherforboss.login.LoginActivity
-import com.example.teacherforboss.login.LoginResponse
-import com.example.teacherforboss.login.TokenManager
-import com.example.teacherforboss.signup.api.SignupResponse
+import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.signup.fragment.AgreementFragment
 import com.example.teacherforboss.signup.fragment.EmailFragment
 import com.example.teacherforboss.signup.fragment.GenderBirthFragment
 import com.example.teacherforboss.signup.fragment.NamePhoneFragment
-import com.example.teacherforboss.signup.fragment.PasswordFragment
 import org.apache.commons.lang3.mutable.Mutable
 import java.util.regex.Pattern
 

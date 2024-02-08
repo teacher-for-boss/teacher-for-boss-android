@@ -44,6 +44,7 @@ class EmailFragment : Fragment() {
         val activity=activity as SignupActivity
 
         binding.nextBtn.setOnClickListener {
+            Log.d("email",viewModel.email.value!!)
             activity.gotoNextFragment(PasswordFragment())
         }
 

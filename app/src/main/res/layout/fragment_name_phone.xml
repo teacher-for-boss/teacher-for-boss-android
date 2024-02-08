@@ -64,6 +64,7 @@
                     android:padding="12dp"
                     android:background="@drawable/selector_login"
                     android:hint="이름"
+                    android:text="@={signupViewModel._name}"
                     android:textColorHint="@color/gray_02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -92,12 +93,12 @@
 
                     </EditText>
 
-                    <com.google.android.material.button.MaterialButton
+                    <Button
                         android:id="@+id/phoneVerifyBtn"
-                        style="@style/Theme.TeacherForBoss.Button.auth.next"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="35dp"
                         android:text="인증하기"
+                        android:background="@drawable/radius_purple_button"
                         android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="10dp"

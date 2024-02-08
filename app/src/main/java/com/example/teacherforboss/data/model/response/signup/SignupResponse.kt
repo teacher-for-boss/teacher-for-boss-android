@@ -20,6 +20,6 @@ data class SignupResponse(
         @SerializedName("memberId")
         var memberId:Long,
         @SerializedName("createdAt")
-        var createdAt: LocalDateTime
+        var createdAt: String
     )
 }

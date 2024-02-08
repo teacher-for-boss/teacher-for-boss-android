@@ -63,8 +63,8 @@ class SignupViewModel(
         get() = _birthDate
 
 
-    var emailAuthId=MutableLiveData<Long>(0)
-    var phoneAuthId=MutableLiveData<Long>(0)
+    var emailAuthId=MutableLiveData<Long>(1) //test용 원래는 0으로 설정
+    var phoneAuthId=MutableLiveData<Long>(1)
 
     val num_check= MutableLiveData<Boolean>(false)
     val eng_check= MutableLiveData<Boolean>(false)
@@ -74,22 +74,22 @@ class SignupViewModel(
     val all_check= MutableLiveData<Boolean>(false)
 
     //약관 동의
-    val agreementUsage=MutableLiveData<String>("")
-    val agreementInfo=MutableLiveData<String>("")
-    val agreementAge=MutableLiveData<String>("")
-    val agreementSms=MutableLiveData<String>("")
-    val agreementEmail=MutableLiveData<String>("")
-    val agreementLocation=MutableLiveData<String>("")
+    val agreementUsage=MutableLiveData<String>("F")
+    val agreementInfo=MutableLiveData<String>("F")
+    val agreementAge=MutableLiveData<String>("F")
+    val agreementSms=MutableLiveData<String>("F")
+    val agreementEmail=MutableLiveData<String>("F")
+    val agreementLocation=MutableLiveData<String>("F")
 
     val userRepo= UserRepositoryImpl()
 
     //이메일인증 여부 str->api
-    var _isEmailVerified_str= MutableLiveData<String>("F")
+    var _isEmailVerified_str= MutableLiveData<String>("T") // api 테스트 완료 추후 false로 수정
     val isEmailVerified_str: LiveData<String>
         get() = _isEmailVerified_str
 
     //이메일인증 여부 boolean ->data binding
-    var _isEmailVerified= MutableLiveData<Boolean>(false)
+    var _isEmailVerified= MutableLiveData<Boolean>(true)
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
@@ -97,12 +97,12 @@ class SignupViewModel(
     val confirmedEmail= MutableLiveData<MutableMap<String, LiveData<Boolean>>>()
 
     //휴대폰인증 여부 str->api
-    var _isPhoneVerified_str=MutableLiveData<String>("F")
+    var _isPhoneVerified_str=MutableLiveData<String>("T") // api 테스트 완료 추후 false로 수정
     val isPhoneVerified_str:LiveData<String>
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(false)
+    var _isPhoneVerified=MutableLiveData<Boolean>(true)
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 

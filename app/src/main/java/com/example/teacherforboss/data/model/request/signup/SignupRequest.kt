@@ -19,7 +19,7 @@ data class SignupRequest(
     var birthDate:String,
     @SerializedName("phone")
     var phone: String,
-    @SerializedName("emailAuth")
+    @SerializedName("emailAuthId")
     var emailAuthId:Long,
     @SerializedName("phoneAuthId")
     var phoneAuthId:Long,

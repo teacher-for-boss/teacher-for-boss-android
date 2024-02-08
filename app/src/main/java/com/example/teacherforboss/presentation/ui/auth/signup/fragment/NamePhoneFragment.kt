@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
@@ -19,10 +20,12 @@ import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+//@AndroidEntryPoint
 class NamePhoneFragment : Fragment() {
     private lateinit var binding: FragmentNamePhoneBinding
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel by activityViewModels<SignupViewModel>()
 
     //사용자입력값
     var phone=""
@@ -52,8 +55,12 @@ class NamePhoneFragment : Fragment() {
         //폰 인증 api email과 동일하게 구현하기
         //viewModel에 phone, isPhoneVerified 추가
 
+
         //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
+            //이름
+            viewModel._name.value=binding.nameBox.text.toString()
+
             binding.phoneVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
             binding.inputPhoneCode.visibility=View.VISIBLE
@@ -91,11 +98,15 @@ class NamePhoneFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    viewModel.setPhoneVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
+//                    viewModel.setPhoneVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
+                    if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
+                        viewModel._isPhoneVerified_str.value="T"
+                        viewModel._isPhoneVerified.value=true
+                    }
                     binding.checkVery.visibility=View.VISIBLE
 
-                    var tempPhoneMap = mutableMapOf<String, LiveData<Boolean>>()
-                    tempPhoneMap[phone]=viewModel.isPhoneVerified
+//                    var tempPhoneMap = mutableMapOf<String, LiveData<Boolean>>()
+//                    tempPhoneMap[phone]=viewModel.isPhoneVerified
                     //viewModel.confirmedPhone.postValue(tempPhoneMap)
                 }
                 is BaseResponse.Error->{

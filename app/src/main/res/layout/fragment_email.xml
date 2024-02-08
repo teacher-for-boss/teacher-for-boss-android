@@ -180,6 +180,7 @@
         <Button
             android:background="@drawable/radius_purple_button"
             android:text="다음"
+            android:enabled="@{signupViewModel.isEmailVerified()?true:false}"
             android:textColor="@color/white"
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"

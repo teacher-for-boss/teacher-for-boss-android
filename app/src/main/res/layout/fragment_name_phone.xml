@@ -92,15 +92,15 @@
 
                     </EditText>
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/phoneVerifyBtn"
-                        android:layout_width="70dp"
-                        android:layout_height="35dp"
+                        style="@style/Theme.TeacherForBoss.Button.auth.next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="인증하기"
-                        android:background="@drawable/radius_purple_button"
                         android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
@@ -179,8 +179,8 @@
                     android:id="@+id/checkVery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{signupViewModel.isPhoneVerified()?"인증되었습니다.":"인증번호가 올바르지 않습니다."}'
-                    android:textColor="@{signupViewModel.isPhoneVerified()?@color/sub_green:@color/sub_red}"
+                    android:text='@{signupViewModel.isPhoneVerified?"인증되었습니다.":"인증번호가 올바르지 않습니다."}'
+                    android:textColor="@{signupViewModel.isPhoneVerified?@color/sub_green:@color/sub_red}"
                     android:textSize="12dp"
                     android:visibility="invisible"
                     android:layout_marginStart="5dp"
@@ -198,11 +198,10 @@
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="@{signupViewModel.isPhoneVerified?true:false}"
             app:layout_constraintBottom_toBottomOf="parent"
             >
-
         </Button>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

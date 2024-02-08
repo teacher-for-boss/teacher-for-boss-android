@@ -34,4 +34,13 @@
         <item name="cornerRadius">@dimen/button_survey_radius</item>
         <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.16</item>
     </style>
+
+    <style name="Theme.TeacherForBoss.Button.auth.next" parent="Theme.TeacherForBoss.Button">
+        <item name="android:height">35dp</item>
+        <item name="android:width">100dp</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.12</item>
+    </style>
+
+
 </resources>

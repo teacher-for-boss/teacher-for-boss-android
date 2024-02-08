@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,11 +23,14 @@ import com.example.teacherforboss.presentation.ui.auth.signup.fragment.Agreement
 import com.example.teacherforboss.presentation.ui.auth.signup.fragment.LocationServiceMoreFragment
 import com.example.teacherforboss.presentation.ui.auth.signup.fragment.PersonalInfoMoreFragment
 import com.example.teacherforboss.presentation.ui.main.BeginActivity
+import com.example.teacherforboss.presentation.ui.survey.SurveyViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+//@AndroidEntryPoint
 class AgreementFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAgreementBinding
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel by activityViewModels<SignupViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -149,6 +153,7 @@ class AgreementFragment : BottomSheetDialogFragment() {
             viewModel.signupUser()
 
             //서버로 회원가입 api 보내기
+//            viewModel.signup()
 
 
 

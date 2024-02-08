@@ -1,6 +1,6 @@
 package com.example.teacherforboss.data.repository
 
-import com.example.teacherforboss.data.api.UserApi
+import com.example.teacherforboss.data.service.UserApi
 import com.example.teacherforboss.data.model.request.LoginRequest
 import com.example.teacherforboss.data.model.request.SocialLoginRequest
 import com.example.teacherforboss.data.model.response.LoginResponse

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
@@ -16,10 +17,12 @@ import com.example.teacherforboss.databinding.FragmentPasswordBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.signup.fragment.NamePhoneFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+//@AndroidEntryPoint
 class PasswordFragment : Fragment() {
     private lateinit var binding: FragmentPasswordBinding
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel by activityViewModels<SignupViewModel>()
 
     var show_pwEnter: Boolean = false
     var show_PwReEnter: Boolean = false

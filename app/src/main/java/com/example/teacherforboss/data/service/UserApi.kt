@@ -1,5 +1,6 @@
-package com.example.teacherforboss.data.api
+package com.example.teacherforboss.data.service
 
+import com.example.teacherforboss.data.api.ApiClient
 import com.example.teacherforboss.data.model.request.LoginRequest
 import com.example.teacherforboss.data.model.request.SocialLoginRequest
 import com.example.teacherforboss.data.model.response.LoginResponse

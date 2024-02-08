@@ -16,11 +16,25 @@ import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
+import com.example.teacherforboss.domain.model.SignupEntity
+import com.example.teacherforboss.domain.model.SignupResultEntity
+import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.util.view.UiState
 import com.google.gson.annotations.SerializedName
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+//@HiltViewModel
 class SignupViewModel(
+//@Inject constructor(
 //    private val userRepo: UserRepository
+//    private val signupUseCase: SignupUseCase
+
 ): ViewModel() {
     var liveEmail= MutableLiveData<String>("")
     var livePhone=MutableLiveData<String>("")
@@ -36,9 +50,18 @@ class SignupViewModel(
     val rePw: LiveData<String>
         get() = liveRePw
 
-    var name:String=""
-    var gender:String=""
-    var birthDate:String=""
+    var _name=MutableLiveData<String>("")
+    val name:LiveData<String>
+        get() = _name
+
+    var _gender=MutableLiveData<Int>(3)
+    val gender:LiveData<Int>
+        get() = _gender
+
+    var _birthDate=MutableLiveData<String>("")
+    val birthDate:LiveData<String>
+        get() = _birthDate
+
 
     var emailAuthId=MutableLiveData<Long>(0)
     var phoneAuthId=MutableLiveData<Long>(0)
@@ -60,30 +83,40 @@ class SignupViewModel(
 
     val userRepo= UserRepositoryImpl()
 
-    //이메일인증 여부
-    private var _isEmailVerified= MutableLiveData<Boolean>(false)
+    //이메일인증 여부 str->api
+    var _isEmailVerified_str= MutableLiveData<String>("F")
+    val isEmailVerified_str: LiveData<String>
+        get() = _isEmailVerified_str
+
+    //이메일인증 여부 boolean ->data binding
+    var _isEmailVerified= MutableLiveData<Boolean>(false)
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
     //이메일인증확인 맵
     val confirmedEmail= MutableLiveData<MutableMap<String, LiveData<Boolean>>>()
 
-    //휴대폰인증 여부
-    private var _isPhoneVerified=MutableLiveData<Boolean>(false)
+    //휴대폰인증 여부 str->api
+    var _isPhoneVerified_str=MutableLiveData<String>("F")
+    val isPhoneVerified_str:LiveData<String>
+        get()=_isPhoneVerified_str
+
+    //휴대폰 인증 여부 boolean->data binding
+    var _isPhoneVerified=MutableLiveData<Boolean>(false)
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
     //휴대폰인증확인 맵
     val confirmedPhone= MutableLiveData<MutableMap<String,Boolean>>()
 
-
-    fun setEmailVerifiedStatus(isVefiried:Boolean){
-        _isEmailVerified.value=isVefiried
-
-    }
-    fun setPhoneVerifiedStatus(isVefiried: Boolean){
-        _isPhoneVerified.value=isVefiried
-    }
+//
+//    fun setEmailVerifiedStatus(isVefiried:Boolean){
+//        _isEmailVerified.value=isVefiried
+//
+//    }
+//    fun setPhoneVerifiedStatus(isVefiried: Boolean){
+//        _isPhoneVerified.value=isVefiried
+//    }
 
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
     fun emailUser(email:String) {
@@ -133,11 +166,6 @@ class SignupViewModel(
 
     val signupResult: MutableLiveData<BaseResponse<SignupResponse>> = MutableLiveData()
 
-    //isChecked, emailAuth, phoneAuth 파라미터로 넣어야하는지?
-//    fun signupUser(email:String, isChecked:String,password:String, rePassword:String, name:String,
-//                   gender:String, birthDate:String, phone:String,emailAuthId:Long,phoneAuthId:Long)
-//
-    //viewmodel 값으로 직접 넣는것으로 수정중
     fun signupUser()
     {
         signupResult.value = BaseResponse.Loading()
@@ -146,12 +174,11 @@ class SignupViewModel(
             try {
                 val signupRequest = SignupRequest(
                     email = email.value.toString(),
-                    isChecked = isEmailVerified.value.toString(), //이메일인증여부,
                     password = pw.value.toString(),
                     rePassword = rePw.value.toString(),
-                    name = name,
-                    gender = gender,
-                    birthDate = birthDate,
+                    name = name.value.toString(),
+                    gender = gender.value!!,
+                    birthDate = birthDate.value.toString(),
                     phone = phone.value.toString(),
                     emailAuthId = emailAuthId.value!!,//이메일인증식별자,
                     phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
@@ -175,9 +202,43 @@ class SignupViewModel(
         }
     }
 
-//    val helper = AppSignatureHelper(getApplication())
-//    val hash = helper.getAppSignatures()?.get(0)
-//    Log.d("hash test",hash.toString())
+    //ver.지은님 코드 signup
+    private val _signupResultState= MutableSharedFlow<UiState<SignupResultEntity>>()
+    val signupResultState get() = _signupResultState.asSharedFlow()
+//    fun signup(){
+//        viewModelScope.launch {
+//            _signupResultState.emit(UiState.Loading)
+//            runCatching {
+//                signupUseCase(
+//                    signupEntity = SignupEntity(
+//                        email=email.value!!,
+//                        isChecked = isEmailVerified_str.value!!,
+//                        password = pw.value!!,
+//                        rePassword = rePw.value!!,
+//                        name=name.value!!,
+//                        phone=phone.value!!,
+//                        gender=gender.value!!,
+//                        birthDate=birthDate.value!!,
+//                        emailAuthId=emailAuthId.value!!,
+//                        phoneAuthId = phoneAuthId.value!!,
+//                        agreementUsage = agreementUsage.value!!,
+//                        agreementInfo = agreementInfo.value!!,
+//                        agreementAge = agreementAge.value!!,
+//                        agreementEmail = agreementEmail.value!!,
+//                        agreementLocation = agreementLocation.value!!,
+//                        agreementSms = agreementSms.value!!
+//                    )
+//
+//                ).collect(){data->
+//                    _signupResultState.emit((UiState.Success(data)))
+//                }
+//
+//        }.onFailure { ex:Throwable->
+//            _signupResultState.emit(UiState.Error(ex.message))
+//        }
+//    }
+//    }
+
 
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
     fun phoneUser(phone: String,hash:String) {

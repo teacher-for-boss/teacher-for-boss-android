@@ -1,9 +1,8 @@
-package com.example.teacherforboss.data.model.request.signup
+package com.example.teacherforboss.data.model.request
 
-import androidx.lifecycle.LiveData
 import com.google.gson.annotations.SerializedName
 
-data class SignupRequest(
+data class RequestSignupDto(
     @SerializedName("email")
     var email:String,
     @SerializedName("password")
@@ -13,8 +12,8 @@ data class SignupRequest(
     @SerializedName("name")
     var name:String,
     //1남자, 2여자인데 int?
-    @SerializedName("gender")
-    var gender:Int,
+    @SerializedName("Int")
+    var gender:String,
     @SerializedName("birthDate")
     var birthDate:String,
     @SerializedName("phone")
@@ -41,5 +40,4 @@ data class SignupRequest(
 
     @SerializedName("agreementLocation")
     var agreementLocation:String,
-
 )

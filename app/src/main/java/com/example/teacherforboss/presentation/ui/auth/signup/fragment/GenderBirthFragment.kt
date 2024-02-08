@@ -1,12 +1,14 @@
 package com.example.teacherforboss.signup.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.R.style.AppBottomSheetDialogTheme
@@ -14,10 +16,14 @@ import com.example.teacherforboss.databinding.FragmentGenderBirthBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.fragment.AgreementFragment
+import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+//@AndroidEntryPoint
 class GenderBirthFragment : Fragment() {
     private lateinit var binding: FragmentGenderBirthBinding
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel by activityViewModels<SignupViewModel>()
 
 
     override fun onCreateView(
@@ -36,7 +42,15 @@ class GenderBirthFragment : Fragment() {
 
         binding.nextBtn.setOnClickListener {
             //birthDate 가져오기
-            viewModel.birthDate=binding.yearPicker.value.toString()+"-"+binding.monthPicker.value.toString()+"-"+binding.dayPicker.value.toString()
+            val year=binding.yearPicker.value
+            val month=binding.monthPicker.value
+            val day=binding.dayPicker.value
+
+            val formattedMonth = String.format("%02d", month)
+            val birthDate_str=year.toString()+"-"+formattedMonth.toString()+"-"+day.toString()
+            Log.d("birthdate",birthDate_str)
+
+            viewModel._birthDate.value=birthDate_str
 
             val bottomSheetDialog= AgreementFragment()
             bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
@@ -52,7 +66,7 @@ class GenderBirthFragment : Fragment() {
             if (isChecked) {
                 femaleCheckBox.isChecked = false
                 noCheckBox.isChecked = false
-                viewModel.gender="1"
+                viewModel._gender.value=1
             }
         }
 
@@ -60,7 +74,7 @@ class GenderBirthFragment : Fragment() {
             if (isChecked) {
                 maleCheckBox.isChecked = false
                 noCheckBox.isChecked = false
-                viewModel.gender="2"
+                viewModel._gender.value=2
             }
         }
 
@@ -68,7 +82,7 @@ class GenderBirthFragment : Fragment() {
             if (isChecked) {
                 maleCheckBox.isChecked = false
                 femaleCheckBox.isChecked = false
-                viewModel.gender="3"
+                viewModel._gender.value=3
             }
         }
 

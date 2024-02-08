@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.example.teacherforboss.R
@@ -19,11 +20,12 @@ import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.fragment.PasswordFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+//@AndroidEntryPoint
 class EmailFragment : Fragment() {
     private lateinit var binding:FragmentEmailBinding
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel by activityViewModels<SignupViewModel>()
 
     //사용자입력값
     var email=""
@@ -82,15 +84,19 @@ class EmailFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    viewModel.setEmailVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
+                    //viewModel.setEmailVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
+                    if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
+                        viewModel._isEmailVerified_str.value="T"
+                        viewModel._isEmailVerified.value=true
+                    }
                     binding.checkVery.visibility=View.VISIBLE
 
                     //후에 회원가입 버튼 클릭시 현재입력되어있는(liveEmail,viewModel email)값이 confirmed map에 있는지 확인 후
                     //없다면 이메일 인증을 다시 받아야 하니 그거에 맞는 안내 알림 설정!
                     //ex) 사용자가 a라는 이메일로 인증받고 b라는 이메일을 다시 입력했을 경우 방지를 위함
-                    var tempEmailMap= mutableMapOf<String, LiveData<Boolean>>()
-                    tempEmailMap[email]=viewModel.isEmailVerified
-                    viewModel.confirmedEmail.postValue(tempEmailMap)
+//                    var tempEmailMap= mutableMapOf<String, LiveData<Boolean>>()
+//                    tempEmailMap[email]=viewModel.isEmailVerified
+//                    viewModel.confirmedEmail.postValue(tempEmailMap)
 
                 }
                 is BaseResponse.Error->{

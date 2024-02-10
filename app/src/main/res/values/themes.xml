@@ -6,8 +6,18 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>
+    </style>
+
+    <style name="RoundCornerModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
+    </style>
+
     <style name="Theme.TeacherForBoss" parent="Base.Theme.TeacherForBoss"/>
-    
+
     <!-- Button -->
     <style name="Theme.TeacherForBoss.Button" parent="Widget.Material3.Button">
         <item name="android:insetTop">0dp</item>
@@ -24,4 +34,13 @@
         <item name="cornerRadius">@dimen/button_survey_radius</item>
         <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.16</item>
     </style>
+
+    <style name="Theme.TeacherForBoss.Button.auth.next" parent="Theme.TeacherForBoss.Button">
+        <item name="android:height">35dp</item>
+        <item name="android:width">100dp</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.12</item>
+    </style>
+
+
 </resources>

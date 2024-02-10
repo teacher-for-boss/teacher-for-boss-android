@@ -1,7 +1,9 @@
 package com.example.teacherforboss.di
 
 import com.example.teacherforboss.domain.repository.MembersRepository
+import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.PostSurveyUseCase
+import com.example.teacherforboss.domain.usecase.SignupUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ class UseCaseModule {
     @Singleton
     fun providesPostSurveyUseCase(membersRepository: MembersRepository): PostSurveyUseCase =
         PostSurveyUseCase(membersRepository = membersRepository)
+
+    @Provides
+    @Singleton
+    fun providesSignupUseCase(signupRepository: SignupRepository):SignupUseCase =
+        SignupUseCase(signupRepository=signupRepository)
 }

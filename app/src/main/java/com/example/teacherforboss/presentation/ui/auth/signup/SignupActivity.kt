@@ -1,21 +1,33 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
+import AppSignatureHelper
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.teacherforboss.R
+import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.api.SignupResponse
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.EmailFragment
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.signup.AuthOtpReceiver
+import com.example.teacherforboss.signup.fragment.EmailFragment
+import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.Status
+import dagger.hilt.android.AndroidEntryPoint
 
+//@AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
-    private val viewModel:SignupViewModel by viewModels()
+    private val viewModel: SignupViewModel by viewModels()
     var index=0
     val fragmentManager:FragmentManager=supportFragmentManager
 
@@ -24,8 +36,21 @@ class SignupActivity : AppCompatActivity() {
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
 //        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
 //        binding.signupViewModel=viewModel
+
+        //receiver 등록
+        val smsReceiver = MySMSReceiver()
+        registerReceiver(smsReceiver, smsReceiver.doFilter())
+
+        val helper = AppSignatureHelper(getApplication())
+        val hash = helper.getAppSignatures()?.get(0)
+        Log.d("hash test",hash.toString())
+
+
+//        val otpReceiver=AuthOtpReceiver.OtpReceiveListener.g
+//        registerReceiver(otpReceiver,otpReceiver.doFilter())
 
 
         fragmentManager
@@ -139,4 +164,44 @@ class SignupActivity : AppCompatActivity() {
     fun showToast(msg:String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
+
+    fun startSmsRetriver(){
+        val task=SmsRetriever.getClient(this)
+            .startSmsRetriever()
+
+        task.addOnSuccessListener {
+            Log.d("sms","addonSuccessListener")
+        }
+        task.addOnFailureListener {
+            Log.d("sms","fail listener")
+        }
+    }
+
+    inner class MySMSReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (SmsRetriever.SMS_RETRIEVED_ACTION == intent.action) {
+                val extras = intent.extras
+                val status = extras?.get(SmsRetriever.EXTRA_STATUS) as? Status
+                when (status?.statusCode) {
+                    CommonStatusCodes.SUCCESS -> {
+                        val message = extras?.get(SmsRetriever.EXTRA_SMS_MESSAGE) as? String
+                        Log.d("sms", "onReceive\$SUCCESS $message")
+                        if (!message.isNullOrEmpty()) {
+                            showToast(message)
+                        }
+                    }
+                    CommonStatusCodes.TIMEOUT -> {
+                        Log.d("sms", "onReceive\$TIMEOUT")
+                    }
+                }
+            }
+        }
+
+        fun doFilter(): IntentFilter = IntentFilter().apply {
+            addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
+        }
+    }
+
+
+
 }

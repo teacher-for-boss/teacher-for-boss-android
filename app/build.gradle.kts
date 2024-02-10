@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.android.*
 import java.util.Properties
 
 plugins {
@@ -76,6 +77,8 @@ fun getApiKey(propertyKey: String): String {
     return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
+
+
 dependencies {
     implementation("androidx.collection:collection-ktx:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
@@ -116,6 +119,7 @@ dependencies {
     // ViewModel, lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.collection:collection-ktx:1.3.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
@@ -128,15 +132,18 @@ dependencies {
     implementation("com.kakao.sdk:v2-all:2.19.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
     implementation("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
 
+    // progress Bar
+    implementation("com.github.skydoves:progressview:1.1.3")
+
+    //sms
+    implementation("com.google.android.gms:play-services-auth-api-phone:18.0.1")
+
     //naver
     // groovy
     implementation ("com.navercorp.nid:oauth:5.9.0") // jdk 11
 
     //kts
     implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
-
-    // progress Bar
-    implementation("com.github.skydoves:progressview:1.1.3")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.ui.auth.signup.fragment.AgreementFragment"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보수집 및 이용 동의서"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="티쳐포보스(이하 ‘회사'라고 합니다)는 &quot;개인정보보호법&quot; 등 관련 법령을 준수하여, 이용자 권익 보호에 최선을 다하고 있습니다."
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 개인정보 수집 이용 동의(필수)"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="a. 수집항목"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 이름, 메일 주소, 휴대폰 번호, 서비스 실행 상태에서의 이용자 위치정보(GPS)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="b. 개인정보의 수집 및 이용목적"
+                android:textSize="14dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 서비스 이용/해지에 따른 본인 식별\n
+- 서비스 제공(예시: 위치에 따른 콘텐츠/모임/동네 이웃 추천 등)과 이 과정에서의 서비스 성능 개선에 활용\n
+- 서비스 이용기록과 접속 빈도 분석, 서비스 이용에 대한 통계, 맞춤형 서비스 제공"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="c. 개인정보의 보관기간"
+                android:textSize="14dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 회원탈퇴 시 또는 서비스 해지 시 지체없이 파기합니다. 단, 관계법령에 의해 보관해야 하는 정보는 해당 법령에서 정한 기간만큼 보관합니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="d. 동의 거부권 등에 대한 공지"
+                android:textSize="14dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 본 동의는 서비스의 본질적인 기능 제공을 위한 개인정보 수집/이용에 대한 동의로서, 위 내용에 동의하지 않으실 경우 서비스 제공이 불가할 수 있습니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="위 내용 외 개인정보와 관련한 일반적인 내용은 ‘티쳐포보스 개인정보 처리방침'에 따릅니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. 개인정보 수집 이용 동의(선택)"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="티쳐포보스는 이용자의 서비스 이용에 관련하여 아래와 같이 개인정보를 수집 및 이용합니다. 티쳐포보스에서 수집한 개인정보는 개인정보보호법 등 관계 법령에 따라 안전하게 관리됩니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="a. 수집항목"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 성별, 생년월일, 주소정보"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="b. 개인정보"
+                android:textSize="14dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 서비스 제공(지역에 따른 모임/콘텐츠/ 이웃 추천, 이벤트 등 제공)과 이 과정에서의 서비스 성능 개선에 활용"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="c. 개인정보의 보관기간"
+                android:textSize="14dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 회원탈퇴 시 또는 서비스 해지 시 지체없이 파기합니다. 또한 설정화면에서 언제든지 이용자가 직접 삭제 및 수정 가능합니다.\n
+- 단, 관계법령에 의해 보관해야 하는 정보는 해당 법령에서 정한 기간만큼 보관합니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="d. 동의 거부권 등에 대한 공지"
+                android:textSize="14dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 정보주체는 개인 정보의 수집 및 이용 동의를 거부할 권리가 있으나, 이 경우 일반적인 서비스 이용 외에 기타 정보 제공 및 맞춤형 콘텐츠 제공 등에 제약이 있을 수 있습니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="위 내용 외 개인정보와 관련한 일반적인 내용은 ‘티쳐포보스 개인정보 처리방침'에 따릅니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보수집 및 이용 동의서"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="티쳐포보스(이하 ‘회사'라 합니다)은 정보통신망 이용촉진 및 정보보호 등에 관한 법률, 개인정보보호법 등 관련 법령(이하 ‘관련 법령'이라 함)에 따라 이용자의 개인정보를 보호하고, 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보처리방침을 수립합니다.\n\n
+개인정보처리방침은 서비스를 이용하는 이용자(이하 ‘회원이라 합니다)가 언제나 쉽게 열람할 수 있도록 서비스 초기화면을 통해 공개하고 있으며, 개인정보 관련법령, 지침, 고시 또는 회사 정책의 변경에 따라 변경될 수 있습니다.\n\n
+공고 일자: 0000년 00월 00일\n시행 일자: 0000년 00월 00일"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 개인정보의 수집·이용 현황"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회사는 다음과 같이 이용자의 개인정보를 수집합니다. 회사가 처리하고 있는 개인정보는 다음의 수집·이용목적 이외의 용도로는 활용되지 않으며, 수집·이용목적이 변경되는 경우에는 ‘관련 법령'에 따라 별도의 동의를 받는 등 필요한 조치를 이행합니다.\n\n
+이용자 정보의 수집·이용목적, 수집항목, 보유·이용기간은 아래와 같습니다. 또한 채용과 관련된 관계 법령에 따라 이용자의 정보를 수집 및 보관할 수 있습니다."
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- 수집 및 이용 현황"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:showDividers="middle"
+                android:background="#000000"
+                >
+
+                <TableRow>
+                    <TextView
+                        android:text="서비스"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:background="#FFFFFF"
+                        android:layout_marginStart="1dp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:text="수집 및 이용목적"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:background="#FFFFFF"
+                        android:layout_marginEnd="1dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="구분"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:background="#FFFFFF"
+                        android:layout_marginEnd="1dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="수집 및 이용 항목"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:background="#FFFFFF"
+                        android:layout_marginEnd="1dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="보유 및 이용기간"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:background="#FFFFFF"
+                        android:layout_marginEnd="1dp"
+                        android:textStyle="bold"/>
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

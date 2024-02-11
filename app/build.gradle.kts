@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.android.*
 import java.util.Properties
 
 plugins {
@@ -76,6 +77,8 @@ fun getApiKey(propertyKey: String): String {
     return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
+
+
 dependencies {
     implementation("androidx.collection:collection-ktx:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
@@ -99,6 +102,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
     // okhttp3
@@ -115,6 +119,7 @@ dependencies {
     // ViewModel, lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.collection:collection-ktx:1.3.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
@@ -134,6 +139,17 @@ dependencies {
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
     //etc
+    
+    //sms
+    implementation("com.google.android.gms:play-services-auth-api-phone:18.0.1")
+
+    //naver
+    // groovy
+    implementation ("com.navercorp.nid:oauth:5.9.0") // jdk 11
+
+    //kts
+    implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.2")

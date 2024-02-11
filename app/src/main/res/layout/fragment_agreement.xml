@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".signup.fragment.AgreementFragment"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.ui.auth.signup.fragment.AgreementFragment"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <data>
         <variable
@@ -38,190 +38,274 @@
 
         </View>
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/male_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/allCheckBtn"
+            <CheckBox
+                android:id="@+id/all_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전체 동의합니다."
-                android:textColor="@color/black"
+                android:text="전체 동의합니다"
                 android:textSize="16dp"
-                android:textStyle="bold"  />
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/all_checkbox"/>
 
+        </RelativeLayout>
 
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <CheckBox
+                android:id="@+id/agreement_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="이용약관 동의 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/agreement_checkbox"/>
 
-                <RadioButton
-                    android:id="@+id/btn1"
+            <FrameLayout
+                android:id="@+id/agreement_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이용약관 동의 (필수)"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"  />
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
 
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="약관보기"
-                        android:textColor="@color/main_purple_00"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="25dp"/>
+        </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/more_arrow"
-                        android:layout_marginTop="2dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="8dp" />
-                </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
+            <CheckBox
+                android:id="@+id/personalInformation_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="개인정보 수집 및 이용 동의 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/personalInformation_checkbox"/>
 
-                <RadioButton
-                    android:id="@+id/btn2"
+            <FrameLayout
+                android:id="@+id/personalInformation_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="개인정보 수집 및 이용 동의 (필수)"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"  />
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="약관보기"
-                        android:textColor="@color/main_purple_00"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="25dp"/>
+            </FrameLayout>
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/more_arrow"
-                        android:layout_marginTop="2dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="8dp" />
-                </RelativeLayout>
+        </RelativeLayout>
 
-            </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
-            <LinearLayout
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/locationService_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="위치기반서비스 이용 동의 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/locationService_checkbox"/>
 
-                <RadioButton
-                    android:id="@+id/btn3"
+            <FrameLayout
+                android:id="@+id/locationService_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="위치기반서비스 이용 동의 (필수)"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"  />
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="약관보기"
-                        android:textColor="@color/main_purple_00"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="25dp"/>
+            </FrameLayout>
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/more_arrow"
-                        android:layout_marginTop="2dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="8dp" />
-                </RelativeLayout>
+        </RelativeLayout>
 
-            </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
-            <LinearLayout
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/benefitInformation_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="다양한 혜택/정보 수신 동의 (선택)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/benefitInformation_checkbox"/>
 
-                <RadioButton
-                    android:id="@+id/btn4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="다양한 혜택/정보 수신 동의 (선택)"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"  />
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="25dp">
 
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/sms_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp">
+                android:text="SMS"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/sms_checkbox"/>
 
-                <RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp">
+            <CheckBox
+                android:id="@+id/email_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="90dp"
+                android:layout_toRightOf="@id/sms_checkbox"/>
 
-                    <RadioButton
-                        android:id="@+id/btn5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SMS"
-                        android:textSize="14dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/email_checkbox"/>
 
-                    <RadioButton
-                        android:id="@+id/btn6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="이메일"
-                        android:layout_marginStart="20dp"
-                        android:textSize="14dp" />
+        </RelativeLayout>
 
-                </RadioGroup>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/age_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
 
-            <RadioButton
-                android:id="@+id/btn7"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="본인은 만 14세 이상입니다 (필수)"
+                android:textSize="14dp"
                 android:textColor="@color/black"
-                android:textSize="14dp"  />
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/age_checkbox"/>
 
-        </RadioGroup>
+        </RelativeLayout>
 
 
         <View

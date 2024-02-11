@@ -12,5 +12,5 @@ data class NullableBaseResponse<T>(
     @SerialName("message")
     val message: String,
     @SerialName("result")
-    val result: T? = null
+    val result: T? = null,
 )

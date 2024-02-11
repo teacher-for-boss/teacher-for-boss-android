@@ -135,6 +135,11 @@ dependencies {
     // progress Bar
     implementation("com.github.skydoves:progressview:1.1.3")
 
+    //view pager 2
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    //etc
+    
     //sms
     implementation("com.google.android.gms:play-services-auth-api-phone:18.0.1")
 

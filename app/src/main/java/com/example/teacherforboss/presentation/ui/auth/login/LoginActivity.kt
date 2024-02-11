@@ -12,15 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.databinding.ActivityLoginBinding
-
-import com.example.teacherforboss.presentation.ui.auth.common.BaseResponse
-import com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity
-import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginUiState
-import com.example.teacherforboss.presentation.ui.auth.login.kakao.SocialLoginViewModel
-
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.model.response.LoginResponseInterface
 import com.example.teacherforboss.data.tokenmanager.TokenManager
+import com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 
@@ -155,7 +150,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         binding.findEmailBtn.setOnClickListener {
-            val intent=Intent(this,FindPwActivity::class.java)
+            val intent=Intent(this, FindPwActivity::class.java)
             intent.putExtra("destination","email")
             startActivity(intent)
         }

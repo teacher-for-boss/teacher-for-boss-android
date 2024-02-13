@@ -133,8 +133,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    showToast("")
-
                 }
                 is BaseResponse.Error->{
                     showToast("error:"+it.msg)

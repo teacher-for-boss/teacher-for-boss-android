@@ -63,6 +63,8 @@ class SignupActivity : AppCompatActivity() {
                 fragmentManager.popBackStack()
             }
             else{
+                val intent=Intent(this,LoginActivity::class.java)
+                startActivity(intent)
                 //메인 홈화면으로 이동
             }
 

@@ -95,6 +95,7 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.47")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
     annotationProcessor("com.google.dagger:hilt-android-compiler:2.47")
 
     // retrofit2
@@ -149,6 +150,9 @@ dependencies {
 
     //kts
     implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

@@ -69,7 +69,10 @@ class EmailFragment : Fragment() {
 
                 }
                 is BaseResponse.Error->{
-                    Log.d("auth",it.msg.toString())
+                    //중복 이메일인 경우
+                    if(it.msg=="중복 코드"){
+                        binding.veryInfo.text="이미 가입된 이메일 주소입니다."
+                    }
                     showToast("error:"+it.msg)
                 }
             }

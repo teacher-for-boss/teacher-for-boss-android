@@ -67,19 +67,18 @@ class findEmailFragment : Fragment() {
         binding.phoneVerifyBtn.setOnClickListener {
             val pattern= Pattern.compile("010\\d{4}\\d{4}")
             Log.d("phone",pattern.matcher(binding.phoneNumBox.text.toString()).matches().toString())
-            viewModel.phone_check.value=pattern.matcher(binding.phoneNumBox.text.toString()).matches()
+            viewModel.phone_check.value=pattern.matcher(viewModel.livePhoneNumber.toString()).matches()
 
-            binding.phoneVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
-            binding.phoneCodeBox.visibility=View.VISIBLE
-            binding.inputcodeContainer.visibility=View.VISIBLE
-            startTimer()
 
-            val phone = binding.phoneNumBox.text.toString()
-            Log.d("findPw hash",hash.toString())
-            Log.d("findPw phone",phone)
+            if(viewModel.phone_check.value==true){
+                //binding.phoneVerifyBtn.visibility = View.INVISIBLE
+                binding.phoneCodeBox.visibility=View.VISIBLE
+                binding.inputcodeContainer.visibility=View.VISIBLE
+                startTimer()
+                viewModel.phoneUser(hash.toString())
+            }
 
-            //viewModel.phoneUser(viewModel.phoneNumber.value!!,hash.toString())
 
         }
 
@@ -91,8 +90,11 @@ class findEmailFragment : Fragment() {
                     Log.d("auth",it.data?.result?.phoneAuthId.toString())
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
-                is BaseResponse.Error->{
-                    showToast("error"+it.msg)
+                is BaseResponse.Error ->{
+                    if(it.msg=="중복 코드"){
+                        binding.veryInfo.text="이미 가입된 휴대폰 번호 입니다."
+                    }
+                    showToast("error"+it?.msg)
                 }
             }
         }
@@ -118,7 +120,7 @@ class findEmailFragment : Fragment() {
 
                 }
                 is BaseResponse.Error->{
-                    showToast("error:"+it.msg)
+                    showToast("error:"+it?.msg)
                 }
             }
         }
@@ -140,14 +142,18 @@ class findEmailFragment : Fragment() {
                     }
 
                     is UiState.Success -> {
-                        viewModel.matchedEmail.value = uiState.data?.result?.email
-                        viewModel.matchedcreatedAt.value = uiState.data?.result?.createdAt
-                        //Log.d("findinfo",uiState.data?.result?.email.toString())
+                        viewModel.matchedEmail.value = uiState.data?.email
+                        var created_at=uiState.data?.createdAt!!.substring(0,10)
+                        viewModel.matchedcreatedAt.value = created_at
                         navController.navigate(R.id.action_findEmailFragment_to_findEmailFragment2)
 
                     }
 
-                    is UiState.Error -> showToast(uiState.message!!)
+                    is UiState.Error -> {
+//                        showToast(uiState.message!!)
+                        navController.navigate(R.id.action_findEmailFragment_to_findEmailFragment3)
+                    }
+
                     else -> {
 
                     }

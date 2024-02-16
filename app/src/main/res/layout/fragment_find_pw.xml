@@ -149,6 +149,7 @@
             </View>
 
             <Button
+                android:enabled="@{findPwviewModel.isEmailVerified()?true:false}"
                 android:visibility="invisible"
                 android:background="@drawable/radius_purple_button"
                 android:text="비밀번호 재설정하러가기 임시버튼"

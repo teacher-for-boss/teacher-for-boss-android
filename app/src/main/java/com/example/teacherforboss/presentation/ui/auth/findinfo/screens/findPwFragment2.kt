@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.teacherforboss.R
@@ -19,6 +20,8 @@ import com.example.teacherforboss.databinding.FragmentFindPw2Binding
 import com.example.teacherforboss.databinding.FragmentFindPwBinding
 import com.example.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel
 import com.example.teacherforboss.signup.fragment.NamePhoneFragment
+import com.example.teacherforboss.util.view.UiState
+import kotlinx.coroutines.launch
 
 class findPwFragment2 : Fragment() {
     private lateinit var binding: FragmentFindPw2Binding
@@ -70,6 +73,10 @@ class findPwFragment2 : Fragment() {
 
         })
 
+        binding.changePwBtn.setOnClickListener {
+            viewModel.postResetPw()
+        }
+
         viewModel.liveRePw.observe(viewLifecycleOwner, Observer{
             if(viewModel.all_check.value==true){
                 binding.pwInfo.visibility = View.VISIBLE
@@ -109,10 +116,35 @@ class findPwFragment2 : Fragment() {
 
         binding.changePwBtn.setOnClickListener {
             if(viewModel.all_check.value==false) showToast("비밀번호 조건을 충족시키지 않습니다")
-            else if(viewModel.rePw_check.value==true) navController.navigate(R.id.action_findPwFragment2_to_finishFindPwActivity)
+            else if(viewModel.rePw_check.value==true){
+                viewModel.postFindPw()
+            }
             else showToast("재입력한 비밀번호가 일치하지 않습니다.")
 
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.resetPwResultState.collect{uiState->
+                when(uiState){
+                    is UiState.Loading->{
+                        showToast("로딩중")
+                    }
+                    is UiState.Success->{
+                        navController.navigate(R.id.action_findPwFragment2_to_finishFindPwActivity)
+                    }
+                    is UiState.Error->{
+                        showToast(uiState.message!!)
+                    }
+                    else->{
+                        showToast("에러가 발생했습니다..")
+                        //추후엔 에러 발생 페이지도 만들면 좋을듯
+                    }
+                }
+
+            }
+        }
+
+
     }
 
     fun showToast(msg:String){

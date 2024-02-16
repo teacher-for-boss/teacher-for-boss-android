@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.model.request.findInfo.RequestFindEmailDto
+import com.example.teacherforboss.data.model.request.findInfo.RequestFindPwDto
+import com.example.teacherforboss.data.model.request.findInfo.RequestResetPwDto
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
@@ -13,6 +15,7 @@ import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.model.response.findInfo.ResponseFindEmailDto
 import com.example.teacherforboss.data.model.response.findInfo.ResponseFindPwDto
+import com.example.teacherforboss.data.model.response.findInfo.ResponseResetPwDto
 import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
@@ -68,16 +71,17 @@ class FindPwViewModel:ViewModel() {
     val email_check=MutableLiveData<Boolean>(true)
 
     var emailAuthId=MutableLiveData<Long>(1) //test용 원래는 0으로 설정
-    var phoneAuthId=MutableLiveData<Long>(19)
+    var phoneAuthId=MutableLiveData<Long>(0)
+
+    var memberId=MutableLiveData<Long>(0)
 
     val matchedEmail=MutableLiveData<String>("")
     val matchedcreatedAt=MutableLiveData<String>("")
 
-    //find email
+    // 1. auth/find/email
 
     val _findEmailResultState=MutableStateFlow<UiState<ResponseFindEmailDto?>>(UiState.Empty)
     val findEmailResultState get() = _findEmailResultState.asStateFlow()
-
     fun postFindEmail(){
         viewModelScope.launch {
             _findEmailResultState.value=UiState.Loading
@@ -85,13 +89,12 @@ class FindPwViewModel:ViewModel() {
 
             try{
                 val response=findInfoRepo.findEmail(RequestFindEmailDto(phoneAuthId=phoneAuthId.value!!))
-                Log.d("findinfo",response?.body().toString())
-                if(response?.body()?.code=="COMMON200"){
-                    _findEmailResultState.value=UiState.Success(response.body()!!)
-                    _findEmailResultState.emit(UiState.Success(response.body())!!)
+                if(response?.code=="COMMON200"){
+//                    _findEmailResultState.value=UiState.Success(response?.result)
+                    _findEmailResultState.emit(UiState.Success(response?.result))
                 }
                 else{
-                    _findEmailResultState.value=UiState.Error(response?.body()?.message)
+                    _findEmailResultState.value=UiState.Error(response?.message)
                 }
             }catch (e:Exception){
                 _findEmailResultState.value=(UiState.Error(e.message))
@@ -100,17 +103,17 @@ class FindPwViewModel:ViewModel() {
             }
     }
 
-    //find pw
 
-    //phone
+
+    //1-1.auth/phone
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
-    fun phoneUser(phone: String,hash:String) {
+    fun phoneUser(hash:String) {
         phoneResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
             try {
                 val phoneRequest = PhoneRequest(
-                    phone = phone,
+                    phone = livePhoneNumber.toString(),
                     purpose = 2,//이메일 찾기
                     appHash = hash
                 )
@@ -118,7 +121,9 @@ class FindPwViewModel:ViewModel() {
 
                 if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
-                } else {
+                } else if(response?.body()?.code=="중복코드"){
+                    phoneResult.value=BaseResponse.Error(response?.body()?.code)
+                }else {
                     phoneResult.value = BaseResponse.Error(response?.message())
                 }
             } catch (ex: Exception) {
@@ -127,6 +132,7 @@ class FindPwViewModel:ViewModel() {
         }
     }
 
+    //1-2. auth/phone/check
     val phoneCheckResult: MutableLiveData<BaseResponse<PhoneCheckResponse>> = MutableLiveData()
     fun phoneCheckUser(phoneAuthId: Long, phoneAuthCode: String) {
         phoneCheckResult.value = BaseResponse.Loading()
@@ -150,7 +156,32 @@ class FindPwViewModel:ViewModel() {
         }
     }
 
-    //email
+    //2. auth/find/password
+
+    val _findpwResultState=MutableStateFlow<UiState<ResponseFindPwDto?>>(UiState.Empty)
+    val findpwResultState get() = _findpwResultState.asStateFlow()
+    fun postFindPw(){
+        viewModelScope.launch {
+            _findpwResultState.emit(UiState.Loading)
+
+            try{
+                val response=findInfoRepo.findPw(RequestFindPwDto(emailAuthId=emailAuthId.value!!))
+                if(response?.code=="COMMON200"){
+                    _findpwResultState.emit(UiState.Success(response.result))
+                }
+                else{
+                    _findpwResultState.value=UiState.Error(response?.message)
+                }
+            }catch (e:Exception){
+                _findEmailResultState.value=(UiState.Error(e.message))
+            }
+
+        }
+    }
+
+
+
+    //2-1. auth/email
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
     fun emailUser() {
         emailResult.value = BaseResponse.Loading()
@@ -165,7 +196,12 @@ class FindPwViewModel:ViewModel() {
 
                 if (response?.body()?.code=="COMMON200") {
                     emailResult.value = BaseResponse.Success(response.body())
-                } else {
+                }
+//                else if(response?.body()?.code=="COMMON400") {
+//                    emailResult.value = BaseResponse.Error(response.body())
+//                }
+
+                else {
                     emailResult.value = BaseResponse.Error(response?.message())
                 }
             } catch (ex: Exception) {
@@ -175,13 +211,13 @@ class FindPwViewModel:ViewModel() {
     }
 
     val emailCheckResult: MutableLiveData<BaseResponse<EmailCheckResponse>> = MutableLiveData()
-    fun emailCheckUser(emailAuthId:Long,emailAuthCode:String) {
+    fun emailCheckUser(emailAuthCode:String) {
         emailCheckResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
             try {
                 val emailCheckRequest = EmailCheckRequest(
-                    emailAuthId = emailAuthId,
+                    emailAuthId = emailAuthId.value!!,
                     emailAuthCode = emailAuthCode
                 )
                 val response = userRepo.emailCheck(emailCheckRequest = emailCheckRequest)
@@ -196,6 +232,29 @@ class FindPwViewModel:ViewModel() {
             }
         }
     }
+
+    // 3. auth/resetPw
+    val _resetPwResultState= MutableStateFlow<UiState<ResponseResetPwDto?>>(UiState.Empty)
+    val resetPwResultState get() = _resetPwResultState.asStateFlow()
+
+    fun postResetPw(){
+        viewModelScope.launch {
+            _resetPwResultState.emit(UiState.Loading)
+
+            try{
+                val response=findInfoRepo.resetPw(RequestResetPwDto(memberId.value!!,pw.value!!,rePw.value!!))
+                if(response?.code=="COMMON200"){
+                    _resetPwResultState.emit(UiState.Success(response.result))
+                }else{
+                    _resetPwResultState.emit(UiState.Error(response?.message))
+                }
+            }catch (e:Exception){
+                _resetPwResultState.emit(UiState.Error(e.message))
+            }
+        }
+    }
+
+
 
 
 }

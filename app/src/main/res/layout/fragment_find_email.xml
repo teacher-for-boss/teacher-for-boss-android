@@ -151,7 +151,7 @@
             </View>
 
             <Button
-                android:visibility='visible'
+                android:visibility='invisible'
                 android:background="@drawable/radius_purple_button"
                 android:text="이메일 찾기"
                 android:textColor="@color/white"

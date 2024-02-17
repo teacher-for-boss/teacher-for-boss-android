@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.examResult.screens.WrongNotesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:src="@drawable/result_exam_wrong_test"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="오답노트" />
+        android:layout_height="match_parent"></ImageView>
 
 </FrameLayout>

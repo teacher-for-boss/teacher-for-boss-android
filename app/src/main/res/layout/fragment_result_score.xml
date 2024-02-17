@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.examResult.screens.ScoreFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:src="@drawable/exam_result_score_test"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="score" />
+        android:layout_height="match_parent">
 
+    </ImageView>
 </FrameLayout>

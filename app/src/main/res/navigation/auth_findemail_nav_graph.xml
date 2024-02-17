@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_findEmailFragment_to_findEmailFragment2"
             app:destination="@id/findEmailFragment2" />
+        <action
+            android:id="@+id/action_findEmailFragment_to_findEmailFragment3"
+            app:destination="@id/findEmailFragment3" />
     </fragment>
     <fragment
         android:id="@+id/findEmailFragment2"
@@ -34,4 +37,17 @@
         android:name="com.example.teacherforboss.presentation.ui.auth.login.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/findEmailFragment3"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment3"
+        android:label="fragment_find_email3"
+        tools:layout="@layout/fragment_find_email3" >
+        <action
+            android:id="@+id/action_findEmailFragment3_to_signupActivity"
+            app:destination="@id/signupActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/signupActivity"
+        android:name="com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity"
+        android:label="SignupActivity" />
 </navigation>

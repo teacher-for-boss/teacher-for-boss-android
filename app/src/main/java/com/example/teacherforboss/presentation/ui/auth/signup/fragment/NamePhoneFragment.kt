@@ -58,8 +58,6 @@ class NamePhoneFragment : Fragment() {
 
         //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
-            //이름
-            viewModel._name.value=binding.nameBox.text.toString()
 
             binding.phoneVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
@@ -67,8 +65,6 @@ class NamePhoneFragment : Fragment() {
             startTimer()
 
             phone = binding.phoneNumBox.text.toString()
-            Log.d("auth hash",hash.toString())
-            Log.d("auth phone",phone)
 
             viewModel.phoneUser(viewModel.phone.value.toString(),hash.toString())
 
@@ -83,6 +79,9 @@ class NamePhoneFragment : Fragment() {
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
+                    if(it.msg=="이미 가입된 전화번호입니다."){
+                        binding.veryInfo.text="이미 가입된 전화번호입니다."
+                    }
                     showToast("error"+it.msg)
                 }
             }

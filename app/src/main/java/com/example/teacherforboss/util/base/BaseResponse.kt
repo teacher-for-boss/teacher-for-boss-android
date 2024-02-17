@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class BaseResponse<T>(
     @SerialName("isSuccess")
-    val isSuccess: Int,
+    val isSuccess: Boolean,
     @SerialName("code")
     val code: String,
     @SerialName("message")

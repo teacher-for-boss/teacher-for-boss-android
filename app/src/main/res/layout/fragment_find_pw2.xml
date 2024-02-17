@@ -53,6 +53,7 @@
                 </EditText>
 
                 <ImageView
+                    android:id="@+id/pw_eyeClosed"
                     android:layout_width="20dp"
                     android:layout_height="25dp"
                     android:src="@drawable/pw_eyeclosed"
@@ -62,6 +63,7 @@
                     android:visibility="visible" />
 
                 <ImageView
+                    android:id="@+id/pw_eyeOpen"
                     android:layout_width="20dp"
                     android:layout_height="25dp"
                     android:src="@drawable/pw_eyeopen"
@@ -144,6 +146,7 @@
                 </EditText>
 
                 <ImageView
+                    android:id="@+id/rePw_eyeClosed"
                     android:layout_width="20dp"
                     android:layout_height="25dp"
                     android:src="@drawable/pw_eyeclosed"
@@ -153,6 +156,7 @@
                     android:visibility="visible" />
 
                 <ImageView
+                    android:id="@+id/rePw_eyeOpen"
                     android:layout_width="20dp"
                     android:layout_height="25dp"
                     android:src="@drawable/pw_eyeopen"
@@ -181,6 +185,8 @@
 
             </View>
 
+
+
             <Button
                 android:background="@drawable/radius_purple_button"
                 android:text="비밀번호 재설정"
@@ -190,8 +196,6 @@
                 android:layout_height="wrap_content">
 
             </Button>
-
-
         </LinearLayout>
 
 

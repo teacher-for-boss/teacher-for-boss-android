@@ -20,6 +20,7 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginU
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.survey.SurveyStartActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -71,6 +72,8 @@ class LoginActivity : AppCompatActivity() {
                     showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
                     // 설문조사 여부에 따라 다른 activity로 이동
+                    val intent=Intent(this,SurveyStartActivity::class.java)
+                    startActivity(intent)
 
                 }
                 is BaseResponse.Error ->{

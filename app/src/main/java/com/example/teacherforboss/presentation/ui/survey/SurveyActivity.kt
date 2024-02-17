@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class SurveyActivity :
     BindingActivity<ActivitySurveyBinding>(R.layout.activity_survey) {
     private val surveyViewModel: SurveyViewModel by viewModels()
@@ -55,7 +55,7 @@ class SurveyActivity :
             when (binding.vpSurvey.currentItem) {
                 fragmentList.size - 1 -> {
                     navigateToMain()
-                    surveyViewModel.postSurveyResult()
+//                    surveyViewModel.postSurveyResult()
                 }
 
                 else -> binding.vpSurvey.currentItem++

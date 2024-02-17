@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class SurveyProblemReasonFragment :
     BindingFragment<FragmentSurveyProblemReasonBinding>(R.layout.fragment_survey_problem_reason) {
     private val viewModel by activityViewModels<SurveyViewModel>()

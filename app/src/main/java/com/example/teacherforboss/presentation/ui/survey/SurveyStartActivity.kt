@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySurveyStartBinding
-import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.util.base.BindingActivity
 

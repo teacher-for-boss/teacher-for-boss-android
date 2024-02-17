@@ -5,9 +5,8 @@ import android.view.View
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentSurveyCompleteBinding
 import com.example.teacherforboss.util.base.BindingFragment
-import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
+// @AndroidEntryPoint
 class SurveyCompleteFragment :
     BindingFragment<FragmentSurveyCompleteBinding>(R.layout.fragment_survey_complete) {
 

@@ -79,6 +79,9 @@ class NamePhoneFragment : Fragment() {
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
+                    if(it.msg=="이미 가입된 전화번호입니다."){
+                        binding.veryInfo.text="이미 가입된 전화번호입니다."
+                    }
                     showToast("error"+it.msg)
                 }
             }

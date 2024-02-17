@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -132,7 +133,11 @@ class SignupViewModel(
 
                 if (response?.body()?.code=="COMMON200") {
                     emailResult.value = BaseResponse.Success(response.body())
-                } else {
+                }else if(response?.body()?.code=="AUTH40016"){
+                    Log.d("email",response!!.body()?.message.toString())
+                    emailResult.value = BaseResponse.Error(response!!.body()?.message.toString())
+                }
+                else {
                     emailResult.value = BaseResponse.Error(response?.message())
                 }
             } catch (ex: Exception) {
@@ -255,7 +260,11 @@ class SignupViewModel(
 
                 if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
-                } else {
+                }else if(response?.body()?.code=="AUTH40017"){
+
+                    phoneResult.value = BaseResponse.Error(response!!.body()?.message)
+                }
+                else {
                     phoneResult.value = BaseResponse.Error(response?.message())
                 }
             } catch (ex: Exception) {

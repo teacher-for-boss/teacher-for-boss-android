@@ -23,7 +23,8 @@ class SurveyStartActivity :
 
     private fun initLayout() {
         // TODO 로그인 시 저장되는 사용자 이름 쉐프에서 가져와 출력
-        String.format(resources.getString(R.string.survey_start_name), "김빛나")
+        var text = getString(R.string.survey_start_name, "하지은")
+        binding.surveyStartWelcomeName.text = text
     }
 
     private fun addListeners() {

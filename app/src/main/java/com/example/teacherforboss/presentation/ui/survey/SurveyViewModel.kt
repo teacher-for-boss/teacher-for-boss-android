@@ -2,14 +2,10 @@ package com.example.teacherforboss.presentation.ui.survey
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.SurveyEntity
 import com.example.teacherforboss.domain.model.SurveyResultEntity
-import com.example.teacherforboss.domain.usecase.PostSurveyUseCase
 import com.example.teacherforboss.presentation.type.SurveyType
 import com.example.teacherforboss.util.combineAll
 import com.example.teacherforboss.util.view.UiState
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,10 +14,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-//@HiltViewModel
+// @HiltViewModel
 class SurveyViewModel(
 //    private val postSurveyUseCase: PostSurveyUseCase
 ) : ViewModel() {
@@ -75,6 +69,7 @@ class SurveyViewModel(
 
     fun setSelectedStudy(answer: Int) {
         _selectedStudy.value.add(answer)
+        setSelectedStudySize()
     }
 
     fun setSelectedStudySize() {
@@ -92,7 +87,7 @@ class SurveyViewModel(
         setSelectedStudySize()
     }
 
-//    fun postSurveyResult() {
+    //    fun postSurveyResult() {
 //        viewModelScope.launch {
 //            _surveyResultState.emit(UiState.Loading)
 //            runCatching {

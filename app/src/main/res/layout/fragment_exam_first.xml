@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="examViewModel"
+            type="com.example.teacherforboss.presentation.ui.exam.ExamViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.exam.question.ExamFirstFragment">
+
+        <TextView
+            android:id="@+id/tv_exam_first_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/exam_question1"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/rg_exam"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="90dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_exam_first_question">
+
+            <RadioButton
+                android:id="@+id/btn_exam_first_answer"
+                android:layout_width="@dimen/check_survey_width"
+                android:layout_height="@dimen/check_survey_height"
+                android:background="@drawable/selector_survey_check_box"
+                android:button="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioButton
+                android:id="@+id/btn_exam_second_answer"
+                android:layout_width="@dimen/check_survey_width"
+                android:layout_height="@dimen/check_survey_height"
+                android:layout_marginTop="@dimen/spacing44"
+                android:background="@drawable/selector_survey_check_box"
+                android:button="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_exam_first_answer" />
+
+            <RadioButton
+                android:id="@+id/btn_exam_third_answer"
+                android:layout_width="@dimen/check_survey_width"
+                android:layout_height="@dimen/check_survey_height"
+                android:layout_marginTop="@dimen/spacing44"
+                android:background="@drawable/selector_survey_check_box"
+                android:button="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_exam_second_answer" />
+
+            <RadioButton
+                android:id="@+id/btn_exam_fourth_answer"
+                android:layout_width="@dimen/check_survey_width"
+                android:layout_height="@dimen/check_survey_height"
+                android:layout_marginTop="@dimen/spacing44"
+                android:background="@drawable/selector_survey_check_box"
+                android:button="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_exam_third_answer" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_exam_first_answer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing15"
+            android:layout_marginTop="87dp"
+            android:paddingVertical="@dimen/spacing3"
+            android:text="@string/exam_question1_answer1"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintStart_toEndOf="@id/rg_exam"
+            app:layout_constraintTop_toBottomOf="@id/tv_exam_first_question" />
+
+        <TextView
+            android:id="@+id/tv_exam_second_answer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing15"
+            android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing3"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/exam_question1_answer2"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintStart_toEndOf="@id/rg_exam"
+            app:layout_constraintTop_toBottomOf="@id/tv_exam_first_answer" />
+
+        <TextView
+            android:id="@+id/tv_exam_third_answer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing15"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing3"
+            android:text="@string/exam_question1_answer3"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintStart_toEndOf="@id/rg_exam"
+            app:layout_constraintTop_toBottomOf="@id/tv_exam_second_answer" />
+
+        <TextView
+            android:id="@+id/tv_exam_fourth_answer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing15"
+            android:layout_marginTop="@dimen/spacing14"
+            android:paddingVertical="@dimen/spacing4"
+            android:text="@string/exam_question1_answer4"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintStart_toEndOf="@id/rg_exam"
+            app:layout_constraintTop_toBottomOf="@id/tv_exam_third_answer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

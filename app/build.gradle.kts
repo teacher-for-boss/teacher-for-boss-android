@@ -5,9 +5,9 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
-    id("org.jetbrains.kotlin.kapt")
 }
 
 val properties = Properties().apply {
@@ -94,9 +94,9 @@ dependencies {
     implementation("javax.inject:javax.inject:1")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.47")
+    implementation("com.google.dagger:hilt-android:2.44")
     implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
-    annotationProcessor("com.google.dagger:hilt-android-compiler:2.47")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
 
     // retrofit2
     val retrofit_version = "2.9.0"
@@ -171,4 +171,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+kapt {
+    correctErrorTypes = true
 }

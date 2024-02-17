@@ -42,22 +42,24 @@ class SurveyViewModel(
     private val _surveyResultState = MutableSharedFlow<UiState<SurveyResultEntity>>()
     val surveyResultState get() = _surveyResultState.asSharedFlow()
 
+    private val selectedStudySize = MutableStateFlow<Int>(0)
+
     val surveyBtnEnabled: StateFlow<Boolean> = listOf(
         currentPage,
         selectedJob,
-        _selectedStudy,
+        selectedStudySize,
         selectedProblem,
         problemDescription,
     ).combineAll()
         .map { values ->
             val currentPage = values[0] as Int
             val selectedJob = values[1] as Int
-            val selectedStudy = values[2] as ArrayList<*>
+            val selectedStudySize = values[2] as Int
             val selectedProblem = values[3] as Int
             val problemDescription = values[4] as String
 
             (currentPage == SurveyType.JOB.position && selectedJob != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
-                (currentPage == SurveyType.STUDY.position && !selectedStudy.isNullOrEmpty()) ||
+                (currentPage == SurveyType.STUDY.position && selectedStudySize != 0) ||
                 (currentPage == SurveyType.PROBLEM.position && selectedProblem != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
                 (currentPage == SurveyType.DESCRIPTION.position && problemDescription.isNotBlank()) ||
                 (currentPage == SurveyType.COMPLETE.position)
@@ -75,13 +77,19 @@ class SurveyViewModel(
         _selectedStudy.value.add(answer)
     }
 
+    fun setSelectedStudySize() {
+        selectedStudySize.value = _selectedStudy.value.size
+    }
+
     fun deleteSelectedStudy(answer: Int) {
         if (_selectedStudy.value.size == 1) _selectedStudy.value.clear()
         _selectedStudy.value.remove(answer)
+        setSelectedStudySize()
     }
 
     fun setSelectedProblem(answer: Int) {
         _selectedProblem.value = answer
+        setSelectedStudySize()
     }
 
 //    fun postSurveyResult() {

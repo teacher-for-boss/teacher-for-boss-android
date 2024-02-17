@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.main.menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMainHomeBinding
+import com.example.teacherforboss.presentation.ui.exam.ExamStartActivity
 import com.example.teacherforboss.presentation.ui.main.ViewPagerAdapter
+import com.example.teacherforboss.presentation.ui.survey.SurveyStartActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -40,7 +43,16 @@ class HomeFragment : Fragment() {
             }
         }.attach()
 
+        binding.testBtn.setOnClickListener { navigateToExam() }
+
         return binding.root
 
+    }
+
+    private fun navigateToExam(){
+        activity?.let{
+            val intent = Intent(context, ExamStartActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

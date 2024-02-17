@@ -133,6 +133,7 @@ class SurveyActivity :
                 navigateToPreviousFragment()
             }
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressed)
     }
 
     companion object {

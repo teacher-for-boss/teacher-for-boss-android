@@ -51,5 +51,6 @@ class SurveyStartActivity :
                 navigateToMain()
             }
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressed)
     }
 }

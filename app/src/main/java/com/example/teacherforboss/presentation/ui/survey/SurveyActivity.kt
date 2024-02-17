@@ -17,11 +17,10 @@ import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemF
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyProblemReasonFragment
 import com.example.teacherforboss.presentation.ui.survey.question.SurveyStudyFragment
 import com.example.teacherforboss.util.base.BindingActivity
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-//@AndroidEntryPoint
+// @AndroidEntryPoint
 class SurveyActivity :
     BindingActivity<ActivitySurveyBinding>(R.layout.activity_survey) {
     private val surveyViewModel: SurveyViewModel by viewModels()
@@ -37,6 +36,7 @@ class SurveyActivity :
         initLayout()
         addListeners()
         collectData()
+        onBackPressedBtn()
     }
 
     private fun initLayout() {
@@ -124,6 +124,14 @@ class SurveyActivity :
         Intent(this, MainActivity::class.java).apply {
             startActivity(this)
             finish()
+        }
+    }
+
+    private fun onBackPressedBtn() {
+        onBackPressed = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigateToPreviousFragment()
+            }
         }
     }
 

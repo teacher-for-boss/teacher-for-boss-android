@@ -8,7 +8,6 @@ import com.example.teacherforboss.domain.usecase.PostSurveyUseCase
 import com.example.teacherforboss.presentation.type.SurveyType
 import com.example.teacherforboss.util.combineAll
 import com.example.teacherforboss.util.view.UiState
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
-    private val postSurveyUseCase: PostSurveyUseCase
+    private val postSurveyUseCase: PostSurveyUseCase,
 ) : ViewModel() {
     private val _currentPage = MutableStateFlow(FIRST_FRAGMENT_POSITION)
     val currentPage get() = _currentPage.asStateFlow()
@@ -42,22 +41,24 @@ class SurveyViewModel @Inject constructor(
     private val _surveyResultState = MutableSharedFlow<UiState<SurveyResultEntity>>()
     val surveyResultState get() = _surveyResultState.asSharedFlow()
 
+    private val selectedStudySize = MutableStateFlow<Int>(0)
+
     val surveyBtnEnabled: StateFlow<Boolean> = listOf(
         currentPage,
         selectedJob,
-        _selectedStudy,
+        selectedStudySize,
         selectedProblem,
         problemDescription,
     ).combineAll()
         .map { values ->
             val currentPage = values[0] as Int
             val selectedJob = values[1] as Int
-            val selectedStudy = values[2] as ArrayList<*>
+            val selectedStudySize = values[2] as Int
             val selectedProblem = values[3] as Int
             val problemDescription = values[4] as String
 
             (currentPage == SurveyType.JOB.position && selectedJob != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
-                (currentPage == SurveyType.STUDY.position && !selectedStudy.isNullOrEmpty()) ||
+                (currentPage == SurveyType.STUDY.position && selectedStudySize != 0) ||
                 (currentPage == SurveyType.PROBLEM.position && selectedProblem != DEFAULT_SELECTED_NUMBER && selectedJob != null) ||
                 (currentPage == SurveyType.DESCRIPTION.position && problemDescription.isNotBlank()) ||
                 (currentPage == SurveyType.COMPLETE.position)
@@ -75,13 +76,19 @@ class SurveyViewModel @Inject constructor(
         _selectedStudy.value.add(answer)
     }
 
+    fun setSelectedStudySize() {
+        selectedStudySize.value = _selectedStudy.value.size
+    }
+
     fun deleteSelectedStudy(answer: Int) {
         if (_selectedStudy.value.size == 1) _selectedStudy.value.clear()
         _selectedStudy.value.remove(answer)
+        setSelectedStudySize()
     }
 
     fun setSelectedProblem(answer: Int) {
         _selectedProblem.value = answer
+        setSelectedStudySize()
     }
 
     fun postSurveyResult() {
@@ -93,9 +100,9 @@ class SurveyViewModel @Inject constructor(
                         question1 = selectedJob.value,
                         question2 = selectedStudy.value,
                         question3 = selectedProblem.value,
-                        question4 = problemDescription.value
-                    )
-                ).collect(){data ->
+                        question4 = problemDescription.value,
+                    ),
+                ).collect() { data ->
                     _surveyResultState.emit(UiState.Success(data))
                 }
             }.onFailure { exception: Throwable ->
@@ -103,6 +110,7 @@ class SurveyViewModel @Inject constructor(
             }
         }
     }
+
     companion object {
         private const val FIRST_FRAGMENT_POSITION = 0
         private const val DEFAULT_SELECTED_NUMBER = 0

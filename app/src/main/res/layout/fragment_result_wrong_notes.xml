@@ -6,6 +6,7 @@
     tools:context=".presentation.ui.examResult.screens.WrongNotesFragment">
 
     <ImageView
+        android:paddingTop="10dp"
         android:src="@drawable/result_exam_wrong_test"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ImageView>

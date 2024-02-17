@@ -61,4 +61,10 @@
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
 
+    <style name="TextAppearance.TeacherForBoss.Body.Medium.10" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">10dp</item>
+        <item name="lineHeight">12dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
 </resources>

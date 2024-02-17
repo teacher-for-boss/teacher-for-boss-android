@@ -21,4 +21,9 @@
     <!-- checkbox -->
     <dimen name="check_survey_height">18dp</dimen>
     <dimen name="check_survey_width">18dp</dimen>
+
+    <!-- bottomNavigation -->
+    <dimen name="design_bottom_navigation_text_size">13dp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size">13dp</dimen>
+
 </resources>

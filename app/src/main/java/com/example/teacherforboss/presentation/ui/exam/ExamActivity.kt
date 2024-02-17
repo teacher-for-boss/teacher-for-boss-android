@@ -15,7 +15,6 @@ import com.example.teacherforboss.presentation.ui.exam.question.ExamFourthFragme
 import com.example.teacherforboss.presentation.ui.exam.question.ExamSecondFragment
 import com.example.teacherforboss.presentation.ui.exam.question.ExamThirdFragment
 import com.example.teacherforboss.presentation.ui.examResult.examResultActivity
-import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.util.base.BindingActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

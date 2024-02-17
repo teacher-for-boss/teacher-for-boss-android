@@ -28,45 +28,45 @@
 
         <TextView
             android:id="@+id/tv_exam_slash"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing16"
             android:text="@string/exam_slash"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
-            app:layout_constraintStart_toStartOf="@id/gl_exam_start"
             app:layout_constraintEnd_toEndOf="@id/gl_exam_end"
-            android:layout_marginTop="@dimen/spacing16"/>
+            app:layout_constraintStart_toStartOf="@id/gl_exam_start"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_exam_current_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/tv_exam_slash"
-            app:layout_constraintEnd_toStartOf="@id/tv_exam_slash"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
             app:layout_constraintBottom_toBottomOf="@id/tv_exam_slash"
-            tools:text="1"
-            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"/>
+            app:layout_constraintEnd_toStartOf="@id/tv_exam_slash"
+            app:layout_constraintTop_toTopOf="@id/tv_exam_slash"
+            tools:text="1" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/tv_exam_slash"
-            app:layout_constraintTop_toTopOf="@id/tv_exam_slash"
-            app:layout_constraintBottom_toBottomOf="@id/tv_exam_slash"
+            android:text="@string/exam_total_question"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
-            android:text="@string/exam_total_question"/>
+            app:layout_constraintBottom_toBottomOf="@id/tv_exam_slash"
+            app:layout_constraintStart_toEndOf="@id/tv_exam_slash"
+            app:layout_constraintTop_toTopOf="@id/tv_exam_slash" />
 
         <TextView
             android:id="@+id/tv_exam_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="10:00"
+            android:layout_marginTop="@dimen/spacing16"
             android:layout_marginEnd="2dp"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
             android:textColor="@color/sub_red"
             app:layout_constraintEnd_toEndOf="@id/gl_exam_end"
             app:layout_constraintTop_toTopOf="@id/tv_exam_slash"
-            android:layout_marginTop="@dimen/spacing16"/>
+            tools:text="10:00" />
 
         <com.skydoves.progressview.ProgressView
             android:id="@+id/progressbar_exam"
@@ -114,11 +114,11 @@
             android:layout_marginBottom="@dimen/spacing30"
             android:backgroundTint="@color/selector_all_btn_background"
             android:enabled="@{viewModel.examBtnEnabled}"
+            android:text="@string/exam_next_btn"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/gl_exam_end"
-            app:layout_constraintStart_toStartOf="@id/gl_exam_start"
-            android:text="@string/exam_next_btn" />
+            app:layout_constraintStart_toStartOf="@id/gl_exam_start" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

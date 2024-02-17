@@ -44,9 +44,10 @@ class ExamSecondFragment :
                     binding.btnExamSecondFourthAnswer,
                     4,
                 )
+
                 R.id.btn_exam_second_fifth_answer -> setRadioCheckedJob(
                     binding.btnExamSecondFifthAnswer,
-                    5
+                    5,
                 )
             }
         }

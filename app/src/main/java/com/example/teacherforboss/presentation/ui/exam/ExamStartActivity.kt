@@ -1,12 +1,10 @@
 package com.example.teacherforboss.presentation.ui.exam
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.text.style.TextAppearanceSpan
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import com.example.teacherforboss.R
@@ -27,36 +25,36 @@ class ExamStartActivity : BindingActivity<ActivityExamStartBinding>(R.layout.act
 
     private fun initLayout() {
         binding.examStartWelcomeName.text = SpannableString(
-            getString(R.string.exam_start_title)
+            getString(R.string.exam_start_title),
         ).apply {
             setSpan(
                 ForegroundColorSpan(
                     ContextCompat.getColor(
                         this@ExamStartActivity,
-                        R.color.main_purple_00
-                    )
+                        R.color.main_purple_00,
+                    ),
                 ),
                 SERVICE_START,
                 SERVICE_END,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
             )
         }
     }
 
-    private fun addListeners(){
+    private fun addListeners() {
         binding.layoutExamStartBtn.setOnClickListener { navigateToExam() }
         binding.ivExamStartBackBtn.setOnClickListener { navigateToHome() }
     }
 
-    private fun navigateToExam(){
+    private fun navigateToExam() {
         Intent(this, ExamActivity::class.java).apply {
             startActivity(this)
             finish()
         }
     }
 
-    private fun navigateToHome(){
-        Intent(this, MainActivity::class.java).apply{
+    private fun navigateToHome() {
+        Intent(this, MainActivity::class.java).apply {
             startActivity(this)
             finish()
         }

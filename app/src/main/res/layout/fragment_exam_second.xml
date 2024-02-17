@@ -91,8 +91,8 @@
             android:layout_marginTop="87dp"
             android:paddingVertical="@dimen/spacing3"
             android:text="@string/exam_question2_answer1"
-            app:layout_constraintEnd_toEndOf="parent"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_second_question" />
 
@@ -103,9 +103,9 @@
             android:layout_marginStart="@dimen/spacing15"
             android:layout_marginTop="@dimen/spacing14"
             android:paddingVertical="@dimen/spacing3"
-            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/exam_question2_answer2"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_second_first_answer" />
 
@@ -114,11 +114,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing15"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/spacing14"
             android:paddingVertical="@dimen/spacing3"
             android:text="@string/exam_question2_answer3"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_second_second_answer" />
 
@@ -130,8 +130,8 @@
             android:layout_marginTop="@dimen/spacing14"
             android:paddingVertical="@dimen/spacing4"
             android:text="@string/exam_question2_answer4"
-            app:layout_constraintEnd_toEndOf="parent"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_second_third_answer" />
 
@@ -143,8 +143,8 @@
             android:layout_marginTop="@dimen/spacing14"
             android:paddingVertical="@dimen/spacing4"
             android:text="@string/exam_question2_answer5"
-            app:layout_constraintEnd_toEndOf="parent"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_second_fourth_answer" />
 

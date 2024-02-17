@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class SurveyViewModel @Inject constructor(
-    private val postSurveyUseCase: PostSurveyUseCase
+//@HiltViewModel
+class SurveyViewModel(
+//    private val postSurveyUseCase: PostSurveyUseCase
 ) : ViewModel() {
     private val _currentPage = MutableStateFlow(FIRST_FRAGMENT_POSITION)
     val currentPage get() = _currentPage.asStateFlow()
@@ -84,25 +84,25 @@ class SurveyViewModel @Inject constructor(
         _selectedProblem.value = answer
     }
 
-    fun postSurveyResult() {
-        viewModelScope.launch {
-            _surveyResultState.emit(UiState.Loading)
-            runCatching {
-                postSurveyUseCase(
-                    surveyEntity = SurveyEntity(
-                        question1 = selectedJob.value,
-                        question2 = selectedStudy.value,
-                        question3 = selectedProblem.value,
-                        question4 = problemDescription.value
-                    )
-                ).collect(){data ->
-                    _surveyResultState.emit(UiState.Success(data))
-                }
-            }.onFailure { exception: Throwable ->
-                _surveyResultState.emit(UiState.Error(exception.message))
-            }
-        }
-    }
+//    fun postSurveyResult() {
+//        viewModelScope.launch {
+//            _surveyResultState.emit(UiState.Loading)
+//            runCatching {
+//                postSurveyUseCase(
+//                    surveyEntity = SurveyEntity(
+//                        question1 = selectedJob.value,
+//                        question2 = selectedStudy.value,
+//                        question3 = selectedProblem.value,
+//                        question4 = problemDescription.value
+//                    )
+//                ).collect(){data ->
+//                    _surveyResultState.emit(UiState.Success(data))
+//                }
+//            }.onFailure { exception: Throwable ->
+//                _surveyResultState.emit(UiState.Error(exception.message))
+//            }
+//        }
+//    }
     companion object {
         private const val FIRST_FRAGMENT_POSITION = 0
         private const val DEFAULT_SELECTED_NUMBER = 0

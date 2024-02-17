@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -70,8 +70,8 @@
             android:layout_marginTop="87dp"
             android:paddingVertical="@dimen/spacing3"
             android:text="@string/exam_question3_answer1"
-            app:layout_constraintEnd_toEndOf="parent"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_third_question" />
 
@@ -82,9 +82,9 @@
             android:layout_marginStart="@dimen/spacing15"
             android:layout_marginTop="@dimen/spacing14"
             android:paddingVertical="@dimen/spacing3"
-            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/exam_question3_answer2"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_third_first_answer" />
 
@@ -93,11 +93,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing15"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/spacing14"
             android:paddingVertical="@dimen/spacing3"
             android:text="@string/exam_question3_answer3"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rg_exam"
             app:layout_constraintTop_toBottomOf="@id/tv_exam_third_second_answer" />
 

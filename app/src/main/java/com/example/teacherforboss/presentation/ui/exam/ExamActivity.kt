@@ -2,6 +2,7 @@ package com.example.teacherforboss.presentation.ui.exam
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
@@ -14,7 +15,6 @@ import com.example.teacherforboss.presentation.ui.exam.question.ExamFourthFragme
 import com.example.teacherforboss.presentation.ui.exam.question.ExamSecondFragment
 import com.example.teacherforboss.presentation.ui.exam.question.ExamThirdFragment
 import com.example.teacherforboss.presentation.ui.examResult.examResultActivity
-import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.util.base.BindingActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.onEach
 class ExamActivity : BindingActivity<ActivityExamBinding>(R.layout.activity_exam) {
     private val examViewModel: ExamViewModel by viewModels()
     private lateinit var fragmentList: ArrayList<Fragment>
+    private lateinit var onBackPressed: OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class ExamActivity : BindingActivity<ActivityExamBinding>(R.layout.activity_exam
         initLayout()
         addListeners()
         collectData()
+        onBackPressedBtn()
     }
 
     private fun initLayout() {
@@ -120,6 +122,15 @@ class ExamActivity : BindingActivity<ActivityExamBinding>(R.layout.activity_exam
             startActivity(this)
             finish()
         }
+    }
+
+    private fun onBackPressedBtn() {
+        onBackPressed = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigateToPreviousFragment()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, onBackPressed)
     }
 
     companion object {

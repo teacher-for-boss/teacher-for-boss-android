@@ -69,6 +69,7 @@ class SurveyViewModel(
 
     fun setSelectedStudy(answer: Int) {
         _selectedStudy.value.add(answer)
+        setSelectedStudySize()
     }
 
     fun setSelectedStudySize() {

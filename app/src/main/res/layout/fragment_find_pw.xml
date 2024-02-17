@@ -44,6 +44,7 @@
                     android:padding="12dp"
                     android:background="@drawable/selector_login"
                     android:hint="이메일"
+                    android:text="@={findPwviewModel.liveEmail}"
                     android:textColorHint="@color/gray_02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -51,7 +52,7 @@
                 </EditText>
 
                 <Button
-                    android:id="@+id/phoneVerifyBtn"
+                    android:id="@+id/emailVerifyBtn"
                     android:layout_width="70dp"
                     android:layout_height="35dp"
                     android:text="인증하기"
@@ -67,10 +68,10 @@
                 android:id="@+id/veryInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="해당 휴대폰으로 인증 번호가 발송되었습니다."
-                android:textColor="@color/black"
+                android:textColor="@{findPwviewModel.email_check?@color/black:@color/sub_red}"
+                android:text='@{findPwviewModel.email_check?"해당 이메일로 인증 번호가 발송되었습니다.":"형식에 맞는 이메일을 입력해주세요"}'
                 android:textSize="12dp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp" />
 
@@ -81,6 +82,7 @@
             </View>
 
             <RelativeLayout
+                android:id="@+id/inputcodeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -117,7 +119,7 @@
                 </RelativeLayout>
 
                 <Button
-                    android:id="@+id/phoneConfirmBtn"
+                    android:id="@+id/emailConfirmBtn"
                     android:layout_width="70dp"
                     android:layout_height="35dp"
                     android:text="확인"
@@ -147,10 +149,12 @@
             </View>
 
             <Button
+                android:enabled="@{findPwviewModel.isEmailVerified()?true:false}"
+                android:visibility="invisible"
                 android:background="@drawable/radius_purple_button"
                 android:text="비밀번호 재설정하러가기 임시버튼"
                 android:textColor="@color/white"
-                android:id="@+id/findEmailBtn"
+                android:id="@+id/findPwBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

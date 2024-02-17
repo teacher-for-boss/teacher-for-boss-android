@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "728912905796",
+    "project_id": "teacherforboss-c3df1",
+    "storage_bucket": "teacherforboss-c3df1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728912905796:android:e9d59e5055424aa7791e11",
+        "android_client_info": {
+          "package_name": "com.example.teacherforboss"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqzN0PLEzO12t_SQu6Rks3Y8VQJZNKkoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

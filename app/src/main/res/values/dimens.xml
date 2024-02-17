@@ -12,6 +12,8 @@
     <dimen name="spacing22">22dp</dimen>
     <dimen name="spacing30">30dp</dimen>
     <dimen name="spacing35">35dp</dimen>
+    <dimen name="spacing39">39dp</dimen>
+    <dimen name="spacing44">44dp</dimen>
     <dimen name="spacing84">84dp</dimen>
 
     <!-- button -->

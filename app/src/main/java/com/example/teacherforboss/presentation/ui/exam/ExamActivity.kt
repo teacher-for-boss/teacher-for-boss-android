@@ -13,6 +13,7 @@ import com.example.teacherforboss.presentation.ui.exam.question.ExamFirstFragmen
 import com.example.teacherforboss.presentation.ui.exam.question.ExamFourthFragment
 import com.example.teacherforboss.presentation.ui.exam.question.ExamSecondFragment
 import com.example.teacherforboss.presentation.ui.exam.question.ExamThirdFragment
+import com.example.teacherforboss.presentation.ui.examResult.examResultActivity
 import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.util.base.BindingActivity
 import kotlinx.coroutines.flow.launchIn
@@ -45,7 +46,7 @@ class ExamActivity : BindingActivity<ActivityExamBinding>(R.layout.activity_exam
         binding.btnExamNext.setOnClickListener {
             when (binding.vpExam.currentItem) {
                 fragmentList.size - 1 -> {
-                    navigateToMain()
+                    navigateToExamResult()
                     // TODO 서버 통신
                 }
 
@@ -74,8 +75,6 @@ class ExamActivity : BindingActivity<ActivityExamBinding>(R.layout.activity_exam
         examViewModel.currentTime.flowWithLifecycle(lifecycle).onEach { currentTime ->
             binding.tvExamTimer.text = currentTime
         }.launchIn(lifecycleScope)
-
-        // TODO 상단 문항 숫자 업데이트
     }
 
     private fun setFragmentStateAdapter() {
@@ -116,8 +115,8 @@ class ExamActivity : BindingActivity<ActivityExamBinding>(R.layout.activity_exam
         }
     }
 
-    private fun navigateToMain() {
-        Intent(this, MainActivity::class.java).apply {
+    private fun navigateToExamResult() {
+        Intent(this, examResultActivity::class.java).apply {
             startActivity(this)
             finish()
         }

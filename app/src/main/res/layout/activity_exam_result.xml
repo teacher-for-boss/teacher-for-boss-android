@@ -337,13 +337,14 @@
 
 
         <LinearLayout
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:orientation="vertical"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:background="@color/white"
-            android:layout_height="400dp">
+            android:layout_height="420dp"
+            >
 
 <!--            여기에 바로 tablayout, viewpager 넣어보기-->
 
@@ -354,7 +355,7 @@
                 app:tabTextAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
                 app:tabTextColor="@color/gray_02"
                 app:tabSelectedTextColor="@color/black"
-                android:background="@color/white"
+                android:background="@drawable/bottom_sheet_background"
                 app:tabIndicatorColor="@color/main_purple_00"
                         >
 

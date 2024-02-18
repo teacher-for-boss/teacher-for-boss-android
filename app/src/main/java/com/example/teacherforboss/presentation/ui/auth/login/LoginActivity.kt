@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        if(!token.isNullOrBlank()){
+        if(token.isNullOrBlank()){
 //            showToast("재로그인이 필요합니다!")
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
         }
@@ -89,11 +89,11 @@ class LoginActivity : AppCompatActivity() {
         //소셜 로그인 후 서버로 로그인 요청
         loginViewModel.socialLoginResult.observe(this){
             when(it){is BaseResponse.Loading ->{
-                showToast("소셜 로그인 중입니다.조금만 더 기다려주세요 🐣")
+//                showToast("소셜 로그인 중입니다.조금만 더 기다려주세요 🐣")
                 //로딩창
             }
                 is BaseResponse.Success ->{
-                    showToast("소셜 로그인 완료!🐣")
+//                    showToast("소셜 로그인 완료!🐣")
                     saveToken(it.data)//respponse.result
                     // 설문조사 여부에 따라 다른 activity로 이동
                     navigateToSurveyStart()

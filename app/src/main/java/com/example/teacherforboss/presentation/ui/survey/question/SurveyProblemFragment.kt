@@ -9,9 +9,8 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentSurveyProblemBinding
 import com.example.teacherforboss.presentation.ui.survey.SurveyViewModel
 import com.example.teacherforboss.util.base.BindingFragment
-import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
+// @AndroidEntryPoint
 class SurveyProblemFragment :
     BindingFragment<FragmentSurveyProblemBinding>(R.layout.fragment_survey_problem) {
     private val viewModel by activityViewModels<SurveyViewModel>()
@@ -27,10 +26,25 @@ class SurveyProblemFragment :
     private fun addListeners() {
         binding.rgSurveyProblem.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.btn_survey_problem_well_known -> setRadioCheckedProblem(binding.btnSurveyProblemWellKnown, 1)
-                R.id.btn_survey_problem_known -> setRadioCheckedProblem(binding.btnSurveyProblemKnown, 2)
-                R.id.btn_survey_problem_unknown -> setRadioCheckedProblem(binding.btnSurveyProblemUnknown, 3)
-                R.id.btn_survey_problem_anything -> setRadioCheckedProblem(binding.btnSurveyProblemAnything, 4)
+                R.id.btn_survey_problem_well_known -> setRadioCheckedProblem(
+                    binding.btnSurveyProblemWellKnown,
+                    1,
+                )
+
+                R.id.btn_survey_problem_known -> setRadioCheckedProblem(
+                    binding.btnSurveyProblemKnown,
+                    2,
+                )
+
+                R.id.btn_survey_problem_unknown -> setRadioCheckedProblem(
+                    binding.btnSurveyProblemUnknown,
+                    3,
+                )
+
+                R.id.btn_survey_problem_anything -> setRadioCheckedProblem(
+                    binding.btnSurveyProblemAnything,
+                    4,
+                )
             }
         }
 

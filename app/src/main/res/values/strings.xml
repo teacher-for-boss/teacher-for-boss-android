@@ -47,4 +47,40 @@
 
     <string name="survey_complete">문제가 있어도, 문제를 몰라도 괜찮아요!\n선생님과 함께 배워가봐요.</string>
 
+    <!-- exam start -->
+    <string name="exam_start_title">시험은 서비스에 대한\n10문제, 제한시간 10분!</string>
+    <string name="exam_start_description">고객이 되어야만 이해할 수 있고,\n만족감을 줄 수 있는 역량을 길러봐요</string>
+    <string name="exam_start_btn">시험 보러가기</string>
+
+    <!-- exam -->
+    <string name="exam_total_question">10</string>
+    <string name="exam_slash">/</string>
+    <string name="exam_next_btn">다음 문제</string>
+
+    <!-- TODO 뷰 완성되면 수정할 것 -->
+    <string name="exam_end_btn">시험 완료</string>
+    <!-- TODO 서버에서 받아오는 경우 지울 것 -->
+    <string name="exam_question1">Q1. 다음 중 옳지 않은 것을 고르세요.</string>
+    <string name="exam_question1_answer1">납품온 식품은 정리하기 편하게 박스나 봉지에 포장된 채로 냉장 혹은 냉동 보관한다</string>
+    <string name="exam_question1_answer2">창고 보관시 온도 15~25도, 습도 50~60도가 가장 적절하다</string>
+    <string name="exam_question1_answer3">대용량 제품을 나누어 보관시, 제품명과 유통기한을 반드시 표기한다</string>
+    <string name="exam_question1_answer4">유통기한이 보이도록 진열하고, 입고 순서대로 사용한다(선입선출)</string>
+
+    <string name="exam_question2">Q2. 식품 냉장 및 냉동 보관 방법 중 옳지 않은 것을 고르세요.</string>
+    <string name="exam_question2_answer1">보관 용량은 찬공기 순환을 위해 70%이하를 유지한다</string>
+    <string name="exam_question2_answer2">냉장 온도는 0~5도, 냉동 온도는 -18도 이하를 유지하는 것이 좋다</string>
+    <string name="exam_question2_answer3">조리한 음식을 냉동하는 경우, 급속 냉장을 위해 따뜻한 상태로 넣는다</string>
+    <string name="exam_question2_answer4">해동한 음식은 재냉동이 금지된다</string>
+    <string name="exam_question2_answer5">일주일에 한 번씩 성에 제거 및 수시로 안팎 청소는 중요하다</string>
+
+    <string name="exam_question3">Q3. 냉장 보관 방법에 따른 최대 저장 기간에 대해 옳지 않은 것을 고르세요.</string>
+    <string name="exam_question3_answer1">조개, 오징어, 낙지는 1~2도에서 최대 5일간 저장 가능하다</string>
+    <string name="exam_question3_answer2">갈은 고기는 절단 고기와 마찬가지로 3도에서 최대 저장 기간이 6일이다</string>
+    <string name="exam_question3_answer3">채소는 씻지 않은 상태로 7도에서 최대 7일간 보관 가능하다</string>
+
+    <string name="exam_question4">Q4. 냉동 보관 방법에 따른 최대 저장 기간에 대해 옳지 않은 것을 고르세요.</string>
+    <string name="exam_question4_answer1">보통 생선류는 최대 6개월간 저장 보관이 가능하다</string>
+    <string name="exam_question4_answer2">쇠고기는 최대 6개월간 저장 보관이 가능하다</string>
+    <string name="exam_question4_answer3">고기를 갈면 최대 저장 보관 가능 기간이 줄어든다</string>
+    <string name="exam_question4_answer4">생닭과 생오리는 최대 3개월간 저장 보관이 가능하다</string>
 </resources>

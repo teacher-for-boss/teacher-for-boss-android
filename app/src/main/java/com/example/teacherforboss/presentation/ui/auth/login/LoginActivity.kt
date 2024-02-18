@@ -72,8 +72,9 @@ class LoginActivity : AppCompatActivity() {
 //                    showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
                     // 설문조사 여부에 따라 다른 activity로 이동
-                    val intent=Intent(this,SurveyStartActivity::class.java)
-                    startActivity(intent)
+                    navigateToSurveyStart()
+
+
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)
@@ -95,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
                     showToast("소셜 로그인 완료!🐣")
                     saveToken(it.data)//respponse.result
                     // 설문조사 여부에 따라 다른 activity로 이동
+                    navigateToSurveyStart()
 
                 }
                 is BaseResponse.Error ->{
@@ -164,6 +166,11 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun navigateToSurveyStart(){
+        val intent=Intent(this,SurveyStartActivity::class.java)
+        startActivity(intent)
     }
 
     //access, refresh token 저장

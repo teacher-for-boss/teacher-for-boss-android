@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.examResult
+package com.example.teacherforboss.presentation.ui.examResult.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

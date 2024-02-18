@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
         if(!token.isNullOrBlank()){
-            showToast("재로그인이 필요합니다!")
+//            showToast("재로그인이 필요합니다!")
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
         }
 
@@ -69,10 +69,11 @@ class LoginActivity : AppCompatActivity() {
                     // 로딩창
                 }
                 is BaseResponse.Success ->{
-                    showToast("로그인 성공")
+//                    showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
                     // 설문조사 여부에 따라 다른 activity로 이동
                     navigateToSurveyStart()
+
 
                 }
                 is BaseResponse.Error ->{

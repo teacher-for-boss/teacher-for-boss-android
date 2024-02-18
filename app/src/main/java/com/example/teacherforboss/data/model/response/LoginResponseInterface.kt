@@ -6,6 +6,7 @@ interface LoginResponseInterface {
     var message:String
     var result: Result
     data class Result(
+        val name:String,
         var accessToken:String,
         var refreshToken:String,
         var email:String? //social시 사용

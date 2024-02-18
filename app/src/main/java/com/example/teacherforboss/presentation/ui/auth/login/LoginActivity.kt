@@ -2,6 +2,8 @@ package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.content.Intent
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -50,6 +52,9 @@ class LoginActivity : AppCompatActivity() {
 
     val appContext=GlobalApplication.instance
 
+    val USER_INFO="USER_INFO"
+    val USER_NAME="USER_NAME"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityLoginBinding.inflate(layoutInflater)
@@ -71,6 +76,8 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
 //                    showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
+                    saveUserName(appContext,it.data?.result?.name!!.toString())//survery start 사장님 이름
+
                     // 설문조사 여부에 따라 다른 activity로 이동
                     navigateToSurveyStart()
 
@@ -95,6 +102,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
 //                    showToast("소셜 로그인 완료!🐣")
                     saveToken(it.data)//respponse.result
+                    saveUserName(appContext,it.data?.result?.name!!.toString())
                     // 설문조사 여부에 따라 다른 activity로 이동
                     navigateToSurveyStart()
 
@@ -186,6 +194,15 @@ class LoginActivity : AppCompatActivity() {
                 TokenManager.saveRefreshToken(appContext, it!!)
             }
         }
+
+    }
+    //user name 저장
+    fun saveUserName(context: Context, name:String){
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putString(USER_NAME, name)
+        editor.apply()
 
     }
 

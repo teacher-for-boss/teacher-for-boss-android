@@ -1,6 +1,8 @@
 package com.example.teacherforboss.presentation.ui.survey
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import com.example.teacherforboss.R
@@ -22,7 +24,8 @@ class SurveyStartActivity :
 
     private fun initLayout() {
         // TODO 로그인 시 저장되는 사용자 이름 쉐프에서 가져와 출력
-        var text = getString(R.string.survey_start_name, "하지은")
+        var name=getUserInfo(applicationContext)
+        var text = getString(R.string.survey_start_name, name)
         binding.surveyStartWelcomeName.text = text
     }
 
@@ -52,5 +55,12 @@ class SurveyStartActivity :
             }
         }
         onBackPressedDispatcher.addCallback(this, onBackPressed)
+    }
+
+    fun getUserInfo(context: Context):String?{
+        val prefs: SharedPreferences =context.getSharedPreferences(
+            "USER_INFO",
+            Context.MODE_PRIVATE)
+        return prefs.getString("USER_NAME",null)
     }
 }

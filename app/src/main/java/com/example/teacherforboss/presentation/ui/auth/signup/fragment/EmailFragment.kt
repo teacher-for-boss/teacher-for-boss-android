@@ -50,13 +50,19 @@ class EmailFragment : Fragment() {
 
         //이메일 인증하기버튼 눌렀을때
         binding.emailVerifyBtn.setOnClickListener {
-            binding.emailVerifyBtn.visibility = View.INVISIBLE
-            binding.veryInfo.visibility=View.VISIBLE
-            binding.inputEmailCode.visibility=View.VISIBLE
-            startTimer()  //타이머 시작
 
+            binding.veryInfo.visibility=View.VISIBLE
             email=binding.emailBox.text.toString()
-            viewModel.emailUser(viewModel.email.value.toString()) //서버로 auth/email
+
+            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
+
+            if(viewModel.email_check.value==true){
+                viewModel.emailUser(viewModel.email.value.toString()) //서버로 auth/email
+            }
+            else{
+                binding.veryInfo.text="올바르지 않는 이메일 형식입니다"
+            }
 
         }
         //이메일 인증결과 수신
@@ -64,6 +70,11 @@ class EmailFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
+                    binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
+                    binding.emailVerifyBtn.visibility = View.INVISIBLE
+                    binding.inputEmailCode.visibility=View.VISIBLE
+                    startTimer()  //타이머 시작
+
                     Log.d("auth",it.data?.result?.emailAuthId.toString())
                     viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
 
@@ -74,7 +85,10 @@ class EmailFragment : Fragment() {
                     if(it.msg=="이미 가입된 이메일입니다."){
                         binding.veryInfo.text="이미 가입된 이메일 주소입니다."
                     }
-                    showToast("error:"+it.msg)
+                    else{
+                        showToast("error:"+it.msg)
+                    }
+
                 }
             }
         }

@@ -21,6 +21,7 @@ import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.regex.Pattern
 
 //@AndroidEntryPoint
 class NamePhoneFragment : Fragment() {
@@ -58,15 +59,16 @@ class NamePhoneFragment : Fragment() {
 
         //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
-
-            binding.phoneVerifyBtn.visibility = View.INVISIBLE
             binding.veryInfo.visibility=View.VISIBLE
-            binding.inputPhoneCode.visibility=View.VISIBLE
-            startTimer()
 
-            phone = binding.phoneNumBox.text.toString()
+            val pattern= Pattern.compile("010\\d{4}\\d{4}")
+            viewModel.phone_check.value=pattern.matcher(viewModel.phone.toString()).matches()
 
-            viewModel.phoneUser(viewModel.phone.value.toString(),hash.toString())
+            if(viewModel.phone_check.value==true){
+                binding.phoneCodeBox.visibility=View.VISIBLE
+                startTimer()
+                viewModel.phoneUser(viewModel.phone.value.toString(),hash.toString())
+            }
 
         }
 
@@ -75,6 +77,10 @@ class NamePhoneFragment : Fragment() {
             when(it) {
                 is BaseResponse.Loading->{}
                 is BaseResponse.Success->{
+                    binding.phoneVerifyBtn.visibility = View.INVISIBLE
+                    binding.inputPhoneCode.visibility=View.VISIBLE
+                    startTimer()
+
                     Log.d("auth",it.data?.result?.phoneAuthId.toString())
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
@@ -82,7 +88,9 @@ class NamePhoneFragment : Fragment() {
                     if(it.msg=="이미 가입된 전화번호입니다."){
                         binding.veryInfo.text="이미 가입된 전화번호입니다."
                     }
-                    showToast("error"+it.msg)
+                    else{
+                        showToast("error"+it.msg)
+                    }
                 }
             }
         }

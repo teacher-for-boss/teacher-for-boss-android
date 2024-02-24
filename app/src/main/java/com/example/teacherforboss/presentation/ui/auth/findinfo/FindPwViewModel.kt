@@ -24,6 +24,7 @@ import com.example.teacherforboss.data.repository.FindInfoRepositoryImpl
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.domain.model.SurveyEntity
 import com.example.teacherforboss.domain.model.SurveyResultEntity
+import com.example.teacherforboss.util.base.ErrorUtils
 import com.example.teacherforboss.util.view.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -113,7 +114,7 @@ class FindPwViewModel:ViewModel() {
         viewModelScope.launch {
             try {
                 val phoneRequest = PhoneRequest(
-                    phone = livePhoneNumber.toString(),
+                    phone = phoneNumber.value.toString(),
                     purpose = 2,//이메일 찾기
                     appHash = hash
                 )
@@ -121,10 +122,9 @@ class FindPwViewModel:ViewModel() {
 
                 if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
-                } else if(response?.body()?.code=="중복코드"){
-                    phoneResult.value=BaseResponse.Error(response?.body()?.code)
-                }else {
-                    phoneResult.value = BaseResponse.Error(response?.message())
+                } else {
+                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
+                    phoneResult.value = BaseResponse.Error(errorbody.message)
                 }
             } catch (ex: Exception) {
                 phoneResult.value = BaseResponse.Error(ex.message)
@@ -148,7 +148,8 @@ class FindPwViewModel:ViewModel() {
                 if(response?.body()?.code=="COMMON200") {
                     phoneCheckResult.value = BaseResponse.Success(response.body())
                 } else {
-                    phoneCheckResult.value = BaseResponse.Error(response?.message())
+                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
+                    phoneCheckResult.value = BaseResponse.Error(errorbody.message)
                 }
             } catch (ex: Exception) {
                 phoneCheckResult.value = BaseResponse.Error(ex.message)
@@ -197,12 +198,9 @@ class FindPwViewModel:ViewModel() {
                 if (response?.body()?.code=="COMMON200") {
                     emailResult.value = BaseResponse.Success(response.body())
                 }
-//                else if(response?.body()?.code=="COMMON400") {
-//                    emailResult.value = BaseResponse.Error(response.body())
-//                }
-
                 else {
-                    emailResult.value = BaseResponse.Error(response?.message())
+                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
+                    phoneResult.value = BaseResponse.Error(errorbody.message)
                 }
             } catch (ex: Exception) {
                 emailResult.value = BaseResponse.Error(ex.message)
@@ -225,7 +223,8 @@ class FindPwViewModel:ViewModel() {
                 if (response?.body()?.code=="COMMON200") {
                     emailCheckResult.value = BaseResponse.Success(response.body())
                 } else {
-                    emailCheckResult.value = BaseResponse.Error(response?.message())
+                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
+                    emailCheckResult.value = BaseResponse.Error(errorbody.message)
                 }
             } catch (ex: Exception) {
                 emailCheckResult.value = BaseResponse.Error(ex.message)
@@ -242,7 +241,7 @@ class FindPwViewModel:ViewModel() {
             _resetPwResultState.emit(UiState.Loading)
 
             try{
-                val response=findInfoRepo.resetPw(RequestResetPwDto(memberId.value!!,pw.value!!,rePw.value!!))
+                val response=findInfoRepo.resetPw(RequestResetPwDto(memberId.value!!,pw.value.toString()!!,rePw.value.toString()!!))
                 if(response?.code=="COMMON200"){
                     _resetPwResultState.emit(UiState.Success(response.result))
                 }else{

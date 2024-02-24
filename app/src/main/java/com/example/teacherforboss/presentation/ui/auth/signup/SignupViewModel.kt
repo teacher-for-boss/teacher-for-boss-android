@@ -20,6 +20,7 @@ import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.domain.model.SignupEntity
 import com.example.teacherforboss.domain.model.SignupResultEntity
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.util.base.ErrorUtils
 import com.example.teacherforboss.util.view.UiState
 import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -73,6 +74,9 @@ class SignupViewModel(
     val length_check= MutableLiveData<Boolean>(false)
     val rePw_check= MutableLiveData<Boolean>(false)
     val all_check= MutableLiveData<Boolean>(false)
+
+    val email_check=MutableLiveData<Boolean>(false)
+    val phone_check=MutableLiveData<Boolean>(false)
 
     //약관 동의
     val agreementUsage=MutableLiveData<String>("F")
@@ -131,17 +135,24 @@ class SignupViewModel(
                 )
                 val response = userRepo.emailUser(emailRequest = emailRequest)
 
-                if (response?.body()?.code=="COMMON200") {
-                    emailResult.value = BaseResponse.Success(response.body())
-                }else if(response?.body()?.code=="AUTH40016"){
-                    Log.d("email",response!!.body()?.message.toString())
-                    emailResult.value = BaseResponse.Error(response!!.body()?.message.toString())
+                if(response?.code()==200){
+                    if (response?.body()?.code=="COMMON200") {
+                        emailResult.value = BaseResponse.Success(response.body())
+                    }
+
                 }
-                else {
-                    emailResult.value = BaseResponse.Error(response?.message())
+                else if(response?.code()==400){
+                    val errorbody=ErrorUtils.getErrorResponse(response.errorBody()!!)
+                    Log.d("error body",errorbody.toString()!!)
+                    emailResult.value = BaseResponse.Error(errorbody.message)
+
                 }
+//                else if(response?.body()?.code=="AUTH40016"){
+//                    Log.d("email",response!!.body()?.message.toString())
+//
+//                }
             } catch (ex: Exception) {
-                emailResult.value = BaseResponse.Error(ex.message)
+//                emailResult.value = BaseResponse.Error(ex.message)
             }
         }
     }
@@ -260,12 +271,10 @@ class SignupViewModel(
 
                 if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
-                }else if(response?.body()?.code=="AUTH40017"){
-
-                    phoneResult.value = BaseResponse.Error(response!!.body()?.message)
                 }
                 else {
-                    phoneResult.value = BaseResponse.Error(response?.message())
+                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
+                    phoneResult.value = BaseResponse.Error(errorbody.message)
                 }
             } catch (ex: Exception) {
                 phoneResult.value = BaseResponse.Error(ex.message)

@@ -9,6 +9,7 @@ import com.example.teacherforboss.data.model.response.findInfo.ResponseFindPwDto
 import com.example.teacherforboss.data.model.response.findInfo.ResponseResetPwDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface FindInfoService {
@@ -25,7 +26,7 @@ interface FindInfoService {
     suspend fun findPw(
         @Body requestFindPwDto: RequestFindPwDto):BaseResponse<ResponseFindPwDto>
 
-    @POST("auth/resetPassword")
+    @PATCH("auth/resetPassword")
     suspend fun resetPw(
         @Body requestResetPw: RequestResetPwDto
     ):BaseResponse<ResponseResetPwDto>

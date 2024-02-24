@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class findPwFragment : Fragment() {
     private lateinit var binding:FragmentFindPwBinding
-    private val viewModel:FindPwViewModel by viewModels()
+    private val viewModel: FindPwViewModel by activityViewModels()
     var tempTime = 0  //타이머 임시시간
 
     lateinit var navController: NavController
@@ -54,6 +55,7 @@ class findPwFragment : Fragment() {
                 //binding.emailVerifyBtn.visibility=View.INVISIBLE
                 binding.emailCodeBox.visibility=View.VISIBLE
                 binding.inputcodeContainer.visibility=View.VISIBLE
+                binding.emailConfirmBtn.visibility=View.VISIBLE
                 startTimer()
 
                 viewModel.emailUser()
@@ -70,6 +72,11 @@ class findPwFragment : Fragment() {
                     viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!
                 }
                 is BaseResponse.Error->{
+                    if(it.msg=="이미 가입된 이메일입니다."){
+                        binding.veryInfo.text="이미 가입된 이메일입니다."
+                    }
+                    showToast("error"+it?.msg)
+
                     //가입이 안된 이메일인 경우
                     navController.navigate(R.id.action_findPwFragment_to_findPwFragment3)
 
@@ -92,11 +99,10 @@ class findPwFragment : Fragment() {
 //                    viewModel.setPhoneVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
                     if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
                         viewModel._isEmailVerified.value=true
+                        binding.findPwBtn.visibility=View.VISIBLE
 
                     }
                     binding.checkVery.visibility=View.VISIBLE
-
-                    navController.navigate(R.id.action_findPwFragment_to_findPwFragment2)
                 }
                 is BaseResponse.Error->{
                     showToast(it.msg!!)
@@ -109,9 +115,6 @@ class findPwFragment : Fragment() {
 
         binding.findPwBtn.setOnClickListener {
             viewModel.postFindPw()
-
-            //나중에 이메일 인증 완료 되면 바로 화면전환하게 수정 viewModel.scope
-            navController.navigate(R.id.action_findPwFragment_to_findPwFragment2)
         }
 
         // post auth/find/password 결과 수신
@@ -119,7 +122,7 @@ class findPwFragment : Fragment() {
             viewModel.findpwResultState.collect{ uiState->
                 when(uiState){
                     is UiState.Loading->{
-                        showToast("로딩중")
+//                        showToast("로딩중")
                     }
                     is UiState.Success->{
                         viewModel.memberId.value=uiState.data?.memberId

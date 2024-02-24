@@ -97,6 +97,7 @@
                         android:padding="12dp"
                         android:background="@drawable/selector_login"
                         android:hint="인증번호 입력"
+                        android:visibility="invisible"
                         android:textColorHint="@color/gray_02"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -113,7 +114,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="16dp"
-                        android:visibility="visible" />
+                        android:visibility="invisible" />
 
 
                 </RelativeLayout>
@@ -123,6 +124,7 @@
                     android:layout_width="70dp"
                     android:layout_height="35dp"
                     android:text="확인"
+                    android:visibility="invisible"
                     android:background="@drawable/radius_purple_button"
                     android:textColor="@color/white"
                     android:layout_alignParentEnd="true"
@@ -152,7 +154,7 @@
                 android:enabled="@{findPwviewModel.isEmailVerified()?true:false}"
                 android:visibility="invisible"
                 android:background="@drawable/radius_purple_button"
-                android:text="비밀번호 재설정하러가기 임시버튼"
+                android:text="비밀번호 재설정하러가기"
                 android:textColor="@color/white"
                 android:id="@+id/findPwBtn"
                 android:layout_width="match_parent"

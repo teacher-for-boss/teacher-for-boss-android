@@ -66,8 +66,8 @@ class findEmailFragment : Fragment() {
         //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
             val pattern= Pattern.compile("010\\d{4}\\d{4}")
-            Log.d("phone",pattern.matcher(binding.phoneNumBox.text.toString()).matches().toString())
-            viewModel.phone_check.value=pattern.matcher(viewModel.livePhoneNumber.toString()).matches()
+            viewModel.phone_check.value=pattern.matcher(viewModel.phoneNumber.value.toString()).matches()
+            Log.d("phone",viewModel.phone_check.value.toString())
 
             binding.veryInfo.visibility=View.VISIBLE
 
@@ -91,7 +91,7 @@ class findEmailFragment : Fragment() {
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error ->{
-                    if(it.msg=="중복 코드"){
+                    if(it.msg=="이미 가입된 휴대폰 번호 입니다."){
                         binding.veryInfo.text="이미 가입된 휴대폰 번호 입니다."
                     }
                     showToast("error"+it?.msg)
@@ -138,7 +138,7 @@ class findEmailFragment : Fragment() {
             viewModel.findEmailResultState.collect { uiState ->
                 when (uiState) {
                     is UiState.Loading -> {
-                        showToast("로딩중")
+//                        showToast("로딩중")
                     }
 
                     is UiState.Success -> {

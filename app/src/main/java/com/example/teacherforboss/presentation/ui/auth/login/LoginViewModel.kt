@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.data.model.request.LoginRequest
-import com.example.teacherforboss.data.model.request.SocialLoginRequest
-import com.example.teacherforboss.data.model.response.LoginResponse
+import com.example.teacherforboss.data.model.request.login.LoginRequest
+import com.example.teacherforboss.data.model.request.login.SocialLoginRequest
+import com.example.teacherforboss.data.model.response.login.LoginResponse
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
-import com.example.teacherforboss.data.model.response.socialLoginResponse
+import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 

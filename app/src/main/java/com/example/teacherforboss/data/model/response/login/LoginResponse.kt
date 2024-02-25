@@ -1,4 +1,4 @@
-package com.example.teacherforboss.data.model.response
+package com.example.teacherforboss.data.model.response.login
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,10 +1,10 @@
 package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.api.ApiClient
-import com.example.teacherforboss.data.model.request.LoginRequest
-import com.example.teacherforboss.data.model.request.SocialLoginRequest
-import com.example.teacherforboss.data.model.response.LoginResponse
-import com.example.teacherforboss.data.model.response.socialLoginResponse
+import com.example.teacherforboss.data.model.request.login.LoginRequest
+import com.example.teacherforboss.data.model.request.login.SocialLoginRequest
+import com.example.teacherforboss.data.model.response.login.LoginResponse
+import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
@@ -21,10 +21,10 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface UserApi {
+interface AuthService {
     companion object{
-        fun getApi(): UserApi?{
-            return ApiClient.client?.create(UserApi::class.java)
+        fun getApi(): AuthService?{
+            return ApiClient.client?.create(AuthService::class.java)
         }
     }
     @POST("auth/login")

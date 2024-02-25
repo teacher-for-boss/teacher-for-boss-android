@@ -1,4 +1,4 @@
-package com.example.teacherforboss.data.model.response
+package com.example.teacherforboss.data.model.response.login
 
 interface LoginResponseInterface {
     var code:String

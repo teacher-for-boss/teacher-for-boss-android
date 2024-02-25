@@ -1,10 +1,10 @@
 package com.example.teacherforboss.data.repository
 
-import com.example.teacherforboss.data.service.UserApi
-import com.example.teacherforboss.data.model.request.LoginRequest
-import com.example.teacherforboss.data.model.request.SocialLoginRequest
-import com.example.teacherforboss.data.model.response.LoginResponse
-import com.example.teacherforboss.data.model.response.socialLoginResponse
+import com.example.teacherforboss.data.service.AuthService
+import com.example.teacherforboss.data.model.request.login.LoginRequest
+import com.example.teacherforboss.data.model.request.login.SocialLoginRequest
+import com.example.teacherforboss.data.model.response.login.LoginResponse
+import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.domain.repository.UserRepository
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
@@ -50,44 +50,44 @@ import retrofit2.Response
 class UserRepositoryImpl: UserRepository {
      override suspend fun loginUser(loginRequest: LoginRequest):
             Response<LoginResponse>?{
-        return UserApi.getApi()?.loginUser(loginRequest=loginRequest)
+        return AuthService.getApi()?.loginUser(loginRequest=loginRequest)
     }
     override fun loginReissue(refreshToken:String):
             Response<LoginResponse>?{
-        return UserApi.getApi()?.loginReissue(refreshToken ="Bearer ${refreshToken}" )
+        return AuthService.getApi()?.loginReissue(refreshToken ="Bearer ${refreshToken}" )
     }
 
     override suspend fun kakaoLogin(socialLoginRequest: SocialLoginRequest):
             Response<socialLoginResponse>?{
-        return UserApi.getApi()?.socialLogin(socialType=2, socialLoginRequest=socialLoginRequest)
+        return AuthService.getApi()?.socialLogin(socialType=2, socialLoginRequest=socialLoginRequest)
     }
 
     override suspend fun naverLogin(socialLoginRequest: SocialLoginRequest):
             Response<socialLoginResponse>?{
-        return UserApi.getApi()?.socialLogin(socialType=3, socialLoginRequest=socialLoginRequest)
+        return AuthService.getApi()?.socialLogin(socialType=3, socialLoginRequest=socialLoginRequest)
     }
 
     override suspend fun emailUser(emailRequest: EmailRequest):
             Response<EmailResponse>?{
-        return UserApi.getApi()?.emailUser(emailRequest = emailRequest)
+        return AuthService.getApi()?.emailUser(emailRequest = emailRequest)
     }
 
     override suspend fun emailCheck(emailCheckRequest: EmailCheckRequest):
             Response<EmailCheckResponse>?{
-        return UserApi.getApi()?.emailCheck(emailCheckRequest = emailCheckRequest)
+        return AuthService.getApi()?.emailCheck(emailCheckRequest = emailCheckRequest)
     }
 
     override suspend fun signupUser(signupRequest: SignupRequest):
             Response<SignupResponse>?{
-        return UserApi.getApi()?.signupUser(signupRequest = signupRequest)
+        return AuthService.getApi()?.signupUser(signupRequest = signupRequest)
     }
     override suspend fun phoneUser(phoneRequest: PhoneRequest):
             Response<PhoneResponse>?{
-        return UserApi.getApi()?.phoneUser(phoneRequest = phoneRequest)
+        return AuthService.getApi()?.phoneUser(phoneRequest = phoneRequest)
     }
 
     override suspend fun phoneCheck(phoneCheckRequest: PhoneCheckRequest):
             Response<PhoneCheckResponse>?{
-        return UserApi.getApi()?.phoneCheck(phoneCheckRequest = phoneCheckRequest)
+        return AuthService.getApi()?.phoneCheck(phoneCheckRequest = phoneCheckRequest)
     }
 }

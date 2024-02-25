@@ -1,9 +1,6 @@
 package com.example.teacherforboss.data.model.response.findInfo
 
-import com.example.teacherforboss.data.model.response.InterfaceBasicResponse
-import com.example.teacherforboss.data.model.response.LoginResponseInterface
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 
 //data class ResponseFindEmailDto(

@@ -1,4 +1,4 @@
-package com.example.teacherforboss.data.model.response
+package com.example.teacherforboss.data.model.response.survey
 
 import com.example.teacherforboss.domain.model.SurveyResultEntity
 import kotlinx.datetime.LocalDateTime

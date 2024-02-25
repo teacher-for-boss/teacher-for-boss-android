@@ -1,11 +1,11 @@
 package com.example.teacherforboss.data.mapper
 
-import com.example.teacherforboss.data.model.request.RequestSignupDto
+import com.example.teacherforboss.data.model.request.signup.RequestSignupDto
 import com.example.teacherforboss.domain.model.SignupEntity
 
 
 //domain entity-> data dto(api)
-fun SignupEntity.toRequestSignupDto()=RequestSignupDto(
+fun SignupEntity.toRequestSignupDto()= RequestSignupDto(
     email=this.email,
     password=this.password,
     rePassword=this.rePassword,

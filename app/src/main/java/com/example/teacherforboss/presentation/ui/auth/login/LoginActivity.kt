@@ -15,7 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.databinding.ActivityLoginBinding
 import com.example.teacherforboss.data.model.response.BaseResponse
-import com.example.teacherforboss.data.model.response.LoginResponseInterface
+import com.example.teacherforboss.data.model.response.login.LoginResponseInterface
 import com.example.teacherforboss.data.tokenmanager.TokenManager
 import com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
@@ -28,7 +28,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin

@@ -1,4 +1,4 @@
-package com.example.teacherforboss.data.model.request
+package com.example.teacherforboss.data.model.request.survey
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

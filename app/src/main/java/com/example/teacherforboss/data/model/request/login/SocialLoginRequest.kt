@@ -1,4 +1,4 @@
-package com.example.teacherforboss.data.model.request
+package com.example.teacherforboss.data.model.request.login
 
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDate

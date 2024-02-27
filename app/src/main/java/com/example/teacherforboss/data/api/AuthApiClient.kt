@@ -18,7 +18,7 @@ object AuthApiClient {
 
     var mOkHttpClient= OkHttpClient.Builder()
         .addInterceptor(mHttpLoggingInterceptor)
-        .addInterceptor(AuthInterceptor(getAppContenxt(), tokenManager))
+        .addInterceptor(AuthInterceptor(getAppContenxt()))
         .authenticator(AuthAuthenticator(TokenManager, getAppContenxt()))
         .build()
 

@@ -6,9 +6,9 @@ import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
 import com.navercorp.nid.NaverIdLoginSDK
 
-//import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.HiltAndroidApp
 
-//@HiltAndroidApp
+@HiltAndroidApp
 class GlobalApplication: Application() {
     companion object{
         lateinit var instance: GlobalApplication

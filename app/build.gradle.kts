@@ -92,11 +92,20 @@ dependencies {
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("javax.inject:javax.inject:1")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
-    annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt ("com.google.dagger:hilt-compiler:2.50")
+//    annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+
+    // For instrumentation tests
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.50")
+
+    // For local unit tests
+    testImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kaptTest("com.google.dagger:hilt-compiler:2.50")
 
     // retrofit2
     val retrofit_version = "2.9.0"

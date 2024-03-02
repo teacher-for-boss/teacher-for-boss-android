@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.teacherforboss.databinding.ActivityExamResultBinding
 import com.example.teacherforboss.presentation.ui.examResult.adapter.examResultViewPagerAdapter
 import com.example.teacherforboss.presentation.ui.examResult.screens.AnalysisFragment
@@ -13,9 +17,13 @@ import com.example.teacherforboss.presentation.ui.examResult.screens.RankingFrag
 import com.example.teacherforboss.presentation.ui.examResult.screens.WrongNotesFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class examResultActivity : AppCompatActivity() {
     val fragmentManager: FragmentManager =supportFragmentManager
+    private val viewModel:examResultViewModel by viewModels()
 
     lateinit var binding:ActivityExamResultBinding
     lateinit var behavior: BottomSheetBehavior<LinearLayout>
@@ -39,6 +47,20 @@ class examResultActivity : AppCompatActivity() {
             else if(position==1) tab.text="결과 분석"
             else tab.text="등수 확인"
         }.attach()
+
+        lifecycleScope.launch {
+            viewModel.getExamResult()
+        }
+        //api 결과 수신
+        viewModel.examResultLiveData.observe(this, Observer { result->
+            Log.d("exam",result.score.toString())
+            binding.score.text=result.score.toString()
+            binding.questionCnt.text=result.questionsNum.toString()
+            binding.answerCnt.text=result.correctAnsNum.toString()
+            binding.wrongCnt.text=result.incorrectAnsNum.toString()
+
+        })
+
 
     }
 

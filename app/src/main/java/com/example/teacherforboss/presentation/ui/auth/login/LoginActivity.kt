@@ -22,6 +22,7 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginU
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.presentation.ui.survey.SurveyStartActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -61,7 +62,8 @@ class LoginActivity : AppCompatActivity() {
 
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        if(token.isNullOrBlank()){
+        if(!token.isNullOrBlank()){
+            navigateToMain()
 //            showToast("재로그인이 필요합니다!")
             // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
         }
@@ -78,8 +80,8 @@ class LoginActivity : AppCompatActivity() {
                     saveUserName(appContext,it.data?.result?.name!!.toString())//survery start 사장님 이름
 
                     // 설문조사 여부에 따라 다른 activity로 이동
-                    navigateToSurveyStart()
-
+//                    navigateToSurveyStart()
+                    navigateToMain()
 
                 }
                 is BaseResponse.Error ->{
@@ -178,6 +180,13 @@ class LoginActivity : AppCompatActivity() {
     private fun navigateToSurveyStart(){
         val intent=Intent(this,SurveyStartActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+            finish()
+        }
     }
 
     //access, refresh token 저장

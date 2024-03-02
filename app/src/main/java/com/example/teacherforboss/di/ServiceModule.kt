@@ -1,5 +1,6 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.data.service.ExamService
 import com.example.teacherforboss.data.service.MembersService
 import com.example.teacherforboss.data.service.SignupService
 import com.example.teacherforboss.di.qualifier.TeacherForBoss
@@ -23,4 +24,9 @@ object ServiceModule {
     @Singleton
     fun providesSignupService(@TeacherForBoss retrofit: Retrofit): SignupService =
         retrofit.create(SignupService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesExamService(@TeacherForBoss retrofit:Retrofit):ExamService=
+        retrofit.create(ExamService::class.java)
 }

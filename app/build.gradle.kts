@@ -160,6 +160,9 @@ dependencies {
     //kts
     implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
 
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
 

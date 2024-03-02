@@ -11,7 +11,9 @@ import com.example.teacherforboss.presentation.ui.main.menu.MyClassFragment
 import com.example.teacherforboss.presentation.ui.main.menu.SchoolFragment
 import com.example.teacherforboss.presentation.ui.main.menu.TeacherFragment
 import com.example.teacherforboss.presentation.ui.main.menu.TestFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

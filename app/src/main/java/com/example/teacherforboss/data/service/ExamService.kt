@@ -13,12 +13,12 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ExamService {
-    companion object{
-        fun getApi(): ExamService?{
-            return AuthApiClient.client?.create(ExamService::class.java)
-        }
-
-    }
+//    companion object{
+//        fun getApi(): ExamService?{
+//            return AuthApiClient.client?.create(ExamService::class.java)
+//        }
+//
+//    }
 
     @GET("exams/{examId}/result")
     suspend fun GetExamResult(

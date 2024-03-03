@@ -16,9 +16,9 @@ interface MembersService {
     companion object {
         const val MEMBERS = "members"
         const val SURVEY = "survey"
-        fun getApi(): MembersService?{
-            return AuthApiClient.client?.create(MembersService::class.java)
-        }
+//        fun getApi(): MembersService?{
+//            return AuthApiClient.client?.create(MembersService::class.java)
+//        }
 
     }
 

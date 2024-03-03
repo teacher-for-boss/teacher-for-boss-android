@@ -8,10 +8,9 @@ import com.example.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
 
 class ExamRemoteDataSourceImpl @Inject constructor(
-//    private val examService: ExamService
+    private val examService: ExamService
 ):ExamRemoteDataSource {
     override suspend fun getExamResult(requestExamResultDto: RequestExamResultDto): BaseResponse<ResponseExamResultDto>
-//    =examService.GetExamResult(requestExamResultDto)
-    =ExamService.getApi()!!.GetExamResult(examId = requestExamResultDto.examId)
+    =examService.GetExamResult(examId = requestExamResultDto.examId)
 
 }

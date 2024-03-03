@@ -1,8 +1,11 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.data.api.AuthApiClient
 import com.example.teacherforboss.data.service.ExamService
 import com.example.teacherforboss.data.service.MembersService
 import com.example.teacherforboss.data.service.SignupService
+import com.example.teacherforboss.di.qualifier.Anonymous
+import com.example.teacherforboss.di.qualifier.Auth
 import com.example.teacherforboss.di.qualifier.TeacherForBoss
 import dagger.Module
 import dagger.Provides
@@ -17,16 +20,15 @@ import javax.inject.Singleton
 object ServiceModule {
     @Provides
     @Singleton
-    fun providesMembersService(@TeacherForBoss retrofit: Retrofit): MembersService =
+    fun providesMembersService(@Auth retrofit: Retrofit):MembersService =
         retrofit.create(MembersService::class.java)
-
     @Provides
     @Singleton
-    fun providesSignupService(@TeacherForBoss retrofit: Retrofit): SignupService =
+    fun providesSignupService(@Anonymous retrofit: Retrofit): SignupService =
         retrofit.create(SignupService::class.java)
 
     @Provides
     @Singleton
-    fun providesExamService(@TeacherForBoss retrofit:Retrofit):ExamService=
+    fun providesExamService(@Auth retrofit:Retrofit):ExamService=
         retrofit.create(ExamService::class.java)
 }

@@ -14,7 +14,5 @@ class MembersRemoteDataSourceImpl @Inject constructor(
     override suspend fun postSurveyResult(requestSurveyDto: RequestSurveyDto): BaseResponse<ResponseSurveyDto> =
         membersService.postSurveyResult(request = requestSurveyDto)
     override suspend fun getProfile(): BaseResponse<ResponseGetProfileDto> =
-//        membersService.getProfile()
-        MembersService.getApi()!!.getProfile()
-//        membersService.getProfile()
+        membersService.getProfile()
 }

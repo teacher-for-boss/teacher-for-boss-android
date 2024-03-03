@@ -12,12 +12,13 @@ import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
     @ApplicationContext val context: Context,
-//    val context: Context,
+    val tokenManager:TokenManager
 ):Interceptor{
     val CODE_ERROR=401 //나중에 수정
     override fun intercept(chain: Interceptor.Chain): Response {
         val AUTHORIZATION="Authorization"
-        val token= TokenManager.getAccessToken(context)
+        val token=tokenManager.getAccessToken(context)
+//        val token= TokenManager.getAccessToken(context)
 //        val token:String= runBlocking {
 //            tokenManager.getAccessToken().first()
 //        }?:return errorResponse(chain.request())

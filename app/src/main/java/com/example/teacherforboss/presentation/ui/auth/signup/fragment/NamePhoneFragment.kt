@@ -92,6 +92,8 @@ class NamePhoneFragment : Fragment() {
                         showToast("error"+it.msg)
                     }
                 }
+
+                else -> {}
             }
         }
 
@@ -119,6 +121,8 @@ class NamePhoneFragment : Fragment() {
                 is BaseResponse.Error->{
                     showToast("error:"+it.msg)
                 }
+
+                else -> {}
             }
         }
 

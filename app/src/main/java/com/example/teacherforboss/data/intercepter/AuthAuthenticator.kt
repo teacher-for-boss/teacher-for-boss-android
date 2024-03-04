@@ -21,11 +21,6 @@ class AuthAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? {
 
         val refreshToken= tokenManager.getRefreshToken(context)
-
-        // ver2. datastore
-//            val refreshToken= runBlocking {
-//                tokenManager.getRefreshToken().first()
-//            }
         if(refreshToken==null){
             Log.e("token","refresh token is empty")
                 response.close()
@@ -38,9 +33,6 @@ class AuthAuthenticator @Inject constructor(
         TokenManager.saveAccessToken(context, newAccessToken)
         return replaceToken(newAccessToken,response.request)
         //401에러로 받은 response에 대한 request (access token 만료 code명:AUTH4007)
-
-
-//          return newRequestWithToken(refreshToken,response.request)
 
     }
 

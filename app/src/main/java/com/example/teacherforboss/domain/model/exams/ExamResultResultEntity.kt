@@ -1,4 +1,4 @@
-package com.example.teacherforboss.domain.model
+package com.example.teacherforboss.domain.model.exams
 
 data class ExamResultResultEntity(
     val score:Int,

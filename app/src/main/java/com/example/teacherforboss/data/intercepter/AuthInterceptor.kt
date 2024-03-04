@@ -14,25 +14,17 @@ class AuthInterceptor @Inject constructor(
     @ApplicationContext val context: Context,
     val tokenManager:TokenManager
 ):Interceptor{
-    val CODE_ERROR=401 //나중에 수정
+    val CODE_ERROR=401 //TODO
     override fun intercept(chain: Interceptor.Chain): Response {
-        val AUTHORIZATION="Authorization"
         val token=tokenManager.getAccessToken(context)
-//        val token= TokenManager.getAccessToken(context)
-//        val token:String= runBlocking {
-//            tokenManager.getAccessToken().first()
-//        }?:return errorResponse(chain.request())
-
         //header Authorizatioin 부분에 access token 추가
         val request=chain.request().newBuilder().header(AUTHORIZATION,"Bearer ${token}").build()
 
         val response=chain.proceed(request)//header 추가한 request의 반환값
 
-        //만약에 authenticator가 제대로 돌아가지 않는다면 여기서 access token 갱신 로직 구현하기
+        //TODO: 만약에 authenticator가 제대로 돌아가지 않는다면 여기서 access token 갱신 로직 구현하기
 //        if(response.code==401){
-//
 //        }
-
         //서버로부터 새로운 access token 발급받았을때
 //        if(response.code==HTTP_OK){
 //            val newAccessToken:String=response.header(AUTHORIZATION,null)?:return response
@@ -62,5 +54,10 @@ class AuthInterceptor @Inject constructor(
         .code(CODE_ERROR)
         .body(ResponseBody.create(null,""))
         .build()
+
+    companion object{
+        private val AUTHORIZATION="Authorization"
+
+    }
 
 }

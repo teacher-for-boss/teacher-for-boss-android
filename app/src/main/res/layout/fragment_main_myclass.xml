@@ -63,7 +63,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:text="사장님의 내일을 응원합니다"
+                    android:text="@string/profile_cheerup"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -71,11 +71,6 @@
                 </TextView>
 
             </LinearLayout>
-
-
-
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

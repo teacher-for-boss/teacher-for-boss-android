@@ -1,9 +1,7 @@
 package com.example.teacherforboss.data.model.response.exam
 
-import com.example.teacherforboss.domain.model.ExamResultEntity
-import com.example.teacherforboss.domain.model.ExamResultResultEntity
+import com.example.teacherforboss.domain.model.exams.ExamResultResultEntity
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 data class ResponseExamResultDto (
     @SerializedName("score")
@@ -15,7 +13,7 @@ data class ResponseExamResultDto (
     @SerializedName("incorrectAnsNum")
     val incorrectAnsNum:Int
 ){
-    fun toExamResultResultEntity()=ExamResultResultEntity(
+    fun toExamResultResultEntity()= ExamResultResultEntity(
         score=score,
         questionsNum=questionsNum,
         correctAnsNum=correctAnsNum,

@@ -1,6 +1,5 @@
 package com.example.teacherforboss.di
 
-import com.example.teacherforboss.data.api.AuthApiClient
 import com.example.teacherforboss.data.service.ExamService
 import com.example.teacherforboss.data.service.MembersService
 import com.example.teacherforboss.data.service.SignupService

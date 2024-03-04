@@ -3,7 +3,6 @@ package com.example.teacherforboss.di
 import android.content.Context
 import com.example.teacherforboss.BuildConfig
 import com.example.teacherforboss.BuildConfig.DEBUG
-import com.example.teacherforboss.data.api.AuthApiClient
 import com.example.teacherforboss.data.intercepter.AuthAuthenticator
 import com.example.teacherforboss.data.intercepter.AuthInterceptor
 import com.example.teacherforboss.data.tokenmanager.TokenManager

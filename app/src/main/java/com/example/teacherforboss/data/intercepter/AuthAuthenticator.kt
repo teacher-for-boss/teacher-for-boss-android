@@ -14,18 +14,13 @@ import javax.inject.Inject
 //access token 만료시 서버로부터 401 코드 전달받음->401 전달받을시 AuthAuthenticator 호출
 //access token을 refresh token으로 교채하여 api 재요청
 class AuthAuthenticator @Inject constructor(
+    @ApplicationContext val context: Context,
     private val tokenManager: TokenManager,
-    @ApplicationContext val context: Context
-):Authenticator{
+    ):Authenticator{
     val Authorization="Authorization"
     override fun authenticate(route: Route?, response: Response): Request? {
 
-        val refreshToken= TokenManager.getRefreshToken(context)
-
-        // ver2. datastore
-//            val refreshToken= runBlocking {
-//                tokenManager.getRefreshToken().first()
-//            }
+        val refreshToken= tokenManager.getRefreshToken(context)
         if(refreshToken==null){
             Log.e("token","refresh token is empty")
                 response.close()
@@ -38,9 +33,6 @@ class AuthAuthenticator @Inject constructor(
         TokenManager.saveAccessToken(context, newAccessToken)
         return replaceToken(newAccessToken,response.request)
         //401에러로 받은 response에 대한 request (access token 만료 code명:AUTH4007)
-
-
-//          return newRequestWithToken(refreshToken,response.request)
 
     }
 

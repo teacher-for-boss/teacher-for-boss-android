@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.databinding.ActivityExamResultBinding
 import com.example.teacherforboss.presentation.ui.examResult.adapter.examResultViewPagerAdapter
 import com.example.teacherforboss.presentation.ui.examResult.screens.AnalysisFragment
@@ -13,40 +16,59 @@ import com.example.teacherforboss.presentation.ui.examResult.screens.RankingFrag
 import com.example.teacherforboss.presentation.ui.examResult.screens.WrongNotesFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class examResultActivity : AppCompatActivity() {
-    val fragmentManager: FragmentManager =supportFragmentManager
+    val fragmentManager: FragmentManager = supportFragmentManager
+    private val viewModel: examResultViewModel by viewModels()
 
-    lateinit var binding:ActivityExamResultBinding
+    lateinit var binding: ActivityExamResultBinding
     lateinit var behavior: BottomSheetBehavior<LinearLayout>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityExamResultBinding.inflate(layoutInflater)
+        binding = ActivityExamResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initBottomSheet()
 
-        val viewPager=binding.viewPager2
-        val tabLayout=binding.tabLayout
+        val viewPager = binding.viewPager2
+        val tabLayout = binding.tabLayout
 
-        val fragmentList= listOf(
+        val fragmentList = listOf(
             WrongNotesFragment(), AnalysisFragment(), RankingFragment()
         )
 
-        viewPager.adapter= examResultViewPagerAdapter(fragmentList =fragmentList,this)
-        TabLayoutMediator(tabLayout,viewPager){tab,position->
-            if(position==0) tab.text="오답노트"
-            else if(position==1) tab.text="결과 분석"
-            else tab.text="등수 확인"
+        viewPager.adapter = examResultViewPagerAdapter(fragmentList = fragmentList, this)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            if (position == 0) tab.text = "오답노트"
+            else if (position == 1) tab.text = "결과 분석"
+            else tab.text = "등수 확인"
         }.attach()
+
+        lifecycleScope.launch {
+            viewModel.getExamResult()
+            viewModel.getExamResultWrongNotes()
+        }
+        //api 결과 수신
+        viewModel.examResultLiveData.observe(this, Observer { result ->
+            with(binding) {
+                score.text = result.score.toString()
+                questionCnt.text = result.score.toString()
+                answerCnt.text = result.correctAnsNum.toString()
+                wrongCnt.text = result.incorrectAnsNum.toString()
+            }
+        })
+
 
     }
 
-    private fun initBottomSheet(){
-        behavior=BottomSheetBehavior.from(binding.bottomSheet)
-        behavior.state=BottomSheetBehavior.STATE_EXPANDED
-        behavior.isDraggable=true
-        behavior.isHideable=false
+    private fun initBottomSheet() {
+        behavior = BottomSheetBehavior.from(binding.bottomSheet)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.isDraggable = true
+        behavior.isHideable = false
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {

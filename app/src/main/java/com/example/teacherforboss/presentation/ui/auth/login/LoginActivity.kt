@@ -22,6 +22,7 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginU
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.main.MainActivity
 import com.example.teacherforboss.presentation.ui.survey.SurveyStartActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -61,9 +62,8 @@ class LoginActivity : AppCompatActivity() {
 
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        if(token.isNullOrBlank()){
-//            showToast("재로그인이 필요합니다!")
-            // 로그인 실패 알림(ui 어케할지 질문->그냥 toast알람?)
+        if(!token.isNullOrBlank()){
+            navigateToMain()
         }
 
         //기본 로그인
@@ -73,13 +73,11 @@ class LoginActivity : AppCompatActivity() {
                     // 로딩창
                 }
                 is BaseResponse.Success ->{
-//                    showToast("로그인 성공")
                     saveToken(it.data)//respponse.result
-                    saveUserName(appContext,it.data?.result?.name!!.toString())//survery start 사장님 이름
+                    saveUserName(appContext,it.data?.result?.name?:"".toString())//survery start 사장님 이름
 
                     // 설문조사 여부에 따라 다른 activity로 이동
-                    navigateToSurveyStart()
-
+//                  navigateToMain()
 
                 }
                 is BaseResponse.Error ->{
@@ -95,11 +93,9 @@ class LoginActivity : AppCompatActivity() {
         //소셜 로그인 후 서버로 로그인 요청
         loginViewModel.socialLoginResult.observe(this){
             when(it){is BaseResponse.Loading ->{
-//                showToast("소셜 로그인 중입니다.조금만 더 기다려주세요 🐣")
-                //로딩창
+
             }
                 is BaseResponse.Success ->{
-//                    showToast("소셜 로그인 완료!🐣")
                     saveToken(it.data)//respponse.result
                     saveUserName(appContext,it.data?.result?.name!!.toString())
                     // 설문조사 여부에 따라 다른 activity로 이동
@@ -180,6 +176,13 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+            finish()
+        }
+    }
+
     //access, refresh token 저장
     fun <T: LoginResponseInterface>saveToken(data: T?){
         if(!data?.result?.accessToken.isNullOrEmpty()){
@@ -250,12 +253,6 @@ class LoginActivity : AppCompatActivity() {
                         //
                     }
                 })
-//                Log.d("test", "AccessToken : " + NaverIdLoginSDK.getAccessToken())
-//                Log.d("test", "client id : " + getString(R.string.naver_client_id))
-//                Log.d("test", "ReFreshToken : " + NaverIdLoginSDK.getRefreshToken())
-//                Log.d("test", "Expires : " + NaverIdLoginSDK.getExpiresAt().toString())
-//                Log.d("test", "TokenType : " + NaverIdLoginSDK.getTokenType())
-//                Log.d("test", "State : " + NaverIdLoginSDK.getState().toString())
             }
 
 

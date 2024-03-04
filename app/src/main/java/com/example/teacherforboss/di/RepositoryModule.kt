@@ -1,7 +1,9 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.data.repository.ExamRepositoryImpl
 import com.example.teacherforboss.data.repository.MembersRepositoryImpl
 import com.example.teacherforboss.data.repository.SignupRepositoryImpl
+import com.example.teacherforboss.domain.repository.ExamRepository
 import com.example.teacherforboss.domain.repository.MembersRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import dagger.Binds
@@ -20,4 +22,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsSignupRepository(signupRepositoryImpl: SignupRepositoryImpl):SignupRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsExamRepository(examRepositoryImpl: ExamRepositoryImpl):ExamRepository
 }

@@ -8,3 +8,7 @@ annotation class TeacherForBoss
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class Auth
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class Anonymous

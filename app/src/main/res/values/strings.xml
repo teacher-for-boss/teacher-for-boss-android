@@ -83,4 +83,9 @@
     <string name="exam_question4_answer2">쇠고기는 최대 6개월간 저장 보관이 가능하다</string>
     <string name="exam_question4_answer3">고기를 갈면 최대 저장 보관 가능 기간이 줄어든다</string>
     <string name="exam_question4_answer4">생닭과 생오리는 최대 3개월간 저장 보관이 가능하다</string>
+
+    <!--main start-->
+
+    <!--my class-->
+    <string name="profile_cheerup">사장님의 내일을 응원합니다</string>
 </resources>

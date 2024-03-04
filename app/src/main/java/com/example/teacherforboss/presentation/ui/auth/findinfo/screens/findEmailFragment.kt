@@ -96,6 +96,8 @@ class findEmailFragment : Fragment() {
                     }
                     showToast("error"+it?.msg)
                 }
+
+                else -> {}
             }
         }
 
@@ -122,6 +124,8 @@ class findEmailFragment : Fragment() {
                 is BaseResponse.Error->{
                     showToast("error:"+it?.msg)
                 }
+
+                else -> {}
             }
         }
 

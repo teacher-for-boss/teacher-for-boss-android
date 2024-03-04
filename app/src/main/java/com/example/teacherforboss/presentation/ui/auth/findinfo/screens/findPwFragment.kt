@@ -81,6 +81,8 @@ class findPwFragment : Fragment() {
                     navController.navigate(R.id.action_findPwFragment_to_findPwFragment3)
 
                 }
+
+                else -> {}
             }
 
         }
@@ -108,6 +110,8 @@ class findPwFragment : Fragment() {
                     showToast(it.msg!!)
 
                 }
+
+                else -> {}
             }
         }
 

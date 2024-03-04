@@ -135,7 +135,7 @@
                                 <TextView
                                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
                                     android:text="10"
-                                    android:id="@+id/problem_cnt"
+                                    android:id="@+id/question_cnt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
 

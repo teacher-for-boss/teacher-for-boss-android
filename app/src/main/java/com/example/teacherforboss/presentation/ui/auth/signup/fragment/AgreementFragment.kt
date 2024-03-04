@@ -137,6 +137,8 @@ class AgreementFragment : BottomSheetDialogFragment() {
                 is BaseResponse.Error->{
                     showToast("error:"+it.msg)
                 }
+
+                else -> {}
             }
         }
 

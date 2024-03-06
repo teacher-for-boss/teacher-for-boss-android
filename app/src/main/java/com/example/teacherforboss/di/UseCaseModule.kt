@@ -4,6 +4,7 @@ import com.example.teacherforboss.domain.repository.ExamRepository
 import com.example.teacherforboss.domain.repository.MembersRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.ExamResultUseCase
+import com.example.teacherforboss.domain.usecase.ExamResultWrongNotesUseCase
 import com.example.teacherforboss.domain.usecase.PostSurveyUseCase
 import com.example.teacherforboss.domain.usecase.ProfileUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
@@ -35,5 +36,10 @@ class UseCaseModule {
     @Singleton
     fun providesExamResultUseCase(examRepository: ExamRepository):ExamResultUseCase=
         ExamResultUseCase(examRepository=examRepository)
+
+    @Provides
+    @Singleton
+    fun providesExamResultWrongNotesUseCase(examRepository: ExamRepository):ExamResultWrongNotesUseCase=
+        ExamResultWrongNotesUseCase(examRepository)
 
 }

@@ -1,13 +1,16 @@
 package com.example.teacherforboss.presentation.ui.examResult
 
 import android.util.Log
+import android.util.LogPrinter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.ExamResultEntity
-import com.example.teacherforboss.domain.model.ExamResultResultEntity
+import com.example.teacherforboss.domain.model.exams.ExamResultEntity
+import com.example.teacherforboss.domain.model.exams.ExamResultResultEntity
+import com.example.teacherforboss.domain.model.exams.ExamResultWrongNotesEntity
 import com.example.teacherforboss.domain.usecase.ExamResultUseCase
+import com.example.teacherforboss.domain.usecase.ExamResultWrongNotesUseCase
 import com.example.teacherforboss.presentation.ui.examResult.testDto.RankingDto
 import com.example.teacherforboss.presentation.ui.examResult.testDto.wrongNotesDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class examResultViewModel @Inject constructor(
-    private val examResultUseCase: ExamResultUseCase
+    private val examResultUseCase: ExamResultUseCase,
+    private val examResultWrongNotesUseCase: ExamResultWrongNotesUseCase
 ): ViewModel() {
 
     val dummy_wrongnotes= listOf(
@@ -36,7 +40,7 @@ class examResultViewModel @Inject constructor(
         RankingDto("8","임혜원 사장님","93점")
     )
 
-    var _examId=MutableLiveData<Int>(1)//test 값 추후 변경 로직 추가
+    private var _examId=MutableLiveData<Int>(1)//test 값 추후 변경 로직 추가
     val examId:LiveData<Int>
         get() = _examId
 
@@ -46,8 +50,22 @@ class examResultViewModel @Inject constructor(
     suspend fun getExamResult(){
         viewModelScope.launch {
             try {
-                val examResultResultEntity=examResultUseCase(examResultEntity = ExamResultEntity(examId = examId.value!!))
+                val examResultResultEntity=examResultUseCase(examResultEntity = ExamResultEntity(examId = examId.value?:0))
                 _examResultLiveData.value=examResultResultEntity
+            }catch (ex:Exception){
+                Log.d("exam",ex.message!!)
+            }
+        }
+    }
+
+    private val _examResultWrongNotesLiveData=MutableLiveData<ExamResultWrongNotesEntity>()
+    val examResultWrongNotesLiveData:LiveData<ExamResultWrongNotesEntity> = _examResultWrongNotesLiveData
+
+    suspend fun getExamResultWrongNotes(){
+        viewModelScope.launch {
+            try{
+                val examResultWrongNotesEntity=examResultWrongNotesUseCase(examResultEntity = ExamResultEntity(examId=examId.value!!))
+                _examResultWrongNotesLiveData.value=examResultWrongNotesEntity
             }catch (ex:Exception){
                 Log.d("exam",ex.message!!)
             }

@@ -13,7 +13,7 @@ interface ExamService {
     )
     : BaseResponse<ResponseExamResultDto>
 
-    @GET("${EXAMS}/{examId}/result/Incorrect/list")
+    @GET("${EXAMS}/{examId}/result/answerNotes")
     suspend fun GetExamResultWrongNotes(
         @Path("examId") examId:Int,
     ):BaseResponse<ResponseExamResultWrongNotesDto>

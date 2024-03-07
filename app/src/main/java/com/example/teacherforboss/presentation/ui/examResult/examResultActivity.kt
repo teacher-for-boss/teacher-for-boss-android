@@ -49,7 +49,6 @@ class examResultActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.getExamResult()
-            viewModel.getExamResultWrongNotes()
         }
         //api 결과 수신
         viewModel.examResultLiveData.observe(this, Observer { result ->

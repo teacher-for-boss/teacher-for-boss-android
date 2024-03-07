@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.ExamResultEntity
-import com.example.teacherforboss.domain.model.ExamResultResultEntity
+import com.example.teacherforboss.domain.model.exams.ExamResultEntity
+import com.example.teacherforboss.domain.model.exams.ExamResultResultEntity
 import com.example.teacherforboss.domain.usecase.ExamResultUseCase
 import com.example.teacherforboss.presentation.ui.examResult.testDto.RankingDto
 import com.example.teacherforboss.presentation.ui.examResult.testDto.wrongNotesDto

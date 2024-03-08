@@ -5,22 +5,32 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.telephony.PhoneNumberUtils
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentNamePhoneBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 //@AndroidEntryPoint
@@ -56,18 +66,27 @@ class NamePhoneFragment : Fragment() {
         //폰 인증 api email과 동일하게 구현하기
         //viewModel에 phone, isPhoneVerified 추가
 
+        //휴대폰 반응형(-) 추가
+        viewModel.livePhone1.observe(viewLifecycleOwner, Observer {
+            if (it.length==3){
+                binding.phoneNumBox2.requestFocus()
+            }
+        })
+        viewModel.livePhone2.observe(viewLifecycleOwner, Observer {
+            if (it.length==4){
+                binding.phoneNumBox3.requestFocus()
+            }
+        })
 
         //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
-            binding.veryInfo.visibility=View.VISIBLE
-
-            val pattern= Pattern.compile("010\\d{4}\\d{4}")
-            viewModel.phone_check.value=pattern.matcher(viewModel.phone.toString()).matches()
+            viewModel.phone_validation()
 
             if(viewModel.phone_check.value==true){
                 binding.phoneCodeBox.visibility=View.VISIBLE
                 startTimer()
-                viewModel.phoneUser(viewModel.phone.value.toString(),hash.toString())
+                viewModel.phoneUser(hash.toString())
+                binding.veryInfo.visibility=View.VISIBLE
             }
 
         }
@@ -77,6 +96,7 @@ class NamePhoneFragment : Fragment() {
             when(it) {
                 is BaseResponse.Loading->{}
                 is BaseResponse.Success->{
+                    binding.veryInfo.text="인증번호가 발송되었습니다."
                     binding.phoneVerifyBtn.visibility = View.INVISIBLE
                     binding.inputPhoneCode.visibility=View.VISIBLE
                     startTimer()
@@ -100,7 +120,7 @@ class NamePhoneFragment : Fragment() {
         //휴대폰 코드 입력 후 확인 버튼
         binding.phoneConfirmBtn.setOnClickListener {
             phoneCode = binding.phoneCodeBox.text.toString()
-            viewModel.phoneCheckUser(viewModel.phoneAuthId.value!!, phoneCode)
+            viewModel.phoneCheckUser(phoneCode)
         }
 
         viewModel.phoneCheckResult.observe(viewLifecycleOwner) {

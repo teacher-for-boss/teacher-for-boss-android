@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 //@HiltViewModel
@@ -39,11 +40,18 @@ class SignupViewModel(
 
 ): ViewModel() {
     var liveEmail= MutableLiveData<String>("")
-    var livePhone=MutableLiveData<String>("")
+    var livePhone1=MutableLiveData<String>("")
+
+    var livePhone2=MutableLiveData<String>("")
+
+    var livePhone3=MutableLiveData<String>("")
+
+    var phone=MutableLiveData<String>("")
+    var livePhoneLength=MutableLiveData<Int>(0)
     val email: LiveData<String>
         get() = liveEmail
-    val phone:LiveData<String>
-        get() = livePhone
+//    val phone:LiveData<String>
+//        get() = livePhone1
 
     var livePw= MutableLiveData<String>("")
     var liveRePw= MutableLiveData<String>("")
@@ -107,7 +115,7 @@ class SignupViewModel(
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(true)
+    var _isPhoneVerified=MutableLiveData<Boolean>(false)
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
@@ -123,14 +131,39 @@ class SignupViewModel(
 //        _isPhoneVerified.value=isVefiried
 //    }
 
+    //pw체크
+
+    //pw check 정규식
+    val num_regex:Regex=Regex("[0-9]+")
+    val eng_regex:Regex=Regex("[a-zA-z]+")
+    val special_regex:Regex= Regex("[^a-zA-Z0-9가-힣]+")
+    fun pw_validation(){
+        var pw=livePw.value.toString()
+        eng_check.value= (eng_regex.find(pw)!=null)
+        num_check.value=(num_regex.find(pw)!=null)
+        special_check.value=(special_regex.find(pw)!=null)
+        length_check.value=(pw.length>8 && pw.length<20)
+        all_check.value=(eng_check.value!!&& num_check.value!! && special_check.value!!&& length_check.value!!)
+    }
+
+    //phone 형식 체크
+    fun phone_validation(){
+        val pattern= Pattern.compile("010\\d{4}\\d{4}")
+        phone.value=livePhone1.value.toString()+livePhone2.value.toString()+livePhone3.value.toString()
+        phone_check.value=pattern.matcher(phone.value).matches()
+
+    }
+
+
+
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
-    fun emailUser(email:String) {
+    fun emailUser() {
         emailResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
             try {
                 val emailRequest = EmailRequest(
-                    email = email,
+                    email = email.value.toString(),
                     purpose = 1  //회원가입을 위한 이메일 입력
                 )
                 val response = userRepo.emailUser(emailRequest = emailRequest)
@@ -138,6 +171,7 @@ class SignupViewModel(
                 if(response?.code()==200){
                     if (response?.body()?.code=="COMMON200") {
                         emailResult.value = BaseResponse.Success(response.body())
+                        _isEmailVerified.value=true
                     }
 
                 }
@@ -147,24 +181,19 @@ class SignupViewModel(
                     emailResult.value = BaseResponse.Error(errorbody.message)
 
                 }
-//                else if(response?.body()?.code=="AUTH40016"){
-//                    Log.d("email",response!!.body()?.message.toString())
-//
-//                }
             } catch (ex: Exception) {
-//                emailResult.value = BaseResponse.Error(ex.message)
             }
         }
     }
 
     val emailCheckResult: MutableLiveData<BaseResponse<EmailCheckResponse>> = MutableLiveData()
-    fun emailCheckUser(emailAuthId:Long,emailAuthCode:String) {
+    fun emailCheckUser(emailAuthCode:String) {
         emailCheckResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
             try {
                 val emailCheckRequest = EmailCheckRequest(
-                    emailAuthId = emailAuthId,
+                    emailAuthId = emailAuthId.value?:0,
                     emailAuthCode = emailAuthCode
                 )
                 val response = userRepo.emailCheck(emailCheckRequest = emailCheckRequest)
@@ -257,13 +286,13 @@ class SignupViewModel(
 
 
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
-    fun phoneUser(phone: String,hash:String) {
+    fun phoneUser(hash:String) {
         phoneResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
             try {
                 val phoneRequest = PhoneRequest(
-                    phone = phone,
+                    phone = phone.value.toString(),
                     purpose = 1,
                     appHash = hash
                 )
@@ -271,6 +300,7 @@ class SignupViewModel(
 
                 if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
+                    _isPhoneVerified.value=true
                 }
                 else {
                     val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
@@ -283,13 +313,13 @@ class SignupViewModel(
     }
 
     val phoneCheckResult: MutableLiveData<BaseResponse<PhoneCheckResponse>> = MutableLiveData()
-    fun phoneCheckUser(phoneAuthId: Long, phoneAuthCode: String) {
+    fun phoneCheckUser(phoneAuthCode: String) {
         phoneCheckResult.value = BaseResponse.Loading()
 
         viewModelScope.launch {
             try {
                 val phoneCheckRequest = PhoneCheckRequest(
-                    phoneAuthId = phoneAuthId,
+                    phoneAuthId = phoneAuthId.value?:0,
                     phoneAuthCode = phoneAuthCode
                 )
                 val response = userRepo.phoneCheck(phoneCheckRequest = phoneCheckRequest)

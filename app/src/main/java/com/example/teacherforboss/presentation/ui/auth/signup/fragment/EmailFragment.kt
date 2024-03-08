@@ -51,14 +51,17 @@ class EmailFragment : Fragment() {
         //이메일 인증하기버튼 눌렀을때
         binding.emailVerifyBtn.setOnClickListener {
 
-            binding.veryInfo.visibility=View.VISIBLE
-            email=binding.emailBox.text.toString()
-
             val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
             viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
+            binding.veryInfo.visibility=View.VISIBLE
 
             if(viewModel.email_check.value==true){
-                viewModel.emailUser(viewModel.email.value.toString()) //서버로 auth/email
+                viewModel.emailUser() //서버로 auth/email
+                binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
+                binding.emailVerifyBtn.visibility = View.INVISIBLE
+                binding.inputEmailCode.visibility=View.VISIBLE
+                startTimer()  //타이머 시작
+
             }
             else{
                 binding.veryInfo.text="올바르지 않는 이메일 형식입니다"
@@ -70,17 +73,10 @@ class EmailFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
-                    binding.emailVerifyBtn.visibility = View.INVISIBLE
-                    binding.inputEmailCode.visibility=View.VISIBLE
-                    startTimer()  //타이머 시작
-
-                    Log.d("auth",it.data?.result?.emailAuthId.toString())
                     viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
 
                 }
                 is BaseResponse.Error->{
-                    Log.d("email",it.msg!!)
                     //중복 이메일인 경우
                     if(it.msg=="이미 가입된 이메일입니다."){
                         binding.veryInfo.text="이미 가입된 이메일 주소입니다."
@@ -90,7 +86,6 @@ class EmailFragment : Fragment() {
                     }
 
                 }
-
                 else -> {}
             }
         }
@@ -98,7 +93,7 @@ class EmailFragment : Fragment() {
         //이메일 코드 입력 후 확인 버튼
         binding.emailConfirmBtn.setOnClickListener {
             emailCode=binding.emailCodeBox.text.toString()
-            viewModel.emailCheckUser(viewModel.emailAuthId.value!!,emailCode) //서버로 /auth/email/check
+            viewModel.emailCheckUser(emailCode) //서버로 /auth/email/check
         }
 
         viewModel.emailCheckResult.observe(viewLifecycleOwner){

@@ -164,7 +164,7 @@
                     android:id="@+id/checkVery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{signupViewModel.isEmailVerified?"인증되었습니다.":"인증번호가 올바르지 않습니다."}'
+                    android:text='@{signupViewModel.isEmailVerified?@string/verified_true:@string/verified_false}'
                     android:textColor="@{signupViewModel.isEmailVerified?@color/sub_green:@color/sub_red}"
                     android:textSize="12dp"
                     android:visibility="invisible"
@@ -173,7 +173,7 @@
 
                 <TextView
                     android:id="@+id/timeOverText"
-                    android:text='@{signupViewModel.timeOverState?"인증번호 다시받기":"인증번를 받지 못하셨나요?"}'
+                    android:text='@{signupViewModel.timeOverState?@string/timeover_true:@string/timeover_false}'
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                     android:textColor="@color/gray_01"
                     android:visibility="invisible"

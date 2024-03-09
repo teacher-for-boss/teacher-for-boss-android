@@ -17,26 +17,22 @@ import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
-import com.example.teacherforboss.domain.model.SignupEntity
 import com.example.teacherforboss.domain.model.SignupResultEntity
-import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.util.Timer.Custom10mTimer
+import com.example.teacherforboss.util.Timer.Custom3mTimer
 import com.example.teacherforboss.util.base.ErrorUtils
 import com.example.teacherforboss.util.view.UiState
-import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-//@HiltViewModel
-class SignupViewModel(
-//@Inject constructor(
+@HiltViewModel
+class SignupViewModel @Inject constructor(
+    val timer: Custom3mTimer,
 //    private val userRepo: UserRepository
-//    private val signupUseCase: SignupUseCase
 
 ): ViewModel() {
     var liveEmail= MutableLiveData<String>("")
@@ -71,7 +67,6 @@ class SignupViewModel(
     var _birthDate=MutableLiveData<String>("")
     val birthDate:LiveData<String>
         get() = _birthDate
-
 
     var emailAuthId=MutableLiveData<Long>(1) //test용 원래는 0으로 설정
     var phoneAuthId=MutableLiveData<Long>(1)
@@ -334,4 +329,23 @@ class SignupViewModel(
             }
         }
     }
+
+    //timer
+    private val _timerText=MutableLiveData<String>()
+    val timerText:LiveData<String>
+        get() = _timerText
+
+    private val _timeOverState=MutableLiveData<Boolean>(false)
+    val timeOverState:LiveData<Boolean>
+        get() = _timeOverState
+
+    fun startTimer(){
+        timer.startTimer { timeLeft,state->
+            _timerText.value=timeLeft
+            if (state==true){
+                _timeOverState.value=true
+            }
+        }
+    }
+
 }

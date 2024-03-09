@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentEmailBinding
@@ -54,13 +55,14 @@ class EmailFragment : Fragment() {
             val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
             viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
             binding.veryInfo.visibility=View.VISIBLE
+            binding.timeOverText.visibility=View.VISIBLE
 
             if(viewModel.email_check.value==true){
                 viewModel.emailUser() //서버로 auth/email
                 binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
                 binding.emailVerifyBtn.visibility = View.INVISIBLE
                 binding.inputEmailCode.visibility=View.VISIBLE
-                startTimer()  //타이머 시작
+                viewModel.startTimer()  //타이머 시작
 
             }
             else{
@@ -122,36 +124,8 @@ class EmailFragment : Fragment() {
                 else -> {}
             }
         }
-
-
         return binding.root
 
-
-    }
-    //verify 버튼을 누르면 3분 타이머
-    fun startTimer() {
-        binding.timer.visibility = View.VISIBLE
-
-        val timer = object : CountDownTimer(181000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                updateTime(millisUntilFinished)
-            }
-
-            override fun onFinish() { }
-        }
-
-        timer.start()
-    }
-
-    fun updateTime(millisUntilFinished: Long) {
-        val min = millisUntilFinished / 60000
-        val sec = (millisUntilFinished % 60000) / 1000
-        val formattedMin = String.format("%02d", min)
-        val formattedSec = String.format("%02d", sec)
-
-        val timeLeft = "$formattedMin:$formattedSec"
-
-        binding.timer.text = timeLeft
     }
 
     fun processError(msg:String?){

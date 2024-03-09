@@ -6,16 +6,16 @@ class Custom3mTimer {
     val timer = object : CountDownTimer(181000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
             val timeLeft=updateTime(millisUntilFinished)
-            callback?.invoke(timeLeft)
+            callback?.invoke(timeLeft,false)
         }
 
         override fun onFinish() {
-            callback?.invoke("00:00")
+            callback?.invoke("00:00",true)
 
         }
     }
-    private var callback:((String)->Unit)?=null
-    fun startTimer(callback:(String)->Unit){
+    private var callback:((String,Boolean)->Unit)?=null
+    fun startTimer(callback:(String,Boolean)->Unit){
         this.callback=callback
         timer.start()
 

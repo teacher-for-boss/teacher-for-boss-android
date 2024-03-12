@@ -18,6 +18,10 @@ class MySchoolViewModel @Inject constructor(
     private val _profileLiveData = MutableLiveData<ProfileEntity>()
     val profileLiveData: LiveData<ProfileEntity> = _profileLiveData
 
+
+    //test 추후 api연결 후 삭제
+    val dummy_visits= listOf<String>("상권 분석","재고 관리","종합 소득세","아르바이트")
+
     suspend fun getProfile() {
         viewModelScope.launch {
             try {

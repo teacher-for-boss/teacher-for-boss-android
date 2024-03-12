@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     >
 
     <data>
@@ -16,64 +17,478 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:orientation="horizontal"
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            >
-            
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="50dp"
+            android:layout_height="match_parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:orientation="horizontal"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
                 >
 
-                <ImageView
-                    android:id="@+id/profieImg"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:scaleType="centerCrop"
-                    >
-
-                </ImageView>
-
-            </androidx.cardview.widget.CardView>
-
-
-
-            <LinearLayout
-                app:layout_constraintLeft_toRightOf="@id/cardview"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/name"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:cardCornerRadius="50dp"
+                    >
 
-                <TextView
-                    android:text="@string/profile_cheerup"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    <ImageView
+                        android:id="@+id/profieImg"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        >
+
+                    </ImageView>
+
+                </androidx.cardview.widget.CardView>
+
+
+
+                <LinearLayout
+                    app:layout_constraintLeft_toRightOf="@id/cardview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:text="@string/profile_cheerup"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                >
+
+                <TextView
+                    android:text="최근 방문"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    >
+
                 </TextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvlist"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+
+                >
+
+                <TextView
+                    android:text="나의 교실"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+
+                    >
+
+                </TextView>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+
+                        >
+
+                        <ImageView
+                            android:src="@drawable/myclass1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="내 정보"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/myclass2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="찜/구매 내역"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/myclass3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="나의 과외"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            >
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+
+                        >
+
+                        <ImageView
+                            android:src="@drawable/myclass4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="나의 생활기록부"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+
+                >
+
+                <TextView
+                    android:text="학교 안내문"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+
+                    >
+
+                </TextView>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+
+                        >
+
+                        <ImageView
+                            android:src="@drawable/school_info1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="공지사항"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/school_info2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="이벤트"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+
+                >
+
+                <TextView
+                    android:text="학교 행정실"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+
+                    >
+
+                </TextView>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+
+                        >
+
+                        <ImageView
+                            android:src="@drawable/school_office1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="문의 및 신고"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/school_office2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            >
+
+                        </ImageView>
+
+                        <TextView
+                            android:text="의견 및 신고하기"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:textAlignment="center"
+                android:paddingTop="16dp"
+
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/splice"
+                        android:id="@+id/logoutBtn"
+                        android:text="로그아웃"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:textColor="@color/gray_01"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/splice"
+                        android:text="|"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="@color/gray_01"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        >
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/termOfUseBtn"
+                        android:text="이용약관"
+                        android:textColor="@color/gray_01"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/splice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
 
     </ScrollView>
 

@@ -3,14 +3,13 @@ package com.example.teacherforboss.presentation.ui.main
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityMainBinding
-import com.example.teacherforboss.presentation.ui.main.menu.HomeFragment
-import com.example.teacherforboss.presentation.ui.main.menu.MyClassFragment
-import com.example.teacherforboss.presentation.ui.main.menu.SchoolFragment
-import com.example.teacherforboss.presentation.ui.main.menu.TeacherFragment
-import com.example.teacherforboss.presentation.ui.main.menu.TestFragment
+import com.example.teacherforboss.presentation.ui.main.menu.screens.HomeFragment
+import com.example.teacherforboss.presentation.ui.main.menu.screens.MyClassFragment
+import com.example.teacherforboss.presentation.ui.main.menu.screens.SchoolFragment
+import com.example.teacherforboss.presentation.ui.main.menu.screens.TeacherFragment
+import com.example.teacherforboss.presentation.ui.main.menu.screens.ExamFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.menu_test -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.menu_frame_layout, TestFragment()).commit()
+                        .replace(R.id.menu_frame_layout, ExamFragment()).commit()
                     true
                 }
 

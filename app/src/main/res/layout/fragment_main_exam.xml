@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="중간고사"
+                android:textColor="@color/black"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="30dp"/>
+
+            <ImageView
+                android:id="@+id/alarm"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/alarm"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp" />
+
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/search"
+                app:layout_constraintTop_toTopOf="@id/alarm"
+                app:layout_constraintEnd_toStartOf="@id/alarm"
+                android:layout_marginEnd="20dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:src="@drawable/rectangle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="76dp" />
+
+            <ImageView
+                android:layout_width="138dp"
+                android:layout_height="113dp"
+                android:src="@drawable/books"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/alarm"
+                android:layout_marginTop="70dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024 1-2분기"
+                android:textColor="#EBEBEB"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                app:layout_constraintTop_toBottomOf="@id/alarm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="'열심히' 그리고 '잘'\n할 수 있는지 알려주세요"
+                android:textColor="#FFFFFF"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+                app:layout_constraintTop_toBottomOf="@id/alarm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="80dp"
+                android:layout_marginStart="30dp" />
+
+            <Button
+                android:id="@+id/testBtn"
+                android:layout_width="90dp"
+                android:layout_height="45dp"
+                android:background="@drawable/radius_white_button"
+                android:text="시험보기"
+                android:textColor="@color/main_purple_00"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                app:layout_constraintTop_toBottomOf="@id/alarm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="145dp"
+                android:layout_marginStart="30dp" />
+
+            <Button
+                android:id="@+id/testResultBtn"
+                android:layout_width="90dp"
+                android:layout_height="45dp"
+                android:background="@drawable/radius_white_button"
+                android:text="시험결과"
+                android:textColor="@color/main_purple_00"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                app:layout_constraintTop_toBottomOf="@id/alarm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="145dp"
+                android:layout_marginStart="30dp"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/reTestBtn"
+                android:layout_width="90dp"
+                android:layout_height="45dp"
+                android:background="@drawable/radius_white_button"
+                android:text="재시험보기"
+                android:textColor="@color/main_purple_00"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                app:layout_constraintTop_toBottomOf="@id/alarm"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="145dp"
+                android:layout_marginStart="130dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카테고리"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                app:layout_constraintTop_toBottomOf="@id/testBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="55dp" />
+
+            <LinearLayout
+                android:id="@+id/category_layout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/testBtn"
+                android:layout_marginTop="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <FrameLayout
+                    android:id="@+id/category_1"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
+
+                    <ImageView
+                        android:id="@+id/category_iv1"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/megaphone"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:id="@+id/category_tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="마케팅"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_2"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/sparkles"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="위생"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_3"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/location"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="상권"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_4"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/chart_histogram"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="운영"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_5"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/customer_care"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="서비스"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/category_layout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/testBtn"
+                android:layout_marginTop="180dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <FrameLayout
+                    android:id="@+id/category_6"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/employee_group"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="직원관리"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_7"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/store"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="인테리어"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_8"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/policy"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정책"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_9"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/menu"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="메뉴"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/category_10"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/lightbulb"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="아이디어"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="2dp" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!--<TextView
+                android:id="@+id/score_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="같은 업종 사장님들 점수"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                app:layout_constraintTop_toBottomOf="@id/testBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="270dp" />-->
+
+<!--            <com.google.android.material.tabs.TabLayout-->
+<!--                android:id="@+id/score_tabLayout"-->
+<!--                android:layout_width="300dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                app:tabSelectedTextAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"-->
+<!--                app:tabSelectedTextColor="@color/white"-->
+<!--                app:tabIndicatorHeight="0dp"-->
+<!--                app:tabTextAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"-->
+<!--                app:tabTextColor="@color/main_purple_00"-->
+
+<!--                app:layout_constraintTop_toBottomOf="@id/category_layout2"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                android:layout_marginTop="90dp" />-->
+
+<!--            <androidx.viewpager2.widget.ViewPager2-->
+<!--                android:id="@+id/score_viewPager"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/score_tabLayout"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                android:layout_marginTop="25dp"/>-->
+
+            <TextView
+                android:id="@+id/score_info1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="같은 업종 사장님들의 평균 점수보다"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+                android:textColor="@color/gray_08"
+                app:layout_constraintTop_toBottomOf="@+id/category_layout2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="56dp"
+                />
+
+            <TextView
+                android:id="@+id/score_info2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20점이 더 높아요👍"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.18"
+                android:textColor="@color/gray_08"
+                app:layout_constraintTop_toBottomOf="@id/score_info1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"/>
+
+            <ImageView
+                android:id="@+id/score_ave_bar"
+                android:layout_width="108dp"
+                android:layout_height="96dp"
+                android:src="@drawable/score_bar_1"
+                app:layout_constraintStart_toStartOf="@id/score_info1"
+                android:layout_marginStart="3dp"
+                app:layout_constraintBottom_toTopOf="@id/ave_boss_chart_title"
+                android:layout_marginBottom="8dp"/>
+
+            <ImageView
+                android:id="@+id/score_bar"
+                android:layout_width="108dp"
+                android:layout_height="124dp"
+                android:src="@drawable/score_bar_2"
+                app:layout_constraintEnd_toEndOf="@id/score_info1"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintBottom_toTopOf="@id/boss_chart_title"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/score_ave_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="nn점"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.Bold.16"
+                android:textColor="#8F8EA6"
+                app:layout_constraintBottom_toTopOf="@id/score_ave_bar"
+                app:layout_constraintStart_toStartOf="@id/score_ave_bar"
+                app:layout_constraintEnd_toEndOf="@id/score_ave_bar"
+                android:layout_marginBottom="5dp"
+                />
+
+            <TextView
+                android:id="@+id/score_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NN점"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.Bold.16"
+                android:textColor="@color/main_purple_00"
+                app:layout_constraintBottom_toTopOf="@id/score_bar"
+                app:layout_constraintStart_toStartOf="@id/score_bar"
+                app:layout_constraintEnd_toEndOf="@id/score_bar"
+                android:layout_marginBottom="5dp"
+                />
+
+
+            <TextView
+                android:id="@+id/ave_boss_chart_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사장님 평균"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                android:textColor="@color/gray_06"
+                app:layout_constraintTop_toBottomOf="@id/score_info2"
+                app:layout_constraintStart_toStartOf="@id/score_ave_bar"
+                app:layout_constraintEnd_toEndOf="@id/score_ave_bar"
+                android:layout_marginTop="183dp" />
+
+            <TextView
+                android:id="@+id/boss_chart_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="김빛나 사장님"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                android:textColor="@color/gray_06"
+                app:layout_constraintTop_toBottomOf="@id/score_info2"
+                app:layout_constraintStart_toStartOf="@id/score_bar"
+                app:layout_constraintEnd_toEndOf="@id/score_bar"
+                android:layout_marginTop="183dp" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

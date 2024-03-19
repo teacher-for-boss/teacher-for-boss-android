@@ -31,11 +31,11 @@ class WrongNotesFragment : Fragment() {
 //        binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_result_wrong_notes,container,false)
 //        binding.lifecycleOwner=this
 
-        val notes=viewModel.dummy_wrongnotes
-
-        val activity=activity as examResultActivity
-        binding.rvList.layoutManager=LinearLayoutManager(activity.applicationContext,LinearLayoutManager.VERTICAL,false)
-        binding.rvList.adapter= rv_adapter_wrong_notes(notes)
+//        val notes=viewModel.dummy_wrongnotes
+//
+//        val activity=activity as examResultActivity
+//        binding.rvList.layoutManager=LinearLayoutManager(activity.applicationContext,LinearLayoutManager.VERTICAL,false)
+//        binding.rvList.adapter= rv_adapter_wrong_notes(notes)
 
         // Inflate the layout for this fragment
         return binding.root

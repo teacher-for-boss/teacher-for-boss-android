@@ -1,7 +1,6 @@
 package com.example.teacherforboss.presentation.ui.examResult.screens
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.databinding.FragmentResultWrongNotesBinding
 import com.example.teacherforboss.domain.model.exams.ExamResultWrongNotesEntity
 import com.example.teacherforboss.presentation.ui.examResult.examResultActivity
-import com.example.teacherforboss.presentation.ui.examResult.examResultViewModel
+import com.example.teacherforboss.presentation.ui.examResult.ExamResultViewModel
 import com.example.teacherforboss.presentation.ui.examResult.adapter.rv_adapter_wrong_notes
-import com.example.teacherforboss.presentation.ui.examResult.testDto.wrongNotesDto
 
 
 class WrongNotesFragment : Fragment() {
-    private val viewModel by activityViewModels<examResultViewModel>()
+    private val viewModel by activityViewModels<ExamResultViewModel>()
     lateinit var binding:FragmentResultWrongNotesBinding
     private lateinit var rv_notes:List<ExamResultWrongNotesEntity.WrongQuestionEntity>
 

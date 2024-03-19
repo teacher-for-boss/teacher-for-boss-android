@@ -1,7 +1,6 @@
 package com.example.teacherforboss.presentation.ui.examResult
 
 import android.util.Log
-import android.util.LogPrinter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class examResultViewModel @Inject constructor(
+class ExamResultViewModel @Inject constructor(
     private val examResultUseCase: ExamResultUseCase,
     private val examResultWrongNotesUseCase: ExamResultWrongNotesUseCase
 ): ViewModel() {
@@ -46,6 +45,8 @@ class examResultViewModel @Inject constructor(
 
     private val _examResultLiveData=MutableLiveData<ExamResultResultEntity>()
     val examResultLiveData: LiveData<ExamResultResultEntity> = _examResultLiveData
+
+    var examResultLevel=MutableLiveData<Int>(0)
 
     suspend fun getExamResult(){
         viewModelScope.launch {

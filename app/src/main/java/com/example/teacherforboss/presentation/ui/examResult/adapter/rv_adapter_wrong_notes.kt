@@ -28,8 +28,8 @@ class rv_adapter_wrong_notes(private val wrongNotes:List<ExamResultWrongNotesEnt
 
     class wrongNotesViewHolder(private val binding: RvItemExamResultWrongnotesBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(note: ExamResultWrongNotesEntity.WrongQuestionEntity){
+            binding.questionNumber.text="Q"+note.questionId.toString()
             binding.questionName.text=note.questionName
-            binding.commentary.text=note.commentary
         }
 
         companion object{

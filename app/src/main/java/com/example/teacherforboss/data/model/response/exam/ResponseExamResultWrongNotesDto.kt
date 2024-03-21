@@ -4,27 +4,26 @@ import com.example.teacherforboss.domain.model.exams.ExamResultWrongNotesEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseExamResultWrongNotesDto(
-    @SerializedName("examWrongQuestionList")
-    val examWrongQuestionList:List<WrongQuestionDto>
+    @SerializedName("examIncorrectQuestionList")
+    val examIncorrectQuestionList:List<WrongQuestionDto>
 
 ){
     data class WrongQuestionDto(
+        @SerializedName("questionId")
+        val questionId:Long,
         @SerializedName("questionSequence")
         val questionSequence:Int,
         @SerializedName("questionName")
-        val questionName:String,
-        @SerializedName("commentary")
-        val commentary:String
-
+        val questionName:String
     )
 
 
     fun toExamResultWrongNotesEntity():ExamResultWrongNotesEntity{
-        val wrongQuestionEntities=examWrongQuestionList.map{
+        val wrongQuestionEntities=examIncorrectQuestionList.map{
             ExamResultWrongNotesEntity.WrongQuestionEntity(
+                questionId=it.questionId,
                 questionSequence = it.questionSequence,
                 questionName = it.questionName,
-                commentary = it.commentary
             )
         }
         return ExamResultWrongNotesEntity(examWrongQuestionList=wrongQuestionEntities)

@@ -7,15 +7,15 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ExamService {
-    @GET("${EXAMS}/{examId}/result")
+    @GET("${EXAMS}/{memberExamId}/result")
     suspend fun GetExamResult(
-        @Path("examId") examId:Int,
+        @Path("memberExamId") examId:Int,
     )
     : BaseResponse<ResponseExamResultDto>
 
-    @GET("${EXAMS}/{examId}/result/incorrect/list")
+    @GET("${EXAMS}/member-exams/{memberExamId}/result/incorrect/list")
     suspend fun GetExamResultWrongNotes(
-        @Path("examId") examId:Int,
+        @Path("memberExamId") examId:Int,
     ):BaseResponse<ResponseExamResultWrongNotesDto>
 
     companion object {

@@ -4,9 +4,9 @@ data class ExamResultWrongNotesEntity(
     val examWrongQuestionList:List<WrongQuestionEntity>
 ){
     data class WrongQuestionEntity(
+        val questionId:Long,
         val questionSequence:Int,
-        val questionName:String,
-        val commentary:String
+        val questionName:String
     )
 
 }

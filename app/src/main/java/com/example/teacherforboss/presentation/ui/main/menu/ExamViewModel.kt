@@ -17,6 +17,7 @@ class ExamViewModel @Inject constructor(
     private val _categoryLiveData = MutableLiveData<ExamCategoryEntity>()
     val categoryLiveData: LiveData<ExamCategoryEntity> = _categoryLiveData
 
+
     suspend fun getCategory() {
         viewModelScope.launch {
             try {

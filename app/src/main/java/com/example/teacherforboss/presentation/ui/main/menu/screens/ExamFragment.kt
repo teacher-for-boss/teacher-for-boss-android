@@ -2,6 +2,7 @@ package com.example.teacherforboss.presentation.ui.main.menu.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,23 +69,24 @@ class ExamFragment : Fragment() {
         val imageResId: Int,
         val text: String
     )
+
+    //카테고리 이미지,텍스트 리스트
+    val categoryList = listOf(
+        CategoryImageTextItem(R.drawable.megaphone, "마케팅"),
+        CategoryImageTextItem(R.drawable.sparkles, "위생"),
+        CategoryImageTextItem(R.drawable.location, "상권"),
+        CategoryImageTextItem(R.drawable.chart_histogram, "운영"),
+        CategoryImageTextItem(R.drawable.customer_care, "서비스"),
+        CategoryImageTextItem(R.drawable.employee_group, "직원관리"),
+        CategoryImageTextItem(R.drawable.store, "인테리어"),
+        CategoryImageTextItem(R.drawable.policy, "정책"),
+        CategoryImageTextItem(R.drawable.menu, "메뉴"),
+        CategoryImageTextItem(R.drawable.lightbulb, "아이디어")
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        //카테고리 이미지,텍스트 리스트
-        val categoryList = listOf(
-            CategoryImageTextItem(R.drawable.megaphone, "마케팅"),
-            CategoryImageTextItem(R.drawable.sparkles, "위생"),
-            CategoryImageTextItem(R.drawable.location, "상권"),
-            CategoryImageTextItem(R.drawable.chart_histogram, "운영"),
-            CategoryImageTextItem(R.drawable.customer_care, "서비스"),
-            CategoryImageTextItem(R.drawable.employee_group, "직원관리"),
-            CategoryImageTextItem(R.drawable.store, "인테리어"),
-            CategoryImageTextItem(R.drawable.policy, "정책"),
-            CategoryImageTextItem(R.drawable.menu, "메뉴"),
-            CategoryImageTextItem(R.drawable.lightbulb, "아이디어")
-        )
-
         super.onViewCreated(view, savedInstanceState)
+
         lifecycleScope.launch {
             viewModel.getCategory()
         }
@@ -94,6 +96,7 @@ class ExamFragment : Fragment() {
             var id = 1
 
             for (examCategory in examCategoryList) {
+                Log.d("MyTAG", "${examCategory.categoryName}")
                 for (list in categoryList) {
                     if (examCategory.categoryName == list.text) {
 
@@ -111,6 +114,7 @@ class ExamFragment : Fragment() {
                 }
             }
         })
+
     }
 
 }

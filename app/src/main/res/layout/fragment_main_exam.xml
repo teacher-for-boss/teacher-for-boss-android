@@ -141,24 +141,24 @@
                 <FrameLayout
                     android:id="@+id/category_1"
                     android:layout_width="55dp"
-                    android:layout_height="55dp">
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/category_iv1"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="3dp"/>
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/megaphone" />
 
                     <TextView
                         android:id="@+id/category_tv1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="마케팅"
-                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginBottom="2dp" />
+                        android:layout_marginBottom="2dp"
+                        android:text="마케팅"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10" />
 
                 </FrameLayout>
 
@@ -169,16 +169,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv2"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/sparkles"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="위생"
+                        android:text="마케팅"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -192,16 +194,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv3"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/location"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="상권"
+                        android:text="마케팅"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -215,16 +219,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv4"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/chart_histogram"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="운영"
+                        android:text="마케팅"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -238,16 +244,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv5"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/customer_care"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="서비스"
+                        android:text="마케팅"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -271,16 +279,18 @@
                     android:layout_height="55dp">
 
                     <ImageView
+                        android:id="@+id/category_iv6"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/employee_group"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="직원관리"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -294,16 +304,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv7"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:src="@drawable/store"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="인테리어"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -317,16 +329,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv8"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/policy"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="정책"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -340,16 +354,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv9"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/menu"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="메뉴"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />
@@ -363,16 +379,18 @@
                     android:layout_marginStart="20dp">
 
                     <ImageView
+                        android:id="@+id/category_iv10"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/lightbulb"
+                        android:src="@drawable/megaphone"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="3dp"/>
 
                     <TextView
+                        android:id="@+id/category_tv10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="아이디어"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginBottom="2dp" />

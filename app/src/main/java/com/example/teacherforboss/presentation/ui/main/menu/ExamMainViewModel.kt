@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExamViewModel @Inject constructor(
+class ExamMainViewModel @Inject constructor(
     private val examCategoryUseCase: ExamCategoryUseCase
 ) : ViewModel() {
     private val _categoryLiveData = MutableLiveData<ExamCategoryEntity>()

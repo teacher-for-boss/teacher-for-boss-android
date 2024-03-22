@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,14 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMainExamBinding
 import com.example.teacherforboss.presentation.ui.exam.ExamStartActivity
-import com.example.teacherforboss.presentation.ui.main.ViewPagerAdapter
-import com.example.teacherforboss.presentation.ui.main.menu.ExamViewModel
-import com.example.teacherforboss.util.base.BindingImgAdapter
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.teacherforboss.presentation.ui.main.menu.ExamMainViewModel
 import kotlinx.coroutines.launch
 
 class ExamFragment : Fragment() {
-    private val viewModel by activityViewModels<ExamViewModel>()
+    private val viewModel by activityViewModels<ExamMainViewModel>()
     private lateinit var binding: FragmentMainExamBinding
 
     override fun onCreateView(

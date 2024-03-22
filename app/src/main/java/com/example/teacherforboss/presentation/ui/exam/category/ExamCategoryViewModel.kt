@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.main.menu
+package com.example.teacherforboss.presentation.ui.exam.category
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExamMainViewModel @Inject constructor(
+class ExamCategoryViewModel @Inject constructor(
     private val examCategoryUseCase: ExamCategoryUseCase
 ) : ViewModel() {
     private val _categoryLiveData = MutableLiveData<ExamCategoryEntity>()

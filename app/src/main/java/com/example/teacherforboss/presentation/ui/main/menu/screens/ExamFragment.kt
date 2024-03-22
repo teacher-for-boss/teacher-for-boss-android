@@ -16,11 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMainExamBinding
 import com.example.teacherforboss.presentation.ui.exam.ExamStartActivity
-import com.example.teacherforboss.presentation.ui.main.menu.ExamMainViewModel
+import com.example.teacherforboss.presentation.ui.exam.category.ExamCategoryViewModel
 import kotlinx.coroutines.launch
 
 class ExamFragment : Fragment() {
-    private val viewModel by activityViewModels<ExamMainViewModel>()
+    private val viewModel by activityViewModels<ExamCategoryViewModel>()
     private lateinit var binding: FragmentMainExamBinding
 
     override fun onCreateView(

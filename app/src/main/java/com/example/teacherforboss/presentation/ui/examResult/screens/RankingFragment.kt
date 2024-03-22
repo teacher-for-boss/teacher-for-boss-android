@@ -29,7 +29,7 @@ class RankingFragment : Fragment() {
 
         val activity=activity as examResultActivity
         binding.rvList.layoutManager= LinearLayoutManager(activity.applicationContext, LinearLayoutManager.VERTICAL,false)
-        binding.rvList.adapter=rv_adapter_ranking(viewModel.dummy_ranking)
+//        binding.rvList.adapter=rv_adapter_ranking(viewModel.dummy_ranking)
         return binding.root
     }
 

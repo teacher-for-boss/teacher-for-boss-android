@@ -3,6 +3,7 @@ package com.example.teacherforboss.di
 import com.example.teacherforboss.domain.repository.ExamRepository
 import com.example.teacherforboss.domain.repository.MembersRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
+import com.example.teacherforboss.domain.usecase.ExamCategoryUseCase
 import com.example.teacherforboss.domain.usecase.ExamResultUseCase
 import com.example.teacherforboss.domain.usecase.PostSurveyUseCase
 import com.example.teacherforboss.domain.usecase.ProfileUseCase
@@ -36,4 +37,8 @@ class UseCaseModule {
     fun providesExamResultUseCase(examRepository: ExamRepository):ExamResultUseCase=
         ExamResultUseCase(examRepository=examRepository)
 
+    @Provides
+    @Singleton
+    fun providesExamCategoryUseCase(examRepository: ExamRepository):ExamCategoryUseCase=
+        ExamCategoryUseCase(examRepository=examRepository)
 }

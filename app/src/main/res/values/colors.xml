@@ -14,6 +14,9 @@
     <color name="gray_01">#7F7F7F</color>
     <color name="gray_02">#CCCCCC</color>
     <color name="gray_03">#EBEBEB</color>
+    <color name="gray_06">#7F7F7F</color>
+    <color name="gray_08">#2E2C2C</color>
+
 
     <!--재정비 후-->
     <color name="ValidRed">#F54343</color>

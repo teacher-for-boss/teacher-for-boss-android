@@ -47,20 +47,6 @@ class examResultActivity : AppCompatActivity() {
             else tab.text = "등수 확인"
         }.attach()
 
-        lifecycleScope.launch {
-            viewModel.getExamResult()
-        }
-        //api 결과 수신
-        viewModel.examResultLiveData.observe(this, Observer { result ->
-            with(binding) {
-                score.text = result.score.toString()
-                questionCnt.text = result.score.toString()
-                answerCnt.text = result.correctAnsNum.toString()
-                wrongCnt.text = result.incorrectAnsNum.toString()
-            }
-        })
-
-
     }
 
     private fun initBottomSheet() {

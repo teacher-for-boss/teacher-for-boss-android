@@ -14,11 +14,6 @@ interface ExamService {
     )
     : BaseResponse<ResponseExamResultDto>
 
-//    @GET("${EXAMS}/{examId}/result/Incorrect/list")
-//    suspend fun GetExamResultWrongNotes(
-//        @Path("examId") examId:Int,
-//    ):BaseResponse<ResponseExamResultWrongNotesDto>
-
     @GET("${EXAMS}/category")
     suspend fun GetCategory(
         //@Header("Authorization") bearerToken:String

@@ -9,7 +9,9 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityFindPwBinding
 import com.example.teacherforboss.presentation.ui.auth.findinfo.viewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FindPwActivity : AppCompatActivity() {
     private lateinit var binding:ActivityFindPwBinding
     val fragmentManager: FragmentManager =supportFragmentManager

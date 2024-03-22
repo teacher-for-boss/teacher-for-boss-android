@@ -70,12 +70,13 @@ class findEmailFragment : Fragment() {
             Log.d("phone",viewModel.phone_check.value.toString())
 
             binding.veryInfo.visibility=View.VISIBLE
+            binding.timeOverText.visibility=View.VISIBLE
 
             if(viewModel.phone_check.value==true){
                 //binding.phoneVerifyBtn.visibility = View.INVISIBLE
                 binding.phoneCodeBox.visibility=View.VISIBLE
                 binding.inputcodeContainer.visibility=View.VISIBLE
-                startTimer()
+                viewModel.startTimer()
                 viewModel.phoneUser(hash.toString())
             }
 
@@ -170,31 +171,6 @@ class findEmailFragment : Fragment() {
 
     }
 
-    //verify 버튼을 누르면 3분 타이머
-    fun startTimer() {
-        binding.timer.visibility = View.VISIBLE
-
-        val timer = object : CountDownTimer(181000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                updateTime(millisUntilFinished)
-            }
-
-            override fun onFinish() { }
-        }
-
-        timer.start()
-    }
-
-    fun updateTime(millisUntilFinished: Long) {
-        val min = millisUntilFinished / 60000
-        val sec = (millisUntilFinished % 60000) / 1000
-        val formattedMin = String.format("%02d", min)
-        val formattedSec = String.format("%02d", sec)
-
-        val timeLeft = "$formattedMin:$formattedSec"
-
-        binding.timer.text = timeLeft
-    }
 
     fun processError(msg:String?){
         showToast("error:"+msg)

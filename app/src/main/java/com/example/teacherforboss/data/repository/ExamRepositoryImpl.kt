@@ -2,6 +2,8 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.ExamRemoteDataSource
 import com.example.teacherforboss.data.model.response.exam.ResponseCategory
+import com.example.teacherforboss.data.model.request.exam.RequestExamResultDto
+import com.example.teacherforboss.data.model.response.exam.ResponseExamResultDto
 import com.example.teacherforboss.domain.model.ProfileEntity
 import com.example.teacherforboss.domain.model.exams.ExamCategoryEntity
 import com.example.teacherforboss.domain.model.exams.ExamResultEntity

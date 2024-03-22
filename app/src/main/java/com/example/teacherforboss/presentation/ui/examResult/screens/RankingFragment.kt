@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.databinding.FragmentResultScoreBinding
 import com.example.teacherforboss.presentation.ui.examResult.adapter.rv_adapter_ranking
 import com.example.teacherforboss.presentation.ui.examResult.examResultActivity
-import com.example.teacherforboss.presentation.ui.examResult.examResultViewModel
+import com.example.teacherforboss.presentation.ui.examResult.ExamResultViewModel
 
 class RankingFragment : Fragment() {
-    private val viewModel by activityViewModels<examResultViewModel>()
+    private val viewModel by activityViewModels<ExamResultViewModel>()
     lateinit var binding:FragmentResultScoreBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

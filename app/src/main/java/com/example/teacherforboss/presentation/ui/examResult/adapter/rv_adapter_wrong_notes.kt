@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ExamResultWrongnotesRvItemBinding
+import com.example.teacherforboss.databinding.RvItemExamResultWrongnotesBinding
+import com.example.teacherforboss.domain.model.exams.ExamResultWrongNotesEntity
 import com.example.teacherforboss.presentation.ui.examResult.testDto.wrongNotesDto
 
-class rv_adapter_wrong_notes(private val wrongNotes:List<wrongNotesDto>): RecyclerView.Adapter<rv_adapter_wrong_notes.wrongNotesViewHolder>() {
+class rv_adapter_wrong_notes(private val wrongNotes:List<ExamResultWrongNotesEntity.WrongQuestionEntity>): RecyclerView.Adapter<rv_adapter_wrong_notes.wrongNotesViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,16 +26,16 @@ class rv_adapter_wrong_notes(private val wrongNotes:List<wrongNotesDto>): Recycl
 
     override fun getItemCount(): Int=wrongNotes.size
 
-    class wrongNotesViewHolder(private val binding: ExamResultWrongnotesRvItemBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(note: wrongNotesDto){
-            binding.number.text=note.questionNum
-            binding.question.text=note.question
+    class wrongNotesViewHolder(private val binding: RvItemExamResultWrongnotesBinding):RecyclerView.ViewHolder(binding.root){
+        fun bind(note: ExamResultWrongNotesEntity.WrongQuestionEntity){
+            binding.questionNumber.text="Q"+note.questionId.toString()
+            binding.questionName.text=note.questionName
         }
 
         companion object{
             fun from(parent: ViewGroup): wrongNotesViewHolder {
                 val layoutInflater=LayoutInflater.from(parent.context)
-                val binding=ExamResultWrongnotesRvItemBinding.inflate(layoutInflater,parent,false)
+                val binding=RvItemExamResultWrongnotesBinding.inflate(layoutInflater,parent,false)
 
                 return wrongNotesViewHolder(binding)
             }

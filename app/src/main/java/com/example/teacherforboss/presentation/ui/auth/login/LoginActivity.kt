@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
                     saveUserName(appContext,it.data?.result?.name?:"".toString())//survery start 사장님 이름
 
                     // 설문조사 여부에 따라 다른 activity로 이동
-//                  navigateToMain()
+                  navigateToMain()
 
                 }
                 is BaseResponse.Error ->{

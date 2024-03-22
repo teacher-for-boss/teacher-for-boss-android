@@ -84,6 +84,10 @@
     <string name="exam_question4_answer3">고기를 갈면 최대 저장 보관 가능 기간이 줄어든다</string>
     <string name="exam_question4_answer4">생닭과 생오리는 최대 3개월간 저장 보관이 가능하다</string>
 
+    <!--exam result-->
+    <string name="exam_result_level1">오답을 확인해보세요!</string>
+    <string name="exam_result_level2">조금만 더 힘내세요!</string>
+    <string name="exam_result_level3">열심히 공부하셨군요!</string>
     <!--main start-->
 
     <!--my class-->

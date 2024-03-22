@@ -1,27 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/main_purple_00"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:context=".presentation.ui.examResult.examResultActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.teacherforboss.presentation.ui.examResult.ExamResultViewModel"/>
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_purple_00"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:context=".presentation.ui.examResult.examResultActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/exam_result_toolbar"
+            android:background="@color/white"
+            app:title="시험 결과"
+            app:layout_constraintTop_toTopOf="parent"
+
+            >
+
+        </androidx.appcompat.widget.Toolbar>
 
 
-<!--        <LinearLayout-->
-<!--            android:weightSum="2"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
+        <!--        <LinearLayout-->
+        <!--            android:weightSum="2"-->
+        <!--            android:orientation="vertical"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent">-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:background="@color/main_purple_00"
-            >
+            android:background="@color/main_purple_00">
+
             <ImageView
                 android:src="@drawable/exam_resultbackground"
                 android:scaleType="fitXY"
@@ -40,19 +61,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                >
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_marginTop="60dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="3"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="축하합니다!"
+                        android:text="@{viewModel.examResultLevel==1?@string/exam_result_level1:(viewModel.examResultLevel==2?@string/exam_result_level2:@string/exam_result_level3)}"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
@@ -71,7 +90,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/score"
                             android:text="+80"
-                            android:textColor="@color/sub_green"
+                            android:textColor="@{viewModel.examResultLevel==1?@color/sub_red:(viewModel.examResultLevel==2?@color/sub_orange:@color/sub_green)}"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -119,8 +138,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                >
+                                android:layout_gravity="center">
 
                                 <TextView
                                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
@@ -146,8 +164,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                >
+                                android:layout_gravity="center">
 
                                 <TextView
                                     android:paddingTop="5dp"
@@ -161,7 +178,6 @@
                                 </TextView>
 
                             </LinearLayout>
-
 
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -183,8 +199,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                >
+                                android:layout_gravity="center">
 
                                 <ImageView
                                     android:src="@drawable/correct"
@@ -212,8 +227,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                >
+                                android:layout_gravity="center">
 
                                 <TextView
                                     android:textAlignment="center"
@@ -246,8 +260,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                >
+                                android:layout_gravity="center">
 
                                 <ImageView
                                     android:src="@drawable/incorrect"
@@ -274,8 +287,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                >
+                                android:layout_gravity="center">
 
                                 <TextView
                                     android:textAlignment="center"
@@ -290,20 +302,13 @@
                             </LinearLayout>
 
 
-
                         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 
 
                     </LinearLayout>
 
 
-
-
-
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 
             </com.google.android.material.card.MaterialCardView>
@@ -322,14 +327,13 @@
 
             <ImageView
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/trophy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                >
+                android:layout_centerVertical="true">
 
             </ImageView>
 
@@ -343,10 +347,9 @@
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:background="@color/white"
-            android:layout_height="420dp"
-            >
+            android:layout_height="420dp">
 
-<!--            여기에 바로 tablayout, viewpager 넣어보기-->
+            <!--            여기에 바로 tablayout, viewpager 넣어보기-->
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
@@ -356,8 +359,7 @@
                 app:tabTextColor="@color/gray_02"
                 app:tabSelectedTextColor="@color/black"
                 android:background="@drawable/bottom_sheet_background"
-                app:tabIndicatorColor="@color/main_purple_00"
-                        >
+                app:tabIndicatorColor="@color/main_purple_00">
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -370,35 +372,36 @@
 
         </LinearLayout>
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
 
-<!--    <LinearLayout-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_weight="1.5"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-<!--        <com.google.android.material.tabs.TabLayout-->
-<!--            android:id="@+id/tabLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:tabTextAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"-->
-<!--            app:tabTextColor="@color/gray_02"-->
-<!--            app:tabSelectedTextColor="@color/black"-->
-<!--            android:background="@color/white"-->
-<!--            app:tabIndicatorColor="@color/main_purple_00"-->
-<!--            >-->
+        <!--    <LinearLayout-->
+        <!--        android:orientation="vertical"-->
+        <!--        android:layout_weight="1.5"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content">-->
+        <!--        <com.google.android.material.tabs.TabLayout-->
+        <!--            android:id="@+id/tabLayout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:tabTextAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"-->
+        <!--            app:tabTextColor="@color/gray_02"-->
+        <!--            app:tabSelectedTextColor="@color/black"-->
+        <!--            android:background="@color/white"-->
+        <!--            app:tabIndicatorColor="@color/main_purple_00"-->
+        <!--            >-->
 
-<!--        </com.google.android.material.tabs.TabLayout>-->
+        <!--        </com.google.android.material.tabs.TabLayout>-->
 
-<!--        <androidx.viewpager2.widget.ViewPager2-->
-<!--            android:id="@+id/viewPager2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
+        <!--        <androidx.viewpager2.widget.ViewPager2-->
+        <!--            android:id="@+id/viewPager2"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent">-->
 
-<!--        </androidx.viewpager2.widget.ViewPager2>-->
+        <!--        </androidx.viewpager2.widget.ViewPager2>-->
 
 
-<!--    </LinearLayout>-->
+        <!--    </LinearLayout>-->
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

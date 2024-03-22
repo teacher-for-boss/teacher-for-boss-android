@@ -94,7 +94,7 @@
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Title5" parent="TextAppearance.TeacherForBoss">
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">16dp</item>
         <item name="android:lineSpacingMultiplier">1.6</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>

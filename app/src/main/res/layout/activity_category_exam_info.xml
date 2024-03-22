@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_exam_info_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/spacing16"
+                android:layout_marginTop="@dimen/spacing16"
+                android:src="@drawable/all_arrow_back_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/do_exam_iv"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/exam_info1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="79dp" />
+
+            <ImageView
+                android:id="@+id/exam_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:src="@drawable/exam_info_box_radius12_with_stroke"
+                app:layout_constraintTop_toTopOf="@id/view1"
+                app:layout_constraintBottom_toBottomOf="@id/view2"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                app:layout_constraintBottom_toTopOf="@id/category_title_iv" />
+
+
+            <ImageView
+                android:id="@+id/category_title_iv"
+                android:layout_width="92dp"
+                android:layout_height="38dp"
+                android:src="@drawable/exam_info_box_radius100"
+                app:layout_constraintTop_toBottomOf="@id/do_exam_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="60dp" />
+
+            <TextView
+                android:id="@+id/category_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인 위생"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title5"
+                android:textColor="@color/Primary01"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/category_title_iv"
+                app:layout_constraintBottom_toBottomOf="@id/category_title_iv"/>
+
+            <TextView
+                android:id="@+id/category_title_detail_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인 위생 영역 1"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title1"
+                android:textColor="@color/Primary01"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/category_title_iv"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/category_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="비용을 모니터링하고 통제하고 인생도 통제하고 뭣도 통제하는 시험이에요."
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body3"
+                android:textColor="@color/gray_08"
+                android:layout_marginStart="47.5dp"
+                android:layout_marginEnd="47.5dp"
+                app:layout_constraintTop_toBottomOf="@id/category_title_detail_tv"
+                android:layout_marginTop="24dp" />
+
+            <ImageView
+                android:id="@+id/score_info_iv"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:src="@drawable/exam_info_box_radius200"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                app:layout_constraintTop_toBottomOf="@id/category_info"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:id="@+id/score_info_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="70점을 넘으면 통과입니다!"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title5"
+                android:textColor="@color/Primary01"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/score_info_iv"
+                app:layout_constraintBottom_toBottomOf="@id/score_info_iv" />
+
+            <ImageView
+                android:id="@+id/exam_info_box"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:src="@drawable/exam_info_box_radius10"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintTop_toBottomOf="@id/score_info_iv"
+                android:layout_marginTop="12dp"/>
+
+            <LinearLayout
+                android:id="@+id/exam_info_box_line"
+                android:layout_width="1dp"
+                android:layout_height="64dp"
+                android:background="@color/Primary02"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/exam_info_box" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="문항 수"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                android:textColor="#7F7F7F"
+                app:layout_constraintStart_toStartOf="@id/exam_info_box"
+                app:layout_constraintEnd_toEndOf="@id/exam_info_box_line"
+                app:layout_constraintTop_toTopOf="@id/exam_info_box"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제한시간"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                android:textColor="#7F7F7F"
+                app:layout_constraintStart_toStartOf="@id/exam_info_box_line"
+                app:layout_constraintEnd_toEndOf="@id/exam_info_box"
+                app:layout_constraintTop_toTopOf="@id/exam_info_box"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20개"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label5"
+                android:textColor="@color/Primary01"
+                app:layout_constraintStart_toStartOf="@id/exam_info_box"
+                app:layout_constraintEnd_toEndOf="@id/exam_info_box_line"
+                app:layout_constraintTop_toTopOf="@id/exam_info_box"
+                android:layout_marginTop="34dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10분"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label5"
+                android:textColor="@color/Primary01"
+                app:layout_constraintStart_toStartOf="@id/exam_info_box_line"
+                app:layout_constraintEnd_toEndOf="@id/exam_info_box"
+                app:layout_constraintTop_toTopOf="@id/exam_info_box"
+                android:layout_marginTop="34dp" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                app:layout_constraintTop_toBottomOf="@id/exam_info_box" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/exam_start_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/background_radius30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/exam_info_layout">
+
+                <TextView
+                    android:id="@+id/go_exam_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시험 보러가기"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="@dimen/spacing20"
+                    android:paddingVertical="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/btn_arrow_right_30"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintStart_toEndOf="@id/go_exam_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/show_result_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/background_radius30_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/exam_start_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="83dp">
+
+                <TextView
+                    android:id="@+id/show_result_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이전 결과 보기"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+                    android:textColor="@color/Gray06"
+                    android:layout_marginStart="@dimen/spacing20"
+                    android:paddingVertical="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/btn_arrow_right_30"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintStart_toEndOf="@id/show_result_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:tint="@color/Gray06" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

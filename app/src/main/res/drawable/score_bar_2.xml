@@ -4,11 +4,16 @@
     android:padding="5dp"
     >
 
-    <solid android:color="@color/main_purple_00"></solid>
+    <gradient
+        android:startColor="#BFBEFF"
+        android:endColor="#E9E9FF"
+        android:type="linear"
+        android:angle="270"
+        />
 
     <corners
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp"
         >
 
     </corners>

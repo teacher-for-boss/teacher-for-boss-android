@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.main.menu
+package com.example.teacherforboss.presentation.ui.main.menu.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMainMyclassBinding
+import com.example.teacherforboss.presentation.ui.main.menu.MySchoolViewModel
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import kotlinx.coroutines.launch
 

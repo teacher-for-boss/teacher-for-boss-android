@@ -24,16 +24,23 @@ import com.example.teacherforboss.data.repository.FindInfoRepositoryImpl
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.domain.model.SurveyEntity
 import com.example.teacherforboss.domain.model.SurveyResultEntity
+import com.example.teacherforboss.util.Timer.Custom10mTimer
+import com.example.teacherforboss.util.Timer.Custom3mTimer
 import com.example.teacherforboss.util.base.ErrorUtils
 import com.example.teacherforboss.util.view.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class FindPwViewModel:ViewModel() {
+@HiltViewModel
+class FindPwViewModel @Inject constructor(
+    private val timer: Custom3mTimer
+):ViewModel() {
     val userRepo= UserRepositoryImpl()
     val findInfoRepo= FindInfoRepositoryImpl()
 
@@ -253,7 +260,23 @@ class FindPwViewModel:ViewModel() {
         }
     }
 
+    //timer
+    private val _timerText=MutableLiveData<String>()
+    val timerText:LiveData<String>
+        get() = _timerText
 
+    private val _timeOverState=MutableLiveData<Boolean>(false)
+    val timeOverState:LiveData<Boolean>
+        get() = _timeOverState
+
+    fun startTimer(){
+        timer.startTimer { timeLeft,state->
+            _timerText.value=timeLeft
+            if (state==true){
+                _timeOverState.value=true
+            }
+        }
+    }
 
 
 }

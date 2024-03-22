@@ -92,4 +92,13 @@
 
     <!--my class-->
     <string name="profile_cheerup">사장님의 내일을 응원합니다</string>
+
+    <!-- verify email,phone-->
+    <string name="verified_true">인증되었습니다.</string>
+    <string name="verified_false">인증번호가 올바르지 않습니다.</string>
+
+    <!--timer    -->
+    <string name="timeover_true">"인증번호 다시 받기"</string>
+    <string name="timeover_false">"인증번호를 받지 못하셨나요?"</string>
+
 </resources>

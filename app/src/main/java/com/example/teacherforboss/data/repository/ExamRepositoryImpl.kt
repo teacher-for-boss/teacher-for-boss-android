@@ -4,6 +4,10 @@ import com.example.teacherforboss.data.datasource.remote.ExamRemoteDataSource
 import com.example.teacherforboss.domain.model.exams.ExamResultEntity
 import com.example.teacherforboss.domain.model.exams.ExamResultResultEntity
 import com.example.teacherforboss.domain.model.exams.ExamResultWrongNotesEntity
+import com.example.teacherforboss.data.model.response.exam.ResponseCategory
+import com.example.teacherforboss.data.model.request.exam.RequestExamResultDto
+import com.example.teacherforboss.data.model.response.exam.ResponseExamResultDto
+import com.example.teacherforboss.domain.model.exams.ExamCategoryEntity
 import com.example.teacherforboss.domain.repository.ExamRepository
 import javax.inject.Inject
 
@@ -28,4 +32,12 @@ class ExamRepositoryImpl @Inject constructor(
         }
     }
 
+
+    override suspend fun GetCategory(): ExamCategoryEntity {
+        return runCatching {
+            examRemoteDataSource.getCategory().result.toExamCategoryEntity()
+        }.getOrElse { err->
+            throw err
+        }
+    }
 }

@@ -8,6 +8,9 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+
+    val room_version = "2.6.1"
+    id("androidx.room") version "$room_version" apply false
 }
 
 val properties = Properties().apply {
@@ -94,6 +97,17 @@ dependencies {
     implementation("javax.inject:javax.inject:1")
     implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
 
+    //room db
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+
+
     // Hilt
     implementation("com.google.dagger:hilt-android:2.50")
     kapt ("com.google.dagger:hilt-compiler:2.50")
@@ -149,6 +163,9 @@ dependencies {
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
     //etc
+
+    //event bus
+    implementation("org.greenrobot:eventbus:3.3.1")
     
     //sms
     implementation("com.google.android.gms:play-services-auth-api-phone:18.0.1")

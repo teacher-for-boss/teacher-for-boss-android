@@ -22,7 +22,7 @@ object TokenManager {
         val prefs:SharedPreferences=context.getSharedPreferences(
             USER_INFO,
             Context.MODE_PRIVATE)
-        return prefs.getString(ACCESS_TOKEN,null)
+        return prefs.getString(REFRESH_TOKEN,null)
      }
      fun saveRefreshToken(context:Context,token:String){
          val prefs: SharedPreferences =

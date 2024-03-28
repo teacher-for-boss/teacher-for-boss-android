@@ -3,6 +3,8 @@ package com.example.teacherforboss.data.service
 import com.example.teacherforboss.data.model.response.exam.ResponseExamResultWrongNotesDto
 import com.example.teacherforboss.data.model.response.exam.ResponseExamResultDto
 import com.example.teacherforboss.data.model.response.exam.ResponseCategory
+import com.example.teacherforboss.data.model.response.exam.ResponseTagDto
+import com.example.teacherforboss.data.service.ExamService.Companion.EXAMS
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -21,6 +23,11 @@ interface ExamService {
     @GET("${EXAMS}/category")
     suspend fun GetCategory(
     ):BaseResponse<ResponseCategory>
+
+    @GET("${EXAMS}/category/{categoryId}/tags")
+    suspend fun getTagList(
+        @Path("examCategoryId") examCategoryId:Long,
+    ):BaseResponse<ResponseTagDto>
 
     companion object {
         const val EXAMS = "exams"

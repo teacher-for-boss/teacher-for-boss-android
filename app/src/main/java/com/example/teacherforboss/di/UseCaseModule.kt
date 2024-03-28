@@ -1,8 +1,10 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.db.CategoryRepository
 import com.example.teacherforboss.domain.repository.ExamRepository
 import com.example.teacherforboss.domain.repository.MembersRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
+import com.example.teacherforboss.domain.usecase.CategoryUseCase
 import com.example.teacherforboss.domain.usecase.ExamCategoryUseCase
 import com.example.teacherforboss.domain.usecase.ExamResultUseCase
 import com.example.teacherforboss.domain.usecase.ExamResultWrongNotesUseCase
@@ -47,4 +49,8 @@ class UseCaseModule {
     @Singleton
     fun providesExamCategoryUseCase(examRepository: ExamRepository):ExamCategoryUseCase=
         ExamCategoryUseCase(examRepository=examRepository)
+
+    @Provides
+    fun providesCategoryUseCase(categoryRepository: CategoryRepository):CategoryUseCase=
+        CategoryUseCase(categoryRepository=categoryRepository)
 }

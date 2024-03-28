@@ -28,7 +28,6 @@ class ExamCategoryDetailActivity : AppCompatActivity(
     private lateinit var binding:ActivityExamCategoryDetailBinding
 
     private var test_categoryList= listOf<CategoryEntity>()
-    private var db: CategoryDB?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,17 +35,6 @@ class ExamCategoryDetailActivity : AppCompatActivity(
         binding=DataBindingUtil.setContentView(this,R.layout.activity_exam_category_detail)
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
-
-        //db에서 카테고리 가져오기 요청
-        lifecycleScope.launch {
-            viewModel.getCategoryListFromDb()
-        }
-
-        viewModel.categoryList.observe(this, Observer {
-            test_categoryList=it
-            init()
-        })
-
         setContentView(binding.root)
 
     }
@@ -85,52 +73,3 @@ class ExamCategoryDetailActivity : AppCompatActivity(
     }
 }
 
-
-//compose 시도,,
-
-//@Composable
-//fun CategoryItem(category:ResponseCategory.ExamCategory){
-//    Row (
-//        Modifier.wrapContentWidth()
-//    ){
-//        Text(
-//            text = category.categoryName,
-//            color = Color.Gray,
-//            fontSize = 16.sp
-//        )
-//
-//    }
-//}
-//@Composable
-//fun CategoryDetailItem(dto: ResponseCategoryDetailDto.categoryDetailDto){
-//    Row (
-//        modifier=Modifier.wrapContentWidth()
-//    ){
-//
-//    }
-//    Card(
-//        modifier= Modifier
-//            .wrapContentWidth()
-//            .padding(4.dp)
-//            .background(color = Color.White)
-//        ,
-//
-//        shape= RoundedCornerShape(corner= CornerSize(10.dp))
-//    ) {
-//            Text(
-//                text="${dto.name}",
-//                color= Primary_01,
-//                fontSize=14.sp,
-//                fontWeight = FontWeight.Normal,
-//            )
-//
-//
-//    }
-//
-//}
-//
-//@Preview
-//@Composable
-//fun examCategoryPreview(){
-//
-//}

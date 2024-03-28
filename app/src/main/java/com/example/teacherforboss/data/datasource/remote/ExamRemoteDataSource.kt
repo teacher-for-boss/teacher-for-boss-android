@@ -1,9 +1,11 @@
 package com.example.teacherforboss.data.datasource.remote
 
 import com.example.teacherforboss.data.model.request.exam.RequestExamResultDto
+import com.example.teacherforboss.data.model.request.exam.RequestTagDto
 import com.example.teacherforboss.data.model.response.exam.ResponseExamResultWrongNotesDto
 import com.example.teacherforboss.data.model.response.exam.ResponseCategory
 import com.example.teacherforboss.data.model.response.exam.ResponseExamResultDto
+import com.example.teacherforboss.data.model.response.exam.ResponseTagDto
 import com.example.teacherforboss.util.base.BaseResponse
 
 interface ExamRemoteDataSource {
@@ -11,4 +13,6 @@ interface ExamRemoteDataSource {
 
     suspend fun getExamResultWrongNotes(requestExamResultDto: RequestExamResultDto):BaseResponse<ResponseExamResultWrongNotesDto>
     suspend fun getCategory():BaseResponse<ResponseCategory>
+
+    suspend fun getTag(requestTagDto: RequestTagDto):BaseResponse<ResponseTagDto>
 }

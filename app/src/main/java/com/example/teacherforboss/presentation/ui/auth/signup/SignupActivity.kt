@@ -41,8 +41,8 @@ class SignupActivity : AppCompatActivity() {
 //        binding.signupViewModel=viewModel
 
         //receiver 등록
-        val smsReceiver = MySMSReceiver()
-        registerReceiver(smsReceiver, smsReceiver.doFilter())
+//        val smsReceiver = MySMSReceiver()
+//        registerReceiver(smsReceiver, smsReceiver.doFilter())
 
         val helper = AppSignatureHelper(getApplication())
         val hash = helper.getAppSignatures()?.get(0)

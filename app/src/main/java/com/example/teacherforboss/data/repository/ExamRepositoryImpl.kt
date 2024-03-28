@@ -6,8 +6,11 @@ import com.example.teacherforboss.domain.model.exams.ExamResultResultEntity
 import com.example.teacherforboss.domain.model.exams.ExamResultWrongNotesEntity
 import com.example.teacherforboss.data.model.response.exam.ResponseCategory
 import com.example.teacherforboss.data.model.request.exam.RequestExamResultDto
+import com.example.teacherforboss.data.model.request.exam.RequestTagDto
 import com.example.teacherforboss.data.model.response.exam.ResponseExamResultDto
 import com.example.teacherforboss.domain.model.exams.ExamCategoryEntity
+import com.example.teacherforboss.domain.model.exams.ExamRequestTagEntity
+import com.example.teacherforboss.domain.model.exams.ExamTagEntity
 import com.example.teacherforboss.domain.repository.ExamRepository
 import javax.inject.Inject
 
@@ -36,6 +39,14 @@ class ExamRepositoryImpl @Inject constructor(
     override suspend fun GetCategory(): ExamCategoryEntity {
         return runCatching {
             examRemoteDataSource.getCategory().result.toExamCategoryEntity()
+        }.getOrElse { err->
+            throw err
+        }
+    }
+
+    override suspend fun getTag(examRequestTagEntity: ExamRequestTagEntity): ExamTagEntity {
+        return runCatching{
+            examRemoteDataSource.getTag(examRequestTagEntity.toRequestTagDto()).result.toTagEntity()
         }.getOrElse { err->
             throw err
         }

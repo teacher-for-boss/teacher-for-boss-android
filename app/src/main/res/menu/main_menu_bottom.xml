@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:title="홈"
+        android:icon="@drawable/menu_home_on" />
+
+    <item
+        android:id="@+id/menu_school"
+        android:title="학교 생활"
+        android:icon="@drawable/menu_school_off" />
+
+    <item
+        android:id="@+id/menu_exam"
+        android:title="시험 보기"
+        android:icon="@drawable/menu_test_off" />
+
+    <item
+        android:id="@+id/menu_teacher"
+        android:title="과외 선생님"
+        android:icon="@drawable/menu_teacher_off" />
+
+    <item
+        android:id="@+id/menu_my_class"
+        android:title="나의 교실"
+        android:icon="@drawable/menu_my_off" />
+
+</menu>

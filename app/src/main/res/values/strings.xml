@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">티쳐 포 보스</string>
+
+    <string name="pwSame">비밀번호가 일치합니다</string>
+    <string name="pwDifferent">비밀번호가 일치하지 않습니다</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
+    <string name="naver_client_secret">tazdlVePfj</string>
+
+    <!-- verify email,phone-->
+    <string name="verified_true">인증되었습니다.</string>
+    <string name="verified_false">인증번호가 올바르지 않습니다.</string>
+
+    <!--timer    -->
+    <string name="timeover_true">"인증번호 다시 받기"</string>
+    <string name="timeover_false">"인증번호를 받지 못하셨나요?"</string>
+
+
+</resources>

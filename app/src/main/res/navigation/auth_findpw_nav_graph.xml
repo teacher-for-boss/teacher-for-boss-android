@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/findPwFragment">
+
+
+    <fragment
+        android:id="@+id/findPwFragment"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
+        android:label="findPwFragment" >
+        <action
+            android:id="@+id/action_findPwFragment_to_findPwFragment2"
+            app:destination="@id/findPwFragment2" />
+        <action
+            android:id="@+id/action_findPwFragment_to_findPwFragment3"
+            app:destination="@id/findPwFragment3" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/findPwFragment2"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment2"
+        android:label="fragment_find_pw2"
+        tools:layout="@layout/fragment_find_pw2" >
+        <action
+            android:id="@+id/action_findPwFragment2_to_finishFindPwActivity"
+            app:destination="@id/finishFindPwActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/finishFindPwActivity"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
+        android:label="activity_finish_find_pw"
+        tools:layout="@layout/activity_finish_find_pw" />
+    <activity
+        android:id="@+id/signupActivity2"
+        android:name="com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity"
+        android:label="SignupActivity" />
+    <fragment
+        android:id="@+id/findPwFragment3"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment3"
+        android:label="fragment_find_pw3"
+        tools:layout="@layout/fragment_find_pw3" >
+        <action
+            android:id="@+id/action_findPwFragment3_to_signupActivity2"
+            app:destination="@id/signupActivity2" />
+    </fragment>
+</navigation>

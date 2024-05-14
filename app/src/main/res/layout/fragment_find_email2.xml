@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="findPwviewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.auth.findinfo.screens.findEmailFragment2">
+
+            <LinearLayout
+
+                android:id="@+id/linearlayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart = "30dp"
+                    android:text="휴대폰 번호 정보와 \n일치하는 이메일입니다"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp">
+
+                </View>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:background="@drawable/radius_line_purple"
+                        app:cardBackgroundColor="@color/Primary03"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+
+                        android:shadowColor="@color/main_purple_00"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+
+                        >
+
+                        <LinearLayout
+                            android:layout_width="330dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="이메일: "
+                                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16">
+
+                                </TextView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_weight="1"
+                                    android:text="@{findPwviewModel.matchedEmail}"
+                                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                                    android:textColor="@color/main_purple_00">
+
+                                </TextView>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="가입일: "
+                                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16">
+
+                                </TextView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_weight="1"
+                                    android:text="@{findPwviewModel.matchedcreatedAt}"
+                                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+                                    android:textColor="@color/main_purple_00">
+
+                                </TextView>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp">
+
+                </View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        android:background="@drawable/radius_line_purple"
+                        android:text="비밀번호 찾기"
+                        android:textColor="@color/main_purple_00"
+                        android:id="@+id/findPwBtn"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content">
+
+                    </Button>
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="0dp">
+
+                    </View>
+
+                    <Button
+                        android:background="@drawable/radius_purple_button"
+                        android:text="로그인"
+                        android:textColor="@color/white"
+                        android:id="@+id/loginBtn"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content">
+
+                    </Button>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+</layout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_findemail_nav_graph"
+    app:startDestination="@id/findEmailFragment">
+
+    <fragment
+        android:id="@+id/findEmailFragment"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment"
+        android:label="findEmailFragment" >
+        <action
+            android:id="@+id/action_findEmailFragment_to_findEmailFragment2"
+            app:destination="@id/findEmailFragment2" />
+        <action
+            android:id="@+id/action_findEmailFragment_to_findEmailFragment3"
+            app:destination="@id/findEmailFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/findEmailFragment2"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment2"
+        android:label="fragment_find_email2"
+        tools:layout="@layout/fragment_find_email2" >
+        <action
+            android:id="@+id/action_findEmailFragment2_to_findPwFragment"
+            app:destination="@id/findPwFragment" />
+        <action
+            android:id="@+id/action_findEmailFragment2_to_loginActivity"
+            app:destination="@id/loginActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/findPwFragment"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
+        android:label="findPwFragment" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.teacherforboss.presentation.ui.auth.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/findEmailFragment3"
+        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment3"
+        android:label="fragment_find_email3"
+        tools:layout="@layout/fragment_find_email3" >
+        <action
+            android:id="@+id/action_findEmailFragment3_to_signupActivity"
+            app:destination="@id/signupActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/signupActivity"
+        android:name="com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity"
+        android:label="SignupActivity" />
+</navigation>

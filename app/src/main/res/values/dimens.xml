@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- spacing -->
+    <dimen name="spacing3">3dp</dimen>
+    <dimen name="spacing4">4dp</dimen>
+    <dimen name="spacing10">10dp</dimen>
+    <dimen name="spacing14">14dp</dimen>
+    <dimen name="spacing15">15dp</dimen>
+    <dimen name="spacing16">16dp</dimen>
+    <dimen name="spacing19">19dp</dimen>
+    <dimen name="spacing20">20dp</dimen>
+    <dimen name="spacing22">22dp</dimen>
+    <dimen name="spacing30">30dp</dimen>
+    <dimen name="spacing35">35dp</dimen>
+    <dimen name="spacing39">39dp</dimen>
+    <dimen name="spacing44">44dp</dimen>
+    <dimen name="spacing84">84dp</dimen>
+
+    <!-- button -->
+    <dimen name="button_survey_height">49dp</dimen>
+    <dimen name="button_survey_radius">5dp</dimen>
+
+    <!-- checkbox -->
+    <dimen name="check_survey_height">18dp</dimen>
+    <dimen name="check_survey_width">18dp</dimen>
+
+    <!-- bottomNavigation -->
+    <dimen name="design_bottom_navigation_text_size">13dp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size">13dp</dimen>
+
+</resources>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="findPwviewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.auth.findinfo.screens.findPwFragment">
+
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가입한 이메일 주소를 입력해주세요"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+            </View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/emailBox"
+                    android:padding="12dp"
+                    android:background="@drawable/selector_login"
+                    android:hint="이메일"
+                    android:text="@={findPwviewModel.liveEmail}"
+                    android:textColorHint="@color/gray_02"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+
+                <Button
+                    android:id="@+id/emailVerifyBtn"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/radius_purple_button"
+                    android:backgroundTint="@color/selector_all_btn_background"
+                    android:text="인증하기"
+                    android:textColor="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/veryInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text='@{findPwviewModel.email_check?"해당 이메일로 인증 번호가 발송되었습니다.":"형식에 맞는 이메일을 입력해주세요"}'
+                android:textColor="@{findPwviewModel.email_check?@color/black:@color/sub_red}"
+                android:textSize="12dp"
+                android:visibility="invisible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+            </View>
+
+            <RelativeLayout
+                android:id="@+id/inputcodeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp">
+
+                    <EditText
+                        android:id="@+id/emailCodeBox"
+                        android:padding="12dp"
+                        android:background="@drawable/selector_login"
+                        android:hint="인증번호 입력"
+                        android:visibility="invisible"
+                        android:textColorHint="@color/gray_02"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </EditText>
+
+                    <TextView
+                        android:id="@+id/timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{findPwviewModel.PwtimerText}"
+                        android:textSize="18dp"
+                        android:textColor="#ff0000"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:visibility="visible" />
+
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/emailConfirmBtn"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+                    android:text="확인"
+                    android:visibility="invisible"
+                    android:background="@drawable/radius_purple_button"
+                    android:backgroundTint="@color/selector_all_btn_background"
+                    android:textColor="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/checkVery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{findPwviewModel.isEmailVerified()?@string/verified_true:@string/verified_false}'
+                android:textColor="@{findPwviewModel.isEmailVerified()?@color/sub_green:@color/sub_red}"
+                android:textSize="12dp"
+                android:visibility="invisible"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/timeOverText"
+                android:visibility="invisible"
+                android:text='@{findPwviewModel.PwtimeOverState?@string/timeover_true:@string/timeover_false}'
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                android:textColor="@color/gray_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+            </View>
+
+            <Button
+                android:enabled="@{findPwviewModel.isEmailVerified()?true:false}"
+                android:visibility="invisible"
+                android:background="@drawable/radius_purple_button"
+                android:text="비밀번호 재설정하러가기"
+                android:textColor="@color/white"
+                android:id="@+id/findPwBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </Button>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

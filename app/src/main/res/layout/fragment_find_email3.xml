@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.auth.findinfo.screens.findEmailFragment3"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+    </View>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+
+        >
+
+        <ImageView
+            android:src="@drawable/icon_no_email"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="120dp"
+            android:layout_height="120dp">
+
+        </ImageView>
+
+        <TextView
+            android:textAlignment="center"
+            android:id="@+id/textView2"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="휴대전화와 일치하는 이메일이 없습니다"
+            android:layout_marginTop="150dp"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+        </TextView>
+
+        <Button
+            android:id="@+id/gotoSignupBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_radius30_primary01"
+            android:text="회원가입하기"
+            android:padding="12dp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            tools:layout_editor_absoluteX="0dp">
+
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

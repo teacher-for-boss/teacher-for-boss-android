@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.ui.auth.signup.fragment.AgreementFragment"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+
+    </data>
+
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        >
+
+        <TextView
+            android:text="이용약관에 동의하시면\n티쳐 포 보스를 시작할 수 있어요"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
+
+        </View>
+
+        <RelativeLayout
+            android:id="@+id/male_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/all_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체 동의합니다"
+                android:textSize="16dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/all_checkbox"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <CheckBox
+                android:id="@+id/agreement_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이용약관 동의 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/agreement_checkbox"/>
+
+            <FrameLayout
+                android:id="@+id/agreement_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <CheckBox
+                android:id="@+id/personalInformation_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보 수집 및 이용 동의 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/personalInformation_checkbox"/>
+
+            <FrameLayout
+                android:id="@+id/personalInformation_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <CheckBox
+                android:id="@+id/locationService_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="위치기반서비스 이용 동의 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/locationService_checkbox"/>
+
+            <FrameLayout
+                android:id="@+id/locationService_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체보기"
+                    android:textColor="@color/main_purple_00"
+                    android:textSize="14dp"
+                    android:layout_marginEnd="20dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/more_arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="55dp"/>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <CheckBox
+                android:id="@+id/benefitInformation_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="다양한 혜택/정보 수신 동의 (선택)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/benefitInformation_checkbox"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="25dp">
+
+            <CheckBox
+                android:id="@+id/sms_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SMS"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/sms_checkbox"/>
+
+            <CheckBox
+                android:id="@+id/email_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="90dp"
+                android:layout_toRightOf="@id/sms_checkbox"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/email_checkbox"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <CheckBox
+                android:id="@+id/age_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="본인은 만 14세 이상입니다 (필수)"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/age_checkbox"/>
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
+
+        </View>
+
+        <Button
+            android:id="@+id/finishBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_purple_button"
+            android:backgroundTint="@color/selector_all_btn_background"
+            android:enabled="false"
+            android:text="회원가입 완료하기"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:layout_marginBottom="16dp">
+
+        </Button>
+
+    </LinearLayout>
+</layout>

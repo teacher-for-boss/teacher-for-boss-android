@@ -9,16 +9,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.R.style.AppBottomSheetDialogTheme
 import com.example.teacherforboss.databinding.FragmentGenderBirthBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.AgreementFragment
-import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.example.teacherforboss.presentation.ui.auth.signup.basic.AgreementFragment
 
 //@AndroidEntryPoint
 class GenderBirthFragment : Fragment() {

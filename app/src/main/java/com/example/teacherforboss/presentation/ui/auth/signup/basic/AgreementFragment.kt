@@ -1,10 +1,8 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.fragment
+package com.example.teacherforboss.presentation.ui.auth.signup.basic
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +10,13 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentAgreementBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.AgreementMoreFragment
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.LocationServiceMoreFragment
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.PersonalInfoMoreFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
 
 //@AndroidEntryPoint
 class AgreementFragment : BottomSheetDialogFragment() {

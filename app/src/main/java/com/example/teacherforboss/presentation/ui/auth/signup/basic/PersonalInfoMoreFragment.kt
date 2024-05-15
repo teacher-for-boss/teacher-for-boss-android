@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.fragment
+package com.example.teacherforboss.presentation.ui.auth.signup.basic
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -8,13 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.FragmentAgreementMoreBinding
 import com.example.teacherforboss.databinding.FragmentPersonalinfoMoreBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
 
 //@AndroidEntryPoint
 class PersonalInfoMoreFragment : BottomSheetDialogFragment() {

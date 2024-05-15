@@ -2,9 +2,6 @@ package com.example.teacherforboss.signup.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,19 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentEmailBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.fragment.PasswordFragment
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.teacherforboss.presentation.ui.auth.signup.basic.PasswordFragment
 
 
 //@AndroidEntryPoint

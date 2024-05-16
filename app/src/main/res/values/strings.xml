@@ -18,4 +18,10 @@
     <string name="timeover_false">"인증번호를 받지 못하셨나요?"</string>
 
 
+    <!-- teacher_talk -->
+    <string name="tv_question_pay_btn"><u>질문권 %s개</u></string>
+    <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
+    <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요</b></string>
+
+
 </resources>

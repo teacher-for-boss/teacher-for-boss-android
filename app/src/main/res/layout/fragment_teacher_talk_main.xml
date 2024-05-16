@@ -1,106 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Purple200">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/purpleBox"
+<!--    scroll view-->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="345dp"
-        android:background="@color/Purple200"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-
-        <TextView
-            android:id="@+id/tv_question_pay_btn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tv_question_pay_btn"
-            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
 
-            app:layout_constraintBottom_toBottomOf="@id/iv_alarm_btn"
-            app:layout_constraintTop_toTopOf="@+id/iv_alarm_btn"
-            app:layout_constraintEnd_toStartOf="@+id/iv_alarm_btn"/>
-
-        <ImageView
-            android:id="@+id/iv_alarm_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_bell"
-
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/teacher_talk_main_text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/teacher_talk_main_text1"
-            android:layout_marginTop="70dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="50dp"
-            android:textSize="8pt"
-            android:textColor="@color/Purple600"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/teacher_talk_main_text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/teacher_talk_main_text2"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="50dp"
-            android:textSize="14pt"
-            android:textColor="@color/Purple600"
+            <!-- 여러 view -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/purpleBox"
+                android:layout_width="match_parent"
+                android:layout_height="345dp"
+                android:background="@color/Purple200"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/teacher_talk_main_text1" />
+                <TextView
+                    android:id="@+id/tv_question_pay_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_question_pay_btn"
+                    android:layout_marginEnd="20dp"
 
-        <ImageView
-            android:src="@drawable/ic_teacher_talk_character"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_alarm_btn"
+                    app:layout_constraintTop_toTopOf="@+id/iv_alarm_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_alarm_btn"/>
 
-            android:layout_marginTop="19dp"
-            android:layout_width="281dp"
-            android:layout_height="292dp"
+                <ImageView
+                    android:id="@+id/iv_alarm_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_bell"
 
-            app:layout_constraintTop_toBottomOf="@id/teacher_talk_main_text2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
-        </ImageView>
+                <TextView
+                    android:id="@+id/teacher_talk_main_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/teacher_talk_main_text1"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="50dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/Purple600"
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ScrollView-->
-<!--        android:id="@+id/scrollView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/purpleBox"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/navigation_view"-->
-<!--        android:padding="16dp">-->
+                <TextView
+                    android:id="@+id/teacher_talk_main_text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/teacher_talk_main_text2"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="50dp"
+                    android:textSize="28sp"
+                    android:textColor="@color/Purple600"
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/radius_line_purple"-->
-<!--            android:orientation="vertical">-->
 
-<!--            &lt;!&ndash; 스크롤뷰에 들어갈 내용을 추가하세요 &ndash;&gt;-->
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/teacher_talk_main_text1" />
 
-<!--        </LinearLayout>-->
+                <ImageView
+                    android:layout_width="281dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="19dp"
+                    android:src="@drawable/ic_teacher_talk_character"
 
-<!--    </ScrollView>-->
+                    app:layout_constraintHorizontal_bias="0.507"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_main_text2">
+
+                </ImageView>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/teacher_talk_background2"
+                android:layout_width="match_parent"
+                android:layout_height="1410dp"
+                android:background="@drawable/background_radius30_white">
+
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintToptoTopOf="@+id/teacher_talk_background2"
+
+
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_teacher_talk_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:listitem="@layout/item_teacher_talk_card" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- 네비게이션 바 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

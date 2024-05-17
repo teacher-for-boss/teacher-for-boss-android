@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.auth.signup.teacher.BusinessFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
+            android:text="@string/business_register" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        </Space>
+
+        <TextView
+            android:textColor="@color/Gray700"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+            android:text="사업자 등록번호"
+            />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp">
+
+        </Space>
+
+        <EditText
+            android:id="@+id/business_num"
+            android:textColor="@color/Gray400"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_signup"
+            android:hint="000-00-00000"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+            android:padding="12dp"
+            android:text="@={signupViewModel._businessNum}"
+            android:textColorHint="@color/gray_02">
+
+        </EditText>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="36dp">
+
+        </Space>
+
+        <TextView
+            android:textColor="@color/Gray700"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+            android:text="대표자명"
+            />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp">
+
+        </Space>
+
+        <EditText
+            android:id="@+id/representative"
+            android:textColor="@color/Gray400"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_signup"
+            android:hint="대표자명을 입력해주세요"
+
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+            android:padding="12dp"
+            android:text="@={signupViewModel._representative}"
+            android:textColorHint="@color/gray_02">
+
+        </EditText>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="36dp">
+
+        </Space>
+
+        <TextView
+            android:textColor="@color/Gray700"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+            android:text="개업연월일"
+            />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp">
+
+        </Space>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/openDate"
+                android:textColor="@color/Gray400"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                android:background="@drawable/selector_signup"
+                android:hint="2024 / 05 / 11"
+                android:padding="12dp"
+                android:text="@={signupViewModel._openDate}"
+                android:textColorHint="@color/gray_02">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/calendar"
+                android:src="@drawable/calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_centerVertical="true"
+
+                >
+
+            </ImageView>
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="36dp">
+
+        </Space>
+
+
+    </LinearLayout>
+</layout>

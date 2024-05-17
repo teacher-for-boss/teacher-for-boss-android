@@ -19,7 +19,7 @@
 
             <!-- 여러 view -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/purpleBox"
+                android:id="@+id/teacher_talk_widget1"
                 android:layout_width="match_parent"
                 android:layout_height="345dp"
                 android:background="@color/Purple200"
@@ -97,31 +97,66 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/teacher_talk_background2"
+                android:id="@+id/teacher_talk_widget2"
                 android:layout_width="match_parent"
                 android:layout_height="1410dp"
                 android:background="@drawable/background_radius30_white">
 
-
-                <EditText
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/widget_search_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:background="@drawable/background_radius100_gray200"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="8dp"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintToptoTopOf="@+id/teacher_talk_background2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-
+                    <EditText
+                        android:id="@+id/et_search_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:hint="궁금한 키워드를 검색해보세요."
+                        android:textSize="12sp"
+                        android:background="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                     />
+
+                    <ImageView
+                        android:id="@+id/iv_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_search"
+                        android:layout_marginLeft="60dp"
+                        app:layout_constraintStart_toEndOf="@+id/et_search_view"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_search_view"
+                        app:layout_constraintTop_toTopOf="@+id/et_search_view"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_teacher_talk_card"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp"
-                    tools:listitem="@layout/item_teacher_talk_card" />
+                    tools:listitem="@layout/item_teacher_talk_card"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/widget_search_view"
+                    />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -142,7 +177,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menu_teacher_for_boss"
         android:layout_width="0dp"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
         app:itemIconTint="@color/Gray400"
         app:itemTextColor="@color/Gray400"
 

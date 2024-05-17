@@ -27,8 +27,9 @@
     <string name="card_view_question"><b>Q. %s</b></string>
     <string name="card_view_text">%s</string>
     <string name="card_view_statement">답변 대기중</string>
-    <string name="ic_comment_count">%s</string>
-    <string name="ic_like_count">%s</string>
+    <string name="bookmark_count">%s</string>
+    <string name="comment_count">%s</string>
+    <string name="like_count">%s</string>
 
     ic_comment_count
 

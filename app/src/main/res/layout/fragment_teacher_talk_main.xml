@@ -95,21 +95,20 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/teacher_talk_widget2"
                 android:layout_width="match_parent"
                 android:layout_height="1410dp"
                 android:background="@drawable/background_radius30_white">
 
+                <!-- 검색창 위젯-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/widget_search_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius100_gray200"
-                    android:paddingHorizontal="18dp"
-                    android:paddingVertical="8dp"
                     android:layout_marginTop="20dp"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -118,33 +117,42 @@
                         android:id="@+id/et_search_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:hint="궁금한 키워드를 검색해보세요."
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="8dp"
+                        android:hint="@string/search_view_hint"
                         android:textSize="12sp"
                         android:background="@null"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                    />
 
                     <ImageView
                         android:id="@+id/iv_search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_search"
-                        android:layout_marginLeft="60dp"
-                        app:layout_constraintStart_toEndOf="@+id/et_search_view"
-                        app:layout_constraintBottom_toBottomOf="@+id/et_search_view"
-                        app:layout_constraintTop_toTopOf="@+id/et_search_view"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginEnd="18dp"
+                        app:layout_constraintStart_toEndOf="@id/et_search_view"
+                        app:layout_constraintBottom_toBottomOf="@id/et_search_view"
+                        app:layout_constraintTop_toTopOf="@id/et_search_view"
                         app:layout_constraintEnd_toEndOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- 칩 리사이클러뷰 -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_teacher_talk_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_teacher_talk_filter"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/widget_search_view" />
 
 
-
-
-
-
-
+                <!-- 카드뷰 리사이클러뷰 -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_teacher_talk_card"
                     android:layout_width="match_parent"
@@ -155,20 +163,11 @@
 
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/widget_search_view"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_teacher_talk_filter"
                     />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

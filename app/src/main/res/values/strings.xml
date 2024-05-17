@@ -22,8 +22,9 @@
     <string name="tv_question_pay_btn"><u>질문권 %s개</u></string>
     <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
     <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
+    <string name="search_view_hint">궁금한 키워드를 검색해보세요.</string>
 
-    <!-- cardview-->
+    <!-- card view-->
     <string name="card_view_question"><b>Q. %s</b></string>
     <string name="card_view_text">%s</string>
     <string name="card_view_statement">답변 대기중</string>
@@ -31,7 +32,11 @@
     <string name="comment_count">%s</string>
     <string name="like_count">%s</string>
 
-    ic_comment_count
+
+    <!-- filter chip-->
+    <string name="filter_name">%s</string>
+
+
 
 
 

@@ -64,16 +64,16 @@
     <style name="Theme.TeacherForBoss.Chip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:stateListAnimator">@null</item>
         <item name="chipMinTouchTargetSize">0dp</item>
-        <item name="chipEndPadding">8dp</item>
-        <item name="chipStartPadding">8dp</item>
         <item name="android:checked">false</item>
         <item name="chipMinHeight">0dp</item>
         <item name="rippleColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.TeacherForBoss.Chip.All" parent="Theme.TeacherForBoss.Chip">
+    <style name="Theme.TeacherForBoss.Chip.Statement" parent="Theme.TeacherForBoss.Chip">
         <item name="chipBackgroundColor">@color/Gray200</item>
         <item name="cornerRadius">200dp</item>
+        <item name="chipEndPadding">8dp</item>
+        <item name="chipStartPadding">8dp</item>
         <item name="textStartPadding">0dp</item>
         <item name="textEndPadding">0dp</item>
         <item name="chipStrokeWidth">0dp</item>
@@ -81,5 +81,20 @@
         <item name="android:clickable">false</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+
+    <style name="Theme.TeacherForBoss.Chip.filter" parent="Theme.TeacherForBoss.Chip">
+        <item name="chipBackgroundColor">@color/Purple200</item>
+        <item name="cornerRadius">8px</item>
+        <item name="chipEndPadding">16dp</item>
+        <item name="chipStartPadding">16dp</item>
+        <item name="textStartPadding">0dp</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:paddingVertical">4dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
 </resources>

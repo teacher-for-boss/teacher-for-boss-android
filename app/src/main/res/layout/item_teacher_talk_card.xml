@@ -56,7 +56,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_card_view_statement"
-                style="@style/Theme.TeacherForBoss.Chip.All"
+                style="@style/Theme.TeacherForBoss.Chip.Statement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"

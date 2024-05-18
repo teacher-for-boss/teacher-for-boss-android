@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
+import com.example.teacherforboss.databinding.FragmentBossProfileBinding
 import com.example.teacherforboss.databinding.FragmentSignupStartBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 
+class BossProfileFragment : Fragment() {
 
-
-class SignupStartFragment : Fragment() {
-
-    private lateinit var binding: FragmentSignupStartBinding
+    private lateinit var binding: FragmentBossProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
 
     override fun onCreateView(
@@ -24,28 +23,12 @@ class SignupStartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_start, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boss_profile, container, false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
         val activity=activity as SignupActivity
-        var btn1 = binding.bossSelectTab
-        var btn2 = binding.teacherSelectTab
-        btn1.isSelected = true
-
-        btn1.setOnClickListener(){
-            btn1.isSelected = true
-            btn2.isSelected = false
-
-        }
-        btn2.setOnClickListener(){
-            btn1.isSelected = false
-            btn2.isSelected = true
-        }
-        binding.nextBtn.setOnClickListener(){
-            activity.gotoNextFragment(BossProfileFragment())
-        }
 
         return binding.root
 

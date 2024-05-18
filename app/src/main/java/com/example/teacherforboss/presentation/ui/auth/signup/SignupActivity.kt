@@ -17,6 +17,7 @@ import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.SignupStartFragment
 import com.example.teacherforboss.signup.AuthOtpReceiver
 import com.example.teacherforboss.signup.fragment.EmailFragment
 import com.google.android.gms.auth.api.phone.SmsRetriever
@@ -54,7 +55,7 @@ class SignupActivity : AppCompatActivity() {
 
         fragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container,EmailFragment())
+            .add(R.id.fragment_container,SignupStartFragment())
             .commit()
 
         binding.backBtn.setOnClickListener{

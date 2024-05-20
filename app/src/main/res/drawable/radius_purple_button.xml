@@ -4,7 +4,7 @@
     android:padding="5dp"
     >
 
-    <solid android:color="@color/main_purple_00"></solid>
+    <solid android:color="@color/Purple600"></solid>
 
     <corners
         android:bottomLeftRadius="8dp"

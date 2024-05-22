@@ -1,0 +1,229 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".signup.fragment.SignUpFragment">
+
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/gray_02"
+            android:max="100"
+            android:progress="20"
+            android:progressTint="@color/main_purple_00"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="보스에 대하여 소개해주세요"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@drawable/profile_background"
+                    android:clipToOutline="true"
+                    android:src="@drawable/profile_teacher"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textNickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="50dp"
+                    android:text="닉네임"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColor="@color/Gray700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profileImage" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textNickname">
+
+                    <EditText
+                        android:id="@+id/nicknameBox"
+                        android:layout_width="265dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/selector_signup"
+                        android:hint="닉네임을 입력해주세요"
+                        android:padding="12dp"
+                        android:text="@={signupViewModel.liveEmail}"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                        android:textColorHint="@color/Gray400" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/nicknameVerifyBtn"
+                        android:layout_width="76dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="true"
+                        android:text="중복 확인"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/veryInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                <TextView
+                    android:id="@+id/textCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    android:text="분야"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColor="@color/Gray700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                <EditText
+                    android:id="@+id/categoryBox"
+                    android:layout_width="350dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/selector_signup"
+                    android:layout_margin="10dp"
+                    android:hint="닉네임을 입력해주세요"
+                    android:padding="12dp"
+                    android:gravity="top"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColorHint="@color/Gray400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textCategory" />
+
+                <TextView
+                    android:id="@+id/careerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    android:text="경력"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColor="@color/Gray700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/categoryBox" />
+
+                <EditText
+                    android:id="@+id/careerBox"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/selector_signup"
+                    android:gravity="center"
+
+                    android:hint="00"
+                    android:padding="12dp"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColorHint="@color/Gray400"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/careerText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="년생"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColor="@color/Gray400"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/careerBox"
+                    app:layout_constraintStart_toEndOf="@+id/careerBox"
+                    app:layout_constraintTop_toTopOf="@+id/careerBox" />
+                <TextView
+                    android:id="@+id/introduceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    android:text="한 줄 소개"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColor="@color/Gray700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/careerBox" />
+
+                <EditText
+                    android:id="@+id/introduceBox"
+                    android:layout_width="350dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/selector_signup"
+                    android:layout_margin="10dp"
+                    android:hint="한 줄 소개를 입력해주세요(최대 40자)"
+                    android:padding="12dp"
+                    android:gravity="top"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColorHint="@color/Gray400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/introduceText" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/radius_purple_button"
+            android:text="다음 단계"
+            android:backgroundTint="@color/selector_all_btn_background"
+            android:enabled="true"
+            android:textColor="@color/white"
+            android:id="@+id/nextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </LinearLayout>
+
+
+</layout>

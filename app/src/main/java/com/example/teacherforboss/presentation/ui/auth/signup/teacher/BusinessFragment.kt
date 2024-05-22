@@ -14,7 +14,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import java.util.Calendar
 
-class BusinessFragment : Fragment() {
+class BusinessFragment : Fragment(){
     private lateinit var binding:FragmentBusinessBinding
     private val viewModel by activityViewModels<SignupViewModel>()
 
@@ -23,18 +23,31 @@ class BusinessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_business,container, false)
-        val activity=activity as SignupActivity
+        binding.signupViewModel=viewModel
+        binding.lifecycleOwner=this
 
+        viewModel._businessNum.observe(viewLifecycleOwner){bn->
+            viewModel.bn_validation()
+        }
         addListeners()
-
         return binding.root
     }
 
     private fun addListeners(){
+        binding.btnNextSignup.setOnClickListener {
+            val activity = activity as SignupActivity
+            if(viewModel.isBusinessVerified.value==true) activity.gotoNextFragment(BusinessVerifySuccessFragment())
+            else activity.gotoNextFragment(BusinessVerifyFailFragment())
+        }
+        binding.businessNum.setOnClickListener {
+            binding.checkVery.visibility=View.VISIBLE
+        }
+
         binding.calendar.setOnClickListener {
             val cal=Calendar.getInstance()
             val data=DatePickerDialog.OnDateSetListener{view,year,month,day->
-               viewModel._openDate.value="${year} / ${month} / ${day}"
+                viewModel._openDateStr.value="${year} / ${month} / ${day}"
+                binding.openDate.text="${year} / ${month} / ${day}"
             }
             context?.let { it1 ->
                 DatePickerDialog(
@@ -48,7 +61,6 @@ class BusinessFragment : Fragment() {
         }
 
     }
-
 
 
 

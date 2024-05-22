@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -88,6 +88,19 @@
         >
 
     </TextView>
+
+    <Button
+        android:id="@+id/btn_next_signup"
+        android:background="@drawable/radius_purple_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/selector_all_btn_background"
+        android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+        android:textColor="@color/white"
+        android:text="@string/signup_re_verify"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 

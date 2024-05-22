@@ -14,14 +14,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
-import com.example.teacherforboss.databinding.FragmentBossProfileBinding
+import com.example.teacherforboss.databinding.FragmentTeacherProfileBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.basic.PasswordFragment
 
-class BossProfileFragment : Fragment() {
+class TeacherProfileFragment : Fragment() {
 
-    private lateinit var binding: FragmentBossProfileBinding
+    private lateinit var binding: FragmentTeacherProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
 
     override fun onCreateView(
@@ -29,7 +28,7 @@ class BossProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boss_profile, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_teacher_profile, container, false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
@@ -39,7 +38,6 @@ class BossProfileFragment : Fragment() {
         val veryInfo = binding.veryInfo
         val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
         val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
-
 
 
         binding.profileImage.setOnClickListener(){

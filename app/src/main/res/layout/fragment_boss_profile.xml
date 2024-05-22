@@ -61,6 +61,7 @@
 
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -78,8 +79,7 @@
                 android:padding="12dp"
                 android:text="@={signupViewModel.liveEmail}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                android:textColorHint="@color/Gray400"
-                />
+                android:textColorHint="@color/Gray400" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/nicknameVerifyBtn"
@@ -104,6 +104,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/veryInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

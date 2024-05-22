@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
 import androidx.lifecycle.LifecycleOwner
+import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.DialogProfileImageBinding
 
 class ProfileImageDialog (context: Context,
@@ -23,7 +24,6 @@ class ProfileImageDialog (context: Context,
         binding=DialogProfileImageBinding.inflate(LayoutInflater.from(context))
         setContentView(binding.root)
 
-
         setView()
 
         setOnShowListener {
@@ -32,11 +32,11 @@ class ProfileImageDialog (context: Context,
 
     private fun setView() {
         // Dialog 크기 및 위치 설정
-        val layoutParams = window?.attributes
-        window?.attributes = layoutParams
-        window?.setGravity(Gravity.CENTER)
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.requestFeature(Window.FEATURE_NO_TITLE)
+        window?.apply {
+            setGravity(Gravity.CENTER)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            requestFeature(Window.FEATURE_NO_TITLE)
+        }
 
 
         setCanceledOnTouchOutside(true) // 다이얼로그 바깥쪽 클릭시 종료 ->false 불가능

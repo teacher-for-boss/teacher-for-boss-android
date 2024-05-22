@@ -44,7 +44,13 @@ class SignupStartFragment : Fragment() {
             btn2.isSelected = true
         }
         binding.nextBtn.setOnClickListener(){
-            activity.gotoNextFragment(BossProfileFragment())
+            if(btn1.isSelected){
+                activity.gotoNextFragment(BossProfileFragment())
+            }
+            else{
+                activity.gotoNextFragment(TeacherProfileFragment())
+
+            }
         }
 
         return binding.root

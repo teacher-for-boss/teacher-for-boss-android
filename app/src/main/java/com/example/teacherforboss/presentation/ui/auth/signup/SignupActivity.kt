@@ -12,11 +12,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.flowWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessFragment
+import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.example.teacherforboss.presentation.ui.auth.signup.boss.SignupStartFragment
 import com.example.teacherforboss.signup.AuthOtpReceiver
 import com.example.teacherforboss.signup.fragment.EmailFragment
@@ -24,19 +30,24 @@ import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class SignupActivity : AppCompatActivity() {
+class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel: SignupViewModel by viewModels()
-    var index=0
+
     val fragmentManager:FragmentManager=supportFragmentManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initLayout()
+        addListeners()
+        collectData()
 
 //        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
 //        binding.signupViewModel=viewModel
@@ -52,12 +63,26 @@ class SignupActivity : AppCompatActivity() {
 //        val otpReceiver=AuthOtpReceiver.OtpReceiveListener.g
 //        registerReceiver(otpReceiver,otpReceiver.doFilter())
 
-
+        // pivot 이전 경로
         fragmentManager
             .beginTransaction()
             .add(R.id.fragment_container,SignupStartFragment())
             .commit()
 
+
+    }
+
+    private fun initLayout(){
+        with(binding.progressbarSignup){
+            min= DEFAULT_PROGRESSBAR
+            max= TEACHER_FRAGMENT_SZIE.toFloat()
+            //TODO: boss와 분기처리, boss 회원 가입시 progress bar 다시 init
+        }
+
+    }
+
+
+    private fun addListeners(){
         binding.backBtn.setOnClickListener{
             if(fragmentManager.backStackEntryCount>0){
                 fragmentManager.popBackStack()
@@ -70,77 +95,15 @@ class SignupActivity : AppCompatActivity() {
 
         }
 
-
-//        binding.nextBtn.setOnClickListener {
-//            val transaction=fragmentManager.beginTransaction()
-//            Log.d("index","${index}")
-//            when(index){
-//                0->{
-//                    index=1
-//                    transaction.replace(R.id.fragment_container,PasswordFragment())
-//
-//                }
-//                1->{
-//
-//                    //q. 제대로 rePw_check이 관찰되지 않음!!
-////                    viewModel.rePw_check.observe(this,Observer{
-////                        Log.d("index","${viewModel.rePw_check.value}")
-////                        if(viewModel.rePw_check.value==true){
-////                            index=2
-////                            transaction.replace(R.id.fragment_container,NamePhoneFragment())
-////                        }
-////                        else{
-////                            showToast("비밀번호가 일치하지 않습니다.")
-////                        }
-////
-////                    })
-//
-//                    index=2
-//                    transaction.replace(R.id.fragment_container,NamePhoneFragment())
-//
-//
-//
-//
-//                }
-//                2->{
-//                    index=3
-//                    transaction.replace(R.id.fragment_container,GenderBirthFragment())
-//
-//                }
-//                3->{
-//                    index=4
-//                    transaction.replace(R.id.fragment_container,AgreementFragment())
-//
-//                }
-//                4->{
-//                    // 서버로 회원가입 api 요청
-//                    viewModel.signupUser()
-//                    viewModel.signupResult.observe(this,{
-//                        when(it){
-//                            is BaseResponse.Loading->{
-//                                // 기다려주세요 메시지?로고?
-//                            }
-//                            is BaseResponse.Success->{
-//                                processSignup(it.data)//respponse.result
-//                            }
-//                            is BaseResponse.Error->{
-//                                processError(it.msg)
-//                            }
-//                            else->{
-//                                //loading 종료시
-//
-//                            }
-//                        }
-//
-//                    })
-//
-//                }
-//            }
-//            transaction.addToBackStack(null)
-//            transaction.commit()
-//        }
-
     }
+
+    private fun collectData(){
+        viewModel.currentPage.flowWithLifecycle(lifecycle).onEach { currentPage->
+            binding.progressbarSignup.progress=currentPage+ DEFAULT_PROGRESSBAR
+        }
+    }
+
+
 
     fun gotoNextFragment(fragment:Fragment){
         val transaction=fragmentManager.beginTransaction()
@@ -202,6 +165,14 @@ class SignupActivity : AppCompatActivity() {
         fun doFilter(): IntentFilter = IntentFilter().apply {
             addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
         }
+    }
+
+    companion object{
+        private const val DEFAULT_PROGRESSBAR=1f
+        private const val FIRST_PROGRESS=0
+        private const val BOSS_FRAGMENT_SIZE=6f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
+        private const val TEACHER_FRAGMENT_SZIE=10f // 티쳐: 온보딩:1 + 일반 4 + 티쳐 4 + 프로필 1= 10
+
     }
 
 

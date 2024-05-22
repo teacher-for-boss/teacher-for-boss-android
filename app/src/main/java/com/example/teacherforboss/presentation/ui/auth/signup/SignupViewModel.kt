@@ -24,8 +24,11 @@ import com.example.teacherforboss.util.base.ErrorUtils
 import com.example.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -35,6 +38,58 @@ class SignupViewModel @Inject constructor(
 //    private val userRepo: UserRepository
 
 ): ViewModel() {
+
+    // 피봇 이후 회원가입 변수들
+    val _role=MutableLiveData<Int>(1)
+    val role: LiveData<Int>
+        get()=_role
+
+    // teacher 변수들
+    var _businessNum=MutableLiveData<String>("")
+    val businessNum:LiveData<String>
+        get() = _businessNum
+
+    var _businessNumCheck=MutableLiveData<Boolean>(false)
+    val businessNumCheck:LiveData<Boolean>
+        get() = _businessNumCheck
+
+    var _representative=MutableLiveData<String>("")
+    val representative:LiveData<String>
+        get() = _representative
+
+    var _openDate=MutableLiveData<LocalDate>()
+    val openDate:LiveData<LocalDate>
+        get() = _openDate
+
+    var _openDateStr=MutableLiveData<String>("YYYY-MM-DD")
+    val openDate_str:LiveData<String>
+        get() = _openDateStr
+
+    var _isBusinessVerified=MutableLiveData<Boolean>(true) //TODO: false로 변경
+    val isBusinessVerified:LiveData<Boolean>
+        get() = _isBusinessVerified
+
+    var _bank=MutableLiveData<String>("")
+    val bank:LiveData<String>
+        get() = _bank
+
+    var _accountNum=MutableLiveData<String>("")
+    val accountNum:LiveData<String>
+        get() = _accountNum
+
+    var _accountHoler=MutableLiveData<String>("")
+    val accountHoler:LiveData<String>
+        get() = _accountHoler
+
+
+
+    // activity page 관련
+    private val _currentPage = MutableStateFlow(FIRST_FRAGMENT_POSITION)
+    val currentPage get() = _currentPage.asStateFlow()
+
+
+    // 피봇 이전 회원가입 변수들
+
     var liveEmail= MutableLiveData<String>("")
     var livePhone=MutableLiveData<String>("")
 
@@ -110,18 +165,6 @@ class SignupViewModel @Inject constructor(
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
-    //휴대폰인증확인 맵
-    val confirmedPhone= MutableLiveData<MutableMap<String,Boolean>>()
-
-//
-//    fun setEmailVerifiedStatus(isVefiried:Boolean){
-//        _isEmailVerified.value=isVefiried
-//
-//    }
-//    fun setPhoneVerifiedStatus(isVefiried: Boolean){
-//        _isPhoneVerified.value=isVefiried
-//    }
-
     //pw체크
 
     //pw check 정규식
@@ -145,6 +188,12 @@ class SignupViewModel @Inject constructor(
 
     }
 
+    // 사업자 번호 체크
+     fun bn_validation(){
+        val pattern=Pattern.compile("^\\d{3}-\\d{2}-\\d{5}$")
+        _businessNumCheck.value=pattern.matcher(businessNum.value.toString()).matches()
+        Log.d("bn",businessNumCheck.value.toString())
+    }
 
 
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
@@ -239,44 +288,6 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    //ver.지은님 코드 signup
-    private val _signupResultState= MutableSharedFlow<UiState<SignupResultEntity>>()
-    val signupResultState get() = _signupResultState.asSharedFlow()
-//    fun signup(){
-//        viewModelScope.launch {
-//            _signupResultState.emit(UiState.Loading)
-//            runCatching {
-//                signupUseCase(
-//                    signupEntity = SignupEntity(
-//                        email=email.value!!,
-//                        isChecked = isEmailVerified_str.value!!,
-//                        password = pw.value!!,
-//                        rePassword = rePw.value!!,
-//                        name=name.value!!,
-//                        phone=phone.value!!,
-//                        gender=gender.value!!,
-//                        birthDate=birthDate.value!!,
-//                        emailAuthId=emailAuthId.value!!,
-//                        phoneAuthId = phoneAuthId.value!!,
-//                        agreementUsage = agreementUsage.value!!,
-//                        agreementInfo = agreementInfo.value!!,
-//                        agreementAge = agreementAge.value!!,
-//                        agreementEmail = agreementEmail.value!!,
-//                        agreementLocation = agreementLocation.value!!,
-//                        agreementSms = agreementSms.value!!
-//                    )
-//
-//                ).collect(){data->
-//                    _signupResultState.emit((UiState.Success(data)))
-//                }
-//
-//        }.onFailure { ex:Throwable->
-//            _signupResultState.emit(UiState.Error(ex.message))
-//        }
-//    }
-//    }
-
-
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
     fun phoneUser(hash:String) {
         phoneResult.value = BaseResponse.Loading()
@@ -347,6 +358,10 @@ class SignupViewModel @Inject constructor(
 
     fun stopTimer(){
         timer.stopTimer()
+    }
+
+    companion object{
+        private const val FIRST_FRAGMENT_POSITION = 1F
     }
 
 }

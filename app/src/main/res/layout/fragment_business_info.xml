@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.auth.signup.teacher.BusinessInfoFragment">
+    >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
+            android:text="@string/business_info_title" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp">
+
+        </Space>
+
+        <TextView
+            android:text="@string/business_info_desc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16">
+
+        </TextView>
+
+        <TextView
+            android:text="@string/business_info_desc2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16">
+
+        </TextView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        </Space>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/business">
+
+            </ImageView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        </Space>
+
+        <TextView
+            android:textAlignment="center"
+            android:text="@string/business_info_desc3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Gray400"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12">
+
+        </TextView>
+
+        <TextView
+            android:textAlignment="center"
+            android:text="@string/business_info_desc4"
+            android:textColor="@color/Gray400"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12">
+
+        </TextView>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_next_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_purple_button"
+        android:backgroundTint="@color/selector_all_btn_background"
+        android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+        android:textColor="@color/white"
+        android:text="@string/signup_insert_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

@@ -49,6 +49,18 @@
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
 
+    <style name="TextAppearance.TeacherForBoss.Body.Regular.14" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">14dp</item>
+        <item name="lineHeight">22dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body.Regular.12" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">12dp</item>
+        <item name="lineHeight">22dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
     <style name="TextAppearance.TeacherForBoss.Body.Medium.14" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">14dp</item>
         <item name="lineHeight">20dp</item>

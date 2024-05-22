@@ -23,6 +23,7 @@ import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessFragment
 import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.SignupStartFragment
 import com.example.teacherforboss.signup.AuthOtpReceiver
 import com.example.teacherforboss.signup.fragment.EmailFragment
 import com.google.android.gms.auth.api.phone.SmsRetriever
@@ -65,7 +66,7 @@ class SignupActivity: AppCompatActivity() {
         // pivot 이전 경로
         fragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, BusinessInfoFragment())
+            .add(R.id.fragment_container,SignupStartFragment())
             .commit()
 
 

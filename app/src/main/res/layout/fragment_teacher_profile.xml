@@ -62,7 +62,7 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:orientation="horizontal"
@@ -72,8 +72,9 @@
 
                     <EditText
                         android:id="@+id/nicknameBox"
-                        android:layout_width="265dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_weight="1"
                         android:background="@drawable/selector_signup"
                         android:hint="닉네임을 입력해주세요"
                         android:padding="12dp"
@@ -118,11 +119,11 @@
 
                 <EditText
                     android:id="@+id/categoryBox"
-                    android:layout_width="350dp"
+                    android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="@drawable/selector_signup"
                     android:layout_margin="10dp"
-                    android:hint="닉네임을 입력해주세요"
+                    android:hint="전문 분야를 입력해주세요 (최대 20자)"
                     android:padding="12dp"
                     android:gravity="top"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
@@ -183,7 +184,7 @@
 
                 <EditText
                     android:id="@+id/introduceBox"
-                    android:layout_width="350dp"
+                    android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="@drawable/selector_signup"
                     android:layout_margin="10dp"

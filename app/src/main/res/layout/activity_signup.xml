@@ -72,8 +72,6 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
-            app:navGraph="@navigation/signup_teacher_nav_graph"
-            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="600dp"
             app:layout_constraintTop_toBottomOf="@id/progressbar_signup"

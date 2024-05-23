@@ -143,7 +143,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="티쳐Talk에서 보스가 남긴 질문에 답변\n을 남기고 리워드를 받을 수 있어요!"
+                            android:text="티쳐Talk에서 보스가 남긴 질문에\n답변을 남기고 리워드를 받을 수 \n있어요!"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                             android:textColor="@color/Gray500"
                             android:layout_marginTop="8dp"

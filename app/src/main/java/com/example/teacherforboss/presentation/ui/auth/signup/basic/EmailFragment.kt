@@ -41,11 +41,6 @@ class EmailFragment : Fragment() {
 
         val activity=activity as SignupActivity
 
-        viewModel._isEmailVerified_str.value="F"
-        viewModel._isEmailVerified.value=false
-
-
-
         // 키보드 바깥 화면 터치 시 키보드 내리기
         binding.root.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -127,17 +122,10 @@ class EmailFragment : Fragment() {
                 is BaseResponse.Success->{
                     binding.nextBtn.isEnabled = false
 
-
                     //viewModel.setEmailVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
                     if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
                         viewModel._isEmailVerified_str.value="T"
                         viewModel._isEmailVerified.value=true
-
-
-                        binding.nextBtn.setOnClickListener {
-                            Log.d("email",viewModel.email.value!!)
-                            activity.gotoNextFragment(PasswordFragment())
-                        }
 
                         viewModel.stopTimer()
                     }
@@ -166,6 +154,12 @@ class EmailFragment : Fragment() {
 
                 else -> {}
             }
+        }
+
+        // next btn
+        binding.nextBtn.setOnClickListener {
+            viewModel.plusCurrentPage()
+            activity.gotoNextFragment(PasswordFragment())
         }
         return binding.root
 

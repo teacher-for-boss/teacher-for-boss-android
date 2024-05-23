@@ -10,7 +10,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <ImageView
             android:id="@+id/failIcon"
@@ -76,7 +77,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-
         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.12"
         android:textColor="@color/Gray400"
         android:textAlignment="center"

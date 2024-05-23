@@ -18,6 +18,7 @@ import com.example.teacherforboss.databinding.FragmentBossProfileBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.basic.PasswordFragment
+import com.example.teacherforboss.signup.fragment.EmailFragment
 
 class BossProfileFragment : Fragment() {
 
@@ -34,26 +35,12 @@ class BossProfileFragment : Fragment() {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
-        val activity=activity as SignupActivity
         val nicknameBox = binding.nicknameBox
         val veryInfo = binding.veryInfo
         val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
         val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
 
-
-
-        binding.profileImage.setOnClickListener(){
-            showDialog()
-        }
-
-
-
-        binding.nicknameVerifyBtn.setOnClickListener(){
-            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
-            viewModel.emailUser()
-
-        }
+        addListeners()
 
         viewModel.emailResult.observe(viewLifecycleOwner){
             when(it){
@@ -91,6 +78,28 @@ class BossProfileFragment : Fragment() {
         })
 
         return binding.root
+
+    }
+
+    private fun addListeners(){
+        binding.profileImage.setOnClickListener(){
+            showDialog()
+        }
+
+        binding.nicknameVerifyBtn.setOnClickListener(){
+            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
+            viewModel.emailUser()
+
+        }
+
+        binding.nextBtn.setOnClickListener {
+            val activity=activity as SignupActivity
+            // TODO: splash
+//            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
+//            val intent = Intent(activity, BeginActivity::class.java)
+//            startActivity(intent)
+        }
 
     }
 

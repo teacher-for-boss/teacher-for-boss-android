@@ -81,15 +81,16 @@ class SignupViewModel @Inject constructor(
     val accountHoler:LiveData<String>
         get() = _accountHoler
 
-
-
     // activity page 관련
-    private val _currentPage = MutableStateFlow(FIRST_FRAGMENT_POSITION)
-    val currentPage get() = _currentPage.asStateFlow()
+    var _currentPage=MutableLiveData<Float>(DEFAULT_PROGRESSBAR)
+    val currentPage:LiveData<Float>
+        get() = _currentPage
 
+    var _totalPage=MutableLiveData<Float>(BOSS_FRAGMENT_SIZE)
+    val totalPage: LiveData<Float>
+        get() = _totalPage
 
     // 피봇 이전 회원가입 변수들
-
     var liveEmail= MutableLiveData<String>("")
     var livePhone=MutableLiveData<String>("")
 
@@ -148,7 +149,7 @@ class SignupViewModel @Inject constructor(
         get() = _isEmailVerified_str
 
     //이메일인증 여부 boolean ->data binding
-    var _isEmailVerified= MutableLiveData<Boolean>(false)
+    var _isEmailVerified= MutableLiveData<Boolean>(true) //TODO
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
@@ -161,7 +162,7 @@ class SignupViewModel @Inject constructor(
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(false)
+    var _isPhoneVerified=MutableLiveData<Boolean>(true) //TODO
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
@@ -338,6 +339,28 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setBossMode(){
+        _role.value=1
+    }
+    fun setTeacherMode(){
+        _role.value=2
+    }
+
+    fun changeToBossPageSize(){
+        _totalPage.value= BOSS_FRAGMENT_SIZE
+    }
+
+    fun changeToTeacherPageSize(){
+        _totalPage.value= TEACHER_FRAGMENT_SZIE
+    }
+
+    fun plusCurrentPage(){
+        _currentPage.value=_currentPage.value!!+1f
+    }
+    fun minusCurrentPage(){
+        _currentPage.value=_currentPage.value!!-1f
+    }
+
     //timer
     private val _timerText=MutableLiveData<String>()
     val timerText:LiveData<String>
@@ -361,7 +384,9 @@ class SignupViewModel @Inject constructor(
     }
 
     companion object{
-        private const val FIRST_FRAGMENT_POSITION = 1F
+        private const val DEFAULT_PROGRESSBAR=1f
+        const val BOSS_FRAGMENT_SIZE=8f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
+        const val TEACHER_FRAGMENT_SZIE=14f
     }
 
 }

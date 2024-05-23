@@ -321,7 +321,7 @@
             android:background="@drawable/radius_purple_button"
             android:backgroundTint="@color/selector_all_btn_background"
             android:enabled="false"
-            android:text="회원가입 완료하기"
+            android:text="다음 단계"
             android:textColor="@color/white"
             android:textSize="18dp"
             android:layout_marginBottom="16dp">

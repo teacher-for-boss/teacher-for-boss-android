@@ -53,6 +53,13 @@ class TeacherProfileFragment : Fragment() {
 
         }
 
+        binding.nextBtn.setOnClickListener {
+            //TODO: splash
+//            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
+//            val intent = Intent(activity, BeginActivity::class.java)
+//            startActivity(intent)
+        }
+
         viewModel.emailResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }

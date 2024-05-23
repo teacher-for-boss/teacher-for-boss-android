@@ -16,6 +16,8 @@ import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentAgreementBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.TeacherProfileFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 //@AndroidEntryPoint
@@ -192,24 +194,24 @@ class AgreementFragment : BottomSheetDialogFragment() {
         }
 
 
+
         binding.finishBtn.setOnClickListener {
+            val activity=activity as SignupActivity
             //체크된 agreemet 확인
             combinedList.forEach{(livedata,checkbox)->
                 if(checkbox.isChecked==true){
                     livedata.value="T"
                 }
             }
-            viewModel.signupUser()
 
-            //서버로 회원가입 api 보내기
-//            viewModel.signup()
+            if(viewModel.role.value==1){
+                activity.gotoNextFragment(BossProfileFragment())
 
+            }
+            else if(viewModel.role.value==2){
+                activity.gotoNextFragment(TeacherProfileFragment())
+            }
 
-
-            //성공시 아래작업 진행
-            val activity=activity as SignupActivity
-//            val intent = Intent(activity, BeginActivity::class.java)
-//            startActivity(intent)
         }
 
         return binding.root

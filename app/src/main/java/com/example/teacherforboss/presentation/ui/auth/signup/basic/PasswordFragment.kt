@@ -3,6 +3,7 @@ package com.example.teacherforboss.presentation.ui.auth.signup.basic
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -116,6 +117,8 @@ class PasswordFragment : Fragment() {
     }
 
     private fun checkNextButtonActivation() {
+        Log.d("test",viewModel.all_check.value.toString())
+
         val isPasswordValid = viewModel.all_check.value ?: false
         val isPasswordMatch = viewModel.rePw_check.value ?: false
 

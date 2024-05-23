@@ -39,11 +39,12 @@ class SignupActivity: AppCompatActivity() {
 
     val fragmentManager:FragmentManager=supportFragmentManager
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         initLayout()
         addListeners()
@@ -74,8 +75,10 @@ class SignupActivity: AppCompatActivity() {
 
     private fun initLayout(){
         with(binding.progressbarSignup){
+            Log.d("signup",min.toString())
+            Log.d("signup",max.toString())
             min= DEFAULT_PROGRESSBAR
-            max= TEACHER_FRAGMENT_SZIE.toFloat()
+            max= TEACHER_FRAGMENT_SZIE
             //TODO: boss와 분기처리, boss 회원 가입시 progress bar 다시 init
         }
 
@@ -86,6 +89,7 @@ class SignupActivity: AppCompatActivity() {
         binding.backBtn.setOnClickListener{
             if(fragmentManager.backStackEntryCount>0){
                 fragmentManager.popBackStack()
+                viewModel.minusCurrentPage()
             }
             else{
                 val intent=Intent(this,LoginActivity::class.java)
@@ -98,14 +102,20 @@ class SignupActivity: AppCompatActivity() {
     }
 
     private fun collectData(){
-        viewModel.currentPage.flowWithLifecycle(lifecycle).onEach { currentPage->
-            binding.progressbarSignup.progress=currentPage+ DEFAULT_PROGRESSBAR
+        viewModel.currentPage.observe(this){currentPage->
+            Log.d("signup",currentPage.toString())
+            binding.progressbarSignup.progress=currentPage
+        }
+        viewModel.totalPage.observe(this){totalPage->
+            Log.d("signup",totalPage.toString())
+            binding.progressbarSignup.max=totalPage
         }
     }
 
 
 
     fun gotoNextFragment(fragment:Fragment){
+        viewModel.plusCurrentPage()
         val transaction=fragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container,fragment)
         transaction.addToBackStack(null)

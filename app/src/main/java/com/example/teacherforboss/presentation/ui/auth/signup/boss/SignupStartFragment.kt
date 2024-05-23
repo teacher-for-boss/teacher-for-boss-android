@@ -11,7 +11,8 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentSignupStartBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-
+import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
+import com.example.teacherforboss.signup.fragment.EmailFragment
 
 
 class SignupStartFragment : Fragment() {
@@ -45,10 +46,16 @@ class SignupStartFragment : Fragment() {
         }
         binding.nextBtn.setOnClickListener(){
             if(btn1.isSelected){
-                activity.gotoNextFragment(BossProfileFragment())
+//                activity.gotoNextFragment(BossProfileFragment())
+                activity.gotoNextFragment(EmailFragment())
+                viewModel.setBossMode()
+                viewModel.changeToBossPageSize()
             }
             else{
-                activity.gotoNextFragment(TeacherProfileFragment())
+//                activity.gotoNextFragment(TeacherProfileFragment())
+                activity.gotoNextFragment(BusinessInfoFragment())
+                viewModel.setTeacherMode()
+                viewModel.changeToTeacherPageSize()
 
             }
         }

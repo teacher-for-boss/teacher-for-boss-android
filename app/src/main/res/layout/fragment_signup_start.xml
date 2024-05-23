@@ -23,22 +23,6 @@
             android:layout_height="match_parent"
             >
 
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/gray_02"
-                android:progressTint="@color/main_purple_00"
-                android:progress="20"
-                android:max="100"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="14dp">
-
-            </View>
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -8,12 +8,14 @@ import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
+import com.example.teacherforboss.data.model.request.signup.NicknameRequest
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
 import com.example.teacherforboss.data.model.request.signup.SignupRequest
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
+import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -74,4 +76,10 @@ interface AuthService {
         @Body phoneCheckRequest: PhoneCheckRequest
     )
     :Response<PhoneCheckResponse>
+
+    @POST("auth/nickname/check")
+    suspend fun nicknameUser(
+        @Body nicknameRequest: NicknameRequest
+    )
+    :Response<NicknameResponse>
 }

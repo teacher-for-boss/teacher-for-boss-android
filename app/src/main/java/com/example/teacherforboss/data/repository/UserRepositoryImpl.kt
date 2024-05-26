@@ -9,12 +9,14 @@ import com.example.teacherforboss.domain.repository.UserRepository
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
+import com.example.teacherforboss.data.model.request.signup.NicknameRequest
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
 import com.example.teacherforboss.data.model.request.signup.SignupRequest
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
+import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import retrofit2.Response
 
@@ -89,5 +91,10 @@ class UserRepositoryImpl: UserRepository {
     override suspend fun phoneCheck(phoneCheckRequest: PhoneCheckRequest):
             Response<PhoneCheckResponse>?{
         return AuthService.getApi()?.phoneCheck(phoneCheckRequest = phoneCheckRequest)
+    }
+
+    override suspend fun nicknameUser(nicknameRequest: NicknameRequest):
+            Response<NicknameResponse>?{
+        return AuthService.getApi()?.nicknameUser(nicknameRequest = nicknameRequest)
     }
 }

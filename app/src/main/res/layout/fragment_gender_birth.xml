@@ -205,7 +205,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/radius_purple_button"
             android:text="다음"
             android:textColor="@color/white"
@@ -215,7 +215,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             >
 
-        </Button>
+        </androidx.appcompat.widget.AppCompatButton>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

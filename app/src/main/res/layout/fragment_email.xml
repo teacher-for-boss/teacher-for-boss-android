@@ -64,7 +64,7 @@
 
                     </EditText>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/emailVerifyBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"
@@ -175,7 +175,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/radius_purple_button"
             android:text="다음"
             android:backgroundTint="@color/selector_all_btn_background"
@@ -187,7 +187,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             >
 
-        </Button>
+        </androidx.appcompat.widget.AppCompatButton>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

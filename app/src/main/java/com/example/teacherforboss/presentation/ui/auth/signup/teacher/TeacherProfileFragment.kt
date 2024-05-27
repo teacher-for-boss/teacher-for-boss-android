@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentTeacherProfileBinding
+import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.google.android.material.chip.Chip
@@ -46,7 +47,7 @@ class TeacherProfileFragment : Fragment() {
         chipListener()
 
         binding.profileImage.setOnClickListener(){
-            showDialog()
+            showProfileImageDialog()
         }
 
 
@@ -140,18 +141,10 @@ class TeacherProfileFragment : Fragment() {
     }
 
 
-
-
-    private fun showDialog(){
-        val builder = AlertDialog.Builder(requireContext())
-
-        val inflater = LayoutInflater.from(requireContext())
-        val dialogView = inflater.inflate(R.layout.dialog_profile_image, null)
-        builder.setView(dialogView)
-
-        val dialog = builder.create()
-
-        dialog.show()    }
-
+    private fun showProfileImageDialog() {
+        val activity=activity as SignupActivity
+        val dialog = ProfileImageDialog(activity,viewModel)
+        dialog.show()
+    }
 
 }

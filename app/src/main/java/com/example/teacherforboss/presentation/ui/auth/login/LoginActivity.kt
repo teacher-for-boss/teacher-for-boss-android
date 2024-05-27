@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
 
                     // 설문조사 여부에 따라 다른 activity로 이동
 
+
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)

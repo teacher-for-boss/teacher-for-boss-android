@@ -8,7 +8,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginBottom="0dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
@@ -29,7 +28,7 @@
 
 
             <TextView
-                android:id="@+id/card_teacher_talk_question"
+                android:id="@+id/tv_teacher_talk_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/card_view_question"
@@ -41,7 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/card_teacher_talk_text"
+                android:id="@+id/tv_teacher_talk_text"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_marginTop="8dp"
@@ -51,7 +50,7 @@
                 android:textSize="20sp"
 
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_teacher_talk_question" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_question" />
 
 
             <com.google.android.material.chip.Chip
@@ -63,7 +62,7 @@
                 android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_teacher_talk_text"
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text"
                 tools:text="@string/card_view_statement"
                 tools:textSize="7sp" />
 
@@ -72,7 +71,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_bookmark"
-                android:layout_marginLeft="101dp"
+                android:layout_marginStart="101dp"
 
                 app:layout_constraintStart_toEndOf="@+id/chip_card_view_statement"
                 app:layout_constraintBottom_toBottomOf="@+id/chip_card_view_statement"
@@ -95,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_comment"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
 
                 app:layout_constraintStart_toEndOf="@+id/tv_bookmark_count"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_bookmark_count"
@@ -117,7 +116,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_like"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
 
                 app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_comment_count"
@@ -142,3 +141,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    card간의 간격조절을 xml이 아닌 itemDecoration이용하기-->

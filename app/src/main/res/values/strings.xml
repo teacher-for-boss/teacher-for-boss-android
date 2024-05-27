@@ -17,12 +17,18 @@
     <string name="timeover_true">"인증번호 다시 받기"</string>
     <string name="timeover_false">"인증번호를 받지 못하셨나요?"</string>
 
+    <!-- bnv -->
+    <string name="string_menu_home">홈</string>
+    <string name="string_menu_teacher_talk">티쳐talk</string>
+    <string name="string_menu_boss_talk">보스talk</string>
+    <string name="string_menu_my_page">마이페이지</string>
 
     <!-- teacher_talk -->
     <string name="tv_question_pay_btn"><u>질문권 %s개</u></string>
     <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
     <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
     <string name="search_view_hint">궁금한 키워드를 검색해보세요.</string>
+    <string name="more_card">게시물 더 불러오기</string>
 
     <!-- card view-->
     <string name="card_view_question"><b>Q. %s</b></string>
@@ -35,9 +41,6 @@
 
     <!-- filter chip-->
     <string name="filter_name">%s</string>
-
-
-
 
 
 </resources>

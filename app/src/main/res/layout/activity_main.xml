@@ -7,29 +7,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/menu_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/main_bottom_navigation_view" />
+            app:layout_constraintBottom_toTopOf="@id/bnv_teacher_for_boss" />
 
+        <!-- 네비게이션 바 -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/main_bottom_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            app:menu="@menu/main_menu_bottom"
-            app:labelVisibilityMode="labeled"
-            app:itemTextColor="#7F7F7F"
-            app:itemIconTint="@drawable/menu_select_color"
-            android:background="@color/white"
-            app:itemIconSize="24dp"
-            app:itemTextAppearanceActive="@dimen/design_bottom_navigation_active_text_size"
-            app:itemTextAppearanceInactive="@dimen/design_bottom_navigation_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:id="@+id/bnv_teacher_for_boss"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@color/Gray400"
+            app:itemTextColor="@color/Gray400"
 
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu_teacher_for_boss" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

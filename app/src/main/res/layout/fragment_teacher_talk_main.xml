@@ -1,188 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/Purple200">
+    xmlns:tools="http://schemas.android.com/tools">
 
-<!--    scroll view-->
-    <androidx.core.widget.NestedScrollView
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:background="@color/Purple200">
 
-        <LinearLayout
+        <!--    scroll view-->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <!-- 여러 view -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/teacher_talk_widget1"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="345dp"
-                android:background="@color/Purple200"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-
-                <TextView
-                    android:id="@+id/tv_question_pay_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tv_question_pay_btn"
-                    android:layout_marginEnd="20dp"
-
-                    app:layout_constraintBottom_toBottomOf="@id/iv_alarm_btn"
-                    app:layout_constraintTop_toTopOf="@+id/iv_alarm_btn"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_alarm_btn"/>
-
-                <ImageView
-                    android:id="@+id/iv_alarm_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_bell"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <TextView
-                    android:id="@+id/teacher_talk_main_text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/teacher_talk_main_text1"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="50dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/Purple600"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/teacher_talk_main_text2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/teacher_talk_main_text2"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="50dp"
-                    android:textSize="28sp"
-                    android:textColor="@color/Purple600"
-
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/teacher_talk_main_text1" />
-
-                <ImageView
-                    android:layout_width="281dp"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="19dp"
-                    android:src="@drawable/ic_teacher_talk_character"
-
-                    app:layout_constraintHorizontal_bias="0.507"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_main_text2">
-
-                </ImageView>
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/teacher_talk_widget2"
-                android:layout_width="match_parent"
-                android:layout_height="1410dp"
-                android:background="@drawable/background_radius30_white">
-
-                <!-- 검색창 위젯-->
+                <!-- 여러 view -->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/widget_search_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_radius100_gray200"
-                    android:layout_marginTop="20dp"
-
+                    android:id="@+id/teacher_talk_widget1"
+                    android:layout_width="match_parent"
+                    android:layout_height="345dp"
+                    android:background="@color/Purple200"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-                    <EditText
-                        android:id="@+id/et_search_view"
+
+                    <TextView
+                        android:id="@+id/tv_question_pay_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="18dp"
-                        android:paddingVertical="8dp"
-                        android:hint="@string/search_view_hint"
-                        android:textSize="12sp"
-                        android:background="@null"
+                        android:text="@string/tv_question_pay_btn"
+                        android:layout_marginEnd="20dp"
+
+                        app:layout_constraintBottom_toBottomOf="@id/iv_alarm_btn"
+                        app:layout_constraintTop_toTopOf="@+id/iv_alarm_btn"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_alarm_btn" />
+
+                    <ImageView
+                        android:id="@+id/iv_alarm_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/ic_bell"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teacher_talk_main_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/teacher_talk_main_text1"
+                        android:layout_marginTop="70dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="50dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/Purple600"
+
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/iv_search"
+                    <TextView
+                        android:id="@+id/teacher_talk_main_text2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_search"
-                        android:layout_marginStart="60dp"
-                        android:layout_marginEnd="18dp"
-                        app:layout_constraintStart_toEndOf="@id/et_search_view"
-                        app:layout_constraintBottom_toBottomOf="@id/et_search_view"
-                        app:layout_constraintTop_toTopOf="@id/et_search_view"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        android:text="@string/teacher_talk_main_text2"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="50dp"
+                        android:textSize="28sp"
+                        android:textColor="@color/Purple600"
+
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/teacher_talk_main_text1" />
+
+                    <ImageView
+                        android:layout_width="281dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="19dp"
+                        android:src="@drawable/ic_teacher_talk_character"
+
+                        app:layout_constraintHorizontal_bias="0.507"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/teacher_talk_main_text2">
+
+                    </ImageView>
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- 칩 리사이클러뷰 -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_teacher_talk_filter"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/teacher_talk_widget2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_teacher_talk_filter"
+                    android:background="@drawable/background_radius30_white">
 
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/widget_search_view" />
+                    <!-- 검색창 위젯-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/widget_search_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_radius100_gray200"
+                        android:layout_marginTop="20dp"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <EditText
+                            android:id="@+id/et_search_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="8dp"
+                            android:hint="@string/search_view_hint"
+                            android:textSize="12sp"
+                            android:background="@null"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/iv_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_search"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginEnd="18dp"
+                            app:layout_constraintStart_toEndOf="@id/et_search_view"
+                            app:layout_constraintBottom_toBottomOf="@id/et_search_view"
+                            app:layout_constraintTop_toTopOf="@id/et_search_view"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- 칩 리사이클러뷰 -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_teacher_talk_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_teacher_talk_filter"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/widget_search_view" />
 
 
-                <!-- 카드뷰 리사이클러뷰 -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_teacher_talk_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_teacher_talk_card"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_teacher_talk_filter"
-                    />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!-- 카드뷰 리사이클러뷰 -->
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <!-- 게시물 더 불러오기 위젯-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_teacher_talk_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
 
-    <!-- 네비게이션 바 -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/menu_teacher_for_boss"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:itemIconTint="@color/Gray400"
-        app:itemTextColor="@color/Gray400"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rv_teacher_talk_filter"
+                        tools:listitem="@layout/item_teacher_talk_card" />
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_teacher_for_boss" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/widget_more_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_radius8_purple100_with_stroke"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rv_teacher_talk_card"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_card"
+                            android:paddingHorizontal="112dp"
+                            android:paddingVertical="15dp"
+                            android:textColor="@color/Purple500"
+                            android:textSize="14sp"
+                            android:gravity="center"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <!--플로팅 버튼-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_write"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pencil"
+            app:tint="@color/white"
+            android:backgroundTint="@color/Purple600"
+            app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerExtraLarge"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="40dp"
+            app:backgroundTint="@color/Purple600"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

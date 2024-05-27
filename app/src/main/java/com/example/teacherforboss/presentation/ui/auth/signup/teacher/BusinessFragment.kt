@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBusinessBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class BusinessFragment : Fragment(){
@@ -35,12 +37,15 @@ class BusinessFragment : Fragment(){
 
     private fun addListeners(){
         binding.btnNextSignup.setOnClickListener {
-            val activity = activity as SignupActivity
-            if(viewModel.isBusinessVerified.value==true) activity.gotoNextFragment(BusinessVerifySuccessFragment())
-            else activity.gotoNextFragment(BusinessVerifyFailFragment())
-        }
-        binding.businessNum.setOnClickListener {
-            binding.checkVery.visibility=View.VISIBLE
+            lifecycleScope.launch {
+                val isVerified = viewModel.businessNumCheck()
+                val activity = activity as SignupActivity
+                if (isVerified) {
+                    activity.gotoNextFragment(BusinessVerifySuccessFragment())
+                } else {
+                    activity.gotoNextFragment(BusinessVerifyFailFragment())
+                }
+            }
         }
 
         binding.calendar.setOnClickListener {

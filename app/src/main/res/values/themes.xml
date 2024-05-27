@@ -60,4 +60,19 @@
     </style>
 
 
+    <style name="SignupKeywordSelected" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/Purple600</item>
+        <item name="android:shape">rectangle</item>
+        <item name="android:radius">4dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SignupKeywordUnSelected" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/Purple300</item>
+        <item name="android:shape">rectangle</item>
+        <item name="android:radius">4dp</item>
+        <item name="android:textColor">@color/Purple600</item>
+    </style>
+
+
 </resources>

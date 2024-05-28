@@ -44,6 +44,7 @@ class TeacherProfileFragment : Fragment() {
         val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
         val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
 
+        addListeners()
         chipListener()
 
         binding.profileImage.setOnClickListener(){
@@ -85,18 +86,6 @@ class TeacherProfileFragment : Fragment() {
         }
 
 
-//
-
-        binding.nextBtn.setOnClickListener {
-            viewModel._keywords.value=selectedChipList
-            Log.d("chip",viewModel.keywords.value.toString())
-            //TODO: splash
-//            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
-//            val intent = Intent(activity, BeginActivity::class.java)
-//            startActivity(intent)
-        }
-
-
         nicknameBox.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -107,6 +96,34 @@ class TeacherProfileFragment : Fragment() {
         })
 
         return binding.root
+
+    }
+
+    private fun addListeners(){
+        binding.nextBtn.setOnClickListener {
+            viewModel._keywords.value=selectedChipList
+            Log.d("chip",viewModel.keywords.value.toString())
+
+            viewModel.signupUser()
+
+            //회원가입 인증결과 수신
+            viewModel.signupResult.observe(viewLifecycleOwner){
+                when(it){
+                    is BaseResponse.Loading->{ }
+                    is BaseResponse.Success->{
+                        Log.d("signup",it.data?.result.toString())
+                        // TODO: spllash
+                    }
+                    is BaseResponse.Error->{
+
+                    }
+
+                    else -> {}
+                }
+            }
+//            val intent = Intent(activity, BeginActivity::class.java)
+//            startActivity(intent)
+        }
 
     }
 
@@ -143,7 +160,7 @@ class TeacherProfileFragment : Fragment() {
 
     private fun showProfileImageDialog() {
         val activity=activity as SignupActivity
-        val dialog = ProfileImageDialog(activity,viewModel)
+        val dialog = ProfileImageDialog(1,activity,viewModel)
         dialog.show()
     }
 

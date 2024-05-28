@@ -1,6 +1,10 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
-enum class BossProfileAnimal(val fileName:String) {
+interface ProfileAnimal {
+    val fileName: String
+}
+
+enum class BossProfileAnimal(override val fileName:String):ProfileAnimal {
     BEAR_OWNER("profile_bear_owner.svg"),
 
     CAT_OWNER("profile_cat_owner.svg"),
@@ -25,7 +29,7 @@ enum class BossProfileAnimal(val fileName:String) {
 
 }
 
-enum class TeacherProfileAnimal(val fileName:String) {
+enum class TeacherProfileAnimal(override val fileName:String):ProfileAnimal {
     BEAR_TEACHER("profile_bear_teacher.svg"),
 
     CAT_TEACHER("profile_cat_teacher.svg"),

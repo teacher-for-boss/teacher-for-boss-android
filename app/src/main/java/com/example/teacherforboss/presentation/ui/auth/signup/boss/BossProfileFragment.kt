@@ -15,10 +15,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentBossProfileBinding
+import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.basic.PasswordFragment
-import com.example.teacherforboss.signup.fragment.EmailFragment
 
 class BossProfileFragment : Fragment() {
 
@@ -83,7 +82,7 @@ class BossProfileFragment : Fragment() {
 
     private fun addListeners(){
         binding.profileImage.setOnClickListener(){
-            showDialog()
+            showProfileImageDialog()
         }
 
         binding.nicknameVerifyBtn.setOnClickListener(){
@@ -100,20 +99,14 @@ class BossProfileFragment : Fragment() {
 //            val intent = Intent(activity, BeginActivity::class.java)
 //            startActivity(intent)
         }
-
     }
 
+    private fun showProfileImageDialog() {
+        val activity=activity as SignupActivity
+        val dialog = ProfileImageDialog(1,activity,viewModel)
+        dialog.show()
+    }
 
-    private fun showDialog(){
-        val builder = AlertDialog.Builder(requireContext())
-
-        val inflater = LayoutInflater.from(requireContext())
-        val dialogView = inflater.inflate(R.layout.dialog_profile_image, null)
-        builder.setView(dialogView)
-
-        val dialog = builder.create()
-
-        dialog.show()    }
 
 
 }

@@ -8,17 +8,21 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
+import android.widget.ImageView
+import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.DialogProfileImageBinding
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.example.teacherforboss.util.base.UrlConfig
 
 class ProfileImageDialog (
+    val role:Int,
     context: Context,
     private val viewModel: SignupViewModel,
 ): Dialog(context){
     private lateinit var binding: DialogProfileImageBinding
     val clickedMap= mutableMapOf<Int,Boolean>()
-    val animalFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
+    val animalTeacehrFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
+    val animalBossFileList:List<BossProfileAnimal> = BossProfileAnimal.values().toList()
 
     var presentIndex=0
     var previousIndex=0
@@ -28,8 +32,15 @@ class ProfileImageDialog (
         binding=DialogProfileImageBinding.inflate(LayoutInflater.from(context))
 
         setView()
-        setImgView()
-        addListeners()
+
+        var selectedFileList:List<ProfileAnimal>
+        when(role){
+            1-> selectedFileList=animalBossFileList
+            else ->selectedFileList=animalTeacehrFileList
+        }
+
+        setImgView(selectedFileList)
+        addListeners(selectedFileList)
         setContentView(binding.root)
 
         setOnShowListener {
@@ -48,15 +59,22 @@ class ProfileImageDialog (
         setCancelable(true) //취소 가능 여부
     }
 
-    private fun setImgView(){
+    fun <T:ProfileAnimal> loadImageFile(imageView: ImageView,profileList:List<T>,index:Int){
+        val fileName=profileList[index].fileName
+        val url="${IMG_BASE_URL}${fileName}"
+        imageView.loadImageFromUrl(url)
+    }
+
+    private fun <T:ProfileAnimal> setImgView(profileList:List<T>){
         val bindingImgList= listOf(
             binding.p1,binding.p2,binding.p3,binding.p4,binding.p5,binding.p6,
             binding.p7,binding.p8,binding.p9,binding.p10,binding.p11)
 
         bindingImgList.forEachIndexed { index, imageView ->
-            imageView.loadImageFromUrl(UrlConfig.BASE_URL_SVG+UrlConfig.PROFILE_PARAM+animalFileList[index].fileName)
-            clickedMap.put(index,false) // clickedMap 초기화
 
+            loadImageFile(imageView,profileList,index)
+
+            clickedMap.put(index,false) // clickedMap 초기화
             imageView.setOnClickListener {
                 presentIndex=index
                 clickedMap[presentIndex] =true
@@ -67,15 +85,21 @@ class ProfileImageDialog (
         }
     }
 
-    private fun addListeners(){
+    private fun<T:ProfileAnimal> addListeners(profileList:List<T>){
         var selectedIndex=0
         binding.finishBtn.setOnClickListener {
             clickedMap.forEach { index, bool ->
                 if(bool==true) selectedIndex=index
             }
-            viewModel._profileImg.value=UrlConfig.BASE_URL_SVG+UrlConfig.PROFILE_PARAM+animalFileList[selectedIndex].fileName
+
+            viewModel._profileImg.value= IMG_BASE_URL+profileList[selectedIndex].fileName
+            dismiss()
 
         }
+    }
+
+    companion object{
+        const val IMG_BASE_URL=UrlConfig.BASE_URL_SVG+UrlConfig.PROFILE_PARAM
     }
 
 }

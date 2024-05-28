@@ -60,17 +60,6 @@ class PasswordFragment : Fragment() {
             checkNextButtonActivation()
         }
 
-        // 키보드 바깥 화면 터치 시 키보드 내리기
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-                view?.clearFocus()
-            }
-            false
-        }
-
         // 비밀번호 일치할 때만 nextBtn 활성화
 
 

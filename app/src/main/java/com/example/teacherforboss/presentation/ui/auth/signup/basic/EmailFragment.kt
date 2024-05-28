@@ -41,16 +41,6 @@ class EmailFragment : Fragment() {
 
         val activity=activity as SignupActivity
 
-        // 키보드 바깥 화면 터치 시 키보드 내리기
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-                view?.clearFocus()
-            }
-            false
-        }
 
 
         //이메일 인증하기버튼 눌렀을때

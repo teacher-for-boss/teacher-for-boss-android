@@ -212,6 +212,8 @@ class AgreementFragment : BottomSheetDialogFragment() {
                 activity.gotoNextFragment(TeacherProfileFragment())
             }
 
+            // 화면 이동 시 다이얼로그 종료
+            dismiss()
         }
 
         return binding.root

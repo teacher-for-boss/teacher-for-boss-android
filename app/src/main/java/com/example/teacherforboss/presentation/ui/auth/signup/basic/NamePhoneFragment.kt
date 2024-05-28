@@ -139,13 +139,7 @@ class NamePhoneFragment : Fragment() {
                 else -> {}
             }
         }
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
-            }
-            false
-        }
+
 
 
         return binding.root

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -60,12 +61,12 @@ class TeacherProfileFragment : Fragment() {
 //            startActivity(intent)
         }
 
-        viewModel.emailResult.observe(viewLifecycleOwner){
+        viewModel.nicknameResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
 
-                    viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
+                    //viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(successcolor)
@@ -73,17 +74,18 @@ class TeacherProfileFragment : Fragment() {
 
                 }
                 is BaseResponse.Error->{
-                    if(it.msg=="이미 가입된 이메일입니다.") {
-                        nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                        veryInfo.visibility = View.VISIBLE
-                        veryInfo.setTextColor(errorcolor)
 
-                        veryInfo.text = "사용할 수 없는 닉네임입니다."
-                    }
+                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                    veryInfo.visibility = View.VISIBLE
+                    veryInfo.setTextColor(errorcolor)
+
+                    veryInfo.text = "사용할 수 없는 닉네임입니다."
+
                 }
                 else -> {}
             }
         }
+
 
 
         nicknameBox.addTextChangedListener(object : TextWatcher {

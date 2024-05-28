@@ -65,7 +65,7 @@
                 android:background="@drawable/selector_signup"
                 android:hint="닉네임을 입력해주세요"
                 android:padding="12dp"
-                android:text="@={signupViewModel.liveEmail}"
+                android:text="@={signupViewModel._nickname}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:textColorHint="@color/Gray400" />
 

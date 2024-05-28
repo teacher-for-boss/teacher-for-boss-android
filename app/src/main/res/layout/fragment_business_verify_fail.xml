@@ -83,13 +83,13 @@
         android:text="@string/business_verify_help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
         android:layout_marginBottom="40dp"
         >
 
     </TextView>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next_signup"
         android:background="@drawable/radius_purple_button"
         android:layout_width="match_parent"

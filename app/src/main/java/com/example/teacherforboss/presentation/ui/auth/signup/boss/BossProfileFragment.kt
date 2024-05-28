@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentBossProfileBinding
+import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.basic.PasswordFragment
-import com.example.teacherforboss.signup.fragment.EmailFragment
 
 class BossProfileFragment : Fragment() {
 
@@ -83,7 +83,7 @@ class BossProfileFragment : Fragment() {
 
     private fun addListeners(){
         binding.profileImage.setOnClickListener(){
-            showDialog()
+            showProfileImageDialog()
         }
 
         binding.nicknameVerifyBtn.setOnClickListener(){
@@ -95,25 +95,39 @@ class BossProfileFragment : Fragment() {
 
         binding.nextBtn.setOnClickListener {
             val activity=activity as SignupActivity
-            // TODO: splash
-//            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
-//            val intent = Intent(activity, BeginActivity::class.java)
-//            startActivity(intent)
-        }
 
+            viewModel.signupUser()
+
+            //회원가입 인증결과 수신
+            viewModel.signupResult.observe(viewLifecycleOwner){
+                when(it){
+                    is BaseResponse.Loading->{ }
+                    is BaseResponse.Success->{
+                        Log.d("signup",it.data?.result.toString())
+
+                        // TODO: spllash
+                    }
+                    is BaseResponse.Error->{
+
+                    }
+
+                    else -> {}
+                }
+            }
+
+        }
     }
 
+    private fun showProfileImageDialog() {
+        val activity=activity as SignupActivity
+        val dialog = ProfileImageDialog(1,activity,viewModel)
+        dialog.show()
+    }
 
-    private fun showDialog(){
-        val builder = AlertDialog.Builder(requireContext())
+    fun showToast(msg:String){
+        Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
+    }
 
-        val inflater = LayoutInflater.from(requireContext())
-        val dialogView = inflater.inflate(R.layout.dialog_profile_image, null)
-        builder.setView(dialogView)
-
-        val dialog = builder.create()
-
-        dialog.show()    }
 
 
 }

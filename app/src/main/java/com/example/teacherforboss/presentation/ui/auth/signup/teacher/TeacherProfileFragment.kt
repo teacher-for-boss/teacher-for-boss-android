@@ -1,6 +1,7 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.boss
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentTeacherProfileBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 
 class TeacherProfileFragment : Fragment() {
@@ -48,17 +50,17 @@ class TeacherProfileFragment : Fragment() {
 
 
         binding.nicknameVerifyBtn.setOnClickListener(){
-            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
-            viewModel.emailUser()
+            viewModel.nicknameUser()
 
         }
 
         binding.nextBtn.setOnClickListener {
             //TODO: splash
-//            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
-//            val intent = Intent(activity, BeginActivity::class.java)
-//            startActivity(intent)
+            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
+            val intent = Intent(activity, SignupFinishActivity::class.java)
+            intent.putExtra("nickname",binding.nicknameBox.text.toString())
+            intent.putExtra("role",viewModel.role.value)
+            startActivity(intent)
         }
 
         viewModel.nicknameResult.observe(viewLifecycleOwner){

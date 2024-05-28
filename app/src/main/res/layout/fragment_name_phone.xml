@@ -79,7 +79,7 @@
 
                     </EditText>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/phoneVerifyBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"
@@ -188,7 +188,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/radius_purple_button"
             android:text="다음"
             android:textColor="@color/white"
@@ -199,7 +199,7 @@
             android:enabled="@{signupViewModel.isPhoneVerified?true:false}"
             app:layout_constraintBottom_toBottomOf="parent"
             >
-        </Button>
+        </androidx.appcompat.widget.AppCompatButton>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

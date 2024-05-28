@@ -39,7 +39,7 @@
         <activity
             android:name=".presentation.ui.auth.signup.SignupActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.TeacherForBoss" />
         <activity
             android:name=".presentation.ui.auth.signup.SignupFinishActivity"
             android:exported="false"

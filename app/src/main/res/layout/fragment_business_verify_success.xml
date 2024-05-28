@@ -60,7 +60,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next_signup"
         android:background="@drawable/radius_purple_button"
         android:layout_width="match_parent"

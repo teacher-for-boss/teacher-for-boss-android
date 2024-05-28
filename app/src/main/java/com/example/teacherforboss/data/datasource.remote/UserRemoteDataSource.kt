@@ -10,8 +10,9 @@ import com.example.teacherforboss.data.model.request.signup.EmailRequest
 import com.example.teacherforboss.data.model.request.signup.NicknameRequest
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
+import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
-import com.example.teacherforboss.data.model.request.signup.SignupRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
@@ -25,7 +26,8 @@ interface UserRemoteDataSource {
     suspend fun naverLogin(socialLoginRequest: SocialLoginRequest):Response<socialLoginResponse>?
     suspend fun emailUser(emailRequest: EmailRequest):Response<EmailResponse>?
     suspend fun emailCheck(emailCheckRequest: EmailCheckRequest):Response<EmailCheckResponse>?
-    suspend fun signupUser(signupRequest: SignupRequest):Response<SignupResponse>?
+    suspend fun signupUser(signupRequest: SignupBossRequest):Response<SignupResponse>?
+    suspend fun signupUser(signupRequest: SignupTeacherRequest):Response<SignupResponse>?
 
     suspend fun phoneUser(phoneRequest: PhoneRequest):Response<PhoneResponse>?
 

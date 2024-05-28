@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.data.model.request.signup.BusinessNumberCheckRequest
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
@@ -13,12 +14,14 @@ import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
 import com.example.teacherforboss.data.model.request.signup.NicknameRequest
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
-import com.example.teacherforboss.data.model.request.signup.SignupRequest
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
+import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.domain.model.SignupResultEntity
 import com.example.teacherforboss.util.Timer.Custom10mTimer
@@ -43,6 +46,29 @@ class SignupViewModel @Inject constructor(
 ): ViewModel() {
 
     // 피봇 이후 회원가입 변수들
+    var _nickname=MutableLiveData<String>("")
+    val nickname:LiveData<String>
+        get() = _nickname
+
+    var _field=MutableLiveData<String>("")
+    val field:LiveData<String>
+        get() = _field
+
+    var _carrer_str=MutableLiveData<String>("")
+    val career_str:LiveData<String>
+        get() = _carrer_str
+
+    var _career=MutableLiveData<Int>(0)
+    val career:LiveData<Int>
+        get() = _career
+
+    var _introduction=MutableLiveData<String>("")
+    val introduction:LiveData<String>
+        get() = _introduction
+    var _keywords=MutableLiveData<MutableList<String>>()
+    val keywords:LiveData<MutableList<String>>
+        get() = _keywords
+
     val _role=MutableLiveData<Int>(1)
     val role: LiveData<Int>
         get()=_role
@@ -50,6 +76,10 @@ class SignupViewModel @Inject constructor(
     val nickname: LiveData<String>
         get()=_nickname
     // boss 변수들
+
+    var _profileImg=MutableLiveData<String>("")
+    val profileImg: LiveData<String>
+        get() = _profileImg
 
     // teacher 변수들
     var _businessNum=MutableLiveData<String>("")
@@ -72,7 +102,7 @@ class SignupViewModel @Inject constructor(
     val openDate_str:LiveData<String>
         get() = _openDateStr
 
-    var _isBusinessVerified=MutableLiveData<Boolean>(true) //TODO: false로 변경
+    var _isBusinessVerified=MutableLiveData<Boolean>(false) //TODO: false로 변경
     val isBusinessVerified:LiveData<Boolean>
         get() = _isBusinessVerified
 
@@ -101,12 +131,12 @@ class SignupViewModel @Inject constructor(
     var liveEmail= MutableLiveData<String>("")
     var livePhone=MutableLiveData<String>("")
 
-    var phone=MutableLiveData<String>("")
+//    var phone=MutableLiveData<String>("")
     var livePhoneLength=MutableLiveData<Int>(0)
     val email: LiveData<String>
         get() = liveEmail
-//    val phone:LiveData<String>
-//        get() = livePhone1
+    val phone:LiveData<String>
+        get() = livePhone
 
     var livePw= MutableLiveData<String>("")
     var liveRePw= MutableLiveData<String>("")
@@ -191,8 +221,7 @@ class SignupViewModel @Inject constructor(
     //phone 형식 체크
     fun phone_validation(){
         val pattern= Pattern.compile("010\\d{4}\\d{4}")
-        phone.value=livePhone.value.toString()
-        phone_check.value=pattern.matcher(phone.value).matches()
+        phone_check.value=pattern.matcher(livePhone.value.toString()).matches()
 
     }
 
@@ -260,38 +289,89 @@ class SignupViewModel @Inject constructor(
 
     val signupResult: MutableLiveData<BaseResponse<SignupResponse>> = MutableLiveData()
 
-    fun signupUser()
-    {
+    fun signupUser() {
         signupResult.value = BaseResponse.Loading()
+        val emptyKeywords= listOf<String>("null1","null2")
 
         viewModelScope.launch {
-            try {
-                val signupRequest = SignupRequest(
-                    email = email.value.toString(),
-                    password = pw.value.toString(),
-                    rePassword = rePw.value.toString(),
-                    name = name.value.toString(),
-                    gender = gender.value!!,
-                    birthDate = birthDate.value.toString(),
-                    phone = phone.value.toString(),
-                    emailAuthId = emailAuthId.value!!,//이메일인증식별자,
-                    phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
-                    agreementUsage = agreementUsage.value!!,
-                    agreementInfo=agreementInfo.value!!,
-                    agreementAge=agreementAge.value!!,
-                    agreementSms=agreementSms.value!!,
-                    agreementEmail=agreementEmail.value!!,
-                    agreementLocation=agreementLocation.value!!
-                )
-                val response = userRepo.signupUser(signupRequest = signupRequest)
+            // boss
+            if(role.value==1){
+                try {
+                    val signupBossRequest = SignupBossRequest(
+                        role=role.value?:1,
+                        email = email.value.toString(),
+                        password = pw.value.toString(),
+                        rePassword = rePw.value.toString(),
+                        name = name.value.toString(),
+                        nickname=nickname.value?:"default",
+                        gender = gender.value!!,
+                        birthDate=birthDate.value?:"null",
+//                        birthDate = LocalDate.parse(birthDate.value),
+                        phone = phone.value.toString(),
+                        emailAuthId = emailAuthId.value!!,//이메일인증식별자,
+                        phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
+                        profileImg=profileImg.value?:"null",
+                        agreementUsage = agreementUsage.value!!,
+                        agreementInfo=agreementInfo.value!!,
+                        agreementAge=agreementAge.value!!,
+                        agreementSms=agreementSms.value!!,
+                        agreementEmail=agreementEmail.value!!,
+                        agreementLocation=agreementLocation.value!!
+                    )
+                val response = userRepo.signupBoss(signupRequest = signupBossRequest)
 
                 if (response?.body()?.code=="COMMON200") {
                     signupResult.value = BaseResponse.Success(response.body())
                 } else {
                     signupResult.value = BaseResponse.Error(response?.message())
                 }
-            } catch (ex: Exception) {
-                signupResult.value = BaseResponse.Error(ex.message)
+                } catch (ex: Exception) {
+                    signupResult.value = BaseResponse.Error(ex.message)
+                }
+            }
+            // teacher
+            else if(role.value==2){
+                try{
+                    val signupTeacherRequest = SignupTeacherRequest(
+                        role=role.value?:1,
+                        email = email.value.toString(),
+                        password = pw.value.toString(),
+                        rePassword = rePw.value.toString(),
+                        name = name.value.toString(),
+                        nickname=nickname.value?:"default",
+                        gender = gender.value!!,
+                        birthDate=birthDate.value?:"null",
+//                        birthDate = LocalDate.parse(birthDate.value),
+                        phone = phone.value.toString(),
+                        emailAuthId = emailAuthId.value!!,
+                        phoneAuthId = phoneAuthId.value!!,
+                        profileImg=profileImg.value?:"null",
+                        businessNumber=businessNum.value?:"null",
+                        representative=representative.value?:"사장님",
+                        openDate=openDate_str.value?: "null",
+                        field=field.value?:"null",
+                        career=_carrer_str.value!!.toInt(),
+//                        career=career.value?:0,
+                        introduction = introduction.value?:"",
+                        keywords=keywords.value?:emptyKeywords,
+                        agreementUsage = agreementUsage.value!!,
+                        agreementInfo=agreementInfo.value!!,
+                        agreementAge=agreementAge.value!!,
+                        agreementSms=agreementSms.value!!,
+                        agreementEmail=agreementEmail.value!!,
+                        agreementLocation=agreementLocation.value!!
+                    )
+                    val response = userRepo.signupTeacher(signupRequest = signupTeacherRequest)
+
+                    if (response?.body()?.code=="COMMON200") {
+                        signupResult.value = BaseResponse.Success(response.body())
+                    } else {
+                        signupResult.value = BaseResponse.Error(response?.message())
+                    }
+
+                } catch (ex: Exception) {
+                    signupResult.value = BaseResponse.Error(ex.message)
+                }
             }
         }
     }
@@ -346,6 +426,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
     fun nicknameUser() {
         nicknameResult.value = BaseResponse.Loading()
@@ -368,6 +449,41 @@ class SignupViewModel @Inject constructor(
                 nicknameResult.value = BaseResponse.Error(ex.message)
             }
         }
+
+    var businessNumCheckResult:MutableLiveData<com.example.teacherforboss.util.base.BaseResponse<BusinessNumberCheckResponse>> =
+        MutableLiveData()
+
+    suspend fun businessNumCheck():Boolean{
+        // TODO: 테스트 후 삭제
+        _businessNum.value="380-20-01941"
+//        _openDate.value= LocalDate.parse("2024-02-01")
+        _openDateStr.value="2024-02-01"
+        _representative.value="남윤수"
+
+        Log.d("signup",representative.value.toString())
+
+        return try {
+            val businessNumCheckRequest = BusinessNumberCheckRequest(
+                businessNumber = businessNum.value ?: "null",
+                openDate = openDate_str.value ?: "",
+                representative = representative.value ?: "null"
+            )
+
+            val response = userRepo.businessNumCheck(businessNumberCheckRequest = businessNumCheckRequest)
+
+            if (response.code == "COMMON200") {
+                _isBusinessVerified.value = response.result.checked
+                businessNumCheckResult.value = response
+                Log.d("signup", isBusinessVerified.value.toString())
+                response.result.checked
+            } else {
+                false
+            }
+        } catch (ex: Exception) {
+            Log.d("signup", ex.toString())
+            false
+        }
+
     }
 
     fun setBossMode(){

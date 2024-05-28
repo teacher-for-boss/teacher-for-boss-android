@@ -46,16 +46,14 @@ class SignupStartFragment : Fragment() {
         }
         binding.nextBtn.setOnClickListener(){
             if(btn1.isSelected){
-//                activity.gotoNextFragment(BossProfileFragment())
-                activity.gotoNextFragment(EmailFragment())
                 viewModel.setBossMode()
                 viewModel.changeToBossPageSize()
+                activity.gotoNextFragment(EmailFragment())
             }
             else{
-//                activity.gotoNextFragment(TeacherProfileFragment())
-                activity.gotoNextFragment(BusinessInfoFragment())
                 viewModel.setTeacherMode()
                 viewModel.changeToTeacherPageSize()
+                activity.gotoNextFragment(BusinessInfoFragment())
 
             }
         }

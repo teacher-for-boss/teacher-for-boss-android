@@ -3,6 +3,7 @@ package com.example.teacherforboss.data.service
 import com.example.teacherforboss.data.api.ApiClient
 import com.example.teacherforboss.data.model.request.login.LoginRequest
 import com.example.teacherforboss.data.model.request.login.SocialLoginRequest
+import com.example.teacherforboss.data.model.request.signup.BusinessNumberCheckRequest
 import com.example.teacherforboss.data.model.response.login.LoginResponse
 import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
@@ -10,13 +11,16 @@ import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
 import com.example.teacherforboss.data.model.request.signup.NicknameRequest
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
-import com.example.teacherforboss.data.model.request.signup.SignupRequest
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
+import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
+import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -60,8 +64,13 @@ interface AuthService {
     : Response<EmailCheckResponse>
 
     @POST("auth/signup")
-    suspend fun signupUser(
-        @Body signupRequest: SignupRequest
+    suspend fun signupBoss(
+        @Body signupRequest: SignupBossRequest
+    )
+    : Response<SignupResponse>
+    @POST("auth/signup")
+    suspend fun signupTeacher(
+        @Body signupRequest: SignupTeacherRequest
     )
     : Response<SignupResponse>
 
@@ -82,4 +91,8 @@ interface AuthService {
         @Body nicknameRequest: NicknameRequest
     )
     :Response<NicknameResponse>
+    @POST("auth/teacher/business-number/check")
+    suspend fun businessNumCheck(
+        @Body businessNumberCheckRequest: BusinessNumberCheckRequest
+    ):BaseResponse<BusinessNumberCheckResponse>
 }

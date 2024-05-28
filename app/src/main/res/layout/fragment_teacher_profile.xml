@@ -126,6 +126,7 @@
                     android:hint="전문 분야를 입력해주세요 (최대 20자)"
                     android:padding="12dp"
                     android:gravity="top"
+                    android:text="@={signupViewModel._field}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,8 +152,9 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/selector_signup"
                     android:gravity="center"
-
+                    android:text="@={signupViewModel._carrer_str}"
                     android:hint="00"
+                    android:inputType="number"
                     android:padding="12dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
@@ -189,6 +191,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/selector_signup"
                     android:gravity="top"
+                    android:text="@={signupViewModel._introduction}"
                     android:hint="한 줄 소개를 입력해주세요(최대 40자)"
                     android:padding="12dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
@@ -197,6 +200,126 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/introduceText" />
+
+                <TextView
+                    android:id="@+id/keywordsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    android:text="키워드"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
+                    android:textColor="@color/Gray700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/introduceBox" />
+
+                <TextView
+                    android:id="@+id/keywordsDescription"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/Gray400"
+                    android:layout_marginStart="10dp"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
+                    app:layout_constraintTop_toBottomOf="@id/keywordsText"
+                    android:text="티쳐를 가장 잘 나타낼 수 있는 키워드를 선택해주세요(최대 5개)"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/keywordChipGroup"
+                    app:singleSelection="false"
+                    android:paddingStart="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/keywordsDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="친절한"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        >
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="솔직한"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        >
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="현실"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        >
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="논리적"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true">
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="전문성"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true">
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="방향제시"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true">
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="준비성"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true">
+
+                    </com.google.android.material.chip.Chip>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/SignupKeywordUnSelected"
+                        android:text="꿀팁"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true">
+
+                    </com.google.android.material.chip.Chip>
+
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toBottomOf="@id/keywordChipGroup"
+                    >
+
+                </View>
+
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

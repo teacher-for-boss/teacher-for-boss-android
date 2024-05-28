@@ -1,9 +1,11 @@
 package com.example.teacherforboss.data.model.request.signup
 
-import androidx.lifecycle.LiveData
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDate
 
-data class SignupRequest(
+data class SignupTeacherRequest(
+    @SerializedName("role")
+    var role:Int,
     @SerializedName("email")
     var email:String,
     @SerializedName("password")
@@ -12,17 +14,38 @@ data class SignupRequest(
     var rePassword:String,
     @SerializedName("name")
     var name:String,
-    //1남자, 2여자인데 int?
+    @SerializedName("nickname")
+    var nickname:String,
     @SerializedName("gender")
     var gender:Int,
     @SerializedName("birthDate")
-    var birthDate:String,
+    var birthDate: String,
     @SerializedName("phone")
     var phone: String,
     @SerializedName("emailAuthId")
     var emailAuthId:Long,
     @SerializedName("phoneAuthId")
     var phoneAuthId:Long,
+    @SerializedName("profileImg")
+    var profileImg:String,
+    @SerializedName("businessNumber")
+    var businessNumber:String,
+    @SerializedName("representative")
+    var representative:String,
+    @SerializedName("openDate")
+    var openDate:String,
+
+    @SerializedName("field")
+    var field:String,
+
+    @SerializedName("career")
+    var career:Int,
+
+    @SerializedName("introduction")
+    var introduction:String,
+
+    @SerializedName("keywords")
+    var keywords:List<String>,
 
     @SerializedName("agreementUsage")
     var agreementUsage:String,
@@ -41,5 +64,4 @@ data class SignupRequest(
 
     @SerializedName("agreementLocation")
     var agreementLocation:String,
-
 )

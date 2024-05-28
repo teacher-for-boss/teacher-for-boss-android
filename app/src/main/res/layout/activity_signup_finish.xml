@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".signup.SignupFinishActivity"
+
+    >
+    <data>
+        <variable
+            name="signupViewModel"
+            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_gradient">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
+            android:layout_marginTop="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/confetti1"
+            android:layout_width="214dp"
+            android:layout_height="214dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_confetti" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dialog"
+            android:layout_width="220dp"
+            android:layout_height="280dp"
+            app:cardCornerRadius="20dp"
+            android:elevation="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="22dp">
+
+                <ImageView
+                    android:id="@+id/dialogImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/profile_background"
+                    android:clipToOutline="true"
+                    android:src="@drawable/profile_teacher"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/dialogName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.Bold.16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialogImage" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/dialogLevel"
+                    app:layout_constraintEnd_toStartOf="@+id/dialogLevel"
+                    app:layout_constraintTop_toTopOf="@+id/dialogLevel"
+                    app:srcCompat="@drawable/star_7" />
+
+                <TextView
+                    android:id="@+id/dialogLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Lv.1 행운의 별"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
+                    android:textColor="#FFD02B"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialogName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="사장님들의 고민에 답변해주며\n레벨을 쌓아보세요!"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
+                    android:textColor="@color/Gray500"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dialogLevel" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/confetti2"
+            android:layout_width="214dp"
+            android:layout_height="214dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/icon_confetti" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

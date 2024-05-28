@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.model.request.signup.BusinessNumberCheckRequest
 import com.example.teacherforboss.data.model.response.BaseResponse
@@ -11,11 +12,13 @@ import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.example.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.example.teacherforboss.data.model.request.signup.EmailRequest
+import com.example.teacherforboss.data.model.request.signup.NicknameRequest
 import com.example.teacherforboss.data.model.response.signup.EmailResponse
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneCheckRequest
 import com.example.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.example.teacherforboss.data.model.request.signup.PhoneRequest
+import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
@@ -69,6 +72,10 @@ class SignupViewModel @Inject constructor(
     val _role=MutableLiveData<Int>(1)
     val role: LiveData<Int>
         get()=_role
+    var _nickname=MutableLiveData<String>("")
+    val nickname: LiveData<String>
+        get()=_nickname
+    // boss 변수들
 
     var _profileImg=MutableLiveData<String>("")
     val profileImg: LiveData<String>
@@ -418,6 +425,30 @@ class SignupViewModel @Inject constructor(
             }
         }
     }
+
+
+    val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
+    fun nicknameUser() {
+        nicknameResult.value = BaseResponse.Loading()
+
+        viewModelScope.launch {
+            try {
+                val nicknameRequest = NicknameRequest(
+                    nickname = nickname.value.toString()
+                )
+                val response = userRepo.nicknameUser(nicknameRequest = nicknameRequest)
+
+                if (response?.body()?.result?.nicknameCheck==true) {
+                    nicknameResult.value = BaseResponse.Success(response.body())
+                }
+                else {
+                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
+                    nicknameResult.value = BaseResponse.Error(errorbody.message)
+                }
+            } catch (ex: Exception) {
+                nicknameResult.value = BaseResponse.Error(ex.message)
+            }
+        }
 
     var businessNumCheckResult:MutableLiveData<com.example.teacherforboss.util.base.BaseResponse<BusinessNumberCheckResponse>> =
         MutableLiveData()

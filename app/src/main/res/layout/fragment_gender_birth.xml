@@ -155,7 +155,7 @@
                 </View>
 
                 <TextView
-                    android:text="생년원일"
+                    android:text="생년월일"
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -176,7 +176,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="50dp"
-                    android:paddingEnd="50dp">
+                    android:paddingEnd="50dp"
+                    android:gravity="center">
 
                     <NumberPicker
                         android:id="@+id/yearPicker"

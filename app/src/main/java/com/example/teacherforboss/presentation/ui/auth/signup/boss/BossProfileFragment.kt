@@ -1,14 +1,18 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.boss
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -18,6 +22,7 @@ import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentBossProfileBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 
 class BossProfileFragment : Fragment() {
@@ -42,12 +47,12 @@ class BossProfileFragment : Fragment() {
 
         addListeners()
 
-        viewModel.emailResult.observe(viewLifecycleOwner){
+        viewModel.nicknameResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
 
-                    viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
+                    //viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(successcolor)
@@ -55,13 +60,13 @@ class BossProfileFragment : Fragment() {
 
                 }
                 is BaseResponse.Error->{
-                    if(it.msg=="이미 가입된 이메일입니다.") {
-                        nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                        veryInfo.visibility = View.VISIBLE
-                        veryInfo.setTextColor(errorcolor)
 
-                        veryInfo.text = "사용할 수 없는 닉네임입니다."
-                    }
+                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                    veryInfo.visibility = View.VISIBLE
+                    veryInfo.setTextColor(errorcolor)
+
+                    veryInfo.text = "사용할 수 없는 닉네임입니다."
+
                 }
                 else -> {}
             }
@@ -87,18 +92,16 @@ class BossProfileFragment : Fragment() {
         }
 
         binding.nicknameVerifyBtn.setOnClickListener(){
-            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
-            viewModel.emailUser()
-
+            viewModel.nicknameUser()
         }
 
         binding.nextBtn.setOnClickListener {
             val activity=activity as SignupActivity
 
-            viewModel.signupUser()
+            // TODO: splash
+            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
 
-            //회원가입 인증결과 수신
+            /회원가입 인증결과 수신
             viewModel.signupResult.observe(viewLifecycleOwner){
                 when(it){
                     is BaseResponse.Loading->{ }
@@ -114,9 +117,13 @@ class BossProfileFragment : Fragment() {
                     else -> {}
                 }
             }
+            
+            val intent = Intent(activity, SignupFinishActivity::class.java)
+            intent.putExtra("nickname",binding.nicknameBox.text.toString())
+            intent.putExtra("role",viewModel.role.value)
+            startActivity(intent)
 
         }
-    }
 
     private fun showProfileImageDialog() {
         val activity=activity as SignupActivity

@@ -19,8 +19,8 @@
 
     <!-- bnv -->
     <string name="string_menu_home">홈</string>
-    <string name="string_menu_teacher_talk">티쳐talk</string>
-    <string name="string_menu_boss_talk">보스talk</string>
+    <string name="string_menu_teacher_talk">티쳐Talk</string>
+    <string name="string_menu_boss_talk">보스Talk</string>
     <string name="string_menu_my_page">마이페이지</string>
 
     <!-- teacher_talk -->

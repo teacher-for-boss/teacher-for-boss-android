@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/menu_frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/fcv_teacher_for_boss"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bnv_teacher_for_boss"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bnv_teacher_for_boss" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 네비게이션 바 -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,12 +25,11 @@
             android:layout_height="wrap_content"
             app:itemIconTint="@color/Gray400"
             app:itemTextColor="@color/Gray400"
-
+            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:labelVisibilityMode="labeled"
             app:menu="@menu/menu_teacher_for_boss" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

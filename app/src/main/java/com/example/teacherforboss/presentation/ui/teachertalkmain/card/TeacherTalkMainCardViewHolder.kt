@@ -8,15 +8,12 @@ class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBind
 
     fun onBind(cardData: TeacherTalkCard) {
         with(binding) {
-            tvTeacherTalkQuestion.text=cardData.question
-            tvTeacherTalkText.text=cardData.answer
-            chipCardViewStatement.text=cardData.statement_answer
-            tvBookmarkCount.text=cardData.count_bookmark
-            tvLikeCount.text=cardData.count_like
-            tvCommentCount.text=cardData.count_comment
-
-
+            tvTeacherTalkQuestion.text = "Q. " + cardData.question
+            tvTeacherTalkText.text = cardData.answer
+            chipCardViewStatement.text = cardData.statement_answer
+            tvBookmarkCount.text = cardData.count_bookmark
+            tvLikeCount.text = cardData.count_like
+            tvCommentCount.text = cardData.count_comment
         }
     }
-
-    }
+}

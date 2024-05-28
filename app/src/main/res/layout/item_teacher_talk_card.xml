@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -12,11 +12,9 @@
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -26,16 +24,14 @@
             android:paddingHorizontal="18dp"
             android:paddingVertical="20dp">
 
-
             <TextView
                 android:id="@+id/tv_teacher_talk_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/card_view_question"
                 android:maxLines="2"
+                android:text="@string/card_view_question"
                 android:textAppearance="@color/black"
                 android:textSize="20sp"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,14 +40,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/card_view_text"
                 android:maxLines="2"
+                android:text="@string/card_view_text"
                 android:textAppearance="@color/black"
                 android:textSize="20sp"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_question" />
-
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_card_view_statement"
@@ -64,28 +58,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text"
                 tools:text="@string/card_view_statement"
-                tools:textSize="7sp" />
+                android:textSize="7sp" />
 
             <ImageView
                 android:id="@+id/ic_bookmark"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_bookmark"
                 android:layout_marginStart="101dp"
-
-                app:layout_constraintStart_toEndOf="@+id/chip_card_view_statement"
+                android:src="@drawable/ic_bookmark"
                 app:layout_constraintBottom_toBottomOf="@+id/chip_card_view_statement"
+                app:layout_constraintStart_toEndOf="@+id/chip_card_view_statement"
                 app:layout_constraintTop_toTopOf="@+id/chip_card_view_statement" />
 
             <TextView
                 android:id="@+id/tv_bookmark_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="9sp"
                 android:text="@string/bookmark_count"
-
-                app:layout_constraintStart_toEndOf="@+id/ic_bookmark"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_bookmark"
+                app:layout_constraintStart_toEndOf="@+id/ic_bookmark"
                 app:layout_constraintTop_toTopOf="@+id/ic_bookmark" />
 
 
@@ -93,53 +85,41 @@
                 android:id="@+id/ic_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment"
                 android:layout_marginStart="8dp"
-
-                app:layout_constraintStart_toEndOf="@+id/tv_bookmark_count"
+                android:src="@drawable/ic_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_bookmark_count"
+                app:layout_constraintStart_toEndOf="@+id/tv_bookmark_count"
                 app:layout_constraintTop_toTopOf="@+id/tv_bookmark_count" />
 
             <TextView
                 android:id="@+id/tv_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="9sp"
                 android:text="@string/comment_count"
-
-                app:layout_constraintStart_toEndOf="@+id/ic_comment"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_comment"
+                app:layout_constraintStart_toEndOf="@+id/ic_comment"
                 app:layout_constraintTop_toTopOf="@+id/ic_comment" />
 
             <ImageView
                 android:id="@+id/ic_like"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_like"
                 android:layout_marginStart="8dp"
-
-                app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
+                android:src="@drawable/ic_like"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_comment_count"
+                app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
                 app:layout_constraintTop_toTopOf="@+id/tv_comment_count" />
 
             <TextView
                 android:id="@+id/tv_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="9sp"
                 android:text="@string/like_count"
-
-                app:layout_constraintStart_toEndOf="@+id/ic_like"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ic_like"
+                app:layout_constraintStart_toEndOf="@+id/ic_like"
                 app:layout_constraintTop_toTopOf="@+id/ic_like" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    card간의 간격조절을 xml이 아닌 itemDecoration이용하기-->

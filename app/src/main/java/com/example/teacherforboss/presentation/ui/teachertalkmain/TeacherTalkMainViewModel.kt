@@ -1,47 +1,34 @@
 package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCard
 
 class TeacherTalkMainViewModel : ViewModel() {
 
-    private val _teacherTalkCards = MutableLiveData<List<TeacherTalkCard>>()
-    val teacherTalkCards: LiveData<List<TeacherTalkCard>> get() = _teacherTalkCards
-
-    init {
-        loadTeacherTalkCards()
-    }
-
-    private fun loadTeacherTalkCards() {
-        // 여기서 데이터를 로드하거나 Mock 데이터를 설정합니다.
-        _teacherTalkCards.value = listOf(
-            TeacherTalkCard(
-                question = "1번",
-                answer="1번 a",
-                statement_answer = "1s",
-                count_bookmark="1c",
-                count_like="1cl",
-                count_comment="1cc",
-            ),
-            TeacherTalkCard(
-                question = "2번",
-                answer="2번 a",
-                statement_answer = "2s",
-                count_bookmark="2c",
-                count_like="2cl",
-                count_comment="2cc",
-            ),
-            TeacherTalkCard(
-                question = "3번",
-                answer="3번 a",
-                statement_answer = "3s",
-                count_bookmark="3c",
-                count_like="3cl",
-                count_comment="3cc",
-            ),
-            // 추가 데이터
-        )
-    }
+    val mockCardList = listOf<TeacherTalkCard>(
+        TeacherTalkCard(
+            question = "질문이 있습니다",
+            answer = "가나다라마박사 저는 누구누구인데요 이러이런 고민이 있습니당..",
+            statement_answer = "채택 완료",
+            count_bookmark = "3",
+            count_like = "2",
+            count_comment = "4",
+        ),
+        TeacherTalkCard(
+            question = "폐업 직전에 마지막 희망이라도..",
+            answer = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
+            statement_answer = "답변 대기중",
+            count_bookmark = "2",
+            count_like = "3",
+            count_comment = "4",
+        ),
+        TeacherTalkCard(
+            question = "어쩌구저쩌구 저는 할 말이 많습니다 질문 많아요",
+            answer = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
+            statement_answer = "답변 대기중",
+            count_bookmark = "111",
+            count_like = "43",
+            count_comment = "12",
+        ),
+    )
 }

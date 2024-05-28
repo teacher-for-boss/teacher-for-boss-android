@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -94,10 +95,26 @@ class BossProfileFragment : Fragment() {
 
         binding.nextBtn.setOnClickListener {
             val activity=activity as SignupActivity
-            // TODO: splash
-//            viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
-//            val intent = Intent(activity, BeginActivity::class.java)
-//            startActivity(intent)
+
+            viewModel.signupUser()
+
+            //회원가입 인증결과 수신
+            viewModel.signupResult.observe(viewLifecycleOwner){
+                when(it){
+                    is BaseResponse.Loading->{ }
+                    is BaseResponse.Success->{
+                        Log.d("signup",it.data?.result.toString())
+
+                        // TODO: spllash
+                    }
+                    is BaseResponse.Error->{
+
+                    }
+
+                    else -> {}
+                }
+            }
+
         }
     }
 
@@ -105,6 +122,10 @@ class BossProfileFragment : Fragment() {
         val activity=activity as SignupActivity
         val dialog = ProfileImageDialog(1,activity,viewModel)
         dialog.show()
+    }
+
+    fun showToast(msg:String){
+        Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
     }
 
 

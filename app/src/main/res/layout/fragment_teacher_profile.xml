@@ -126,6 +126,7 @@
                     android:hint="전문 분야를 입력해주세요 (최대 20자)"
                     android:padding="12dp"
                     android:gravity="top"
+                    android:text="@={signupViewModel._field}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -164,7 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="년생"
+                    android:text="년차"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColor="@color/Gray400"
 

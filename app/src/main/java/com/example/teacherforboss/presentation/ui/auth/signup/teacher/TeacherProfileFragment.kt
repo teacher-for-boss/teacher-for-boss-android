@@ -1,6 +1,5 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.boss
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -121,8 +120,6 @@ class TeacherProfileFragment : Fragment() {
                     else -> {}
                 }
             }
-//            val intent = Intent(activity, BeginActivity::class.java)
-//            startActivity(intent)
         }
 
     }

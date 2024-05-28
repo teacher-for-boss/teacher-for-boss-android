@@ -40,7 +40,7 @@
         <activity
             android:name=".presentation.ui.auth.signup.SignupActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.TeacherForBoss" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true"

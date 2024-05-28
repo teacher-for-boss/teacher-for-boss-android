@@ -52,6 +52,8 @@ class SignupViewModel @Inject constructor(
         get() = _field
 
     var _carrer_str=MutableLiveData<String>("")
+    val career_str:LiveData<String>
+        get() = _carrer_str
 
     var _career=MutableLiveData<Int>(0)
     val career:LiveData<Int>
@@ -122,12 +124,12 @@ class SignupViewModel @Inject constructor(
     var liveEmail= MutableLiveData<String>("")
     var livePhone=MutableLiveData<String>("")
 
-    var phone=MutableLiveData<String>("")
+//    var phone=MutableLiveData<String>("")
     var livePhoneLength=MutableLiveData<Int>(0)
     val email: LiveData<String>
         get() = liveEmail
-//    val phone:LiveData<String>
-//        get() = livePhone1
+    val phone:LiveData<String>
+        get() = livePhone
 
     var livePw= MutableLiveData<String>("")
     var liveRePw= MutableLiveData<String>("")
@@ -212,8 +214,7 @@ class SignupViewModel @Inject constructor(
     //phone 형식 체크
     fun phone_validation(){
         val pattern= Pattern.compile("010\\d{4}\\d{4}")
-        phone.value=livePhone.value.toString()
-        phone_check.value=pattern.matcher(phone.value).matches()
+        phone_check.value=pattern.matcher(livePhone.value.toString()).matches()
 
     }
 
@@ -340,7 +341,7 @@ class SignupViewModel @Inject constructor(
                         profileImg=profileImg.value?:"null",
                         businessNumber=businessNum.value?:"null",
                         representative=representative.value?:"사장님",
-                        openDate=openDate.value?: LocalDate.now(),
+                        openDate=openDate_str.value?: "null",
                         field=field.value?:"null",
                         career=_carrer_str.value!!.toInt(),
 //                        career=career.value?:0,
@@ -422,7 +423,7 @@ class SignupViewModel @Inject constructor(
         MutableLiveData()
 
     suspend fun businessNumCheck():Boolean{
-        //TODO: 테스트 후 삭제
+        // TODO: 테스트 후 삭제
         _businessNum.value="380-20-01941"
 //        _openDate.value= LocalDate.parse("2024-02-01")
         _openDateStr.value="2024-02-01"

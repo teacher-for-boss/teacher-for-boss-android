@@ -46,10 +46,6 @@ class SignupViewModel @Inject constructor(
 ): ViewModel() {
 
     // 피봇 이후 회원가입 변수들
-    var _nickname=MutableLiveData<String>("")
-    val nickname:LiveData<String>
-        get() = _nickname
-
     var _field=MutableLiveData<String>("")
     val field:LiveData<String>
         get() = _field
@@ -449,6 +445,7 @@ class SignupViewModel @Inject constructor(
                 nicknameResult.value = BaseResponse.Error(ex.message)
             }
         }
+    }
 
     var businessNumCheckResult:MutableLiveData<com.example.teacherforboss.util.base.BaseResponse<BusinessNumberCheckResponse>> =
         MutableLiveData()

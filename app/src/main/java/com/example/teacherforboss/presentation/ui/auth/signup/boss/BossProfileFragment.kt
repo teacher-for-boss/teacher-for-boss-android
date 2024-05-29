@@ -101,13 +101,12 @@ class BossProfileFragment : Fragment() {
             // TODO: splash
             viewModel.signupUser() //TODO: 회원가입 api 요청 프로필로 이전
 
-            /회원가입 인증결과 수신
+            // 회원가입 인증결과 수신
             viewModel.signupResult.observe(viewLifecycleOwner){
                 when(it){
                     is BaseResponse.Loading->{ }
                     is BaseResponse.Success->{
                         Log.d("signup",it.data?.result.toString())
-
                         // TODO: spllash
                     }
                     is BaseResponse.Error->{
@@ -124,6 +123,7 @@ class BossProfileFragment : Fragment() {
             startActivity(intent)
 
         }
+    }
 
     private fun showProfileImageDialog() {
         val activity=activity as SignupActivity

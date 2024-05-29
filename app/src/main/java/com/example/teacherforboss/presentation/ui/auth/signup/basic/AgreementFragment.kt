@@ -179,22 +179,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
             bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
 
-        //회원가입 인증결과 수신
-        viewModel.signupResult.observe(viewLifecycleOwner){
-            when(it){
-                is BaseResponse.Loading->{ }
-                is BaseResponse.Success->{
-                }
-                is BaseResponse.Error->{
-                    showToast("error:"+it.msg)
-                }
-
-                else -> {}
-            }
-        }
-
-
-
         binding.finishBtn.setOnClickListener {
             val activity=activity as SignupActivity
             //체크된 agreemet 확인

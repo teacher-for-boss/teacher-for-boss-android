@@ -1,25 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.Theme.TeacherForBoss" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.TeacherForBoss" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/light_status</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>
     </style>
 
-    <style name="RoundCornerModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="RoundCornerModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_background</item>
     </style>
 
     <style name="Theme.TeacherForBoss" parent="Base.Theme.TeacherForBoss"/>
 
     <!-- Button -->
-    <style name="Theme.TeacherForBoss.Button" parent="Widget.Material3.Button">
+    <style name="Theme.TeacherForBoss.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:minHeight">0dp</item>
@@ -28,7 +25,7 @@
         <item name="android:height">@dimen/button_height</item>
         <item name="cornerRadius">@dimen/button_radius</item>
     </style>
-    
+
     <style name="Theme.TeacherForBoss.Button.More" parent="Theme.TeacherForBoss.Button">
         <item name="android:backgroundTint">@color/white</item>
         <item name="background">@drawable/background_radius8_border_purple500</item>
@@ -66,13 +63,11 @@
         <item name="android:height">35dp</item>
         <item name="android:width">100dp</item>
         <item name="cornerRadius">10dp</item>
-
         <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.12</item>
     </style>
 
-
     <!-- Chip -->
-    <style name="Theme.TeacherForBoss.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="Theme.TeacherForBoss.Chip" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:stateListAnimator">@null</item>
         <item name="chipMinTouchTargetSize">0dp</item>
         <item name="android:checked">false</item>
@@ -80,7 +75,7 @@
         <item name="rippleColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.TeacherForBoss.Chip.Statement" parent="Theme.TeacherForBoss.Chip">
+    <style name="Theme.TeacherForBoss.Chip.Statement" parent="Widget.MaterialComponents.Chip.Entry">
         <item name="chipBackgroundColor">@color/Gray200</item>
         <item name="cornerRadius">200dp</item>
         <item name="chipEndPadding">8dp</item>
@@ -93,8 +88,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-
-    <style name="Theme.TeacherForBoss.Chip.filter" parent="Theme.TeacherForBoss.Chip">
+    <style name="Theme.TeacherForBoss.Chip.Category" parent="Theme.TeacherForBoss.Chip">
         <item name="chipBackgroundColor">@color/Purple200</item>
         <item name="cornerRadius">8px</item>
         <item name="chipEndPadding">16dp</item>
@@ -106,6 +100,4 @@
         <item name="android:clickable">true</item>
         <item name="android:textColor">@color/black</item>
     </style>
-
-
 </resources>

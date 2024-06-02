@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="12dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
@@ -47,18 +47,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_question" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_card_view_statement"
-                style="@style/Theme.TeacherForBoss.Chip.Statement"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/widget_card_view_statement"
+                android:background="@drawable/background_radius100_gray200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text"
-                tools:text="@string/card_view_statement"
-                android:textSize="7sp" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text">
+
+                <TextView
+                    android:id="@+id/tv_card_view_statement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_view_statement"
+                    android:textSize="7sp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/ic_bookmark"
@@ -66,9 +79,9 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="101dp"
                 android:src="@drawable/ic_bookmark"
-                app:layout_constraintBottom_toBottomOf="@+id/chip_card_view_statement"
-                app:layout_constraintStart_toEndOf="@+id/chip_card_view_statement"
-                app:layout_constraintTop_toTopOf="@+id/chip_card_view_statement" />
+                app:layout_constraintBottom_toBottomOf="@+id/widget_card_view_statement"
+                app:layout_constraintStart_toEndOf="@+id/widget_card_view_statement"
+                app:layout_constraintTop_toTopOf="@+id/widget_card_view_statement" />
 
             <TextView
                 android:id="@+id/tv_bookmark_count"

@@ -135,18 +135,28 @@
                             app:layout_constraintTop_toTopOf="@id/et_search_view" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- 칩 리사이클러뷰 -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_teacher_talk_category"
-                        android:layout_width="match_parent"
+                    <HorizontalScrollView
+                        android:id="@+id/sv_teacher_talk_category"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
 
+
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/widget_search_view"
-                        tools:listitem="@layout/item_teacher_talk_filter" />
+                        app:layout_constraintTop_toBottomOf="@+id/widget_search_view">
+
+                        <!-- 칩 리사이클러뷰 -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_teacher_talk_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+                            tools:listitem="@layout/item_teacher_talk_category" />
+
+
+                    </HorizontalScrollView>
 
 
                     <!-- 카드뷰 리사이클러뷰 -->
@@ -160,7 +170,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rv_teacher_talk_category"
+                        app:layout_constraintTop_toBottomOf="@id/sv_teacher_talk_category"
                         tools:listitem="@layout/item_teacher_talk_card" />
 
                     <androidx.appcompat.widget.AppCompatButton

@@ -75,20 +75,12 @@
         <item name="rippleColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.TeacherForBoss.Chip.Statement" parent="Widget.MaterialComponents.Chip.Entry">
-        <item name="chipBackgroundColor">@color/Gray200</item>
-        <item name="cornerRadius">200dp</item>
-        <item name="chipEndPadding">8dp</item>
-        <item name="chipStartPadding">8dp</item>
-        <item name="textStartPadding">0dp</item>
-        <item name="textEndPadding">0dp</item>
-        <item name="chipStrokeWidth">0dp</item>
-        <item name="android:paddingVertical">8dp</item>
-        <item name="android:clickable">false</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="Theme.TeacherForBoss.Chip.Category" parent="Theme.TeacherForBoss.Chip">
+    <style name="Theme.TeacherForBoss.Chip.Category" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:checked">false</item>
+        <item name="chipMinHeight">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
         <item name="chipBackgroundColor">@color/Purple200</item>
         <item name="cornerRadius">8px</item>
         <item name="chipEndPadding">16dp</item>

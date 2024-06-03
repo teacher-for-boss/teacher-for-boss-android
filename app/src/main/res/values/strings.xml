@@ -4,7 +4,10 @@
     <string name="pwSame">비밀번호가 일치합니다</string>
     <string name="pwDifferent">비밀번호가 일치하지 않습니다</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_fragment">home fragement입니다</string>
+    <string name="boss_talk_fragment">bosstalk fragement입니다</string>
+    <string name="my_page_fragment">mypage fragement입니다</string>
+
 
     <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
     <string name="naver_client_secret">tazdlVePfj</string>

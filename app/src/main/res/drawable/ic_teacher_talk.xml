@@ -11,20 +11,20 @@
         android:pathData="M12,4L2,8.5L12,13L22,8.5L12,4Z"
         android:strokeLineJoin="round"
         android:strokeWidth="1.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#8490A0"/>
+        android:fillColor="@drawable/bottom_navigation_fill_color"
+        android:strokeColor="@drawable/bottom_navigation_color"/>
     <path
         android:pathData="M12,20.5L5,17.5V12L12,15.5L19,12V17.5L12,20.5Z"
         android:strokeLineJoin="round"
         android:strokeWidth="1.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#8490A0"/>
+        android:fillColor="@drawable/bottom_navigation_fill_color"
+        android:strokeColor="@drawable/bottom_navigation_color"/>
     <path
         android:pathData="M22,8.5V15"
         android:strokeLineJoin="round"
         android:strokeWidth="1.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#8490A0"
+        android:fillColor="@drawable/bottom_navigation_fill_color"
+        android:strokeColor="@drawable/bottom_navigation_color"
         android:strokeLineCap="round"/>
   </group>
 </vector>

@@ -46,6 +46,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/cameraImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="-28dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+                    app:layout_constraintStart_toEndOf="@+id/profileImage"
+                    app:srcCompat="@drawable/camera" />
 
                 <TextView
                     android:id="@+id/textNickname"
@@ -80,7 +88,9 @@
                         android:padding="12dp"
                         android:text="@={signupViewModel._nickname}"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                        android:textColorHint="@color/Gray400" />
+                        android:textColorHint="@color/Gray400"
+                        android:maxLines="1"
+                        android:imeOptions="actionDone"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/nicknameVerifyBtn"
@@ -89,10 +99,10 @@
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/radius_purple_button"
                         android:backgroundTint="@color/selector_all_btn_background"
-                        android:enabled="true"
+                        android:enabled="false"
                         android:text="중복 확인"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"/>
                 </LinearLayout>
                 <TextView
                     android:id="@+id/veryInfo"
@@ -158,6 +168,7 @@
                     android:padding="12dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
+                    android:maxLength="2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/careerText" />
 
@@ -196,6 +207,7 @@
                     android:padding="12dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
+                    android:maxLength="40"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/introduceText" />
@@ -327,7 +339,7 @@
             android:background="@drawable/radius_purple_button"
             android:text="완료"
             android:backgroundTint="@color/selector_all_btn_background"
-            android:enabled="true"
+            android:enabled="false"
             android:textColor="@color/white"
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"

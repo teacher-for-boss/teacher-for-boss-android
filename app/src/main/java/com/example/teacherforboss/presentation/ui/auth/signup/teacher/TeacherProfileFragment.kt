@@ -1,6 +1,5 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.boss
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -10,11 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentTeacherProfileBinding
@@ -23,6 +22,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.launch
 
 class TeacherProfileFragment : Fragment() {
 
@@ -58,8 +58,15 @@ class TeacherProfileFragment : Fragment() {
 
         binding.nicknameVerifyBtn.setOnClickListener(){
             viewModel.nicknameUser()
-
         }
+
+        viewModel.isUserImgSelectd.observe(viewLifecycleOwner,{bool->
+            if (bool==true){
+                lifecycleScope.launch {
+                viewModel.getPresignedUrlList(type="profile",id=1L, imgCnt = 1)
+                }
+            }
+        })
 
         viewModel.nicknameResult.observe(viewLifecycleOwner){
           when(it){

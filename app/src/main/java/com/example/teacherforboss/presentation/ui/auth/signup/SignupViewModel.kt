@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +25,9 @@ import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.domain.model.SignupResultEntity
+import com.example.teacherforboss.domain.model.getPresingedUrlEntity
+import com.example.teacherforboss.domain.model.presignedUrlListEntity
+import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.util.Timer.Custom10mTimer
 import com.example.teacherforboss.util.Timer.Custom3mTimer
 import com.example.teacherforboss.util.base.ErrorUtils
@@ -41,6 +45,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     val timer: Custom3mTimer,
+    private val presignedUrlUseCase: PresignedUrlUseCase
 //    private val userRepo: UserRepository
 
 ): ViewModel() {
@@ -73,9 +78,17 @@ class SignupViewModel @Inject constructor(
         get()=_nickname
     // boss 변수들
 
+    var _isUserImgSelected=MutableLiveData<Boolean>(false)
+    val isUserImgSelectd:LiveData<Boolean>
+        get() = _isUserImgSelected
+
     var _profileImg=MutableLiveData<String>("")
     val profileImg: LiveData<String>
         get() = _profileImg
+
+    var _profileImgUri=MutableLiveData<Uri>(null)
+    val profileImgUri: LiveData<Uri>
+        get() = _profileImgUri
 
     // teacher 변수들
     var _businessNum=MutableLiveData<String>("")
@@ -481,6 +494,26 @@ class SignupViewModel @Inject constructor(
             false
         }
 
+    }
+
+    private val _presignedUrlListLiveData = MutableLiveData <presignedUrlListEntity> ()
+    val presignedUrlLiveData : LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
+
+    suspend fun getPresignedUrlList(type:String,id:Long,imgCnt:Int){
+        viewModelScope.launch {
+            try{
+                val presignedUrlListEntity= presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        type = type,
+                        id=id,
+                        imageCount = imgCnt
+                    )
+                )
+                _presignedUrlListLiveData.value=presignedUrlListEntity
+            }catch (ex:Exception){
+                throw ex
+            }
+        }
     }
 
     fun setBossMode(){

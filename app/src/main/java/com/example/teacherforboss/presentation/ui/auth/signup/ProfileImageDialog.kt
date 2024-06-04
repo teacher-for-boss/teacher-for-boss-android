@@ -1,24 +1,32 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
 import android.app.Dialog
-import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
 import android.widget.ImageView
-import com.example.teacherforboss.data.model.response.BaseResponse
+import android.widget.Toast
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.DialogProfileImageBinding
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.example.teacherforboss.util.base.UrlConfig
 
 class ProfileImageDialog (
     val role:Int,
-    context: Context,
+    val activity: SignupActivity,
     private val viewModel: SignupViewModel,
-): Dialog(context){
+): Dialog(activity){
     private lateinit var binding: DialogProfileImageBinding
     val clickedMap= mutableMapOf<Int,Boolean>()
     val animalTeacehrFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
@@ -26,6 +34,7 @@ class ProfileImageDialog (
 
     var presentIndex=0
     var previousIndex=0
+    private var selectedImageView:ImageView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,22 +90,80 @@ class ProfileImageDialog (
                 clickedMap[previousIndex]=false
                 previousIndex=index
 
+                // onclick stroke
+                val strokeWidth = 5 // 테두리 두께
+                val strokeColor = ContextCompat.getColor(activity, R.color.Purple500) // 테두리 색상
+                val defaultDrawable = ContextCompat.getDrawable(activity, R.drawable.profile_background)
+
+                val drawable = GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    cornerRadius = 26f // 반지름을 dp에서 px로 변환하지 않고 간단히 설정
+                    setColor(ContextCompat.getColor(activity, R.color.Gray200))
+                    setStroke(strokeWidth, strokeColor)
+                }
+                selectedImageView?.background=defaultDrawable
+                imageView.background = drawable
+                selectedImageView=imageView
+
+                binding.profileImage.setImageDrawable(imageView.drawable)
             }
         }
     }
 
     private fun<T:ProfileAnimal> addListeners(profileList:List<T>){
         var selectedIndex=0
+        binding.openGallary.setOnClickListener {
+            requestGalleryPermission()
+        }
+
         binding.finishBtn.setOnClickListener {
-            clickedMap.forEach { index, bool ->
-                if(bool==true) selectedIndex=index
+            if(viewModel._isUserImgSelected.value==false){ // 디폴트 이미지 선택시
+                clickedMap.forEach { index, bool ->
+                    if(bool==true) selectedIndex=index
+                }
+                viewModel._profileImg.value= IMG_BASE_URL+profileList[selectedIndex].fileName
             }
-
-            viewModel._profileImg.value= IMG_BASE_URL+profileList[selectedIndex].fileName
             dismiss()
+        }
 
+    }
+
+
+    private fun requestGalleryPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // 권한이 이미 허용된 경우
+                val intent=Intent(Intent.ACTION_PICK)
+                intent.setDataAndType(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    "image/*"
+                )
+                activity.pickImageLauncher.launch(intent)
+
+                // 사용자로부터 이미지 받은 이후 다이얼로그에 띄우기
+                Glide.with(context)
+                    .load(viewModel.profileImgUri.value)
+                    .fitCenter()
+                    .apply(RequestOptions().override(80,80))
+                    .into(binding.profileImage)
+
+                viewModel._isUserImgSelected.value=true
+            }
+            shouldShowRequestPermissionRationale(activity,android.Manifest.permission.READ_EXTERNAL_STORAGE,) -> {
+                // 사용자에게 권한이 필요한 이유를 설명합니다.
+                Toast.makeText(context, "Gallery access is required to select images.", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                // 권한 요청
+                activity.requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         }
     }
+
+
 
     companion object{
         const val IMG_BASE_URL=UrlConfig.BASE_URL_SVG+UrlConfig.PROFILE_PARAM

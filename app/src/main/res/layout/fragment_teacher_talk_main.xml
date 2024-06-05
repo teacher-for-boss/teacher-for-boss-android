@@ -165,6 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:layout_marginHorizontal="25dp"
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -203,7 +204,6 @@
             app:backgroundTint="@color/Purple600"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerExtraLarge"
             app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

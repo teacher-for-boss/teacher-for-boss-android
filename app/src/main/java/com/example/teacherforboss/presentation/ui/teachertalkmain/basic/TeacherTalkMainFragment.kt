@@ -2,7 +2,9 @@ package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategory
@@ -25,7 +27,13 @@ class TeacherTalkMainFragment :
         val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
         binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
         teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
-    }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 뒤로 가기 버튼이 눌렸을 때의 동작을 정의
+                findNavController().navigateUp()
+            }
+        })
+    }
 
 }

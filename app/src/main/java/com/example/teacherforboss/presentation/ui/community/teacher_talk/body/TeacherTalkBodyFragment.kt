@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.community.teacher_talk.screen
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.body
 
 import android.os.Bundle
 import android.view.LayoutInflater

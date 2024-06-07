@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.community.teacher_talk.adapter
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentBinding
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.TeacherTalkBodyViewModel
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 
 class rvAdapterComment(private val AnswerList: List<TeacherTalkBodyViewModel.Answer>,
-                       private val viewModel:TeacherTalkBodyViewModel,
+                       private val viewModel: TeacherTalkBodyViewModel,
                        private val lifecycleOwner: LifecycleOwner
 ): RecyclerView.Adapter<rvAdapterComment.ViewHolder>() {
     class ViewHolder(private val binding: RvItemCommentBinding): RecyclerView.ViewHolder(binding.root) {

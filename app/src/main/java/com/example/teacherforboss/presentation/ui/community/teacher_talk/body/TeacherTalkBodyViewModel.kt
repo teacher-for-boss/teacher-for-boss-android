@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.community.teacher_talk
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.body
 
 import android.util.Log
 import androidx.lifecycle.LiveData

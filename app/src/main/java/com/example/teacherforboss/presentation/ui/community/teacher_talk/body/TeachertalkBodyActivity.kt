@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.community.teacher_talk.screen
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.body
 
 import android.os.Bundle
 import android.view.View
@@ -10,9 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.TeacherTalkBodyViewModel
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.adapter.rvAdapterComment
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.adapter.rvAdapterTag
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterComment
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 
 class TeachertalkBodyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTeachertalkBodyBinding

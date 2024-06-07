@@ -27,7 +27,7 @@
                         android:id="@+id/back_btn"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/back_btn"
+                        android:src="@drawable/ic_back_btn"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="13dp"

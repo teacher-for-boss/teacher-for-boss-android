@@ -80,8 +80,6 @@ fun getApiKey(propertyKey: String): String {
     return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
-
-
 dependencies {
     implementation("androidx.collection:collection-ktx:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha07")
@@ -97,6 +95,7 @@ dependencies {
     implementation("javax.inject:javax.inject:1")
     implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
     implementation("androidx.room:room-common:2.6.1")
+    implementation("androidx.activity:activity:1.8.0")
 
     //room db
     val room_version = "2.6.1"
@@ -188,6 +187,9 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+
+
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

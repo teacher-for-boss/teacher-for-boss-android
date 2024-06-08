@@ -113,12 +113,5 @@ class BusinessFragment : Fragment(){
                 && viewModel._openDateStr.value != "YYYY-MM-DD")
                 viewModel.enableNext.value = true
         else viewModel.enableNext.value = false
-
-
     }
-
-
-
-
-
 }

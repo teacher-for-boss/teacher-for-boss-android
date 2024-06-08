@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentAccountBinding
 import com.example.teacherforboss.databinding.FragmentBusinessBinding
@@ -24,15 +25,14 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding= DataBindingUtil.inflate(inflater,R.layout.fragment_account,container, false)
+        binding.signupViewModel=viewModel
+        binding.lifecycleOwner=this
 
         addListeners()
-
+        setObserver()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.bank.text=viewModel.bank.value
-    }
 
 
     private fun addListeners(){
@@ -41,9 +41,25 @@ class AccountFragment : Fragment() {
             activity.gotoNextFragment(EmailFragment())
         }
         binding.bank.setOnClickListener {
-            activity.gotoNextFragment(BankFragment())
+            val transaction=parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container,BankFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
 
+    }
+    private fun checkFilled() {
+        if (!viewModel._bank.value.isNullOrEmpty() &&
+            !viewModel._accountNum.value.isNullOrEmpty() &&
+            !viewModel._accountHoler.value.isNullOrEmpty())
+            viewModel.enableNext.value = true
+        else viewModel.enableNext.value = false
+    }
+    private fun setObserver(){
+        val dataObserver = Observer<String>{ _ -> checkFilled() }
+        viewModel._bank.observe(viewLifecycleOwner,dataObserver)
+        viewModel._accountNum.observe(viewLifecycleOwner,dataObserver)
+        viewModel._accountHoler.observe(viewLifecycleOwner,dataObserver)
     }
 
 

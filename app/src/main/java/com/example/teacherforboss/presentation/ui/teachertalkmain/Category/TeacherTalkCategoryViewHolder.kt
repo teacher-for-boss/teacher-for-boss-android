@@ -6,6 +6,7 @@ import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
 class TeacherTalkCategoryViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
 RecyclerView.ViewHolder(binding.root) {
 
-    fun onBind(TeacherTalkCategoryData: TeacherTalkCategory)
-    { binding.tvTeacherTalkCategory.text= TeacherTalkCategoryData.category_name }
+    fun onBind(categoryData: TeacherTalkCategory) {
+            binding.tvTeacherTalkCategory.text= categoryData.category_name
+    }
 }

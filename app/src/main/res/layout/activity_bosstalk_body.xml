@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius8_gray100"
                     app:layout_constraintTop_toBottomOf="@id/rv_tagArea"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="12dp">
 
                     <View
                         android:id="@+id/line"

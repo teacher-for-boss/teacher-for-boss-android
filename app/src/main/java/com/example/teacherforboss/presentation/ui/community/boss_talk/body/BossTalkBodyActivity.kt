@@ -7,8 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkBodyBinding
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyFragment
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 
 class BossTalkBodyActivity : AppCompatActivity() {
 
@@ -23,8 +25,12 @@ class BossTalkBodyActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
 
+        //FlexboxLayoutManager
+        val layoutManager = FlexboxLayoutManager(this)
+        layoutManager.flexDirection = FlexDirection.ROW
+        layoutManager.justifyContent = JustifyContent.FLEX_START
         //rvTag
         binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList)
-        binding.rvTagArea.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTagArea.layoutManager = layoutManager
     }
 }

@@ -20,39 +20,51 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="24dp" />
 
-    <Button
+    <FrameLayout
         android:id="@+id/exit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_radius8_gray300"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text"
-        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="27dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp">
 
-        android:text="작성 취소"
-        android:textColor="@color/white"
-        android:textSize="14dp"
-        android:paddingHorizontal="30dp"
-        android:paddingVertical="13dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="작성 취소"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:gravity="center"
+            android:layout_marginVertical="14dp"
+            android:layout_marginHorizontal="30dp"/>
+    </FrameLayout>
 
-    <Button
+    <FrameLayout
         android:id="@+id/keep_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_radius8_purple600"
         app:layout_constraintStart_toEndOf="@id/exit_btn"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/exit_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="9dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="27dp">
 
-        android:text="계속 작성"
-        android:textColor="@color/white"
-        android:paddingHorizontal="30dp"
-        android:paddingVertical="13dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="계속 작성"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:gravity="center"
+            android:layout_marginVertical="14dp"
+            android:layout_marginHorizontal="30dp" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

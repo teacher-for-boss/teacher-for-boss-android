@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.RvItemImageBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage.ViewHolder
-import okhttp3.internal.notify
 
 class rvAdapterImage(private val imageList: ArrayList<String>, private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {

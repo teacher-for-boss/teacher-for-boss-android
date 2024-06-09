@@ -34,6 +34,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/cameraImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="-28dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:srcCompat="@drawable/camera" />
+
         <TextView
             android:id="@+id/textNickname"
             android:layout_width="wrap_content"
@@ -76,7 +85,7 @@
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/radius_purple_button"
                 android:backgroundTint="@color/selector_all_btn_background"
-                android:enabled="true"
+                android:enabled="false"
                 android:text="중복 확인"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:textColor="@color/white" />
@@ -86,7 +95,7 @@
             android:background="@drawable/radius_purple_button"
             android:text="완료"
             android:backgroundTint="@color/selector_all_btn_background"
-            android:enabled="true"
+            android:enabled="false"
             android:textColor="@color/white"
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"

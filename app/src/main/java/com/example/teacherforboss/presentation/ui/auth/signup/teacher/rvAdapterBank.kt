@@ -1,6 +1,5 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.teacher
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -15,9 +14,10 @@ class rvAdapterBank(
     private val bankList: List<Bank>,
     private val signupViewModel: SignupViewModel,
     private val activity: SignupActivity,
+    private val parentFragmentManager: FragmentManager,
 
 
-): RecyclerView.Adapter<rvAdapterBank.ViewHolder>() {
+    ): RecyclerView.Adapter<rvAdapterBank.ViewHolder>() {
 
     class ViewHolder(binding: RvItemBankBinding): RecyclerView.ViewHolder(binding.root) {
         val bankImage: ImageView = binding.bankImage
@@ -36,7 +36,7 @@ class rvAdapterBank(
 
         holder.itemView.setOnClickListener {
             signupViewModel._bank.value=bank.name
-            activity.gotoNextFragment(AccountFragment())
+            parentFragmentManager.popBackStack()
         }
     }
 

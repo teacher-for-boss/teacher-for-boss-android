@@ -33,13 +33,14 @@
 
             <TextView
                 android:id="@+id/title"
-                android:text="프로필을 선택해주세요"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
+                android:text="프로필을 선택해주세요"
                 android:textAlignment="center"
-                android:layout_marginBottom="10dp">
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             </TextView>
 
@@ -183,16 +184,17 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/radius_purple_button"
                 android:text="완료"
-                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
 
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
             </androidx.appcompat.widget.AppCompatButton>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

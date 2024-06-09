@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.model.request.signup.BusinessNumberCheckRequest
 import com.example.teacherforboss.data.model.response.BaseResponse
@@ -22,21 +21,15 @@ import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
-import com.example.teacherforboss.domain.model.SignupResultEntity
 import com.example.teacherforboss.domain.model.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.presignedUrlListEntity
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
-import com.example.teacherforboss.util.Timer.Custom10mTimer
 import com.example.teacherforboss.util.Timer.Custom3mTimer
 import com.example.teacherforboss.util.base.ErrorUtils
-import com.example.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.regex.Pattern
@@ -49,6 +42,9 @@ class SignupViewModel @Inject constructor(
 //    private val userRepo: UserRepository
 
 ): ViewModel() {
+    var _socialType = MutableLiveData<Int>(0)
+    val socialType:LiveData<Int>
+        get() = _socialType
 
     // 피봇 이후 회원가입 변수들
     var _field=MutableLiveData<String>("")
@@ -77,12 +73,16 @@ class SignupViewModel @Inject constructor(
     val nickname: LiveData<String>
         get()=_nickname
     // boss 변수들
+    var _isDefaultImgSelected=MutableLiveData<Boolean>(false)
+    val isDefaultImgSelected:LiveData<Boolean>
+        get() = _isDefaultImgSelected
+
 
     var _isUserImgSelected=MutableLiveData<Boolean>(false)
     val isUserImgSelectd:LiveData<Boolean>
         get() = _isUserImgSelected
 
-    var _profileImg=MutableLiveData<String>("")
+    var _profileImg=MutableLiveData<String>("https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png")
     val profileImg: LiveData<String>
         get() = _profileImg
 
@@ -140,7 +140,7 @@ class SignupViewModel @Inject constructor(
     var liveEmail= MutableLiveData<String>("")
     var livePhone=MutableLiveData<String>("")
 
-//    var phone=MutableLiveData<String>("")
+    //    var phone=MutableLiveData<String>("")
     var livePhoneLength=MutableLiveData<Int>(0)
     val email: LiveData<String>
         get() = liveEmail
@@ -195,7 +195,7 @@ class SignupViewModel @Inject constructor(
         get() = _isEmailVerified_str
 
     //이메일인증 여부 boolean ->data binding
-    var _isEmailVerified= MutableLiveData<Boolean>(false) //TODO
+    var _isEmailVerified= MutableLiveData<Boolean>(true) //TODO
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
@@ -208,7 +208,7 @@ class SignupViewModel @Inject constructor(
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(false) //TODO
+    var _isPhoneVerified=MutableLiveData<Boolean>(true) //TODO
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
@@ -235,7 +235,7 @@ class SignupViewModel @Inject constructor(
     }
 
     // 사업자 번호 체크
-     fun bn_validation(){
+    fun bn_validation(){
         val pattern=Pattern.compile("^\\d{3}-\\d{2}-\\d{5}$")
         _businessNumCheck.value=pattern.matcher(businessNum.value.toString()).matches()
         Log.d("bn",businessNumCheck.value.toString())
@@ -327,13 +327,13 @@ class SignupViewModel @Inject constructor(
                         agreementEmail=agreementEmail.value!!,
                         agreementLocation=agreementLocation.value!!
                     )
-                val response = userRepo.signupBoss(signupRequest = signupBossRequest)
+                    val response = userRepo.signupBoss(signupRequest = signupBossRequest)
 
-                if (response?.body()?.code=="COMMON200") {
-                    signupResult.value = BaseResponse.Success(response.body())
-                } else {
-                    signupResult.value = BaseResponse.Error(response?.message())
-                }
+                    if (response?.body()?.code=="COMMON200") {
+                        signupResult.value = BaseResponse.Success(response.body())
+                    } else {
+                        signupResult.value = BaseResponse.Error(response?.message())
+                    }
                 } catch (ex: Exception) {
                     signupResult.value = BaseResponse.Error(ex.message)
                 }
@@ -363,6 +363,9 @@ class SignupViewModel @Inject constructor(
 //                        career=career.value?:0,
                         introduction = introduction.value?:"",
                         keywords=keywords.value?:emptyKeywords,
+                        bank=bank.value?:"null",
+                        accountNumber=accountNum.value?:"",
+                        accountHolder=accountHoler.value?:"",
                         agreementUsage = agreementUsage.value!!,
                         agreementInfo=agreementInfo.value!!,
                         agreementAge=agreementAge.value!!,
@@ -383,6 +386,99 @@ class SignupViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    val socialSignupResult: MutableLiveData<BaseResponse<socialLoginResponse>> = MutableLiveData()
+
+    fun socialSignup(){
+        socialSignupResult.value= BaseResponse.Loading()
+        val emptyKeywords= listOf<String>("null1","null2")
+
+        viewModelScope.launch {
+            // boss
+            if(role.value==1){
+                try {
+                    val signupBossRequest = SignupBossRequest(
+                        role=role.value?:1,
+                        email = email.value.toString(),
+                        password = pw.value.toString(),
+                        rePassword = rePw.value.toString(),
+                        name = name.value.toString(),
+                        nickname=nickname.value?:"default",
+                        gender = gender.value!!,
+                        birthDate=birthDate.value?:"null",
+//                        birthDate = LocalDate.parse(birthDate.value),
+                        phone = phone.value.toString(),
+                        emailAuthId = emailAuthId.value!!,//이메일인증식별자,
+                        phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
+                        profileImg=profileImg.value?:"null",
+                        agreementUsage = agreementUsage.value!!,
+                        agreementInfo=agreementInfo.value!!,
+                        agreementAge=agreementAge.value!!,
+                        agreementSms=agreementSms.value!!,
+                        agreementEmail=agreementEmail.value!!,
+                        agreementLocation=agreementLocation.value!!
+                    )
+                    val response = userRepo.socialBossSignup(socialType=socialType.value?:0,signupRequest = signupBossRequest)
+
+                    if (response?.body()?.code=="COMMON200") {
+                        socialSignupResult.value = BaseResponse.Success(response.body())
+                    } else {
+                        socialSignupResult.value = BaseResponse.Error(response?.message())
+                    }
+                } catch (ex: Exception) {
+                    socialSignupResult.value = BaseResponse.Error(ex.message)
+                }
+            }
+            // teacher
+            else if(role.value==2){
+                try{
+                    val signupTeacherRequest = SignupTeacherRequest(
+                        role=role.value?:1,
+                        email = email.value.toString(),
+                        password = pw.value.toString(),
+                        rePassword = rePw.value.toString(),
+                        name = name.value.toString(),
+                        nickname=nickname.value?:"default",
+                        gender = gender.value!!,
+                        birthDate=birthDate.value?:"null",
+//                        birthDate = LocalDate.parse(birthDate.value),
+                        phone = phone.value.toString(),
+                        emailAuthId = emailAuthId.value!!,
+                        phoneAuthId = phoneAuthId.value!!,
+                        profileImg=profileImg.value?:"null",
+                        businessNumber=businessNum.value?:"null",
+                        representative=representative.value?:"사장님",
+                        openDate=openDate_str.value?: "null",
+                        field=field.value?:"null",
+                        career=_carrer_str.value!!.toInt(),
+//                        career=career.value?:0,
+                        introduction = introduction.value?:"",
+                        keywords=keywords.value?:emptyKeywords,
+                        bank=bank.value?:"null",
+                        accountNumber=accountNum.value?:"",
+                        accountHolder=accountHoler.value?:"",
+                        agreementUsage = agreementUsage.value!!,
+                        agreementInfo=agreementInfo.value!!,
+                        agreementAge=agreementAge.value!!,
+                        agreementSms=agreementSms.value!!,
+                        agreementEmail=agreementEmail.value!!,
+                        agreementLocation=agreementLocation.value!!
+                    )
+                    val response = userRepo.socialTeacherSignup(socialType=socialType.value?:0,signupRequest = signupTeacherRequest)
+
+                    if (response?.body()?.code=="COMMON200") {
+                        socialSignupResult.value = BaseResponse.Success(response.body())
+                    } else {
+                        socialSignupResult.value = BaseResponse.Error(response?.message())
+                    }
+
+                } catch (ex: Exception) {
+                    socialSignupResult.value = BaseResponse.Error(ex.message)
+                }
+            }
+        }
+
     }
 
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
@@ -518,9 +614,11 @@ class SignupViewModel @Inject constructor(
 
     fun setBossMode(){
         _role.value=1
+        _profileImg.value="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png"
     }
     fun setTeacherMode(){
         _role.value=2
+        _profileImg.value="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_teacher.png"
     }
 
     fun changeToBossPageSize(){

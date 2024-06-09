@@ -55,8 +55,10 @@
                 android:hint="000-00-00000"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:padding="12dp"
+                android:inputType="number"
                 android:text="@={signupViewModel._businessNum}"
-                android:textColorHint="@color/gray_02">
+                android:textColorHint="@color/gray_02"
+                android:maxLength="12">
 
             </EditText>
 
@@ -102,7 +104,9 @@
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:padding="12dp"
                 android:text="@={signupViewModel._representative}"
-                android:textColorHint="@color/gray_02">
+                android:textColorHint="@color/gray_02"
+                android:maxLength="20"
+                android:imeOptions="actionDone">
 
             </EditText>
 
@@ -177,6 +181,7 @@
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
             android:textColor="@color/white"
             android:text="@string/sinup_next_btn"
+            android:enabled="@{signupViewModel.enableNext}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

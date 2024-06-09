@@ -127,6 +127,10 @@ class SignupViewModel @Inject constructor(
     val accountHoler:LiveData<String>
         get() = _accountHoler
 
+    var enableNext = MutableLiveData<Boolean>(false)
+
+
+
     // activity page 관련
     var _currentPage=MutableLiveData<Float>(DEFAULT_PROGRESSBAR)
     val currentPage:LiveData<Float>
@@ -190,7 +194,7 @@ class SignupViewModel @Inject constructor(
     val userRepo= UserRepositoryImpl()
 
     //이메일인증 여부 str->api
-    var _isEmailVerified_str= MutableLiveData<String>("F") // api 테스트 완료 추후 false로 수정
+    var _isEmailVerified_str= MutableLiveData<String>("T") // api 테스트 완료 추후 false로 수정
     val isEmailVerified_str: LiveData<String>
         get() = _isEmailVerified_str
 
@@ -203,7 +207,7 @@ class SignupViewModel @Inject constructor(
     val confirmedEmail= MutableLiveData<MutableMap<String, LiveData<Boolean>>>()
 
     //휴대폰인증 여부 str->api
-    var _isPhoneVerified_str=MutableLiveData<String>("F") // api 테스트 완료 추후 false로 수정
+    var _isPhoneVerified_str=MutableLiveData<String>("T") // api 테스트 완료 추후 false로 수정
     val isPhoneVerified_str:LiveData<String>
         get()=_isPhoneVerified_str
 

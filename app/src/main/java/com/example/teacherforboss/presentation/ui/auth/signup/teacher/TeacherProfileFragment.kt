@@ -91,6 +91,8 @@ class TeacherProfileFragment : Fragment(){
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(successcolor)
                     veryInfo.text = "사용 가능한 닉네임입니다."
+                    binding.nicknameVerifyBtn.isEnabled = false
+                    binding.nextBtn.isEnabled = true
 
                 }
                 is BaseResponse.Error->{
@@ -98,8 +100,9 @@ class TeacherProfileFragment : Fragment(){
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(errorcolor)
-
                     veryInfo.text = "사용할 수 없는 닉네임입니다."
+                    binding.nicknameVerifyBtn.isEnabled = false
+
 
                 }
                 else -> {}
@@ -112,6 +115,8 @@ class TeacherProfileFragment : Fragment(){
             override fun afterTextChanged(s: Editable?) {
                 nicknameBox.setBackgroundResource(R.drawable.selector_signup)
                 veryInfo.visibility = View.INVISIBLE
+                binding.nicknameVerifyBtn.isEnabled = true
+                binding.nextBtn.isEnabled = false
             }
         })
 

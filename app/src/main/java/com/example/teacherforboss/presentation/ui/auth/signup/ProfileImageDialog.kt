@@ -32,7 +32,7 @@ class ProfileImageDialog (
 ): Dialog(activity){
     private lateinit var binding: DialogProfileImageBinding
     val clickedMap= mutableMapOf<Int,Boolean>()
-    val animalTeacehrFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
+    val animalTeacherFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
     val animalBossFileList:List<BossProfileAnimal> = BossProfileAnimal.values().toList()
 
     var presentIndex=0
@@ -47,7 +47,7 @@ class ProfileImageDialog (
         var selectedFileList:List<ProfileAnimal>
         when(viewModel.role.value){
             1-> selectedFileList=animalBossFileList
-            else ->selectedFileList=animalTeacehrFileList
+            else ->selectedFileList=animalTeacherFileList
         }
 
         setView(selectedFileList)

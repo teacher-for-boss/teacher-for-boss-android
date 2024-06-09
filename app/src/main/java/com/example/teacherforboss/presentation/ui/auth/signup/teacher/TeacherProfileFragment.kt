@@ -195,21 +195,31 @@ class TeacherProfileFragment : Fragment(){
     private fun chipListener(){
         val maxSelectedChip=5
         val chipGroup=binding.keywordChipGroup
+        var checkCnt = 0
 
         for(i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as Chip
             chip.setOnCheckedChangeListener { buttonView,isChecked->
-                val selectedChipCnt=chipGroup.checkedChipIds.size
+
+                //checkedChipIds.size 이부분이 isChecked랑 동기화가 안돼서 카운트 변수 따로 만들었습니다
+
+                //val selectedChipCnt=chipGroup.checkedChipIds.size
+
 
                 //최대 개수 도달
-                if(isChecked && selectedChipCnt>maxSelectedChip){
+                if(isChecked && checkCnt>=maxSelectedChip){
                     chip.isChecked = false
                     Toast.makeText(context,"5개 도달",Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    if(isChecked) selectedChipList.add(chip.text.toString())
-
-                    else selectedChipList.remove(chip.text.toString())
+                    if(isChecked) {
+                        selectedChipList.add(chip.text.toString())
+                        checkCnt++
+                    }
+                    else {
+                        selectedChipList.remove(chip.text.toString())
+                        checkCnt--
+                    }
                 }
             }
         }

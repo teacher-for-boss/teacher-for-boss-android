@@ -1,6 +1,7 @@
 package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
 
 import androidx.lifecycle.ViewModel
+import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategory
 import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCard
 
 class TeacherTalkMainViewModel : ViewModel() {
@@ -56,12 +57,12 @@ class TeacherTalkMainViewModel : ViewModel() {
         ),
     )
 
-//     val mockTeacherTalkCategoryList =listOf<TeacherTalkCategory>(
-//        TeacherTalkCategory( category_name = "전체" ),
-//        TeacherTalkCategory( category_name = "마케팅" ),
-//        TeacherTalkCategory( category_name = "위생" ),
-//        TeacherTalkCategory( category_name = "상권" ),
-//        TeacherTalkCategory( category_name = "운영" ),
-//
-//        )
+     val mockTeacherTalkCategoryList =listOf<TeacherTalkCategory>(
+        TeacherTalkCategory( category_name = "전체" ),
+        TeacherTalkCategory( category_name = "마케팅" ),
+        TeacherTalkCategory( category_name = "위생" ),
+        TeacherTalkCategory( category_name = "상권" ),
+        TeacherTalkCategory( category_name = "운영" ),
+
+        )
 }

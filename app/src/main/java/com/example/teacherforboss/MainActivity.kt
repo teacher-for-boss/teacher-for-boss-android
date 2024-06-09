@@ -9,7 +9,6 @@ import com.example.teacherforboss.presentation.ui.bosstalk.BossTalkFragment
 import com.example.teacherforboss.presentation.ui.home.HomeFragment
 import com.example.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.TeacherTalkMainFragment
-//import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.TeacherTalkMainFragment
 import com.example.teacherforboss.util.base.BindingActivity
 
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {

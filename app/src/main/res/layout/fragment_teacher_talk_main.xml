@@ -136,100 +136,28 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+                    <!-- 카테고리 리사이클러뷰 -->
                     <HorizontalScrollView
                         android:id="@+id/sv_teacher_talk_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@id/widget_search_view"
-                        app:layout_constraintTop_toBottomOf="@id/widget_search_view">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/widget_search_view">
 
-                        <!-- 카테고리  -->
-                        <LinearLayout
+                        <!-- 칩 리사이클러뷰 -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_teacher_talk_category"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/teacher_talk_category_all"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/background_category_selector"
-
-                                tools:text="@string/category_all"
-                                tools:textSize="14sp"
-                                android:paddingHorizontal="16dp"
-                                android:paddingVertical="4dp"
-                                android:textColor="@drawable/text_color_category_selector"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
-
-                            <TextView
-                                android:id="@+id/teacher_talk_category_marketing"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/background_category_selector"
-
-                                tools:text="@string/category_marketing"
-                                tools:textSize="14sp"
-                                android:paddingHorizontal="16dp"
-                                android:paddingVertical="4dp"
-                                android:layout_marginStart="17dp"
-                                android:textColor="@drawable/text_color_category_selector"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/teacher_talk_category_clean"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/background_category_selector"
-
-                                tools:text="@string/category_clean"
-                                tools:textSize="14sp"
-                                android:paddingHorizontal="16dp"
-                                android:paddingVertical="4dp"
-                                android:layout_marginStart="17dp"
-                                android:textColor="@drawable/text_color_category_selector"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/teacher_talk_category_district"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/background_category_selector"
-
-                                tools:text="@string/category_district"
-                                tools:textSize="14sp"
-                                android:paddingHorizontal="16dp"
-                                android:paddingVertical="4dp"
-                                android:layout_marginStart="17dp"
-                                android:textColor="@drawable/text_color_category_selector"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/teacher_talk_category_manage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/background_category_selector"
-
-                                tools:text="@string/category_manage"
-                                tools:textSize="14sp"
-                                android:paddingHorizontal="16dp"
-                                android:paddingVertical="4dp"
-                                android:layout_marginStart="17dp"
-                                android:textColor="@drawable/text_color_category_selector"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-
-                        </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_teacher_talk_category" />
                     </HorizontalScrollView>
 
 

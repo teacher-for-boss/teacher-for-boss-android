@@ -51,7 +51,6 @@
                 android:layout_marginTop="25dp"
                 android:background="@drawable/profile_background"
                 android:clipToOutline="true"
-                android:src="@drawable/profile_boss"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
@@ -16,14 +17,16 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.DialogProfileImageBinding
+import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.example.teacherforboss.util.base.SvgBindingAdapter.preloadImage
 import com.example.teacherforboss.util.base.UrlConfig
 
 class ProfileImageDialog (
-    val role:Int,
     val activity: SignupActivity,
     private val viewModel: SignupViewModel,
 ): Dialog(activity){
@@ -40,14 +43,14 @@ class ProfileImageDialog (
         super.onCreate(savedInstanceState)
         binding=DialogProfileImageBinding.inflate(LayoutInflater.from(context))
 
-        setView()
 
         var selectedFileList:List<ProfileAnimal>
-        when(role){
+        when(viewModel.role.value){
             1-> selectedFileList=animalBossFileList
             else ->selectedFileList=animalTeacehrFileList
         }
 
+        setView(selectedFileList)
         setImgView(selectedFileList)
         addListeners(selectedFileList)
         setContentView(binding.root)
@@ -56,7 +59,7 @@ class ProfileImageDialog (
         }
     }
 
-    private fun setView() {
+    private fun <T:ProfileAnimal> setView(profileList:List<T>) {
         // Dialog 크기 및 위치 설정
         window?.apply {
             setGravity(Gravity.CENTER)
@@ -68,6 +71,12 @@ class ProfileImageDialog (
         setCancelable(true) //취소 가능 여부
     }
 
+    fun <T:ProfileAnimal> preloadImageFile(profileList:List<T>,index:Int){
+        val fileName=profileList[index].fileName
+        val url="${IMG_BASE_URL}${fileName}"
+        preloadImage(activity,url)
+    }
+
     fun <T:ProfileAnimal> loadImageFile(imageView: ImageView,profileList:List<T>,index:Int){
         val fileName=profileList[index].fileName
         val url="${IMG_BASE_URL}${fileName}"
@@ -75,13 +84,21 @@ class ProfileImageDialog (
     }
 
     private fun <T:ProfileAnimal> setImgView(profileList:List<T>){
+        // 선택된 이미지
+//        binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        Log.d("profile",viewModel.profileImg.value!!)
+        BindingImgAdapter.bindImgUrl(context,binding.profileImage,viewModel.profileImg.value!!)
+
         val bindingImgList= listOf(
             binding.p1,binding.p2,binding.p3,binding.p4,binding.p5,binding.p6,
             binding.p7,binding.p8,binding.p9,binding.p10,binding.p11)
 
         bindingImgList.forEachIndexed { index, imageView ->
+            // glide
+            val fileName=profileList[index].fileName
+            val url="${IMG_BASE_URL}${fileName}"
 
-            loadImageFile(imageView,profileList,index)
+            BindingImgAdapter.bindProfileImgUrl(context,imageView,url)
 
             clickedMap.put(index,false) // clickedMap 초기화
             imageView.setOnClickListener {
@@ -104,6 +121,7 @@ class ProfileImageDialog (
                 selectedImageView?.background=defaultDrawable
                 imageView.background = drawable
                 selectedImageView=imageView
+                viewModel._isDefaultImgSelected.value=true
 
                 binding.profileImage.setImageDrawable(imageView.drawable)
             }
@@ -135,6 +153,8 @@ class ProfileImageDialog (
                 context,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
             ) == PackageManager.PERMISSION_GRANTED -> {
+                Log.d("gallery","permisiion already satisfied")
+
                 // 권한이 이미 허용된 경우
                 val intent=Intent(Intent.ACTION_PICK)
                 intent.setDataAndType(
@@ -143,20 +163,18 @@ class ProfileImageDialog (
                 )
                 activity.pickImageLauncher.launch(intent)
 
-                // 사용자로부터 이미지 받은 이후 다이얼로그에 띄우기
-                Glide.with(context)
-                    .load(viewModel.profileImgUri.value)
-                    .fitCenter()
-                    .apply(RequestOptions().override(80,80))
-                    .into(binding.profileImage)
+                // 사용자로부터 이미지 받은 이후 다이얼 로그에 띄우기
+                // TODO: 갑자기 에러,, 수정
+                Log.d("profile-uri",viewModel.profileImgUri.value.toString())
+                BindingImgAdapter.bindProfileImgUri(context,binding.profileImage,viewModel.profileImgUri.value!!)
 
                 viewModel._isUserImgSelected.value=true
             }
             shouldShowRequestPermissionRationale(activity,android.Manifest.permission.READ_EXTERNAL_STORAGE,) -> {
-                // 사용자에게 권한이 필요한 이유를 설명합니다.
                 Toast.makeText(context, "Gallery access is required to select images.", Toast.LENGTH_SHORT).show()
             }
             else -> {
+                Log.d("gallery","gallery")
                 // 권한 요청
                 activity.requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
             }
@@ -164,9 +182,8 @@ class ProfileImageDialog (
     }
 
 
-
     companion object{
-        const val IMG_BASE_URL=UrlConfig.BASE_URL_SVG+UrlConfig.PROFILE_PARAM
+        const val IMG_BASE_URL=UrlConfig.AWS_BASE_URL+UrlConfig.PROFILE_PARAM
     }
 
 }

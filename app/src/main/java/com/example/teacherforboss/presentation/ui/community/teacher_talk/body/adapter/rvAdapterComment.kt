@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.RvItemCommentBinding
+import com.example.teacherforboss.databinding.RvItemCommentTeacherBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
@@ -21,7 +21,7 @@ class rvAdapterComment(private val AnswerList: List<TeacherTalkBodyViewModel.Ans
                        private val viewModel: TeacherTalkBodyViewModel,
                        private val lifecycleOwner: LifecycleOwner, private val context: Context
 ): RecyclerView.Adapter<rvAdapterComment.ViewHolder>() {
-    class ViewHolder(private val binding: RvItemCommentBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(teacher: TeacherTalkBodyViewModel.Answer,
                  viewModel: TeacherTalkBodyViewModel,
                  lifecycleOwner: LifecycleOwner,
@@ -102,7 +102,7 @@ class rvAdapterComment(private val AnswerList: List<TeacherTalkBodyViewModel.Ans
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = RvItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = RvItemCommentTeacherBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
     override fun getItemCount(): Int {

@@ -44,11 +44,6 @@
             android:name=".presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity"
@@ -66,6 +61,11 @@
             android:name=".presentation.ui.community.boss_talk.body.BossTalkBodyActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".presentation.ui.community.boss_talk.write.BossTalkWriteActivity"

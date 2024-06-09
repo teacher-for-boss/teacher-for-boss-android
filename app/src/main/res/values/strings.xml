@@ -42,8 +42,13 @@
     <string name="like_count">%s</string>
 
 
-    <!-- filter chip-->
-    <string name="filter_name">%s</string>
+    <!-- category-->
+    <string name="category_all">전체</string>
+    <string name="category_marketing">마케팅</string>
+    <string name="category_clean">위생</string>
+    <string name="category_district">상권</string>
+    <string name="category_manage">운영</string>
+
 
 
 </resources>

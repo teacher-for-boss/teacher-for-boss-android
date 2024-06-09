@@ -5,32 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/teacher_talk_category"
-        android:background="@drawable/background_category_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/teacher_talk_category"-->
+<!--        android:background="@drawable/background_category_selector"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="15dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        >-->
 
-        <TextView
-            android:id="@+id/tv_teacher_talk_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+<!--        <TextView-->
+<!--            android:id="@+id/tv_teacher_talk_category"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
 
-            tools:text="@string/filter_name"
-            tools:textSize="14sp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="4dp"
-            android:textColor="@drawable/text_color_category_selector"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+<!--            tools:text="@string/filter_name"-->
+<!--            tools:textSize="14sp"-->
+<!--            android:paddingHorizontal="16dp"-->
+<!--            android:paddingVertical="4dp"-->
+<!--            android:textColor="@drawable/text_color_category_selector"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent" />-->
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

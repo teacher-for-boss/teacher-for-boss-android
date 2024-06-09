@@ -58,11 +58,15 @@ class TeacherTalkMainViewModel : ViewModel() {
     )
 
      val mockTeacherTalkCategoryList =listOf<TeacherTalkCategory>(
-        TeacherTalkCategory( category_name = "전체" ),
-        TeacherTalkCategory( category_name = "마케팅" ),
-        TeacherTalkCategory( category_name = "위생" ),
-        TeacherTalkCategory( category_name = "상권" ),
-        TeacherTalkCategory( category_name = "운영" ),
+         TeacherTalkCategory( category_name = "전체" ),
+         TeacherTalkCategory( category_name = "마케팅" ),
+         TeacherTalkCategory( category_name = "위생" ),
+         TeacherTalkCategory( category_name = "상권" ),
+         TeacherTalkCategory( category_name = "운영" ),
+         TeacherTalkCategory( category_name = "직원관리" ),
+         TeacherTalkCategory( category_name = "인테리어" ),
+         TeacherTalkCategory( category_name = "정책" ),
 
-        )
+
+         )
 }

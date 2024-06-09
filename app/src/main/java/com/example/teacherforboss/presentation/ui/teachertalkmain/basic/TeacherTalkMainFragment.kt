@@ -1,10 +1,12 @@
 package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategory
@@ -26,6 +28,7 @@ class TeacherTalkMainFragment :
 
         val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
         binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
+        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
         teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -36,4 +39,9 @@ class TeacherTalkMainFragment :
         })
     }
 
+}
+class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.right = horizontalSpaceWidth
+    }
 }

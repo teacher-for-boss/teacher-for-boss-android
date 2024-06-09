@@ -7,6 +7,6 @@ class TeacherTalkCategoryViewHolder(private val binding: ItemTeacherTalkCategory
 RecyclerView.ViewHolder(binding.root) {
 
     fun onBind(categoryData: TeacherTalkCategory) {
-            binding.tvTeacherTalkCategory.text= categoryData.category_name
+            binding.teacherTalkCategory.text= categoryData.category_name
     }
 }

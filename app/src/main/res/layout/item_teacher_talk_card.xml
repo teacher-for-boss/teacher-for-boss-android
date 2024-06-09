@@ -67,7 +67,7 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="8dp"
                     android:text="@string/card_view_statement"
-                    android:textSize="7sp"
+                    android:textSize="10sp"
 
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

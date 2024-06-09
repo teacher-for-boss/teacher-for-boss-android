@@ -72,5 +72,6 @@
 
     <color name="success">#24CD5D</color>
     <color name="error">#FF6565</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

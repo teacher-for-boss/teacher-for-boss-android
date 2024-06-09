@@ -27,7 +27,7 @@
                         android:id="@+id/back_btn"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/back_btn"
+                        android:src="@drawable/ic_back_btn"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="13dp"
@@ -170,6 +170,7 @@
                         android:visibility="gone">
 
                         <TextView
+                            android:id="@+id/report_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="신고하기"
@@ -198,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_radius8_gray100"
                         app:layout_constraintTop_toBottomOf="@id/rv_tagArea"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="12dp">
 
                         <View
                             android:id="@+id/line"
@@ -286,6 +287,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/answer_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_radius8_green100_with_stroke"
@@ -339,11 +341,7 @@
 
         </ScrollView>
 
-        <FrameLayout
-            android:id="@+id/comment_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -49,12 +49,13 @@ class SignupStartFragment : Fragment() {
                 viewModel.setBossMode()
                 viewModel.changeToBossPageSize()
                 activity.gotoNextFragment(EmailFragment())
+//                activity.gotoNextFragment(BossProfileFragment())
             }
             else{
                 viewModel.setTeacherMode()
                 viewModel.changeToTeacherPageSize()
                 activity.gotoNextFragment(BusinessInfoFragment())
-
+//                activity.gotoNextFragment(TeacherProfileFragment())
             }
         }
 

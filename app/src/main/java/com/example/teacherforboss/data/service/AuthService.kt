@@ -45,12 +45,27 @@ interface AuthService {
         @Header("RefreshToken") refreshToken: String)
     : Response<LoginResponse>
 
+    // social login
     @POST("auth/login/social")
     suspend fun socialLogin(
         @Query("socialType") socialType:Int,
         @Body socialLoginRequest: SocialLoginRequest
     )
     :Response<socialLoginResponse>
+
+    // social signup-boss
+    @POST("auth/login/social")
+    suspend fun socialBossSignup(
+        @Query("socialType") socialType:Int,
+        @Body signupRequest: SignupBossRequest
+    ):Response<socialLoginResponse>
+
+    // social signup-teacher
+    @POST("auth/login/social")
+    suspend fun socialTeacherSignup(
+        @Query("socialType") socialType:Int,
+        @Body signupRequest: SignupTeacherRequest
+    ):Response<socialLoginResponse>
     @POST("auth/email")
     suspend fun emailUser(
         @Body emailRequest: EmailRequest

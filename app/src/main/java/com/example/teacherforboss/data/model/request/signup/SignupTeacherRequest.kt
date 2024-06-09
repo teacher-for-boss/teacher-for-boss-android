@@ -47,6 +47,16 @@ data class SignupTeacherRequest(
     @SerializedName("keywords")
     var keywords:List<String>,
 
+    @SerializedName("bank")
+    var bank:String,
+
+    @SerializedName("accountNumber")
+    var accountNumber:String,
+
+    @SerializedName("accountHolder")
+    var accountHolder:String,
+
+
     @SerializedName("agreementUsage")
     var agreementUsage:String,
 

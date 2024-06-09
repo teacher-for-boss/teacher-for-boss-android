@@ -132,7 +132,7 @@
 
                     </RelativeLayout>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/emailConfirmBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"

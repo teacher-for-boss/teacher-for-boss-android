@@ -52,7 +52,6 @@
                 android:layout_marginTop="25dp"
                 android:background="@drawable/profile_background"
                 android:clipToOutline="true"
-                android:src="@drawable/profile_boss"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -75,7 +74,7 @@
                         android:layout_margin="4dp"
                         android:background="@drawable/profile_background"
                         android:clipToOutline="true"
-                        android:src="@drawable/profile_boss" />
+                        />
 
                     <ImageView
                         android:id="@+id/p2"
@@ -166,11 +165,11 @@
                         android:clipToOutline="true" />
 
                     <ImageView
-                        android:id="@+id/p12"
+                        android:src="@drawable/profile_gallery"
+                        android:id="@+id/open_gallary"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_margin="4dp"
-                        android:background="@drawable/profile_background"
                         android:clipToOutline="true" />
 
                 </TableRow>

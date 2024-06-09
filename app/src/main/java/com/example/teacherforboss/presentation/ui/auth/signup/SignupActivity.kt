@@ -1,52 +1,61 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
-import AppSignatureHelper
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.flowWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessFragment
-import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.example.teacherforboss.presentation.ui.auth.signup.boss.SignupStartFragment
-import com.example.teacherforboss.signup.AuthOtpReceiver
-import com.example.teacherforboss.signup.fragment.EmailFragment
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel: SignupViewModel by viewModels()
+    private val fragmentManager:FragmentManager=supportFragmentManager
 
-    val fragmentManager:FragmentManager=supportFragmentManager
+    // 갤러리 오픈
+    val requestPermissionLauncher:ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted->
+            if(isGranted){
+                openGallery()
+            }
+        }
+
+    // 갤러리 사진 설정
+    val pickImageLauncher:ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+            if(result.resultCode== RESULT_OK){
+                val data:Intent?=result.data
+                data?.data?.let {
+                    viewModel._profileImgUri.value=it?:null
+                }
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
 
         initLayout()
@@ -130,6 +139,11 @@ class SignupActivity: AppCompatActivity() {
         transaction.replace(R.id.fragment_container,fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    fun openGallery(){
+        val gallery=Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(gallery)
     }
 
 

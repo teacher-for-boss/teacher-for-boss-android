@@ -203,20 +203,13 @@ class TeacherProfileFragment : Fragment(){
 
                 //최대 개수 도달
                 if(isChecked && selectedChipCnt>maxSelectedChip){
+                    chip.isChecked = false
                     Toast.makeText(context,"5개 도달",Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    if(isChecked){
-                        chip.setChipBackgroundColorResource(R.color.Purple600)
-                        chip.setTextColor(resources.getColor(R.color.white))
-                        selectedChipList.add(chip.text.toString())
-                    }
-                    else{
-                        chip.setChipBackgroundColorResource(R.color.Purple300)
-                        chip.setTextColor(resources.getColor(R.color.Purple600))
-                        selectedChipList.remove(chip.text.toString())
-                    }
+                    if(isChecked) selectedChipList.add(chip.text.toString())
 
+                    else selectedChipList.remove(chip.text.toString())
                 }
             }
         }
@@ -238,3 +231,6 @@ class TeacherProfileFragment : Fragment(){
     }
 
 }
+
+
+

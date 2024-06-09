@@ -1,6 +1,8 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.SignupRepository
+import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
 import dagger.Module
 import dagger.Provides
@@ -11,9 +13,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCaseModule {
-     @Provides
+    @Provides
     @Singleton
     fun providesSignupUseCase(signupRepository: SignupRepository):SignupUseCase =
         SignupUseCase(signupRepository=signupRepository)
+
+    @Provides
+    @Singleton
+    fun providesAwsUseCase(awsReository: AwsReository):PresignedUrlUseCase =
+        PresignedUrlUseCase(awsReository=awsReository)
 
 }

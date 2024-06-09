@@ -5,51 +5,51 @@ interface ProfileAnimal {
 }
 
 enum class BossProfileAnimal(override val fileName:String):ProfileAnimal {
-    BEAR_OWNER("profile_bear_owner.svg"),
+    BEAR_OWNER("profile_bear_owner.png"),
 
-    CAT_OWNER("profile_cat_owner.svg"),
+    RABBIT_OWNER("profile_rabbit_owner.png"),
 
-    CHICK_OWNER("profile_chick_owner.svg"),
+    CAT_OWNER("profile_cat_owner.png"),
 
-    DEER_OWNER("profile_deer_owner.svg"),
+    CHICK_OWNER("profile_chick_owner.png"),
 
-    DOG_OWNER("profile_dog_owner.svg"),
+    DEER_OWNER("profile_deer_owner.png"),
 
-    KOALA_OWNER("profile_koala_owner.svg"),
+    DOG_OWNER("profile_dog_owner.png"),
 
-    OCTOPUS_OWNER("profile_octopus_owner.svg"),
+    KOALA_OWNER("profile_koala_owner.png"),
 
-    PENGUIN_OWNER("profile_penguin_owner.svg"),
+    OCTOPUS_OWNER("profile_octopus_owner.png"),
 
-    PIG_OWNER("profile_pig_owner.svg"),
+    PENGUIN_OWNER("profile_penguin_owner.png"),
 
-    RABBIT_OWNER("profile_rabbit_owner.svg"),
+    PIG_OWNER("profile_pig_owner.png"),
 
-    SHEEP_OWNER("profile_sheep_owner.svg"),
+    SHEEP_OWNER("profile_sheep_owner.png"),
 
 }
 
 enum class TeacherProfileAnimal(override val fileName:String):ProfileAnimal {
-    BEAR_TEACHER("profile_bear_teacher.svg"),
+    BEAR_TEACHER("profile_bear_teacher.png"),
 
-    CAT_TEACHER("profile_cat_teacher.svg"),
+    CAT_TEACHER("profile_cat_teacher.png"),
 
-    CHICK_TEACHER("profile_chick_teacher.svg"),
+    RABBIT_TEACHER("profile_rabbit_teacher.png"),
 
-    DEER_TEACHER("profile_deer_teacher.svg"),
+    CHICK_TEACHER("profile_chick_teacher.png"),
 
-    DOG_TEACHER("profile_dog_teacher.svg"),
+    DEER_TEACHER("profile_deer_teacher.png"),
 
-    KOALA_TEACHER("profile_koala_teacher.svg"),
+    DOG_TEACHER("profile_dog_teacher.png"),
 
-    OCTOPUS_TEACHER("profile_octopus_teacher.svg"),
+    KOALA_TEACHER("profile_koala_teacher.png"),
 
-    PENGUIN_TEACHER("profile_penguin_teacher.svg"),
+    OCTOPUS_TEACHER("profile_octopus_teacher.png"),
 
-    PIG_TEACHER("profile_pig_teacher.svg"),
+    PENGUIN_TEACHER("profile_penguin_teacher.png"),
 
-    RABBIT_TEACHER("profile_rabbit_teacher.svg"),
+    PIG_TEACHER("profile_pig_teacher.png"),
 
-    SHEEP_TEACHER("profile_sheep_teacher.svg"),
+    SHEEP_TEACHER("profile_sheep_teacher.png"),
 
 }

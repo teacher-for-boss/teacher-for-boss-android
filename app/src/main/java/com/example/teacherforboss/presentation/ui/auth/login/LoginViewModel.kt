@@ -1,6 +1,7 @@
 package com.example.teacherforboss.presentation.ui.auth.login
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,10 @@ class LoginViewModel(
     val socialLoginResult: MutableLiveData<BaseResponse<socialLoginResponse>> = MutableLiveData()
     val userRepo= UserRepositoryImpl()
 
+    var _isSocialLoginSignup=MutableLiveData<Boolean>(false)
+    val isSocialLoginSinup : LiveData<Boolean>
+        get() = _isSocialLoginSignup
+
     fun loginUser(email:String,pwd:String){
         loginResult.value= BaseResponse.Loading()
 
@@ -29,12 +34,6 @@ class LoginViewModel(
                     password=pwd
                 )
                 val response=userRepo.loginUser(loginRequest=loginRequest)
-//                if(response?.data!=null){
-//                    loginResult.value= response!!
-//                }
-//                else{
-//                    loginResult.value= BaseResponse.Error(response?.message.toString())
-//                }
                 if(response?.body()?.code=="COMMON200"){
                     loginResult.value= BaseResponse.Success(response.body())
                 }
@@ -50,18 +49,13 @@ class LoginViewModel(
         }
     }
 
-    fun socialLogin(type:String,email:String, name:String, phoneNumber: String, gender:Int?, birthDate: String?,imageUrl:String?){
+    fun socialLogin(type:String,email:String){
         socialLoginResult.value= BaseResponse.Loading()
 
         viewModelScope.launch{
             try{
                 val socialLoginRequest= SocialLoginRequest(
-                    email=email,
-                    name=name,
-                    phone=phoneNumber,
-                    gender=gender,
-                    birthDate = birthDate,
-                    profileImg = imageUrl
+                    email=email
                 )
 
                 var response: Response<socialLoginResponse>?=null

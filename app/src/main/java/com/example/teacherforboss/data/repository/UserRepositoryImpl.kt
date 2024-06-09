@@ -43,6 +43,15 @@ class UserRepositoryImpl: UserRepository {
             Response<socialLoginResponse>?{
         return AuthService.getApi()?.socialLogin(socialType=3, socialLoginRequest=socialLoginRequest)
     }
+    override suspend fun socialBossSignup(socialType:Int,signupRequest: SignupBossRequest):
+            Response<socialLoginResponse>? {
+        return AuthService.getApi()?.socialBossSignup(socialType=socialType,signupRequest=signupRequest)
+    }
+
+    override suspend fun socialTeacherSignup(socialType:Int,signupRequest: SignupTeacherRequest):
+            Response<socialLoginResponse>? {
+        return AuthService.getApi()?.socialTeacherSignup(socialType=socialType,signupRequest=signupRequest)
+    }
 
     override suspend fun emailUser(emailRequest: EmailRequest):
             Response<EmailResponse>?{

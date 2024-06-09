@@ -45,7 +45,7 @@ class BankFragment : Fragment() {
         )
         val activity = activity as SignupActivity
 
-        binding.rvBank.adapter = rvAdapterBank(bankList,viewModel,activity)
+        binding.rvBank.adapter = rvAdapterBank(bankList,viewModel,activity,parentFragmentManager)
         binding.rvBank.layoutManager = GridLayoutManager(requireContext(), 3)
 
         return binding.root

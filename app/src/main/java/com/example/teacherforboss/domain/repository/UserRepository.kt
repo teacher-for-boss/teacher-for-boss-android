@@ -28,6 +28,10 @@ interface UserRepository {
     suspend fun loginReissue(refreshToken: String): Response<LoginResponse>?
     suspend fun kakaoLogin(socialLoginRequest: SocialLoginRequest): Response<socialLoginResponse>?
     suspend fun naverLogin(socialLoginRequest: SocialLoginRequest): Response<socialLoginResponse>?
+
+    suspend fun socialBossSignup(socialType:Int,signupRequest: SignupBossRequest): Response<socialLoginResponse>?
+
+    suspend fun socialTeacherSignup(sociType:Int,signupRequest: SignupTeacherRequest): Response<socialLoginResponse>?
     suspend fun emailUser(emailRequest: EmailRequest): Response<EmailResponse>?
     suspend fun emailCheck(emailCheckRequest: EmailCheckRequest): Response<EmailCheckResponse>?
     suspend fun signupBoss(signupRequest: SignupBossRequest): Response<SignupResponse>?

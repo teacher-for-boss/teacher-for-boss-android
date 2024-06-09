@@ -47,7 +47,6 @@ class SignupActivity: AppCompatActivity() {
                 val data:Intent?=result.data
                 data?.data?.let {
                     viewModel._profileImgUri.value=it?:null
-                    Log.d("img",viewModel.profileImgUri.toString())
                 }
             }
         }

@@ -45,5 +45,13 @@
     <!-- filter chip-->
     <string name="filter_name">%s</string>
 
+    <!-- dropdown -->
+    <string name="dropdown_name">DropdownExample</string>
+    <string-array name="dropdown_items">
+        <item>최신순</item>
+        <item>조회수순</item>
+        <item>좋아요순</item>
+        <item>답변순</item>
+    </string-array>
 
 </resources>

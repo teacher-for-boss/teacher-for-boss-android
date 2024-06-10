@@ -159,6 +159,26 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_white">
 
+        <Spinner
+            android:id="@+id/spinner_dropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginEnd="24dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:spinnerMode="dropdown"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:overlapAnchor="false"
+            android:popupElevation="1dp"
+            android:popupBackground="@color/white"
+            android:textColor="@color/white"
+            app:popupTheme="@style/NoShadowSpinnerStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rv_teacher_talk_card"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_teacher_talk_card"
             android:layout_width="match_parent"
@@ -180,6 +200,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="34dp"
             android:layout_marginBottom="30dp"
+            android:layout_marginTop="15dp"
             android:text="@string/more_card"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"

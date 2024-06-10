@@ -29,6 +29,7 @@
     <style name="Theme.TeacherForBoss.Button.More" parent="Theme.TeacherForBoss.Button">
         <item name="android:backgroundTint">@color/white</item>
         <item name="background">@drawable/background_radius8_border_purple500</item>
+        <item name="strokeWidth">1dp</item>
         <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.14</item>
         <item name="android:textColor">@color/Purple600</item>
     </style>
@@ -73,6 +74,13 @@
         <item name="android:checked">false</item>
         <item name="chipMinHeight">0dp</item>
         <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <!-- 그림자 없는 드롭다운 -->
+    <style name="NoShadowSpinnerStyle" parent="@android:style/Widget.PopupWindow">
+        <item name="android:popupBackground">@android:color/white</item>
+        <item name="android:popupElevation">0dp</item>
+        <item name="android:dropDownVerticalOffset">0dp</item>
     </style>
 
     <style name="Theme.TeacherForBoss.Chip.Category" parent="Theme.MaterialComponents.Light.NoActionBar">

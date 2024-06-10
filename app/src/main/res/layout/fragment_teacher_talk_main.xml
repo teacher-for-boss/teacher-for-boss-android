@@ -96,8 +96,8 @@
                     android:id="@+id/teacher_talk_widget2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:tag="sticky"
-                    android:background="@drawable/background_rounded_top_corner">
+                    android:background="@drawable/background_rounded_top_corner"
+                    android:tag="sticky">
                     <!-- 검색창 위젯-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/widget_search_view"
@@ -145,71 +145,81 @@
                         android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_teacher_talk_category"
-
                         app:layout_constraintStart_toStartOf="@id/widget_search_view"
-                        app:layout_constraintTop_toBottomOf="@id/widget_search_view"/>
+
+                        app:layout_constraintTop_toBottomOf="@id/widget_search_view"
+                        tools:listitem="@layout/item_teacher_talk_category" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/teacher_talk_widget3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_white">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/teacher_talk_widget3"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@drawable/background_white"
+                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget2"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinner_dropdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginEnd="24dp"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:spinnerMode="dropdown"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:overlapAnchor="false"
-            android:popupElevation="1dp"
-            android:popupBackground="@color/white"
-            android:textColor="@color/white"
-            app:popupTheme="@style/NoShadowSpinnerStyle"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rv_teacher_talk_card"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_teacher_talk_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginBottom="30dp"
-            android:nestedScrollingEnabled="false"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_teacher_talk_card" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/teacher_talk_widget4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_white"
+                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget3"
+                    app:layout_constraintStart_toStartOf="parent" >
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_more_card"
-            style="@style/Theme.TeacherForBoss.Button.More"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="34dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/more_card"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_teacher_talk_card" />
+                    <Spinner
+                        android:id="@+id/spinner_dropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@color/white"
+                        android:popupElevation="1dp"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toTopOf="@id/rv_teacher_talk_card"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:popupTheme="@style/NoShadowSpinnerStyle" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_teacher_talk_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginBottom="30dp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:listitem="@layout/item_teacher_talk_card" />
 
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_more_card"
+                        style="@style/Theme.TeacherForBoss.Button.More"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="34dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="@string/more_card"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rv_teacher_talk_card" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </LinearLayout>

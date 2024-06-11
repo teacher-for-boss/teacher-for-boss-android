@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -55,6 +56,7 @@ class TeacherProfileFragment : Fragment(){
         addListeners()
         chipListener()
         observeProfile()
+        setObserver()
 
         binding.profileImage.setOnClickListener(){
             showProfileImageDialog()
@@ -62,7 +64,15 @@ class TeacherProfileFragment : Fragment(){
 
 
         binding.nicknameVerifyBtn.setOnClickListener(){
-            viewModel.nicknameUser()
+            val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
+            if (nicknamePattern.containsMatchIn(binding.nicknameBox.text)){
+                nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                veryInfo.visibility = View.VISIBLE
+                veryInfo.setTextColor(errorcolor)
+                veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
+                viewModel.nicknameCheck.value = false
+            }
+            else viewModel.nicknameUser()
         }
 
         viewModel.isUserImgSelectd.observe(viewLifecycleOwner,{bool->
@@ -91,8 +101,7 @@ class TeacherProfileFragment : Fragment(){
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(successcolor)
                     veryInfo.text = "사용 가능한 닉네임입니다."
-                    binding.nicknameVerifyBtn.isEnabled = false
-                    binding.nextBtn.isEnabled = true
+                    viewModel.nicknameCheck.value = true
 
                 }
                 is BaseResponse.Error->{
@@ -101,12 +110,14 @@ class TeacherProfileFragment : Fragment(){
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(errorcolor)
                     veryInfo.text = "사용할 수 없는 닉네임입니다."
-                    binding.nicknameVerifyBtn.isEnabled = false
+                    viewModel.nicknameCheck.value = false
+
 
 
                 }
                 else -> {}
             }
+            checkFilled()
         }
 
         nicknameBox.addTextChangedListener(object : TextWatcher {
@@ -149,7 +160,7 @@ class TeacherProfileFragment : Fragment(){
                     showSplash()
                 }
                 is BaseResponse.Error->{
-
+                    showSplash()
                 }
 
                 else -> {}
@@ -192,10 +203,10 @@ class TeacherProfileFragment : Fragment(){
         })
     }
 
+    var checkCnt = 0
     private fun chipListener(){
         val maxSelectedChip=5
         val chipGroup=binding.keywordChipGroup
-        var checkCnt = 0
 
         for(i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as Chip
@@ -215,10 +226,12 @@ class TeacherProfileFragment : Fragment(){
                     if(isChecked) {
                         selectedChipList.add(chip.text.toString())
                         checkCnt++
+                        if (checkCnt == 1) checkFilled()
                     }
                     else {
                         selectedChipList.remove(chip.text.toString())
                         checkCnt--
+                        if (checkCnt == 0) checkFilled()
                     }
                 }
             }
@@ -238,6 +251,29 @@ class TeacherProfileFragment : Fragment(){
         val activity=activity as SignupActivity
         val dialog = ProfileImageDialog(activity,viewModel)
         dialog.show()
+    }
+    private fun checkPattern(string: String, regex: Regex){
+        if(regex.containsMatchIn(string)){
+
+            }
+
+    }
+
+    private fun checkFilled() {
+        if (viewModel.nicknameCheck.value == true &&
+            !viewModel._field.value.isNullOrEmpty() &&
+            !viewModel._carrer_str.value.isNullOrEmpty() &&
+            !viewModel._introduction.value.isNullOrEmpty() &&
+            checkCnt > 0
+        )
+            viewModel.enableNext.value = true
+        else viewModel.enableNext.value = false
+    }
+    private fun setObserver(){
+        val dataObserver = Observer<String>{ _ -> checkFilled() }
+        viewModel._field.observe(viewLifecycleOwner,dataObserver)
+        viewModel._carrer_str.observe(viewLifecycleOwner,dataObserver)
+        viewModel._introduction.observe(viewLifecycleOwner,dataObserver)
     }
 
 }

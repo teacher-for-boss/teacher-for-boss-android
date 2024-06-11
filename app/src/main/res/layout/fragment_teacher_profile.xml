@@ -89,9 +89,8 @@
                         android:text="@={signupViewModel._nickname}"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                         android:textColorHint="@color/Gray400"
-                        android:maxLines="1"
+                        android:maxLength="10"
                         android:imeOptions="actionDone"/>
-
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/nicknameVerifyBtn"
                         android:layout_width="76dp"
@@ -99,7 +98,7 @@
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/radius_purple_button"
                         android:backgroundTint="@color/selector_all_btn_background"
-                        android:enabled="false"
+                        android:enabled="@{signupViewModel.nicknameCheck}"
                         android:text="중복 확인"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                         android:textColor="@color/white"/>
@@ -339,7 +338,7 @@
             android:background="@drawable/radius_purple_button"
             android:text="완료"
             android:backgroundTint="@color/selector_all_btn_background"
-            android:enabled="false"
+            android:enabled="@{signupViewModel.enableNext}"
             android:textColor="@color/white"
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"

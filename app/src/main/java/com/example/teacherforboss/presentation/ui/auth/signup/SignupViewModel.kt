@@ -537,6 +537,7 @@ class SignupViewModel @Inject constructor(
 
 
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
+    var nicknameCheck = MutableLiveData<Boolean>(false)
     fun nicknameUser() {
         nicknameResult.value = BaseResponse.Loading()
 
@@ -554,8 +555,7 @@ class SignupViewModel @Inject constructor(
                     val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
                     nicknameResult.value = BaseResponse.Error(errorbody.message)
                 }
-            } catch (ex: Exception) {
-                nicknameResult.value = BaseResponse.Error(ex.message)
+            } catch (ex: Exception) { nicknameResult.value = BaseResponse.Error(ex.message)
             }
         }
     }

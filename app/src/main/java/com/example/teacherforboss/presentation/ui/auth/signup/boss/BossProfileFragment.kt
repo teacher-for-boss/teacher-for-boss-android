@@ -47,6 +47,18 @@ class BossProfileFragment : Fragment() {
         addListeners()
         observeProfile()
 
+        binding.nicknameVerifyBtn.setOnClickListener(){
+            val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
+            if (nicknamePattern.containsMatchIn(binding.nicknameBox.text)){
+                nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                veryInfo.visibility = View.VISIBLE
+                veryInfo.setTextColor(errorcolor)
+                veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
+                binding.nicknameVerifyBtn.isEnabled = false
+            }
+            else viewModel.nicknameUser()
+        }
+
         viewModel.nicknameResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }
@@ -95,10 +107,6 @@ class BossProfileFragment : Fragment() {
             showProfileImageDialog()
         }
 
-        binding.nicknameVerifyBtn.setOnClickListener(){
-            viewModel.nicknameUser()
-        }
-
         binding.nextBtn.setOnClickListener {
             if(loginViewModel.isSocialLoginSinup.value==true) socialSignup()
             else signup()
@@ -133,7 +141,7 @@ class BossProfileFragment : Fragment() {
                     showSplash()
                 }
                 is BaseResponse.Error->{
-
+                    showSplash()
                 }
 
                 else -> {}
@@ -153,6 +161,7 @@ class BossProfileFragment : Fragment() {
                     showSplash()
                 }
                 is BaseResponse.Error->{
+                    showSplash()
 
                 }
 

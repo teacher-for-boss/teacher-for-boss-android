@@ -15,7 +15,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 초기에 표시할 프래그먼트 설정
         if (savedInstanceState == null) {
             replaceFragment(HomeFragment())
         }

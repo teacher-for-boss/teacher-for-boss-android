@@ -13,7 +13,8 @@
         android:background="@color/Purple200">
 
         <!-- scroll view-->
-        <androidx.core.widget.NestedScrollView
+        <com.example.teacherforboss.presentation.ui.teachertalkmain.NewScrollView
+            android:id="@+id/sv_teacher_talk_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -32,7 +33,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
 
                     <TextView
                         android:id="@+id/tv_question_pay_btn"
@@ -89,7 +89,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/teacher_talk_main_text2"></ImageView>
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,9 +100,10 @@
                     <!-- 검색창 위젯-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/widget_search_view"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="24dp"
                         android:background="@drawable/background_radius100_gray200"
 
                         app:layout_constraintEnd_toEndOf="parent"
@@ -112,45 +112,46 @@
 
                         <EditText
                             android:id="@+id/et_search_view"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:hint="@string/search_view_hint"
                             android:paddingHorizontal="18dp"
                             android:paddingVertical="8dp"
                             android:textSize="12sp"
+                            app:layout_constraintEnd_toStartOf="@id/iv_search"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
 
                         <ImageView
                             android:id="@+id/iv_search"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="60dp"
                             android:layout_marginEnd="18dp"
                             android:src="@drawable/ic_search"
-                            app:layout_constraintBottom_toBottomOf="@id/et_search_view"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/et_search_view"
-                            app:layout_constraintTop_toTopOf="@id/et_search_view" />
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
                     <!-- 칩 리사이클러뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_teacher_talk_category"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:nestedScrollingEnabled="false"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="7dp"
+                        android:layout_marginBottom="45dp"
+                        android:clipToPadding="false"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintStart_toStartOf="@id/widget_search_view"
-
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/widget_search_view"
                         tools:listitem="@layout/item_teacher_talk_category" />
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,17 +159,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:background="@drawable/background_white"
-                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget2"
-                    app:layout_constraintStart_toStartOf="parent" />
-
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget2" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/teacher_talk_widget4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1500dp"
                     android:background="@drawable/background_white"
-                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget3"
-                    app:layout_constraintStart_toStartOf="parent" >
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget3">
 
                     <Spinner
                         android:id="@+id/spinner_dropdown"
@@ -195,12 +195,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="25dp"
-                        android:layout_marginBottom="30dp"
+                        android:layout_marginBottom="28dp"
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.52"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:listitem="@layout/item_teacher_talk_card" />
 
@@ -220,11 +221,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/rv_teacher_talk_card" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
+        </com.example.teacherforboss.presentation.ui.teachertalkmain.NewScrollView>
 
         <!--플로팅 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

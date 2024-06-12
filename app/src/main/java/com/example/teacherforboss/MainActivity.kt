@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.teacherforboss.databinding.ActivityMainBinding
-import com.example.teacherforboss.presentation.ui.bosstalk.BossTalkFragment
+import com.example.teacherforboss.presentation.ui.bosstalkmain.basic.BossTalkMainFragment
 import com.example.teacherforboss.presentation.ui.home.HomeFragment
 import com.example.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.TeacherTalkMainFragment
@@ -46,7 +46,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     true
                 }
                 R.id.menu_boss_talk -> {
-                    replaceFragment(BossTalkFragment())
+                    replaceFragment(BossTalkMainFragment())
                     true
                 }
                 R.id.menu_my_page -> {

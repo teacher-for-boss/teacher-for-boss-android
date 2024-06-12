@@ -19,6 +19,8 @@ import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherRequest
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.util.base.BaseResponse
@@ -43,12 +45,12 @@ class UserRepositoryImpl: UserRepository {
             Response<socialLoginResponse>?{
         return AuthService.getApi()?.socialLogin(socialType=3, socialLoginRequest=socialLoginRequest)
     }
-    override suspend fun socialBossSignup(socialType:Int,signupRequest: SignupBossRequest):
+    override suspend fun socialBossSignup(socialType:Int,signupRequest: SocialSignupBossRequest):
             Response<socialLoginResponse>? {
         return AuthService.getApi()?.socialBossSignup(socialType=socialType,signupRequest=signupRequest)
     }
 
-    override suspend fun socialTeacherSignup(socialType:Int,signupRequest: SignupTeacherRequest):
+    override suspend fun socialTeacherSignup(socialType:Int,signupRequest: SocialSignupTeacherRequest):
             Response<socialLoginResponse>? {
         return AuthService.getApi()?.socialTeacherSignup(socialType=socialType,signupRequest=signupRequest)
     }

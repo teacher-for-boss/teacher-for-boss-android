@@ -25,6 +25,8 @@ import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.google.android.material.chip.Chip
 
@@ -53,6 +55,7 @@ class TeacherProfileFragment : Fragment(){
         val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
         val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
 
+        getSocialSignupProvidedInfo()
         addListeners()
         chipListener()
         observeProfile()
@@ -138,11 +141,9 @@ class TeacherProfileFragment : Fragment(){
     private fun addListeners(){
         binding.nextBtn.setOnClickListener {
             viewModel._keywords.value=selectedChipList
-            Log.d("chip",viewModel.keywords.value.toString())
-
-            if(loginViewModel.isSocialLoginSinup.value==true) socialSignup()
+            val signupType=LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+            if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
             else signup()
-
         }
 
     }
@@ -169,8 +170,8 @@ class TeacherProfileFragment : Fragment(){
 
     }
 
-    private fun socialSignup(){
-        viewModel.socialSignup()
+    private fun socialSignup(type:String){
+        viewModel.socialSignup(type)
         viewModel.socialSignupResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }
@@ -190,16 +191,16 @@ class TeacherProfileFragment : Fragment(){
     }
 
     private fun observeProfile(){
-        val activity = activity as SignupActivity
-
         viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-            Log.d("profile",viewModel.profileImg.value.toString())
             if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-
         })
 
         viewModel.profileImg.observe(viewLifecycleOwner,{bool->
             binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        })
+
+        viewModel.profileImgUri.observe(viewLifecycleOwner,{
+            if(it!=null) BindingImgAdapter.bindProfileImgUri(requireContext(),binding.profileImage,it)
         })
     }
 
@@ -236,6 +237,16 @@ class TeacherProfileFragment : Fragment(){
                 }
             }
         }
+    }
+
+    fun getSocialSignupProvidedInfo(){
+        viewModel._name.value=LocalDataSource.getUserInfo(requireContext(),"name")
+        viewModel.liveEmail.value=LocalDataSource.getUserInfo(requireContext(),"email")
+        viewModel.livePhone.value=LocalDataSource.getUserInfo(requireContext(),"phone")
+        viewModel._birthDate.value=LocalDataSource.getUserInfo(requireContext(),"birthDate")
+        viewModel._profileImg.value=LocalDataSource.getUserInfo(requireContext(),"profileImg")
+        viewModel._gender.value=LocalDataSource.getUserInfo(requireContext(),"gender").toInt()
+
     }
 
     private fun showSplash(){
@@ -280,3 +291,12 @@ class TeacherProfileFragment : Fragment(){
 
 
 
+<<<<<<< fix/signup
+=======
+    companion object{
+        const val SIGNUP_TYPE="SIGNUP_TYPE"
+        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
+    }
+
+}
+>>>>>>> develop

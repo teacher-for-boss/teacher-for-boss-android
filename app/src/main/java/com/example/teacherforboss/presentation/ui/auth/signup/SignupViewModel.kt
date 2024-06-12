@@ -21,6 +21,8 @@ import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherRequest
 import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
@@ -394,62 +396,54 @@ class SignupViewModel @Inject constructor(
 
     val socialSignupResult: MutableLiveData<BaseResponse<socialLoginResponse>> = MutableLiveData()
 
-    fun socialSignup(){
+    fun socialSignup(type:String){
         socialSignupResult.value= BaseResponse.Loading()
         val emptyKeywords= listOf<String>("null1","null2")
+
+        var type_num=0
+        if(type=="KAKAO") type_num=2
+        else type_num=3
 
         viewModelScope.launch {
             // boss
             if(role.value==1){
                 try {
-                    val signupBossRequest = SignupBossRequest(
+                    val signupBossRequest = SocialSignupBossRequest(
                         role=role.value?:1,
                         email = email.value.toString(),
-                        password = pw.value.toString(),
-                        rePassword = rePw.value.toString(),
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
                         birthDate=birthDate.value?:"null",
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
-                        emailAuthId = emailAuthId.value!!,//이메일인증식별자,
-                        phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
                         profileImg=profileImg.value?:"null",
-                        agreementUsage = agreementUsage.value!!,
-                        agreementInfo=agreementInfo.value!!,
-                        agreementAge=agreementAge.value!!,
-                        agreementSms=agreementSms.value!!,
-                        agreementEmail=agreementEmail.value!!,
-                        agreementLocation=agreementLocation.value!!
                     )
-                    val response = userRepo.socialBossSignup(socialType=socialType.value?:0,signupRequest = signupBossRequest)
+                    val response = userRepo.socialBossSignup(socialType=type_num,signupRequest = signupBossRequest)
 
                     if (response?.body()?.code=="COMMON200") {
                         socialSignupResult.value = BaseResponse.Success(response.body())
-                    } else {
+                    }
+                    else {
                         socialSignupResult.value = BaseResponse.Error(response?.message())
                     }
                 } catch (ex: Exception) {
+
                     socialSignupResult.value = BaseResponse.Error(ex.message)
                 }
             }
             // teacher
             else if(role.value==2){
                 try{
-                    val signupTeacherRequest = SignupTeacherRequest(
+                    val signupTeacherRequest = SocialSignupTeacherRequest(
                         role=role.value?:1,
                         email = email.value.toString(),
-                        password = pw.value.toString(),
-                        rePassword = rePw.value.toString(),
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
                         birthDate=birthDate.value?:"null",
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
-                        emailAuthId = emailAuthId.value!!,
-                        phoneAuthId = phoneAuthId.value!!,
                         profileImg=profileImg.value?:"null",
                         businessNumber=businessNum.value?:"null",
                         representative=representative.value?:"사장님",
@@ -462,14 +456,8 @@ class SignupViewModel @Inject constructor(
                         bank=bank.value?:"null",
                         accountNumber=accountNum.value?:"",
                         accountHolder=accountHoler.value?:"",
-                        agreementUsage = agreementUsage.value!!,
-                        agreementInfo=agreementInfo.value!!,
-                        agreementAge=agreementAge.value!!,
-                        agreementSms=agreementSms.value!!,
-                        agreementEmail=agreementEmail.value!!,
-                        agreementLocation=agreementLocation.value!!
                     )
-                    val response = userRepo.socialTeacherSignup(socialType=socialType.value?:0,signupRequest = signupTeacherRequest)
+                    val response = userRepo.socialTeacherSignup(socialType=type_num,signupRequest = signupTeacherRequest)
 
                     if (response?.body()?.code=="COMMON200") {
                         socialSignupResult.value = BaseResponse.Success(response.body())

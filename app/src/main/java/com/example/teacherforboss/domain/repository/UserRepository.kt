@@ -17,6 +17,8 @@ import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherRequest
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.util.base.BaseResponse
@@ -29,9 +31,9 @@ interface UserRepository {
     suspend fun kakaoLogin(socialLoginRequest: SocialLoginRequest): Response<socialLoginResponse>?
     suspend fun naverLogin(socialLoginRequest: SocialLoginRequest): Response<socialLoginResponse>?
 
-    suspend fun socialBossSignup(socialType:Int,signupRequest: SignupBossRequest): Response<socialLoginResponse>?
+    suspend fun socialBossSignup(socialType:Int,signupRequest: SocialSignupBossRequest): Response<socialLoginResponse>?
 
-    suspend fun socialTeacherSignup(sociType:Int,signupRequest: SignupTeacherRequest): Response<socialLoginResponse>?
+    suspend fun socialTeacherSignup(sociType:Int,signupRequest: SocialSignupTeacherRequest): Response<socialLoginResponse>?
     suspend fun emailUser(emailRequest: EmailRequest): Response<EmailResponse>?
     suspend fun emailCheck(emailCheckRequest: EmailCheckRequest): Response<EmailCheckResponse>?
     suspend fun signupBoss(signupRequest: SignupBossRequest): Response<SignupResponse>?

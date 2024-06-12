@@ -36,13 +36,27 @@
     <string name="search_view_hint">궁금한 키워드를 검색해보세요.</string>
     <string name="more_card">게시물 더 불러오기</string>
 
-    <!-- card view-->
-    <string name="card_view_question"><b>Q. %s</b></string>
-    <string name="card_view_text">%s</string>
+    <!-- boss_talk -->
+    <string name="tv_boss_talk_1"><b>자유롭게 이야기를 나눠요.</b></string>
+    <string name="tv_boss_talk_2">보스 talk</string>
+
+    <!-- teacher talk card view-->
+    <string name="teacher_talk_card_view_question"><b>Q. %s</b></string>
+    <string name="teacher_talk_card_view_text">%s</string>
     <string name="card_view_statement">답변 대기중</string>
-    <string name="bookmark_count">%s</string>
-    <string name="comment_count">%s</string>
-    <string name="like_count">%s</string>
+    <string name="teacher_talk_bookmark_count">%s</string>
+    <string name="teacher_talk_comment_count">%s</string>
+    <string name="teacher_talk_like_count">%s</string>
+
+    <!-- boss talk item-->
+    <string name="boss_talk_title"><b>%s</b></string>
+    <string name="boss_talk_content">%s</string>
+    <string name="boss_talk_date">%s</string>
+    <string name="boss_talk_bookmark_count">%s</string>
+    <string name="boss_talk_comment_count">%s</string>
+    <string name="boss_talk_like_count">%s</string>
+
+
 
 
     <!-- filter chip-->
@@ -57,7 +71,7 @@
         <item>답변순</item>
     </string-array>
   
-    <!--signup    -->
+    <!--signup  -->
     <string name="sinup_next_btn">다음 단계</string>
     <string name="signup_re_verify">다시 인증하기</string>
     <string name="signup_insert_info">정보 입력하러 가기</string>

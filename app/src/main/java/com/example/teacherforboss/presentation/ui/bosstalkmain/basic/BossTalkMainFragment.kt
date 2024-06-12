@@ -1,5 +1,5 @@
 // TeacherTalkMainFragment.kt
-package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
+package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
 
 import android.graphics.Rect
 import android.os.Bundle
@@ -11,26 +11,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
-import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategoryAdpapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCardAdapter
+import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
+import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCardAdapter
+import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
-class TeacherTalkMainFragment :
-    BindingFragment<FragmentTeacherTalkMainBinding>(R.layout.fragment_teacher_talk_main) {
+class BossTalkMainFragment :
+    BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
 
-    private val viewModel by viewModels<TeacherTalkMainViewModel>()
+    private val viewModel by viewModels<BossTalkMainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
-        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
-        teacherTalkCardAdapter.setCardList(viewModel.mockCardList)
-
-        val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
-        binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
-        teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
+        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
@@ -39,7 +35,7 @@ class TeacherTalkMainFragment :
 
         //scrollview
         binding.svTeacherTalkMain.run {
-            header = binding.teacherTalkWidget2
+            header = binding.bossTalkWidget1
             stickListener = { _ ->
                 Log.d("LOGGER_TAG", "stickListener")
             }
@@ -48,7 +44,7 @@ class TeacherTalkMainFragment :
             }
         }
 
-        binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
 
 //        // RecyclerView를 담은 위젯 높이를 동적으로 설정
 //        binding.svTeacherTalkMain.viewTreeObserver.addOnGlobalLayoutListener {
@@ -67,9 +63,9 @@ class TeacherTalkMainFragment :
         })
     }
 }
-//
-//class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
-//    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-//        outRect.right = horizontalSpaceWidth
-//    }
-//}
+
+class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.right = horizontalSpaceWidth
+    }
+}

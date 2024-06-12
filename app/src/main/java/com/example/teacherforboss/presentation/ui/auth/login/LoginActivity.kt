@@ -73,8 +73,8 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
+
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
-//                    saveUserName(appContext,it.data?.result?.name?:"".toString())//survery start 사장님 이름
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)

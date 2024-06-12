@@ -1,32 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.Theme.TeacherForBoss" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.TeacherForBoss" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/light_status</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>
     </style>
 
-    <style name="RoundCornerModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="RoundCornerModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_background</item>
     </style>
 
     <style name="Theme.TeacherForBoss" parent="Base.Theme.TeacherForBoss"/>
 
     <!-- Button -->
-    <style name="Theme.TeacherForBoss.Button" parent="Widget.Material3.Button">
+    <style name="Theme.TeacherForBoss.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:height">@dimen/button_height</item>
+        <item name="cornerRadius">@dimen/button_radius</item>
+    </style>
+
+    <style name="Theme.TeacherForBoss.Button.More" parent="Theme.TeacherForBoss.Button">
+        <item name="android:backgroundTint">@null</item>
+        <item name="background">@drawable/background_radius8_border_purple500</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.14</item>
+        <item name="android:textColor">@color/Purple600</item>
+    </style>
+
+    <style name="Theme.TeacherForBoss.Button.ALL" parent="Theme.TeacherForBoss.Button">
         <item name="android:backgroundTint">@color/selector_all_btn_background</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="Theme.TeacherForBoss.Button.Survey" parent="Theme.TeacherForBoss.Button">
@@ -41,7 +51,6 @@
         <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.16</item>
     </style>
 
-
     <style name="Theme.TeacherForBoss.Button.Exam.Previous" parent="Theme.TeacherForBoss.Button">
         <item name="android:height">@dimen/button_survey_height</item>
         <item name="android:backgroundTint">@color/white</item>
@@ -55,11 +64,43 @@
         <item name="android:height">35dp</item>
         <item name="android:width">100dp</item>
         <item name="cornerRadius">10dp</item>
-
         <item name="android:textAppearance">@style/TextAppearance.TeacherForBoss.Body.Medium.12</item>
     </style>
 
+    <!-- Chip -->
+    <style name="Theme.TeacherForBoss.Chip" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:checked">false</item>
+        <item name="chipMinHeight">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
 
+    <!-- 그림자 없는 드롭다운 -->
+    <style name="NoShadowSpinnerStyle" parent="@android:style/Widget.PopupWindow">
+        <item name="android:popupBackground">@android:color/white</item>
+        <item name="android:popupElevation">0dp</item>
+        <item name="android:dropDownVerticalOffset">0dp</item>
+    </style>
+
+    <style name="Theme.TeacherForBoss.Chip.Category" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:checked">false</item>
+        <item name="chipMinHeight">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="chipBackgroundColor">@color/Purple200</item>
+        <item name="cornerRadius">8px</item>
+        <item name="chipEndPadding">16dp</item>
+        <item name="chipStartPadding">16dp</item>
+        <item name="textStartPadding">0dp</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:paddingVertical">4dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>
     <style name="SignupKeywordSelected" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/Purple600</item>
         <item name="android:shape">rectangle</item>

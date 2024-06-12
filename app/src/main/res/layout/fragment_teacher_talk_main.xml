@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- scroll view-->
+        <com.example.teacherforboss.presentation.ui.teachertalkmain.NewScrollView
+            android:id="@+id/sv_teacher_talk_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/teacher_talk_widget1"
+                    android:layout_width="match_parent"
+                    android:layout_height="345dp"
+                    android:background="@color/Purple200"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_question_pay_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/tv_question_pay_btn"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_alarm_btn"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_alarm_btn"
+                        app:layout_constraintTop_toTopOf="@+id/iv_alarm_btn" />
+
+                    <ImageView
+                        android:id="@+id/iv_alarm_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/ic_bell"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teacher_talk_main_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="70dp"
+                        android:layout_marginEnd="50dp"
+                        android:text="@string/teacher_talk_main_text1"
+                        android:textColor="@color/Purple600"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teacher_talk_main_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="50dp"
+                        android:text="@string/teacher_talk_main_text2"
+                        android:textColor="@color/Purple600"
+                        android:textSize="28sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/teacher_talk_main_text1" />
+
+                    <ImageView
+                        android:layout_width="281dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="19dp"
+                        android:src="@drawable/ic_teacher_talk_character"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.507"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/teacher_talk_main_text2"></ImageView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/teacher_talk_widget2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_rounded_top_corner"
+                    android:tag="sticky">
+                    <!-- 검색창 위젯-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/widget_search_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:background="@drawable/background_radius100_gray200"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <EditText
+                            android:id="@+id/et_search_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="@string/search_view_hint"
+                            android:paddingHorizontal="18dp"
+                            android:paddingVertical="8dp"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toStartOf="@id/iv_search"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/iv_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="18dp"
+                            android:src="@drawable/ic_search"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- 칩 리사이클러뷰 -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_teacher_talk_category"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="7dp"
+                        android:layout_marginBottom="45dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/widget_search_view"
+                        tools:listitem="@layout/item_teacher_talk_category" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/teacher_talk_widget3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1300dp"
+                    android:background="@drawable/background_white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/teacher_talk_widget2">
+
+                    <Spinner
+                        android:id="@+id/spinner_dropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="24dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@color/white"
+                        android:popupElevation="1dp"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="17dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/rv_teacher_talk_card"
+                        app:popupTheme="@style/NoShadowSpinnerStyle" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_teacher_talk_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="24dp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/btn_more_card"
+                        tools:listitem="@layout/item_teacher_talk_card" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_more_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:text="@string/more_card"
+                        android:background="@drawable/background_radius8_border_purple500"
+                        android:textColor="@color/Purple600"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </com.example.teacherforboss.presentation.ui.teachertalkmain.NewScrollView>
+
+        <!--플로팅 버튼-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_write"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@color/Purple600"
+            android:src="@drawable/ic_pencil"
+            app:backgroundTint="@color/Purple600"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

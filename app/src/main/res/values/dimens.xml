@@ -17,6 +17,8 @@
     <dimen name="spacing84">84dp</dimen>
 
     <!-- button -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_radius">8dp</dimen>
     <dimen name="button_survey_height">49dp</dimen>
     <dimen name="button_survey_radius">5dp</dimen>
 

@@ -4,7 +4,10 @@
     <string name="pwSame">비밀번호가 일치합니다</string>
     <string name="pwDifferent">비밀번호가 일치하지 않습니다</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_fragment">home fragement입니다</string>
+    <string name="boss_talk_fragment">bosstalk fragement입니다</string>
+    <string name="my_page_fragment">mypage fragement입니다</string>
+
 
     <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
     <string name="naver_client_secret">tazdlVePfj</string>
@@ -20,6 +23,40 @@
     <string name="timeover_true">"인증번호 다시 받기"</string>
     <string name="timeover_false">"인증번호를 받지 못하셨나요?"</string>
 
+    <!-- bnv -->
+    <string name="string_menu_home">홈</string>
+    <string name="string_menu_teacher_talk">티쳐Talk</string>
+    <string name="string_menu_boss_talk">보스Talk</string>
+    <string name="string_menu_my_page">마이페이지</string>
+
+    <!-- teacher_talk -->
+    <string name="tv_question_pay_btn"><u>보유티포 NNTP</u></string>
+    <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
+    <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
+    <string name="search_view_hint">궁금한 키워드를 검색해보세요.</string>
+    <string name="more_card">게시물 더 불러오기</string>
+
+    <!-- card view-->
+    <string name="card_view_question"><b>Q. %s</b></string>
+    <string name="card_view_text">%s</string>
+    <string name="card_view_statement">답변 대기중</string>
+    <string name="bookmark_count">%s</string>
+    <string name="comment_count">%s</string>
+    <string name="like_count">%s</string>
+
+
+    <!-- filter chip-->
+    <string name="filter_name">%s</string>
+
+    <!-- dropdown -->
+    <string name="dropdown_name">DropdownExample</string>
+    <string-array name="dropdown_items">
+        <item>최신순</item>
+        <item>조회수순</item>
+        <item>좋아요순</item>
+        <item>답변순</item>
+    </string-array>
+  
     <!--signup    -->
     <string name="sinup_next_btn">다음 단계</string>
     <string name="signup_re_verify">다시 인증하기</string>

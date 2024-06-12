@@ -18,6 +18,8 @@ import com.example.teacherforboss.data.model.request.signup.PhoneRequest
 import com.example.teacherforboss.data.model.response.signup.NicknameResponse
 import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupBossRequest
+import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherRequest
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.util.base.BaseResponse
@@ -57,14 +59,14 @@ interface AuthService {
     @POST("auth/login/social")
     suspend fun socialBossSignup(
         @Query("socialType") socialType:Int,
-        @Body signupRequest: SignupBossRequest
+        @Body signupRequest: SocialSignupBossRequest
     ):Response<socialLoginResponse>
 
     // social signup-teacher
     @POST("auth/login/social")
     suspend fun socialTeacherSignup(
         @Query("socialType") socialType:Int,
-        @Body signupRequest: SignupTeacherRequest
+        @Body signupRequest: SocialSignupTeacherRequest
     ):Response<socialLoginResponse>
     @POST("auth/email")
     suspend fun emailUser(

@@ -16,9 +16,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
+import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.DialogProfileImageBinding
 import com.example.teacherforboss.util.base.BindingImgAdapter
@@ -43,7 +41,6 @@ class ProfileImageDialog (
         super.onCreate(savedInstanceState)
         binding=DialogProfileImageBinding.inflate(LayoutInflater.from(context))
 
-
         var selectedFileList:List<ProfileAnimal>
         when(viewModel.role.value){
             1-> selectedFileList=animalBossFileList
@@ -53,10 +50,19 @@ class ProfileImageDialog (
         setView(selectedFileList)
         setImgView(selectedFileList)
         addListeners(selectedFileList)
+        observeProfileImg()
         setContentView(binding.root)
 
         setOnShowListener {
         }
+    }
+
+    private fun observeProfileImg(){
+        viewModel.profileImgUri.observe(activity, Observer { uri ->
+            uri?.let {
+                BindingImgAdapter.bindProfileImgUri(context,binding.profileImage,viewModel.profileImgUri.value!!)
+            }
+        })
     }
 
     private fun <T:ProfileAnimal> setView(profileList:List<T>) {
@@ -163,18 +169,11 @@ class ProfileImageDialog (
                 )
                 activity.pickImageLauncher.launch(intent)
 
-                // 사용자로부터 이미지 받은 이후 다이얼 로그에 띄우기
-                // TODO: 갑자기 에러,, 수정
-                Log.d("profile-uri",viewModel.profileImgUri.value.toString())
-                BindingImgAdapter.bindProfileImgUri(context,binding.profileImage,viewModel.profileImgUri.value!!)
-
-                viewModel._isUserImgSelected.value=true
             }
             shouldShowRequestPermissionRationale(activity,android.Manifest.permission.READ_EXTERNAL_STORAGE,) -> {
                 Toast.makeText(context, "Gallery access is required to select images.", Toast.LENGTH_SHORT).show()
             }
             else -> {
-                Log.d("gallery","gallery")
                 // 권한 요청
                 activity.requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
             }

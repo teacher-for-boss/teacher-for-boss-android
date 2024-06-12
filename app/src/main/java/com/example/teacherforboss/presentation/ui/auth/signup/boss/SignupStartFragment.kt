@@ -9,10 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentSignupStartBinding
+import com.example.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.example.teacherforboss.signup.fragment.EmailFragment
+import com.example.teacherforboss.util.base.LocalDataSource
 
 
 class SignupStartFragment : Fragment() {
@@ -45,11 +47,14 @@ class SignupStartFragment : Fragment() {
             btn2.isSelected = true
         }
         binding.nextBtn.setOnClickListener(){
+            val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+
             if(btn1.isSelected){
                 viewModel.setBossMode()
                 viewModel.changeToBossPageSize()
-                activity.gotoNextFragment(EmailFragment())
-//                activity.gotoNextFragment(BossProfileFragment())
+                // 소셜로 회원가입 중일때
+                if (signupType != SIGNUP_DEFAULT) activity.gotoNextFragment(BossProfileFragment())
+                else  activity.gotoNextFragment(EmailFragment())
             }
             else{
                 viewModel.setTeacherMode()
@@ -61,5 +66,9 @@ class SignupStartFragment : Fragment() {
 
         return binding.root
 
+    }
+    companion object{
+        const val SIGNUP_TYPE="SIGNUP_TYPE"
+        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
     }
 }

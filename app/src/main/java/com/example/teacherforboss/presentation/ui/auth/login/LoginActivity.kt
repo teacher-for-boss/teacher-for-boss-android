@@ -73,12 +73,10 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
-
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
                 }
                 is BaseResponse.Error ->{
-                    processError(it.msg)
-
+                    processError("사용자가 없습니다.")
                 }
                 else->{
                     //loading 종료시
@@ -396,8 +394,8 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun processError(msg:String?){
-        showToast("error:"+msg)
+    fun processError(msg:String){
+        showToast(msg)
     }
     fun showToast(msg:String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()

@@ -46,6 +46,7 @@ object BindingImgAdapter {
         Glide.with(context)
             .load(uri)
             .fitCenter()
+            .centerCrop()
             .apply(RequestOptions()
                 .override(80,80)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

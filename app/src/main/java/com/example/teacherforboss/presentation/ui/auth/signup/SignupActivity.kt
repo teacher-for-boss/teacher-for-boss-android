@@ -55,18 +55,16 @@ class SignupActivity: AppCompatActivity() {
                 val data:Intent?=result.data
                 data?.data?.let {
                     val fileSizeInBytes = getImageSize(it)
-                    val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
+                    val fileSizeInMB = fileSizeInBytes / (512.0 * 512.0)
                     Log.d("imageSize", fileSizeInMB.toString())
                     if(fileSizeInMB > 10) {
-                        Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "5MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
                     }
-
-                    lifecycleScope.launch {
-                        updateImgUri(it)
+                    else{
+                        lifecycleScope.launch {
+                            updateImgUri(it)
+                        }
                     }
-//                    viewModel._profileImgUri.value=it?:null
-
-                    Log.d("test",data.data.toString())
                 }
             }
         }
@@ -76,7 +74,6 @@ class SignupActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         initLayout()
         addListeners()

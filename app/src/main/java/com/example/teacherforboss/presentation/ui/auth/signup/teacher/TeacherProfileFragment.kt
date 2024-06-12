@@ -24,6 +24,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.google.android.material.chip.Chip
@@ -179,16 +180,16 @@ class TeacherProfileFragment : Fragment(){
     }
 
     private fun observeProfile(){
-        val activity = activity as SignupActivity
-
         viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-            Log.d("profile",viewModel.profileImg.value.toString())
             if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-
         })
 
         viewModel.profileImg.observe(viewLifecycleOwner,{bool->
             binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        })
+
+        viewModel.profileImgUri.observe(viewLifecycleOwner,{
+            if(it!=null) BindingImgAdapter.bindProfileImgUri(requireContext(),binding.profileImage,it)
         })
     }
 

@@ -23,6 +23,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 
@@ -30,7 +31,6 @@ class BossProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentBossProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
-    private val loginViewModel by activityViewModels<LoginViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,20 +106,21 @@ class BossProfileFragment : Fragment() {
             val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
             if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
             else signup()
-
         }
 
     }
 
     private fun observeProfile(){
         viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-            Log.d("profile",viewModel.profileImg.value.toString())
             if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-
         })
 
-        viewModel.profileImg.observe(viewLifecycleOwner,{bool->
-            binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        viewModel.profileImg.observe(viewLifecycleOwner,{it->
+            binding.profileImage.loadImageFromUrl(it)
+        })
+
+        viewModel.profileImgUri.observe(viewLifecycleOwner,{
+            if(it!=null) BindingImgAdapter.bindProfileImgUri(requireContext(),binding.profileImage,it)
         })
     }
 
@@ -130,8 +131,6 @@ class BossProfileFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    Log.d("signup",it.data?.result.toString())
-                    // TODO: spllash
                     showSplash()
                 }
                 is BaseResponse.Error->{
@@ -150,8 +149,6 @@ class BossProfileFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    Log.d("social signup",it.data?.result.toString())
-                    // TODO: splash
                     showSplash()
                 }
                 is BaseResponse.Error->{
@@ -165,7 +162,6 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun showSplash(){
-        //TODO: splash
         val intent = Intent(activity, SignupFinishActivity::class.java)
         intent.putExtra("nickname",binding.nicknameBox.text.toString())
         intent.putExtra("role",viewModel.role.value)

@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
@@ -16,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
@@ -25,6 +28,9 @@ import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SignupActivity: AppCompatActivity() {
@@ -46,7 +52,19 @@ class SignupActivity: AppCompatActivity() {
             if(result.resultCode== RESULT_OK){
                 val data:Intent?=result.data
                 data?.data?.let {
-                    viewModel._profileImgUri.value=it?:null
+                    val fileSizeInBytes = getImageSize(it)
+                    val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
+                    Log.d("imageSize", fileSizeInMB.toString())
+                    if(fileSizeInMB > 10) {
+                        Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    }
+
+                    lifecycleScope.launch {
+                        updateImgUri(it)
+                    }
+//                    viewModel._profileImgUri.value=it?:null
+
+                    Log.d("test",data.data.toString())
                 }
             }
         }
@@ -162,6 +180,26 @@ class SignupActivity: AppCompatActivity() {
     }
     fun showToast(msg:String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+
+    private suspend fun updateImgUri(uri:Uri){
+        withContext(Dispatchers.Main){
+            viewModel._profileImgUri.value=uri
+            viewModel._isUserImgSelected.value=true
+        }
+    }
+
+    private fun getImageSize(uri: Uri): Long {
+        var size: Long = 0
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        cursor?.let {
+            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+            it.moveToFirst()
+            size = it.getLong(sizeIndex)
+            it.close()
+        }
+
+        return size
     }
 
     fun startSmsRetriver(){

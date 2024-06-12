@@ -233,7 +233,7 @@ class SignupViewModel @Inject constructor(
 
     //phone 형식 체크
     fun phone_validation(){
-        val pattern= Pattern.compile("010\\d{4}\\d{4}")
+        val pattern= Pattern.compile("010\\d{3,4}\\d{4}")
         phone_check.value=pattern.matcher(livePhone.value.toString()).matches()
 
     }
@@ -650,6 +650,7 @@ class SignupViewModel @Inject constructor(
         get() = _timeOverState
 
     fun startTimer(){
+        _timeOverState.value = false
         timer.startTimer { timeLeft,state->
             _timerText.value=timeLeft
             if (state==true){

@@ -60,7 +60,8 @@
                         android:hint="이메일"
                         android:padding="12dp"
                         android:text="@={signupViewModel.liveEmail}"
-                        android:textColorHint="@color/gray_02">
+                        android:textColorHint="@color/gray_02"
+                        android:maxLines="1">
 
                     </EditText>
 
@@ -72,6 +73,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{signupViewModel.email_check}"
                         android:text="인증하기"
                         android:textColor="@color/white" />
 
@@ -114,7 +117,8 @@
                             android:background="@drawable/selector_login"
                             android:hint="인증번호 입력"
                             android:padding="12dp"
-                            android:textColorHint="@color/gray_02">
+                            android:textColorHint="@color/gray_02"
+                            android:maxLines="1">
 
                         </EditText>
 
@@ -140,6 +144,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{!signupViewModel.timeOverState}"
                         android:text="확인"
                         android:textColor="@color/white" />
 

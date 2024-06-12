@@ -23,15 +23,6 @@
             android:layout_height="match_parent"
             >
 
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/gray_02"
-                android:progressTint="@color/main_purple_00"
-                android:progress="20"
-                android:max="100"/>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="14dp">
@@ -69,11 +60,12 @@
                         android:hint="이메일"
                         android:padding="12dp"
                         android:text="@={signupViewModel.liveEmail}"
-                        android:textColorHint="@color/gray_02">
+                        android:textColorHint="@color/gray_02"
+                        android:maxLines="1">
 
                     </EditText>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/emailVerifyBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"
@@ -81,6 +73,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{signupViewModel.email_check}"
                         android:text="인증하기"
                         android:textColor="@color/white" />
 
@@ -123,7 +117,8 @@
                             android:background="@drawable/selector_login"
                             android:hint="인증번호 입력"
                             android:padding="12dp"
-                            android:textColorHint="@color/gray_02">
+                            android:textColorHint="@color/gray_02"
+                            android:maxLines="1">
 
                         </EditText>
 
@@ -141,7 +136,7 @@
 
                     </RelativeLayout>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/emailConfirmBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"
@@ -149,6 +144,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{!signupViewModel.timeOverState}"
                         android:text="확인"
                         android:textColor="@color/white" />
 
@@ -184,7 +181,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/radius_purple_button"
             android:text="다음"
             android:backgroundTint="@color/selector_all_btn_background"
@@ -196,7 +193,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             >
 
-        </Button>
+        </androidx.appcompat.widget.AppCompatButton>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

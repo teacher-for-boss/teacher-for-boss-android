@@ -3,6 +3,7 @@ package com.example.teacherforboss.presentation.ui.auth.signup.basic
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -59,17 +60,6 @@ class PasswordFragment : Fragment() {
             checkNextButtonActivation()
         }
 
-        // 키보드 바깥 화면 터치 시 키보드 내리기
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-                view?.clearFocus()
-            }
-            false
-        }
-
         // 비밀번호 일치할 때만 nextBtn 활성화
 
 
@@ -116,6 +106,8 @@ class PasswordFragment : Fragment() {
     }
 
     private fun checkNextButtonActivation() {
+        Log.d("test",viewModel.all_check.value.toString())
+
         val isPasswordValid = viewModel.all_check.value ?: false
         val isPasswordMatch = viewModel.rePw_check.value ?: false
 

@@ -16,6 +16,9 @@
     <string name="verified_true">인증되었습니다.</string>
     <string name="verified_false">인증번호가 올바르지 않습니다.</string>
 
+    <string name="format_true">올바른 형식입니다</string>
+    <string name="format_false">올바르지 않은 형식입니다</string>
+
     <!--timer    -->
     <string name="timeover_true">"인증번호 다시 받기"</string>
     <string name="timeover_false">"인증번호를 받지 못하셨나요?"</string>
@@ -53,5 +56,31 @@
         <item>좋아요순</item>
         <item>답변순</item>
     </string-array>
+  
+    <!--signup    -->
+    <string name="sinup_next_btn">다음 단계</string>
+    <string name="signup_re_verify">다시 인증하기</string>
+    <string name="signup_insert_info">정보 입력하러 가기</string>
+
+    <!-- signup-teacher-->
+    <string name="business_info_title">사업자 인증을 진행해주세요</string>
+    <string name="business_info_desc1">누군가를 가르칠 준비가 되셨나요?</string>
+    <string name="business_info_desc2">사업자 입력을 통해 티쳐 자격 인증을 진행해요</string>
+    <string name="business_info_desc3">"사업자 등록번호/성명/개업연월일이"</string>
+    <string name="business_info_desc4">"동일해야 다음 단계로 넘어갈 수 있어요"</string>
+    <string name="business_info_next_btn">정보 입력하러 가기</string>
+
+    <string name="business_register">정보를 입력해주세요</string>
+    <string name="business_verify">사업자 정보 인증을</string>
+    <string name="business_verify_success">성공했어요</string>
+    <string name="business_verify_fail">실패했어요</string>
+    <string name="business_verify_fail_desc">유효하지 않은 사업자 정보예요</string>
+    <string name="business_verify_help">문제가 생겼나요?</string>
+
+    <string name="account_title">계좌를 등록해 주세요</string>
+    <string name="account_desc">답변에 대한 리워드를 받을 수 있어요</string>
+
+
+    <string name="bank_title">은행을 선택해 주세요</string>
 
 </resources>

@@ -66,10 +66,19 @@ class NamePhoneFragment : Fragment() {
                 binding.phoneNumBox3.requestFocus()
             }
         })*/
+        viewModel.phone.observe(viewLifecycleOwner){
+            viewModel.phone_validation()
+            if(viewModel.phone.value.isNullOrEmpty()){
+                binding.veryInfo.visibility = View.INVISIBLE
+            }
+            else{
+                binding.veryInfo.visibility = View.VISIBLE
+            }
+
+        }
 
         //휴대폰 인증하기버튼 눌렀을때
         binding.phoneVerifyBtn.setOnClickListener {
-            viewModel.phone_validation()
             binding.veryInfo.visibility=View.VISIBLE
 
             if(viewModel.phone_check.value==true){
@@ -78,9 +87,6 @@ class NamePhoneFragment : Fragment() {
 
                 viewModel.startTimer()*/
                 viewModel.phoneUser(hash.toString())
-            }
-            else {
-                binding.veryInfo.text = "형식에 맞는 번호를 입력해주세요."
             }
 
         }
@@ -93,18 +99,25 @@ class NamePhoneFragment : Fragment() {
                     binding.veryInfo.text="인증번호가 발송되었습니다."
                     binding.phoneVerifyBtn.isEnabled = false
                     binding.inputPhoneCode.visibility=View.VISIBLE
+                    binding.timeOverText.visibility=View.VISIBLE
                     viewModel.startTimer()
 
                     Log.d("auth",it.data?.result?.phoneAuthId.toString())
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
-                    if(it.msg=="이미 가입된 전화번호입니다."){
+                    /*if(it.msg=="이미 가입된 전화번호입니다."){
                         binding.veryInfo.text="이미 가입된 전화번호입니다."
                     }
                     else{
                         showToast("error"+it.msg)
-                    }
+                    }*/
+                    binding.veryInfo.text="인증번호가 발송되었습니다."
+                    binding.phoneVerifyBtn.isEnabled = false
+                    binding.inputPhoneCode.visibility=View.VISIBLE
+                    binding.timeOverText.visibility=View.VISIBLE
+                    viewModel.startTimer()
+
                 }
 
                 else -> {}
@@ -125,27 +138,30 @@ class NamePhoneFragment : Fragment() {
                     if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
                         viewModel._isPhoneVerified_str.value="T"
                         viewModel._isPhoneVerified.value=true
+                        viewModel.stopTimer()
+                        binding.phoneConfirmBtn.isEnabled = false
                     }
-                    binding.timeOverText.visibility=View.VISIBLE
-
+                    binding.checkVery.visibility=View.VISIBLE
 //                    var tempPhoneMap = mutableMapOf<String, LiveData<Boolean>>()
 //                    tempPhoneMap[phone]=viewModel.isPhoneVerified
                     //viewModel.confirmedPhone.postValue(tempPhoneMap)
                 }
                 is BaseResponse.Error->{
-                    showToast("error:"+it.msg)
+                    viewModel._isPhoneVerified_str.value="F"
+                    viewModel._isPhoneVerified.value=false
+                    binding.checkVery.visibility=View.VISIBLE
                 }
 
                 else -> {}
             }
         }
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+        binding.timeOverText.setOnClickListener{
+            if (viewModel.timeOverState.value == true){
+                viewModel.phoneUser(hash.toString())
+                binding.phoneCodeBox.text.clear()
             }
-            false
         }
+
 
 
         return binding.root

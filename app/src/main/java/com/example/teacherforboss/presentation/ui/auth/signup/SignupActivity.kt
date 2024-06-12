@@ -1,41 +1,86 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
-import AppSignatureHelper
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.signup.AuthOtpReceiver
-import com.example.teacherforboss.signup.fragment.EmailFragment
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.SignupStartFragment
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class SignupActivity : AppCompatActivity() {
+class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel: SignupViewModel by viewModels()
-    var index=0
-    val fragmentManager:FragmentManager=supportFragmentManager
+    private val fragmentManager:FragmentManager=supportFragmentManager
+
+    // 갤러리 오픈
+    val requestPermissionLauncher:ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted->
+            if(isGranted){
+                openGallery()
+            }
+        }
+
+    // 갤러리 사진 설정
+    val pickImageLauncher:ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+            if(result.resultCode== RESULT_OK){
+                val data:Intent?=result.data
+                data?.data?.let {
+                    val fileSizeInBytes = getImageSize(it)
+                    val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
+                    Log.d("imageSize", fileSizeInMB.toString())
+                    if(fileSizeInMB > 10) {
+                        Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    }
+
+                    lifecycleScope.launch {
+                        updateImgUri(it)
+                    }
+//                    viewModel._profileImgUri.value=it?:null
+
+                    Log.d("test",data.data.toString())
+                }
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        initLayout()
+        addListeners()
+        collectData()
 
 //        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
 //        binding.signupViewModel=viewModel
@@ -51,15 +96,32 @@ class SignupActivity : AppCompatActivity() {
 //        val otpReceiver=AuthOtpReceiver.OtpReceiveListener.g
 //        registerReceiver(otpReceiver,otpReceiver.doFilter())
 
-
+        // pivot 이전 경로
         fragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container,EmailFragment())
+            .add(R.id.fragment_container,SignupStartFragment())
             .commit()
 
+
+    }
+
+    private fun initLayout(){
+        with(binding.progressbarSignup){
+            Log.d("signup",min.toString())
+            Log.d("signup",max.toString())
+            min= DEFAULT_PROGRESSBAR
+            max= TEACHER_FRAGMENT_SZIE
+            //TODO: boss와 분기처리, boss 회원 가입시 progress bar 다시 init
+        }
+
+    }
+
+
+    private fun addListeners(){
         binding.backBtn.setOnClickListener{
             if(fragmentManager.backStackEntryCount>0){
                 fragmentManager.popBackStack()
+                viewModel.minusCurrentPage()
             }
             else{
                 val intent=Intent(this,LoginActivity::class.java)
@@ -68,84 +130,40 @@ class SignupActivity : AppCompatActivity() {
             }
 
         }
-
-
-//        binding.nextBtn.setOnClickListener {
-//            val transaction=fragmentManager.beginTransaction()
-//            Log.d("index","${index}")
-//            when(index){
-//                0->{
-//                    index=1
-//                    transaction.replace(R.id.fragment_container,PasswordFragment())
-//
-//                }
-//                1->{
-//
-//                    //q. 제대로 rePw_check이 관찰되지 않음!!
-////                    viewModel.rePw_check.observe(this,Observer{
-////                        Log.d("index","${viewModel.rePw_check.value}")
-////                        if(viewModel.rePw_check.value==true){
-////                            index=2
-////                            transaction.replace(R.id.fragment_container,NamePhoneFragment())
-////                        }
-////                        else{
-////                            showToast("비밀번호가 일치하지 않습니다.")
-////                        }
-////
-////                    })
-//
-//                    index=2
-//                    transaction.replace(R.id.fragment_container,NamePhoneFragment())
-//
-//
-//
-//
-//                }
-//                2->{
-//                    index=3
-//                    transaction.replace(R.id.fragment_container,GenderBirthFragment())
-//
-//                }
-//                3->{
-//                    index=4
-//                    transaction.replace(R.id.fragment_container,AgreementFragment())
-//
-//                }
-//                4->{
-//                    // 서버로 회원가입 api 요청
-//                    viewModel.signupUser()
-//                    viewModel.signupResult.observe(this,{
-//                        when(it){
-//                            is BaseResponse.Loading->{
-//                                // 기다려주세요 메시지?로고?
-//                            }
-//                            is BaseResponse.Success->{
-//                                processSignup(it.data)//respponse.result
-//                            }
-//                            is BaseResponse.Error->{
-//                                processError(it.msg)
-//                            }
-//                            else->{
-//                                //loading 종료시
-//
-//                            }
-//                        }
-//
-//                    })
-//
-//                }
-//            }
-//            transaction.addToBackStack(null)
-//            transaction.commit()
-//        }
+        binding.root.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
+            }
+            false
+        }
 
     }
 
+    private fun collectData(){
+        viewModel.currentPage.observe(this){currentPage->
+            Log.d("signup",currentPage.toString())
+            binding.progressbarSignup.progress=currentPage
+        }
+        viewModel.totalPage.observe(this){totalPage->
+            Log.d("signup",totalPage.toString())
+            binding.progressbarSignup.max=totalPage
+        }
+    }
+
+
+
     fun gotoNextFragment(fragment:Fragment){
+        viewModel.plusCurrentPage()
         val transaction=fragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container,fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    fun openGallery(){
+        val gallery=Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(gallery)
     }
 
 
@@ -164,6 +182,26 @@ class SignupActivity : AppCompatActivity() {
     }
     fun showToast(msg:String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    }
+
+    private suspend fun updateImgUri(uri:Uri){
+        withContext(Dispatchers.Main){
+            viewModel._profileImgUri.value=uri
+            viewModel._isUserImgSelected.value=true
+        }
+    }
+
+    private fun getImageSize(uri: Uri): Long {
+        var size: Long = 0
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        cursor?.let {
+            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+            it.moveToFirst()
+            size = it.getLong(sizeIndex)
+            it.close()
+        }
+
+        return size
     }
 
     fun startSmsRetriver(){
@@ -201,6 +239,31 @@ class SignupActivity : AppCompatActivity() {
         fun doFilter(): IntentFilter = IntentFilter().apply {
             addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
         }
+    }
+    private var backPressedOnce = false
+    private val exitHandler = Handler(Looper.getMainLooper())
+    private val resetBackPressed = Runnable { backPressedOnce = false }
+
+    override fun onBackPressed() {
+        if (backPressedOnce) {
+            finishAffinity()
+            return
+            super.onBackPressed()
+        }
+
+        this.backPressedOnce = true
+        Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
+        // 2초 내에 다시 뒤로가기 버튼을 누르지 않으면 backPressedOnce 값을 false로 되돌림
+        exitHandler.postDelayed(resetBackPressed, 2000)
+    }
+
+    companion object{
+        private const val DEFAULT_PROGRESSBAR=1f
+        private const val FIRST_PROGRESS=0
+        private const val BOSS_FRAGMENT_SIZE=6f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
+        private const val TEACHER_FRAGMENT_SZIE=10f // 티쳐: 온보딩:1 + 일반 4 + 티쳐 4 + 프로필 1= 10
+
     }
 
 

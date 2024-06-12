@@ -41,46 +41,16 @@ class EmailFragment : Fragment() {
 
         val activity=activity as SignupActivity
 
-        viewModel._isEmailVerified_str.value="F"
-        viewModel._isEmailVerified.value=false
-
-
-
-        // 키보드 바깥 화면 터치 시 키보드 내리기
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-                view?.clearFocus()
-            }
-            false
+        viewModel.liveEmail.observe(viewLifecycleOwner){
+            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
         }
-
 
         //이메일 인증하기버튼 눌렀을때
         binding.emailVerifyBtn.setOnClickListener {
-
-            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
             binding.veryInfo.visibility=View.VISIBLE
-
-            if(viewModel.email_check.value==true){
-                viewModel.emailUser() //서버로 auth/email
-                binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
-
-                // 이미 가입된 계정일 경우, 타이머 및 입력란 비가시
-                binding.emailVerifyBtn.visibility = View.INVISIBLE
-                binding.inputEmailCode.visibility=View.VISIBLE
-                viewModel.startTimer()  //타이머 시작
-                binding.timeOverText.visibility=View.VISIBLE //양식 맞을때만
-
-
-            }
-            else{
-                binding.veryInfo.text="올바르지 않는 이메일 형식입니다"
-            }
-
+            binding.emailVerifyBtn.isEnabled = false
+            viewModel.emailUser() //서버로 auth/email
         }
         //이메일 인증결과 수신
         viewModel.emailResult.observe(viewLifecycleOwner){
@@ -89,7 +59,12 @@ class EmailFragment : Fragment() {
                 is BaseResponse.Success->{
 
                     // fix.. 여기에 가입된 계정이 아닌 경우에만 타이머 visible 하게 해놨는데 그러면 굉장히 느려짐.. 뭐지
+                    binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
 
+                    // 이미 가입된 계정일 경우, 타이머 및 입력란 비가시
+                    binding.inputEmailCode.visibility=View.VISIBLE
+                    viewModel.startTimer()  //타이머 시작
+                    binding.timeOverText.visibility=View.VISIBLE //양식 맞을때만
                     viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
 
                 }
@@ -99,7 +74,6 @@ class EmailFragment : Fragment() {
                         binding.veryInfo.text="이미 가입된 이메일 주소입니다."
 
                         // 이미 가입된 계정일 경우, 타이머 및 입력란 비가시
-                        binding.emailVerifyBtn.visibility = View.VISIBLE
                         binding.inputEmailCode.visibility=View.INVISIBLE
                         viewModel.stopTimer()  //타이머 시작
                         binding.timeOverText.visibility=View.INVISIBLE //양식 맞을때만
@@ -127,19 +101,12 @@ class EmailFragment : Fragment() {
                 is BaseResponse.Success->{
                     binding.nextBtn.isEnabled = false
 
-
                     //viewModel.setEmailVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
                     if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
                         viewModel._isEmailVerified_str.value="T"
                         viewModel._isEmailVerified.value=true
-
-
-                        binding.nextBtn.setOnClickListener {
-                            Log.d("email",viewModel.email.value!!)
-                            activity.gotoNextFragment(PasswordFragment())
-                        }
-
                         viewModel.stopTimer()
+                        binding.emailConfirmBtn.isEnabled = false
                     }
                     binding.checkVery.visibility=View.VISIBLE
 
@@ -167,10 +134,21 @@ class EmailFragment : Fragment() {
                 else -> {}
             }
         }
+        binding.timeOverText.setOnClickListener{
+            if (viewModel.timeOverState.value == true){
+                viewModel.emailUser()
+                binding.emailCodeBox.text.clear()
+            }
+        }
+
+        // next btn
+        binding.nextBtn.setOnClickListener {
+            viewModel.plusCurrentPage()
+            activity.gotoNextFragment(PasswordFragment())
+        }
         return binding.root
 
     }
-
 
 
 

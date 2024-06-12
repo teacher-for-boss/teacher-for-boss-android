@@ -24,6 +24,8 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginU
 import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.base.LocalDataSource
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -35,22 +37,21 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding:ActivityLoginBinding
 
+    private val signupViewModel by viewModels<SignupViewModel>()
     private val loginViewModel by viewModels<LoginViewModel>()
     private val socialLoginViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
 
     val appContext=GlobalApplication.instance
-
-    val USER_INFO="USER_INFO"
-    val USER_NAME="USER_NAME"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("test","T")
@@ -72,35 +73,12 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
-                    saveUserName(appContext,it.data?.result?.name?:"".toString())//survery start 사장님 이름
 
-                    // 설문조사 여부에 따라 다른 activity로 이동
-
-
+                    LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)
 
-                }
-                else->{
-                    //loading 종료시
-                }
-            }
-
-        }
-        //소셜 로그인 후 서버로 로그인 요청
-        loginViewModel.socialLoginResult.observe(this){
-            when(it){is BaseResponse.Loading ->{
-
-            }
-                is BaseResponse.Success ->{
-                    saveToken(it.data)//respponse.result
-                    saveUserName(appContext,it.data?.result?.name!!.toString())
-
-                }
-                is BaseResponse.Error ->{
-                    processError(it.msg)
-                    Log.e("social",it.msg.toString())
                 }
                 else->{
                     //loading 종료시
@@ -129,6 +107,27 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                     }
+                }
+            }
+        }
+
+        // 소셜 로그인 (3.로그인 요청)
+        loginViewModel.socialLoginResult.observe(this){
+            when(it){
+                is BaseResponse.Loading ->{}
+                is BaseResponse.Success ->{
+                    saveToken(it.data)//respponse.result
+                    LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                }
+                is BaseResponse.Error ->{
+//                    processError(it.msg)
+                    // 회원가입 진행
+                    loginViewModel._isSocialLoginSignup.value=true
+                    gotoSignupActivity()
+
+                }
+                else->{
+                    //loading 종료시
                 }
             }
         }
@@ -199,7 +198,6 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
 
     }
-
     //naver
     private fun handleNaverLogin(){
         val oauthLoginCallback = object : OAuthLoginCallback {
@@ -207,24 +205,37 @@ class LoginActivity : AppCompatActivity() {
                 // 네이버 로그인 API 호출 성공 시 유저 정보를 가져옴
                 NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
                     override fun onSuccess(result: NidProfileResponse) {
-                        var name = result.profile?.name.toString()
-                        var email = result.profile?.email.toString()
+                        with(signupViewModel){
+                            _name.value=result.profile?.name.toString()
+                            liveEmail.value=result.profile?.email.toString()
+                            livePhone.value=result.profile?.mobile.toString().replace("-","")
+                            _birthDate.value=result.profile?.birthday.toString()
+                            _profileImg.value=result.profile?.profileImage.toString()
+                        }
+
                         var gender = result.profile?.gender.toString()
-                        var phoneNumber=result.profile?.mobile.toString()
                         var birthYear=result.profile?.birthYear.toString()
                         var birthDay=result.profile?.birthday.toString()
+                        var name = result.profile?.name.toString()
+                        var email = result.profile?.email.toString()
+                        var phoneNumber=result.profile?.mobile.toString()
                         var imageUrl=result.profile?.profileImage.toString()
 
-                        //사용자 정보 전처리
                         var gender_int=1
+                        //사용자 정보 전처리
                         if(gender=="M"){
-                            var gender_int=2
+                            gender_int=1
                         }
-                        else gender_int=1
+                        else gender_int=2
 
-                        phoneNumber=phoneNumber.replace("-","")
+                        signupViewModel._birthDate.value=birthYear+"-"+birthDay
 
-                        var birthDate_str=birthYear+"-"+birthDay
+                        LocalDataSource.saveUserInfo(context ,"name",result.profile?.name.toString())
+                        LocalDataSource.saveUserInfo(context,"email",result.profile?.email.toString())
+                        LocalDataSource.saveUserInfo(context,"phone",result.profile?.mobile.toString().replace("-",""))
+                        LocalDataSource.saveUserInfo(context,"birthDate",birthYear+"-"+birthDay)
+                        LocalDataSource.saveUserInfo(context,"profileImg",result.profile?.profileImage.toString())
+                        LocalDataSource.saveUserInfo(context,"gender",gender_int.toString())
 
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이름 : $name")
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이메일 : $email")
@@ -233,7 +244,10 @@ class LoginActivity : AppCompatActivity() {
                         Log.e("naver", "네이버 로그인한 유저 정보 - 생년 월일 : $birthYear+${birthDay}")
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이미지 : $imageUrl")
 
-                        loginViewModel.socialLogin(type="naver",email,name,phoneNumber,gender_int, birthDate_str,imageUrl)
+                        // 소셜 로그인 요청
+                        loginViewModel.socialLogin(type="naver",email)
+                        LocalDataSource.saveSignupType(context,SIGNUP_SOCIAL_NAVER)
+                        signupViewModel._socialType.value=3
                     }
 
 
@@ -293,6 +307,7 @@ class LoginActivity : AppCompatActivity() {
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
                     //getKakaoUserInfo()
+
                     socialLoginViewModel.kakaoLoginSuccess()
 
                 }
@@ -335,12 +350,15 @@ class LoginActivity : AppCompatActivity() {
                 // 티쳐 포 보스 소셜 로그인 api 요청
 
                 //데이터 전처리
-                email=user.kakaoAccount?.email!!
-                name=user.kakaoAccount?.name!!
-                phoneNumber=user.kakaoAccount?.phoneNumber!!
-                phoneNumber=phoneNumber.replace("+82","0")
-                    .replace("-","")
-                    .replace(" ","")
+                with(signupViewModel){
+                    liveEmail.value=user.kakaoAccount?.email!!
+                    _name.value=user.kakaoAccount?.name!!
+                    livePhone.value=user.kakaoAccount?.phoneNumber!!
+                        .replace("+82","0")
+                        .replace("-","")
+                        .replace(" ","")
+                    _profileImg.value=user.kakaoAccount?.profile?.thumbnailImageUrl
+                }
 
                 if(user.kakaoAccount?.gender.toString()=="남자"){
                     gender=1
@@ -348,14 +366,34 @@ class LoginActivity : AppCompatActivity() {
                 else{
                     gender=2
                 }
+                signupViewModel._gender.value=gender
+
                 birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
                 val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
                 val birthDate=LocalDate.parse(birthDate_str,formatter)
-                imageUrl=user.kakaoAccount?.profile?.thumbnailImageUrl
+                val formatted_phone=user.kakaoAccount?.phoneNumber!!
+                    .replace("+82","0")
+                    .replace("-","")
+                    .replace(" ","")
+                signupViewModel._birthDate.value=birthDate.toString()
+                signupViewModel._socialType.value=2
 
-                loginViewModel.socialLogin(type="kakao",email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
+                LocalDataSource.saveUserInfo(context,"name",user.kakaoAccount?.name!!)
+                LocalDataSource.saveUserInfo(context,"email",user.kakaoAccount?.email!!)
+                LocalDataSource.saveUserInfo(context,"phone",formatted_phone)
+                LocalDataSource.saveUserInfo(context,"birthDate",birthDate.toString())
+                LocalDataSource.saveUserInfo(context,"profileImg",user.kakaoAccount?.profile?.thumbnailImageUrl?:"")
+                LocalDataSource.saveUserInfo(context,"gender",gender.toString())
+                LocalDataSource.saveSignupType(context,SIGNUP_SOCIAL_KAKAO)
+                loginViewModel.socialLogin("kakao",user.kakaoAccount?.email!!)
+//                loginViewModel.socialLogin(type="kakao",email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
             }
         }
+    }
+
+    private fun gotoSignupActivity(){
+        val intent = Intent(context, SignupActivity::class.java)
+        startActivity(intent)
     }
 
     fun processError(msg:String?){
@@ -462,5 +500,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+    companion object{
+        const val USER_INFO="USER_INFO"
+        const val USER_NAME="USER_NAME"
+        const val SIGNUP_SOCIAL_NAVER="NAVER"
+        const val SIGNUP_SOCIAL_KAKAO="KAKAO"
+    }
 
 }

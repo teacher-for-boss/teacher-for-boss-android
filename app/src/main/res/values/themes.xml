@@ -101,3 +101,21 @@
         <item name="android:textColor">@color/black</item>
     </style>
 </resources>
+    <style name="SignupKeywordSelected" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/Purple600</item>
+        <item name="android:shape">rectangle</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SignupKeywordUnSelected" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:shape">rectangle</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:textColor">@color/chip_text</item>
+    </style>
+
+
+</resources>

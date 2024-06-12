@@ -23,20 +23,6 @@
             android:layout_height="match_parent"
             >
 
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/gray_02"
-                android:progressTint="@color/main_purple_00"
-                android:progress="55"
-                android:max="100"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="14dp">
-
-            </View>
 
             <LinearLayout
                 android:id="@+id/linearlayout"
@@ -93,13 +79,14 @@
 
                     </EditText>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/phoneVerifyBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"
                         android:text="인증하기"
                         android:background="@drawable/radius_purple_button"
                         android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{signupViewModel.phone_check}"
                         android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="16dp"
@@ -111,7 +98,8 @@
                     android:id="@+id/veryInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@{signupViewModel.isPhoneVerified()?@color/black:@color/sub_red}"
+                    android:textColor="@{signupViewModel.phone_check?@color/black:@color/sub_red}"
+                    android:text='@{signupViewModel.phone_check?"":@string/format_false}'
                     android:textSize="12dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"/>
@@ -162,15 +150,17 @@
 
                     </RelativeLayout>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/phoneConfirmBtn"
                         android:layout_width="70dp"
                         android:layout_height="35dp"
                         android:text="확인"
                         android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{!signupViewModel.timeOverState}"
                         android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
@@ -202,7 +192,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/radius_purple_button"
             android:text="다음"
             android:textColor="@color/white"
@@ -213,7 +203,7 @@
             android:enabled="@{signupViewModel.isPhoneVerified?true:false}"
             app:layout_constraintBottom_toBottomOf="parent"
             >
-        </Button>
+        </androidx.appcompat.widget.AppCompatButton>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

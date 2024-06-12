@@ -86,6 +86,7 @@
                         android:text="인증하기"
                         android:background="@drawable/radius_purple_button"
                         android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{signupViewModel.phone_check}"
                         android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="16dp"
@@ -97,7 +98,8 @@
                     android:id="@+id/veryInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@{signupViewModel.isPhoneVerified()?@color/black:@color/sub_red}"
+                    android:textColor="@{signupViewModel.phone_check?@color/black:@color/sub_red}"
+                    android:text='@{signupViewModel.phone_check?"":@string/format_false}'
                     android:textSize="12dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"/>
@@ -154,9 +156,11 @@
                         android:layout_height="35dp"
                         android:text="확인"
                         android:background="@drawable/radius_purple_button"
+                        android:backgroundTint="@color/selector_all_btn_background"
+                        android:enabled="@{!signupViewModel.timeOverState}"
                         android:textColor="@color/white"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_centerVertical="true"/>
 
                 </RelativeLayout>

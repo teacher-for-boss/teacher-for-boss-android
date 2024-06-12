@@ -1,7 +1,10 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -13,6 +16,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupFinishBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,10 +32,22 @@ class SignupFinishActivity : AppCompatActivity() {
 
         binding= DataBindingUtil.setContentView(this, R.layout.activity_signup_finish)
         binding.lifecycleOwner=this
+        val role = intent.getIntExtra("role",0)
 
         setContentView(binding.root)
 
-        initView(intent.getIntExtra("role",0))
+        initView(role)
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(role == 1){
+                val intentBoss = Intent(this, BossTalkBodyActivity::class.java)
+                startActivity(intentBoss)
+            }
+            else if (role == 2){
+                val intentTeacher = Intent(this, TeachertalkBodyActivity::class.java)
+                startActivity(intentTeacher)
+            }
+            finish()
+        }, 2000)
 
 
 

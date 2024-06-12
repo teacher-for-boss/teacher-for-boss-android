@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
@@ -237,6 +239,23 @@ class SignupActivity: AppCompatActivity() {
         fun doFilter(): IntentFilter = IntentFilter().apply {
             addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
         }
+    }
+    private var backPressedOnce = false
+    private val exitHandler = Handler(Looper.getMainLooper())
+    private val resetBackPressed = Runnable { backPressedOnce = false }
+
+    override fun onBackPressed() {
+        if (backPressedOnce) {
+            finishAffinity()
+            return
+            super.onBackPressed()
+        }
+
+        this.backPressedOnce = true
+        Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
+        // 2초 내에 다시 뒤로가기 버튼을 누르지 않으면 backPressedOnce 값을 false로 되돌림
+        exitHandler.postDelayed(resetBackPressed, 2000)
     }
 
     companion object{

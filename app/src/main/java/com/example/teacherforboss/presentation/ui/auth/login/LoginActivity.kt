@@ -25,6 +25,7 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginV
 
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.base.LocalDataSource
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -52,9 +53,6 @@ class LoginActivity : AppCompatActivity() {
 
     val appContext=GlobalApplication.instance
 
-    val USER_INFO="USER_INFO"
-    val USER_NAME="USER_NAME"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("test","T")
         super.onCreate(savedInstanceState)
@@ -75,7 +73,8 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
-                    saveUserName(appContext,it.data?.result?.name?:"".toString())//survery start 사장님 이름
+                    LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+//                    saveUserName(appContext,it.data?.result?.name?:"".toString())//survery start 사장님 이름
                 }
                 is BaseResponse.Error ->{
                     processError(it.msg)
@@ -114,18 +113,14 @@ class LoginActivity : AppCompatActivity() {
 
         // 소셜 로그인 (3.로그인 요청)
         loginViewModel.socialLoginResult.observe(this){
-            when(it){is BaseResponse.Loading ->{
-
-            }
+            when(it){
+                is BaseResponse.Loading ->{}
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
-                    saveUserName(appContext,it.data?.result?.name!!.toString())
-
+                    LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
                 }
                 is BaseResponse.Error ->{
-                    processError(it.msg)
-                    Log.e("social",it.msg.toString())
-
+//                    processError(it.msg)
                     // 회원가입 진행
                     loginViewModel._isSocialLoginSignup.value=true
                     gotoSignupActivity()
@@ -203,7 +198,6 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
 
     }
-
     //naver
     private fun handleNaverLogin(){
         val oauthLoginCallback = object : OAuthLoginCallback {
@@ -227,13 +221,21 @@ class LoginActivity : AppCompatActivity() {
                         var phoneNumber=result.profile?.mobile.toString()
                         var imageUrl=result.profile?.profileImage.toString()
 
+                        var gender_int=1
                         //사용자 정보 전처리
                         if(gender=="M"){
-                            signupViewModel._gender.value=2
+                            gender_int=1
                         }
-                        else signupViewModel._gender.value=1
+                        else gender_int=2
 
                         signupViewModel._birthDate.value=birthYear+"-"+birthDay
+
+                        LocalDataSource.saveUserInfo(context ,"name",result.profile?.name.toString())
+                        LocalDataSource.saveUserInfo(context,"email",result.profile?.email.toString())
+                        LocalDataSource.saveUserInfo(context,"phone",result.profile?.mobile.toString().replace("-",""))
+                        LocalDataSource.saveUserInfo(context,"birthDate",birthYear+"-"+birthDay)
+                        LocalDataSource.saveUserInfo(context,"profileImg",result.profile?.profileImage.toString())
+                        LocalDataSource.saveUserInfo(context,"gender",gender_int.toString())
 
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이름 : $name")
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이메일 : $email")
@@ -244,8 +246,8 @@ class LoginActivity : AppCompatActivity() {
 
                         // 소셜 로그인 요청
                         loginViewModel.socialLogin(type="naver",email)
+                        LocalDataSource.saveSignupType(context,SIGNUP_SOCIAL_NAVER)
                         signupViewModel._socialType.value=3
-//                        loginViewModel.socialLogin(type="naver",email,name,phoneNumber,gender_int, birthDate_str,imageUrl)
                     }
 
 
@@ -369,9 +371,20 @@ class LoginActivity : AppCompatActivity() {
                 birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
                 val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
                 val birthDate=LocalDate.parse(birthDate_str,formatter)
+                val formatted_phone=user.kakaoAccount?.phoneNumber!!
+                    .replace("+82","0")
+                    .replace("-","")
+                    .replace(" ","")
                 signupViewModel._birthDate.value=birthDate.toString()
                 signupViewModel._socialType.value=2
 
+                LocalDataSource.saveUserInfo(context,"name",user.kakaoAccount?.name!!)
+                LocalDataSource.saveUserInfo(context,"email",user.kakaoAccount?.email!!)
+                LocalDataSource.saveUserInfo(context,"phone",formatted_phone)
+                LocalDataSource.saveUserInfo(context,"birthDate",birthDate.toString())
+                LocalDataSource.saveUserInfo(context,"profileImg",user.kakaoAccount?.profile?.thumbnailImageUrl?:"")
+                LocalDataSource.saveUserInfo(context,"gender",gender.toString())
+                LocalDataSource.saveSignupType(context,SIGNUP_SOCIAL_KAKAO)
                 loginViewModel.socialLogin("kakao",user.kakaoAccount?.email!!)
 //                loginViewModel.socialLogin(type="kakao",email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
             }
@@ -487,5 +500,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+    companion object{
+        const val USER_INFO="USER_INFO"
+        const val USER_NAME="USER_NAME"
+        const val SIGNUP_SOCIAL_NAVER="NAVER"
+        const val SIGNUP_SOCIAL_KAKAO="KAKAO"
+    }
 
 }

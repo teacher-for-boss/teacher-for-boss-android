@@ -11,10 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentAccountBinding
-import com.example.teacherforboss.databinding.FragmentBusinessBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.TeacherProfileFragment
 import com.example.teacherforboss.signup.fragment.EmailFragment
+import com.example.teacherforboss.util.base.LocalDataSource
 
 class AccountFragment : Fragment() {
     private lateinit var binding: FragmentAccountBinding
@@ -37,8 +38,12 @@ class AccountFragment : Fragment() {
 
     private fun addListeners(){
         val activity = activity as SignupActivity
+        val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+
         binding.btnNextSignup.setOnClickListener {
-            activity.gotoNextFragment(EmailFragment())
+            // 소셜로그인으로 회원가입 시
+            if (signupType!= SIGNUP_DEFAULT) activity.gotoNextFragment(TeacherProfileFragment())
+            else  activity.gotoNextFragment(EmailFragment())
         }
         binding.bank.setOnClickListener {
             val transaction=parentFragmentManager.beginTransaction()
@@ -62,5 +67,9 @@ class AccountFragment : Fragment() {
         viewModel._accountHoler.observe(viewLifecycleOwner,dataObserver)
     }
 
+    companion object{
+        const val SIGNUP_TYPE="SIGNUP_TYPE"
+        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
+    }
 
 }

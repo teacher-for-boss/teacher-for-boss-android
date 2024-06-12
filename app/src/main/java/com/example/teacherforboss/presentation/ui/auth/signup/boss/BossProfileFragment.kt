@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.boss
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -22,6 +23,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 
 class BossProfileFragment : Fragment() {
@@ -44,6 +46,7 @@ class BossProfileFragment : Fragment() {
         val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
         val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
 
+        getSocialSignupProvidedInfo()
         addListeners()
         observeProfile()
 
@@ -100,7 +103,8 @@ class BossProfileFragment : Fragment() {
         }
 
         binding.nextBtn.setOnClickListener {
-            if(loginViewModel.isSocialLoginSinup.value==true) socialSignup()
+            val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+            if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
             else signup()
 
         }
@@ -108,8 +112,6 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun observeProfile(){
-        val activity = activity as SignupActivity
-
         viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
             Log.d("profile",viewModel.profileImg.value.toString())
             if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
@@ -142,8 +144,8 @@ class BossProfileFragment : Fragment() {
 
     }
 
-    private fun socialSignup(){
-        viewModel.socialSignup()
+    private fun socialSignup(type:String){
+        viewModel.socialSignup(type)
         viewModel.socialSignupResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }
@@ -179,5 +181,27 @@ class BossProfileFragment : Fragment() {
     fun showToast(msg:String){
         Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
     }
+
+    fun getSocialSignupProvidedInfo(){
+        val activity=activity as SignupActivity
+        val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+
+        viewModel._name.value=prefs.getString("name", INFO_NULL)
+        viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
+        viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
+        viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
+        viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
+        viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
+        Log.d("s-test",viewModel.name.value.toString())
+
+    }
+
+    companion object{
+        const val USER_INFO="USER_INFO"
+        const val INFO_NULL="INFO_NULL"
+        const val SIGNUP_TYPE="SIGNUP_TYPE"
+        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
+    }
+
 
 }

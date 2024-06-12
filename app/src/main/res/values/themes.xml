@@ -100,7 +100,7 @@
         <item name="android:clickable">true</item>
         <item name="android:textColor">@color/black</item>
     </style>
-</resources>
+
     <style name="SignupKeywordSelected" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/Purple600</item>
         <item name="android:shape">rectangle</item>
@@ -116,6 +116,5 @@
         <item name="chipCornerRadius">4dp</item>
         <item name="android:textColor">@color/chip_text</item>
     </style>
-
-
+    
 </resources>

@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.databinding.ActivityLoginBinding
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.model.response.login.LoginResponseInterface
@@ -59,10 +60,9 @@ class LoginActivity : AppCompatActivity() {
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //기본 로그인
-        val token= TokenManager.getAccessToken(this)//ver1. shared preference
+        val token= TokenManager.getAccessToken(this)
         if(!token.isNullOrBlank()){
-
+            gotoMainActivity()
         }
 
         //기본 로그인
@@ -393,6 +393,13 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(context, SignupActivity::class.java)
         startActivity(intent)
     }
+
+    private fun gotoMainActivity(){
+        val intent = Intent(context, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+
 
     fun processError(msg:String){
         showToast(msg)

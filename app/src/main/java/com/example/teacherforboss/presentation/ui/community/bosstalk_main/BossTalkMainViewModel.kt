@@ -1,7 +1,7 @@
 package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
 
 import androidx.lifecycle.ViewModel
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCard
+import com.example.teacherforboss.presentation.ui.community.bosstalk_main.card.BossTalkMainCard
 
 class BossTalkMainViewModel : ViewModel() {
 

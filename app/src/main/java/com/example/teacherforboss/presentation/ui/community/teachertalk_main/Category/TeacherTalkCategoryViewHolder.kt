@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.teachertalkmain.Category
+package com.example.teacherforboss.presentation.ui.community.teachertalk_main.Category
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding

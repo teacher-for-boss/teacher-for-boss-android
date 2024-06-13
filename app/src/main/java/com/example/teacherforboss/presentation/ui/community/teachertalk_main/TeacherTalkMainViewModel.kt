@@ -1,8 +1,8 @@
 package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
 
 import androidx.lifecycle.ViewModel
-import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategory
-import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCard
+import com.example.teacherforboss.presentation.ui.community.teachertalk_main.Category.TeacherTalkCategory
+import com.example.teacherforboss.presentation.ui.community.teachertalk_main.card.TeacherTalkCard
 
 class TeacherTalkMainViewModel : ViewModel() {
 

@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.teachertalkmain.card
+package com.example.teacherforboss.presentation.ui.community.teachertalk_main.card
 
 import android.content.Context
 import android.view.LayoutInflater

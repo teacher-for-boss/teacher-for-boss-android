@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.bosstalkmain.card
+package com.example.teacherforboss.presentation.ui.community.bosstalk_main.card
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding

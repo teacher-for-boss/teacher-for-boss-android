@@ -1,7 +1,7 @@
 package com.example.teacherforboss.data.mapper
 
 import com.example.teacherforboss.data.model.request.signup.RequestSignupDto
-import com.example.teacherforboss.domain.model.SignupEntity
+import com.example.teacherforboss.domain.model.signup.SignupEntity
 
 
 //domain entity-> data dto(api)

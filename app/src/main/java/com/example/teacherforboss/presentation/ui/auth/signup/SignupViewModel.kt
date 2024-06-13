@@ -26,8 +26,8 @@ import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherR
 import com.example.teacherforboss.data.model.response.login.socialLoginResponse
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
-import com.example.teacherforboss.domain.model.getPresingedUrlEntity
-import com.example.teacherforboss.domain.model.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
+import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.util.Timer.Custom3mTimer
 import com.example.teacherforboss.util.base.ErrorUtils

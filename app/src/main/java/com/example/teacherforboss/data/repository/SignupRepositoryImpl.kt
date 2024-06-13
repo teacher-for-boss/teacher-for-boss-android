@@ -2,8 +2,8 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.SignupRemoteDataSource
 import com.example.teacherforboss.data.mapper.toRequestSignupDto
-import com.example.teacherforboss.domain.model.SignupEntity
-import com.example.teacherforboss.domain.model.SignupResultEntity
+import com.example.teacherforboss.domain.model.signup.SignupEntity
+import com.example.teacherforboss.domain.model.signup.SignupResultEntity
 import com.example.teacherforboss.domain.repository.SignupRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -1,7 +1,6 @@
 // TeacherTalkMainFragment.kt
-package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,11 +8,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
-import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategoryAdpapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCardAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdpapter
+import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
+import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.TeacherTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
 class TeacherTalkMainFragment :

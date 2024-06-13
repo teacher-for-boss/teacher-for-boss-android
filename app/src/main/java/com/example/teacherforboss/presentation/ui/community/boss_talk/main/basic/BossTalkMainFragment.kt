@@ -1,5 +1,5 @@
 // TeacherTalkMainFragment.kt
-package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 
 import android.graphics.Rect
 import android.os.Bundle
@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCardAdapter
+import com.example.teacherforboss.presentation.ui.bosstalkmain.basic.BossTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 

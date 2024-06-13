@@ -1,4 +1,4 @@
-package com.example.teacherforboss.domain.model
+package com.example.teacherforboss.domain.model.signup
 
 data class SignupEntity(
     val email:String,

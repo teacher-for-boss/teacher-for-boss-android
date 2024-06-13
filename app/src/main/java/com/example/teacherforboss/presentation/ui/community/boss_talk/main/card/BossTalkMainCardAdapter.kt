@@ -1,12 +1,10 @@
-package com.example.teacherforboss.presentation.ui.bosstalkmain.card
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main.card
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCard
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCardViewHolder
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardViewHolder>() {

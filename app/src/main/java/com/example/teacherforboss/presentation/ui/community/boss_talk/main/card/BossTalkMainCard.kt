@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.bosstalkmain.card
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main.card
 
 data class BossTalkMainCard (
     val question: String,

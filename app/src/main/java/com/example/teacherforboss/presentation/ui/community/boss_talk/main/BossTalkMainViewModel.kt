@@ -1,9 +1,35 @@
 package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCard
+import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
+import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
+import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCard
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BossTalkMainViewModel : ViewModel() {
+@HiltViewModel
+class BossTalkMainViewModel @Inject constructor(
+    private val bossTalkPostsUseCase: BossTalkPostsUseCase
+) : ViewModel() {
+    var _lastPostId=MutableLiveData<Long>(1L)
+    val lastPostId:LiveData<Long>
+        get() = _lastPostId
+
+    var _size=MutableLiveData<Int>(0)
+    val size:LiveData<Int>
+        get() = _size
+    var _sortBy=MutableLiveData<String>("")
+    val sortBy:LiveData<String>
+        get() = _sortBy
+
+    private val _getBossTalkPostLiveData=MutableLiveData<BossTalkPostsResponseEntity>()
+    val getBossTalkPostLiveData:LiveData<BossTalkPostsResponseEntity>
+        get() = _getBossTalkPostLiveData
 
     val mockCardList = listOf<BossTalkMainCard>(
         BossTalkMainCard(
@@ -55,4 +81,20 @@ class BossTalkMainViewModel : ViewModel() {
             count_comment = "12",
         ),
     )
+
+    suspend fun getBossTalkPosts(){
+        viewModelScope.launch {
+            try{
+                val bossTalkPostsResponseEntity=bossTalkPostsUseCase(
+                    BossTalkPostsRequestEntity(
+                    lastPostId = lastPostId.value?:0L,
+                    size=size.value?:0,
+                    sortBy=sortBy.value?:"",
+                ))
+                _getBossTalkPostLiveData.value=bossTalkPostsResponseEntity
+
+            }catch (ex:Exception){
+            }
+        }
+    }
 }

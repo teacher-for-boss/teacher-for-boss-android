@@ -31,9 +31,9 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:text="@string/teacher_talk_card_view_question"
-                android:textStyle="bold"
-                android:textAppearance="@color/black"
-                android:textSize="20sp"
+                android:fontFamily="@font/pretendard_bold"
+                android:textSize="18sp"
+                android:textColor="@color/Gray700"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,11 +43,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:maxLines="2"
+                android:fontFamily="@font/pretendard_regular"
                 android:text="@string/teacher_talk_card_view_text"
-                android:textAppearance="@color/black"
-                android:textSize="20sp"
+                android:textColor="@color/Gray500"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_question" />
+
+            <TextView
+                android:id="@+id/tv_teacher_talk_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/teacher_talk_card_view_text"
+                android:fontFamily="@font/pretendard_regular"
+                android:textColor="@color/Gray400"
+                android:textSize="9sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/widget_card_view_statement"
@@ -58,10 +71,10 @@
                 android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text">
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_date">
 
                 <TextView
-                    android:id="@+id/tv_card_view_statement"
+                    android:id="@+id/tv_teacher_talk_card_view_statement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
@@ -75,57 +88,57 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/ic_bookmark"
+                android:id="@+id/ic_teacher_talk_bookmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_bookmark"
-                app:layout_constraintBottom_toBottomOf="@id/tv_bookmark_count"
-                app:layout_constraintEnd_toStartOf="@id/tv_bookmark_count"
-                app:layout_constraintTop_toTopOf="@id/tv_bookmark_count" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_bookmark_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_teacher_talk_bookmark_count"
+                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_bookmark_count" />
 
             <TextView
-                android:id="@+id/tv_bookmark_count"
+                android:id="@+id/tv_teacher_talk_bookmark_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="@string/teacher_talk_bookmark_count"
                 android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_comment"
-                app:layout_constraintEnd_toStartOf="@id/ic_comment"
-                app:layout_constraintTop_toTopOf="@id/ic_comment" />
+                app:layout_constraintBottom_toBottomOf="@id/ic_teacher_talk_comment"
+                app:layout_constraintEnd_toStartOf="@id/ic_teacher_talk_comment"
+                app:layout_constraintTop_toTopOf="@id/ic_teacher_talk_comment" />
 
 
             <ImageView
-                android:id="@+id/ic_comment"
+                android:id="@+id/ic_teacher_talk_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_comment"
-                app:layout_constraintBottom_toBottomOf="@id/tv_comment_count"
-                app:layout_constraintEnd_toStartOf="@id/tv_comment_count"
-                app:layout_constraintTop_toTopOf="@id/tv_comment_count" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_comment_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_teacher_talk_comment_count"
+                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_comment_count" />
 
             <TextView
-                android:id="@+id/tv_comment_count"
+                android:id="@+id/tv_teacher_talk_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/teacher_talk_comment_count"
                 android:layout_marginEnd="8dp"
                 android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_like"
-                app:layout_constraintEnd_toStartOf="@id/ic_like"
-                app:layout_constraintTop_toTopOf="@id/ic_like" />
+                app:layout_constraintBottom_toBottomOf="@id/ic_teacher_talk_like"
+                app:layout_constraintEnd_toStartOf="@id/ic_teacher_talk_like"
+                app:layout_constraintTop_toTopOf="@id/ic_teacher_talk_like" />
 
             <ImageView
-                android:id="@+id/ic_like"
+                android:id="@+id/ic_teacher_talk_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_like"
-                app:layout_constraintBottom_toBottomOf="@id/tv_like_count"
-                app:layout_constraintEnd_toStartOf="@+id/tv_like_count"
-                app:layout_constraintTop_toTopOf="@id/tv_like_count" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_like_count"
+                app:layout_constraintEnd_toStartOf="@+id/tv_teacher_talk_like_count"
+                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_like_count" />
 
             <TextView
-                android:id="@+id/tv_like_count"
+                android:id="@+id/tv_teacher_talk_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -133,7 +146,7 @@
                 android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_date" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

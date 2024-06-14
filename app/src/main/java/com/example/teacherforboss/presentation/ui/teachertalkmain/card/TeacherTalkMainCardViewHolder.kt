@@ -10,10 +10,11 @@ class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBind
         with(binding) {
             tvTeacherTalkQuestion.text = "Q. " + cardData.question
             tvTeacherTalkText.text = cardData.answer
-            tvCardViewStatement.text = cardData.statement_answer
-            tvBookmarkCount.text = cardData.count_bookmark
-            tvLikeCount.text = cardData.count_like
-            tvCommentCount.text = cardData.count_comment
+            tvTeacherTalkDate.text = cardData.date
+            tvTeacherTalkCardViewStatement.text = cardData.statement_answer
+            tvTeacherTalkBookmarkCount.text = cardData.count_bookmark
+            tvTeacherTalkLikeCount.text = cardData.count_like
+            tvTeacherTalkCommentCount.text = cardData.count_comment
         }
     }
 }

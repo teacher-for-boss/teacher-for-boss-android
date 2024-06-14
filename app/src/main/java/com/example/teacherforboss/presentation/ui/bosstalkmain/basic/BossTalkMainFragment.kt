@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCardAdapter
+import com.example.teacherforboss.presentation.ui.bosstalkmain.NewScrollView
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
@@ -24,6 +25,9 @@ class BossTalkMainFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val newScrollView = binding.svBossTalkMain as NewScrollView
+        newScrollView.setBinding(binding)
+
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.mockCardList)
@@ -34,7 +38,7 @@ class BossTalkMainFragment :
         binding.spinnerDropdown.adapter = adapter
 
         //scrollview
-        binding.svTeacherTalkMain.run {
+        binding.svBossTalkMain.run {
             header = binding.bossTalkWidget1
             stickListener = { _ ->
                 Log.d("LOGGER_TAG", "stickListener")

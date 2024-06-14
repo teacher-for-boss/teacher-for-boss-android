@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
 import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategoryAdpapter
 import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.presentation.ui.teachertalkmain.NewScrollView
@@ -38,6 +41,12 @@ class TeacherTalkMainFragment :
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
+
+        //fab
+        binding.fabWrite.setOnClickListener {
+            val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
+            startActivity(intent)
+        }
 
         //scrollview
         binding.svTeacherTalkMain.run {

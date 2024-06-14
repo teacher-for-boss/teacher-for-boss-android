@@ -1,6 +1,7 @@
 // TeacherTalkMainFragment.kt
 package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,8 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.bosstalkmain.NewScrollView
+import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
@@ -46,6 +49,12 @@ class BossTalkMainFragment :
             freeListener = { _ ->
                 Log.d("LOGGER_TAG", "freeListener")
             }
+        }
+
+        //fab
+        binding.fabWrite.setOnClickListener {
+            val intent = Intent(requireContext(), BossTalkWriteActivity::class.java)
+            startActivity(intent)
         }
 
         binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())

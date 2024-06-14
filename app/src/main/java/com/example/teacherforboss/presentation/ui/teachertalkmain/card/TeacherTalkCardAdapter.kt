@@ -14,6 +14,7 @@ import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
 class TeacherTalkCardAdapter(context: Context) :
     RecyclerView.Adapter<TeacherTalkCardAdapter.TeacherTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
+    var selectPos = -1
 
     private var teacherTalkCardList: List<TeacherTalkCard> = emptyList()
 

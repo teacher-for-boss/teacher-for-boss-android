@@ -188,16 +188,21 @@ class BossProfileFragment : Fragment() {
     }
 
     fun getSocialSignupProvidedInfo(){
-        val activity=activity as SignupActivity
-        val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+        val signupType= LocalDataSource.getSignupType(requireContext(),
+            SignupStartFragment.SIGNUP_TYPE)
 
-        viewModel._name.value=prefs.getString("name", INFO_NULL)
-        viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
-        viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
-        viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
-        viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
-        viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
-        Log.d("s-test",viewModel.name.value.toString())
+        if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
+            val activity=activity as SignupActivity
+            val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+
+            viewModel._name.value=prefs.getString("name", INFO_NULL)
+            viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
+            viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
+            viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
+            viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
+            viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
+            Log.d("s-test",viewModel.name.value.toString())
+        }
 
     }
 

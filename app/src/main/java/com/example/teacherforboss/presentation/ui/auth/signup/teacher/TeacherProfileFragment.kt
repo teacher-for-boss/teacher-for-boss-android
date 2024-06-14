@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.signup.boss
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -25,6 +26,8 @@ import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment.Companion.INFO_NULL
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment.Companion.USER_INFO
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
@@ -239,13 +242,23 @@ class TeacherProfileFragment : Fragment(){
         }
     }
 
+
     fun getSocialSignupProvidedInfo(){
-        viewModel._name.value=LocalDataSource.getUserInfo(requireContext(),"name")
-        viewModel.liveEmail.value=LocalDataSource.getUserInfo(requireContext(),"email")
-        viewModel.livePhone.value=LocalDataSource.getUserInfo(requireContext(),"phone")
-        viewModel._birthDate.value=LocalDataSource.getUserInfo(requireContext(),"birthDate")
-        viewModel._profileImg.value=LocalDataSource.getUserInfo(requireContext(),"profileImg")
-        viewModel._gender.value=LocalDataSource.getUserInfo(requireContext(),"gender").toInt()
+        val signupType= LocalDataSource.getSignupType(requireContext(),
+            SignupStartFragment.SIGNUP_TYPE)
+
+        if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
+            val activity=activity as SignupActivity
+            val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+
+            viewModel._name.value=prefs.getString("name", INFO_NULL)
+            viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
+            viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
+            viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
+            viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
+            viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
+            Log.d("s-test",viewModel.name.value.toString())
+        }
 
     }
 

@@ -57,6 +57,11 @@ class BossTalkMainFragment :
             startActivity(intent)
         }
 
+        //btnMoreCard
+        binding.btnMoreCard.setOnClickListener {
+            bossTalkCardAdapter.addMoreCards()
+        }
+
         binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
 
 //        // RecyclerView를 담은 위젯 높이를 동적으로 설정

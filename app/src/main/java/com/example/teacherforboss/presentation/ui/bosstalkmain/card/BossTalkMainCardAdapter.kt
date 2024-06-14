@@ -10,12 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
+import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCard
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    private var bossTalkCardList: List<BossTalkMainCard> = emptyList()
+    private var bossTalkCardList: MutableList<BossTalkMainCard> = mutableListOf()
+    private var allBossTalkMainCard: List<BossTalkMainCard> = emptyList()
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,11 +32,22 @@ class BossTalkMainCardAdapter(context: Context) :
         holder.onBind(bossTalkCardList[position])
     }
 
-    override fun getItemCount() = bossTalkCardList.size
+    override fun getItemCount(): Int = bossTalkCardList.size
+
 
     fun setCardList(cardList: List<BossTalkMainCard>) {
-        this.bossTalkCardList = cardList.toList()
+        this.allBossTalkMainCard = cardList
+        this.bossTalkCardList = allBossTalkMainCard.take(10).toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun addMoreCards() {
+        val currentSize = bossTalkCardList.size
+        val nextSize = minOf(currentSize + 10, allBossTalkMainCard.size)
+        if (currentSize < nextSize) {
+            bossTalkCardList.addAll(allBossTalkMainCard.subList(currentSize, nextSize))
+            notifyItemRangeInserted(currentSize, nextSize - currentSize)
+        }
     }
 
     inner class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :

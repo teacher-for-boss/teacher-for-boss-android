@@ -59,6 +59,11 @@ class TeacherTalkMainFragment :
             }
         }
 
+        //btnMoreCard
+        binding.btnMoreCard.setOnClickListener {
+            (binding.rvTeacherTalkCard.adapter as? TeacherTalkCardAdapter)?.addMoreCards()
+        }
+
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

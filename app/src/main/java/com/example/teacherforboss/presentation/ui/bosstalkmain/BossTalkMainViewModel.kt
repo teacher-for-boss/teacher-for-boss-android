@@ -54,5 +54,13 @@ class BossTalkMainViewModel : ViewModel() {
             count_like = "43",
             count_comment = "12",
         ),
+        BossTalkMainCard(
+            question = "일곱번째 질문입니다 ㅋㅋ",
+            answer = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
+            date = "2024.06.13",
+            count_bookmark = "111",
+            count_like = "43",
+            count_comment = "12",
+        ),
     )
 }

@@ -55,6 +55,22 @@ class TeacherTalkMainViewModel : ViewModel() {
             count_like = "43",
             count_comment = "12",
         ),
+        TeacherTalkCard(
+            question = "일곱번째 질문입니다 ㅋㅋ",
+            answer = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
+            statement_answer = "답변 대기중",
+            count_bookmark = "111",
+            count_like = "43",
+            count_comment = "12",
+        ),
+        TeacherTalkCard(
+            question = "여덟번째 질문입니다 ㅋㅋ",
+            answer = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
+            statement_answer = "답변 대기중",
+            count_bookmark = "111",
+            count_like = "43",
+            count_comment = "12",
+        ),
     )
 
      val mockTeacherTalkCategoryList =listOf<TeacherTalkCategory>(

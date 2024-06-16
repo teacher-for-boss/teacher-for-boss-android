@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,14 +17,15 @@ import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentBossProfileBinding
-import com.example.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupStartFragment
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.example.teacherforboss.util.base.UploadUtil
 
 class BossProfileFragment : Fragment() {
 
@@ -111,6 +111,8 @@ class BossProfileFragment : Fragment() {
         }
 
         binding.nextBtn.setOnClickListener {
+            getPresignedUrl()
+
             val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
             if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
             else signup()
@@ -168,6 +170,21 @@ class BossProfileFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun getPresignedUrl(){
+        viewModel.getPresignedUrlList(null,0,1,"profiles")
+
+        viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+            viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+            Log.d("url",it.presignedUrlList[0].toString())
+            uploadImgtoS3()
+        })
+    }
+
+    private fun uploadImgtoS3(){
+        val uploadUtil=UploadUtil(requireActivity(),viewModel)
+        uploadUtil.uploadImage()
     }
 
     private fun showSplash(){

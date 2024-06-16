@@ -25,7 +25,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.signup.SignupResponse
 import com.example.teacherforboss.databinding.ActivitySignupBinding
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.boss.SignupStartFragment
+import com.example.teacherforboss.util.base.LocalDataSource
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
@@ -78,6 +78,7 @@ class SignupActivity: AppCompatActivity() {
         initLayout()
         addListeners()
         collectData()
+        LocalDataSource.saveSignupType(this,SIGNUP_DEFAULT)
 
 //        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
 //        binding.signupViewModel=viewModel
@@ -96,7 +97,7 @@ class SignupActivity: AppCompatActivity() {
         // pivot 이전 경로
         fragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container,SignupStartFragment())
+            .add(R.id.fragment_container, SignupStartFragment())
             .commit()
 
 
@@ -260,7 +261,8 @@ class SignupActivity: AppCompatActivity() {
         private const val FIRST_PROGRESS=0
         private const val BOSS_FRAGMENT_SIZE=6f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
         private const val TEACHER_FRAGMENT_SZIE=10f // 티쳐: 온보딩:1 + 일반 4 + 티쳐 4 + 프로필 1= 10
-
+        const val SIGNUP_TYPE="SIGNUP_TYPE"
+        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
     }
 
 

@@ -1,8 +1,8 @@
 package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.AwsRemoteDataSource
-import com.example.teacherforboss.domain.model.getPresingedUrlEntity
-import com.example.teacherforboss.domain.model.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
+import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.example.teacherforboss.domain.repository.AwsReository
 import javax.inject.Inject
 

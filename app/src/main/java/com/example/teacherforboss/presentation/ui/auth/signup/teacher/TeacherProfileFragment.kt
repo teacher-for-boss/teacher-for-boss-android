@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.teacherforboss.R
@@ -26,8 +25,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment.Companion.INFO_NULL
-import com.example.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment.Companion.USER_INFO
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupStartFragment
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
@@ -251,12 +249,11 @@ class TeacherProfileFragment : Fragment(){
             val activity=activity as SignupActivity
             val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
 
-            viewModel._name.value=prefs.getString("name", INFO_NULL)
-            viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
-            viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
-            viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
-            viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
-            viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
+            viewModel._name.value=prefs.getString("name", BossProfileFragment.INFO_NULL)
+            viewModel.liveEmail.value=prefs.getString("email", BossProfileFragment.INFO_NULL)
+            viewModel.livePhone.value=prefs.getString("phone", BossProfileFragment.INFO_NULL)
+            viewModel._birthDate.value=prefs.getString("birthDate", BossProfileFragment.INFO_NULL)
+            viewModel._profileImg.value=prefs.getString("profileImg", BossProfileFragment.INFO_NULL)
             Log.d("s-test",viewModel.name.value.toString())
         }
 

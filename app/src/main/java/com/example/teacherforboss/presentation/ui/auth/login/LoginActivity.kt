@@ -60,7 +60,11 @@ class LoginActivity : AppCompatActivity() {
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val token= TokenManager.getAccessToken(this)
+        LocalDataSource.deleteUserInfo(context)
+        LocalDataSource.resetSinupType(context)
+
+        //기본 로그인
+        val token= TokenManager.getAccessToken(this)//ver1. shared preference
         if(!token.isNullOrBlank()){
             gotoMainActivity()
         }

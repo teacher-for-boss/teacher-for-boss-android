@@ -240,20 +240,20 @@ class TeacherProfileFragment : Fragment(){
         }
     }
 
+
     fun getSocialSignupProvidedInfo(){
         val signupType= LocalDataSource.getSignupType(requireContext(),
             SignupStartFragment.SIGNUP_TYPE)
 
         if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
             val activity=activity as SignupActivity
-            val prefs=activity.getSharedPreferences(BossProfileFragment.USER_INFO, Context.MODE_PRIVATE)
+            val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
 
             viewModel._name.value=prefs.getString("name", BossProfileFragment.INFO_NULL)
             viewModel.liveEmail.value=prefs.getString("email", BossProfileFragment.INFO_NULL)
             viewModel.livePhone.value=prefs.getString("phone", BossProfileFragment.INFO_NULL)
             viewModel._birthDate.value=prefs.getString("birthDate", BossProfileFragment.INFO_NULL)
             viewModel._profileImg.value=prefs.getString("profileImg", BossProfileFragment.INFO_NULL)
-            viewModel._gender.value=prefs.getString("gender", BossProfileFragment.INFO_NULL)?.toInt()
             Log.d("s-test",viewModel.name.value.toString())
         }
 

@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
+import com.example.teacherforboss.domain.model.community.PostEntity
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    private var bossTalkCardList: List<BossTalkMainCard> = emptyList()
+    private var bossTalkCardList: List<PostEntity> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,7 +27,7 @@ class BossTalkMainCardAdapter(context: Context) :
 
     override fun getItemCount() = bossTalkCardList.size
 
-    fun setCardList(cardList: List<BossTalkMainCard>) {
+    fun setCardList(cardList: List<PostEntity>) {
         this.bossTalkCardList = cardList.toList()
         notifyDataSetChanged()
     }

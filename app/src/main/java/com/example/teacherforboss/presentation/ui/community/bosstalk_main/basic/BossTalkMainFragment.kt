@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
-import com.example.teacherforboss.presentation.ui.bosstalkmain.basic.BossTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.bosstalk_main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.bosstalk_main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
@@ -27,7 +27,7 @@ class BossTalkMainFragment :
 
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts)
 
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)

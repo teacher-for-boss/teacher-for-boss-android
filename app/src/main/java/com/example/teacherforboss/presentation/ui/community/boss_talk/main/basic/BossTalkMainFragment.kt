@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
-import com.example.teacherforboss.presentation.ui.bosstalkmain.basic.BossTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.bosstalk_main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
@@ -25,10 +25,12 @@ class BossTalkMainFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+        initView()
 
+    }
+
+    private fun initView(){
+        getPosts()
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
@@ -62,7 +64,19 @@ class BossTalkMainFragment :
                 findNavController().navigateUp()
             }
         })
+
     }
+
+    private fun getPosts(){
+        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{ result->
+            viewModel._bossTalkPosts.value=result.postList
+        })
+
+        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
+    }
+
 }
 
 class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {

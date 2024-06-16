@@ -5,4 +5,6 @@ import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEn
 
 interface CommunityRepository {
     suspend fun getBossTalkPosts(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
+
+    suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
 }

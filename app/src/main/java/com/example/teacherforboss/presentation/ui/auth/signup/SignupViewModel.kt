@@ -92,6 +92,9 @@ class SignupViewModel @Inject constructor(
     val profileImgUri: LiveData<Uri>
         get() = _profileImgUri
 
+    val _profilePresignedUrl=MutableLiveData<String>()
+    val profilePresignedUrl:LiveData<String> =_profilePresignedUrl
+
     // teacher 변수들
     var _businessNum=MutableLiveData<String>("")
     val businessNum:LiveData<String>
@@ -130,8 +133,6 @@ class SignupViewModel @Inject constructor(
         get() = _accountHoler
 
     var enableNext = MutableLiveData<Boolean>(false)
-
-
 
     // activity page 관련
     var _currentPage=MutableLiveData<Float>(DEFAULT_PROGRESSBAR)
@@ -587,14 +588,15 @@ class SignupViewModel @Inject constructor(
     private val _presignedUrlListLiveData = MutableLiveData <presignedUrlListEntity> ()
     val presignedUrlLiveData : LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
 
-    suspend fun getPresignedUrlList(type:String,id:Long,imgCnt:Int){
+    fun getPresignedUrlList(uuid:String?,lastIndex:Int,imgCnt:Int,origin:String){
         viewModelScope.launch {
             try{
                 val presignedUrlListEntity= presignedUrlUseCase(
                     getPresingedUrlEntity(
-                        type = type,
-                        id=id,
-                        imageCount = imgCnt
+                        uuid = uuid,
+                        lastIndex=lastIndex,
+                        imageCount = imgCnt,
+                        origin=origin
                     )
                 )
                 _presignedUrlListLiveData.value=presignedUrlListEntity

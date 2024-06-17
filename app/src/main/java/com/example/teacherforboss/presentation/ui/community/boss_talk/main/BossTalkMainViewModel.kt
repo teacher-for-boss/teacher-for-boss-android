@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity

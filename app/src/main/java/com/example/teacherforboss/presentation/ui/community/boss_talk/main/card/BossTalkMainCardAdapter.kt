@@ -10,19 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
-import java.time.format.DateTimeFormatter
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.example.teacherforboss.domain.model.community.PostEntity
+import java.time.format.DateTimeFormatter
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    private var bossTalkCardList: MutableList<BossTalkMainCard> = mutableListOf()
-    private var allBossTalkMainCard: List<BossTalkMainCard> = emptyList()
+    private var bossTalkCardList: MutableList<PostEntity> = mutableListOf()
+    private var allBossTalkMainCard: List<PostEntity> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -39,7 +35,7 @@ class BossTalkMainCardAdapter(context: Context) :
     override fun getItemCount(): Int = bossTalkCardList.size
 
 
-    fun setCardList(cardList: List<BossTalkMainCard>) {
+    fun setCardList(cardList: List<PostEntity>) {
         this.allBossTalkMainCard = cardList
         this.bossTalkCardList = allBossTalkMainCard.take(10).toMutableList()
         notifyDataSetChanged()
@@ -57,7 +53,7 @@ class BossTalkMainCardAdapter(context: Context) :
     inner class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(bossTalkCard: BossTalkMainCard) {
+        fun onBind(bossTalkCard: PostEntity) {
             val questionText = "Q. ${bossTalkCard.title}"
 
             // Q. 부분 색상 설정
@@ -73,23 +69,19 @@ class BossTalkMainCardAdapter(context: Context) :
 
             binding.tvBossTalkTitle.text = spannable
             binding.tvBossTalkContent.text = bossTalkCard.content
-            binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmark_count
-            binding.tvBossTalkLikeCount.text = bossTalkCard.like_count
-            binding.tvBossTalkCommentCount.text = bossTalkCard.comment_count
+            binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmarkCount.toString()
+            binding.tvBossTalkLikeCount.text = bossTalkCard.likeCount.toString()
+            binding.tvBossTalkCommentCount.text = bossTalkCard.commentCount.toString()
 
             val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-            val formattedDate = bossTalkCard.created_at.format(formatter)
+            val formattedDate = bossTalkCard.createdAt.format(formatter)
             binding.tvBossTalkDate.text = formattedDate
 
-            binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmark_count
-            binding.tvBossTalkLikeCount.text = bossTalkCard.like_count
-            binding.tvBossTalkCommentCount.text = bossTalkCard.comment_count
+            binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmark
+            binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmark
 
-            binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmarked
-            binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmarked
-
-            binding.icBossTalkLike.isSelected = bossTalkCard.liked
-            binding.tvBossTalkLikeCount.isSelected = bossTalkCard.liked
+            binding.icBossTalkLike.isSelected = bossTalkCard.like
+            binding.tvBossTalkLikeCount.isSelected = bossTalkCard.like
 
         }
     }

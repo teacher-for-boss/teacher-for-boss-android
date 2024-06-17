@@ -1,20 +1,13 @@
-// TeacherTalkMainFragment.kt
 package com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 
 import android.content.Intent
-
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-
 import androidx.activity.OnBackPressedCallback
-
 import android.widget.AdapterView
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,19 +19,12 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossT
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
-import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
-import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
-import com.example.teacherforboss.util.base.BindingFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-
 
 class BossTalkMainFragment :
     BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
     private val viewModel by activityViewModels<BossTalkMainViewModel>()
     private var isInitialziedView=false
-      
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,8 +33,8 @@ class BossTalkMainFragment :
 
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
-        
+//        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+
         getPosts()
         observeSortType()
 
@@ -61,7 +47,7 @@ class BossTalkMainFragment :
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
-        
+
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
@@ -118,8 +104,6 @@ class BossTalkMainFragment :
 
     }
 
-
-    }
 
     private fun getPosts(){
         viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{ result->

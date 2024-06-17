@@ -297,6 +297,7 @@ class TeacherProfileFragment : Fragment(){
         viewModel._introduction.observe(viewLifecycleOwner,dataObserver)
     }
     companion object{
+        const val USER_INFO="USER_INFO"
         const val SIGNUP_TYPE="SIGNUP_TYPE"
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
     }

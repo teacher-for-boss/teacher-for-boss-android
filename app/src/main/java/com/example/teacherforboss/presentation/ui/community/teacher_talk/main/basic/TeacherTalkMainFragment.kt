@@ -1,19 +1,22 @@
-// TeacherTalkMainFragment.kt
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic
 
+import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdpapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.TeacherTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.example.teacherforboss.util.base.BindingFragment
 
 class TeacherTalkMainFragment :
@@ -24,18 +27,27 @@ class TeacherTalkMainFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val newScrollView = binding.svTeacherTalkMain as NewScrollView
+        newScrollView.setBinding(binding)
+
         val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
         binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
         teacherTalkCardAdapter.setCardList(viewModel.mockCardList)
 
         val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
         binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
+        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
         teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
 
-        //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
+
+        //fab
+        binding.fabWrite.setOnClickListener {
+            val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
+            startActivity(intent)
+        }
 
         //scrollview
         binding.svTeacherTalkMain.run {
@@ -48,16 +60,10 @@ class TeacherTalkMainFragment :
             }
         }
 
-        binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(requireContext())
-
-//        // RecyclerView를 담은 위젯 높이를 동적으로 설정
-//        binding.svTeacherTalkMain.viewTreeObserver.addOnGlobalLayoutListener {
-//            val parentHeight = binding.svTeacherTalkMain.height
-//            val otherViewsHeight = binding.teacherTalkWidget1.height + binding.teacherTalkWidget2.height + binding.teacherTalkWidget3.height
-//            val widget4Height = parentHeight - otherViewsHeight
-//            binding.teacherTalkWidget4.layoutParams.height = widget4Height
-//            binding.teacherTalkWidget4.requestLayout()
-//        }
+        //btnMoreCard
+        binding.btnMoreCard.setOnClickListener {
+            (binding.rvTeacherTalkCard.adapter as? TeacherTalkCardAdapter)?.addMoreCards()
+        }
 
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -67,9 +73,9 @@ class TeacherTalkMainFragment :
         })
     }
 }
-//
-//class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
-//    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-//        outRect.right = horizontalSpaceWidth
-//    }
-//}
+
+class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.right = horizontalSpaceWidth
+    }
+}

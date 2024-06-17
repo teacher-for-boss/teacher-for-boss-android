@@ -12,12 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-      
-        <com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
-            android:id="@+id/sv_teacher_talk_main"
+
+        <com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
+            android:id="@+id/sv_boss_talk_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -187,9 +189,8 @@
 
 
             </LinearLayout>
-
-      </com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView>
-
+        </com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView>
+      
         <!--플로팅 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_write"

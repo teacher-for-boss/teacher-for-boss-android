@@ -10,7 +10,8 @@ class TeacherTalkCardAdapter(context: Context) :
     RecyclerView.Adapter<TeacherTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    private var teacherTalkCardList: List<TeacherTalkCard> = emptyList()
+    private var teacherTalkCardList: MutableList<TeacherTalkCard> = mutableListOf()
+    private var allTeacherTalkCard: List<TeacherTalkCard> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -24,10 +25,22 @@ class TeacherTalkCardAdapter(context: Context) :
         holder.onBind(teacherTalkCardList[position])
     }
 
-    override fun getItemCount() = teacherTalkCardList.size
+    override fun getItemCount(): Int {
+        return teacherTalkCardList.size
+    }
 
     fun setCardList(cardList: List<TeacherTalkCard>) {
-        this.teacherTalkCardList = cardList.toList()
+        this.allTeacherTalkCard = cardList
+        this.teacherTalkCardList = allTeacherTalkCard.take(10).toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun addMoreCards() {
+        val currentSize = teacherTalkCardList.size
+        val nextSize = minOf(currentSize + 10, allTeacherTalkCard.size)
+        if (currentSize < nextSize) {
+            teacherTalkCardList.addAll(allTeacherTalkCard.subList(currentSize, nextSize))
+            notifyItemRangeInserted(currentSize, nextSize - currentSize)
+        }
     }
 }

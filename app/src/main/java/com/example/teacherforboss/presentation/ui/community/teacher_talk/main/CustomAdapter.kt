@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.main
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.example.teacherforboss.databinding.ItemSpinnerDropdownBinding
+import android.widget.TextView
 import com.example.teacherforboss.R
 
 class CustomAdapter(

@@ -1,0 +1,16 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_7589_42005)">
+<rect x="3.05" y="3.05" width="17.9" height="17.9" rx="0.95" stroke="white" stroke-opacity="0.5" stroke-width="0.1"/>
+<rect x="2.05" y="4.05" width="19.9" height="15.9" rx="0.95" stroke="white" stroke-opacity="0.5" stroke-width="0.1"/>
+<rect x="4.05" y="2.05" width="15.9" height="19.9" rx="0.95" stroke="white" stroke-opacity="0.5" stroke-width="0.1"/>
+<circle cx="12" cy="12" r="9.95" stroke="white" stroke-opacity="0.5" stroke-width="0.1"/>
+<circle cx="12" cy="12" r="4.95" stroke="white" stroke-opacity="0.5" stroke-width="0.1"/>
+<path d="M0.05 0.05H8H12H16H23.95V8V12V16V23.95H16H12H8H0.05V16V12V8V0.05Z" stroke="white" stroke-opacity="0.5" stroke-width="0.1"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3 8C3 5.79086 4.79086 4 7 4H17C19.2091 4 21 5.79086 21 8V14C21 17.5 18.5 21 17 21C16.7762 19.2736 15.5 18 14 18H7C4.79086 18 3 16.2091 3 14V8ZM8 12C8.55228 12 9 11.5523 9 11C9 10.4477 8.55228 10 8 10C7.44772 10 7 10.4477 7 11C7 11.5523 7.44772 12 8 12ZM13 11C13 11.5523 12.5523 12 12 12C11.4477 12 11 11.5523 11 11C11 10.4477 11.4477 10 12 10C12.5523 10 13 10.4477 13 11ZM16 12C16.5523 12 17 11.5523 17 11C17 10.4477 16.5523 10 16 10C15.4477 10 15 10.4477 15 11C15 11.5523 15.4477 12 16 12Z" fill="#5F5CE8"/>
+</g>
+<defs>
+<clipPath id="clip0_7589_42005">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

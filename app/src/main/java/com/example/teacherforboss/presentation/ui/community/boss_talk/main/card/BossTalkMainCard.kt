@@ -1,11 +1,15 @@
 package com.example.teacherforboss.presentation.ui.community.boss_talk.main.card
 
-data class BossTalkMainCard (
-    val question: String,
-    val answer: String,
-    val date: String,
-    val count_bookmark: String,
-    val count_like: String,
-    val count_comment: String,
+import java.time.LocalDateTime
 
+data class BossTalkMainCard (
+    val post_id: Long,
+    val title: String,
+    val content: String,
+    val created_at: LocalDateTime,
+    val bookmark_count: String,
+    val like_count: String,
+    val comment_count: String,
+    val liked: Boolean,
+    val bookmarked: Boolean,
     )

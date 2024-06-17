@@ -1,19 +1,31 @@
 // TeacherTalkMainFragment.kt
 package com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 
+import android.content.Intent
+
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+
+import androidx.activity.OnBackPressedCallback
+
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
+
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
+import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
@@ -21,14 +33,22 @@ import com.example.teacherforboss.util.base.BindingFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
+
 class BossTalkMainFragment :
     BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
-
     private val viewModel by activityViewModels<BossTalkMainViewModel>()
     private var isInitialziedView=false
+      
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val newScrollView = binding.svBossTalkMain as NewScrollView
+        newScrollView.setBinding(binding)
+
+        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+        
         getPosts()
         observeSortType()
 
@@ -41,6 +61,7 @@ class BossTalkMainFragment :
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
+        
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
@@ -64,7 +85,7 @@ class BossTalkMainFragment :
         }
 
         //scrollview
-        binding.svTeacherTalkMain.run {
+        binding.svBossTalkMain.run {
             header = binding.bossTalkWidget1
             stickListener = { _ ->
                 Log.d("LOGGER_TAG", "stickListener")
@@ -74,16 +95,19 @@ class BossTalkMainFragment :
             }
         }
 
+        //fab
+        binding.fabWrite.setOnClickListener {
+            val intent = Intent(requireContext(), BossTalkWriteActivity::class.java)
+            startActivity(intent)
+        }
+
+        //btnMoreCard
+        binding.btnMoreCard.setOnClickListener {
+            bossTalkCardAdapter.addMoreCards()
+        }
+
         binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
 
-//        // RecyclerView를 담은 위젯 높이를 동적으로 설정
-//        binding.svTeacherTalkMain.viewTreeObserver.addOnGlobalLayoutListener {
-//            val parentHeight = binding.svTeacherTalkMain.height
-//            val otherViewsHeight = binding.teacherTalkWidget1.height + binding.teacherTalkWidget2.height + binding.teacherTalkWidget3.height
-//            val widget4Height = parentHeight - otherViewsHeight
-//            binding.teacherTalkWidget4.layoutParams.height = widget4Height
-//            binding.teacherTalkWidget4.requestLayout()
-//        }
 
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -91,6 +115,9 @@ class BossTalkMainFragment :
                 findNavController().navigateUp()
             }
         })
+
+    }
+
 
     }
 
@@ -117,6 +144,7 @@ class BossTalkMainFragment :
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
     }
+
 
 }
 

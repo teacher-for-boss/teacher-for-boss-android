@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.community.teacher_talk.main
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main
 
 import android.content.Context
 import android.graphics.Rect
@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
+import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
 
 class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
 
-    private var binding: FragmentTeacherTalkMainBinding? = null
+    private var binding: FragmentBossTalkMainBinding? = null
 
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
@@ -84,12 +84,12 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
         }
     }
 
-    fun setBinding(binding: FragmentTeacherTalkMainBinding) {
+    fun setBinding(binding: FragmentBossTalkMainBinding) {
         this.binding = binding
     }
 
     private fun adjustRecyclerViewHeight() {
-        val recyclerView = binding?.rvTeacherTalkCard
+        val recyclerView = binding?.rvBossTalkCard
         recyclerView?.apply {
             post {
                 val adapter = adapter ?: return@post

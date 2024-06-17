@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.auth.signup.boss
+package com.example.teacherforboss.presentation.ui.auth.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,9 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentSignupStartBinding
-import com.example.teacherforboss.presentation.ui.auth.login.LoginViewModel
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment
 import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.example.teacherforboss.signup.fragment.EmailFragment
 import com.example.teacherforboss.util.base.LocalDataSource

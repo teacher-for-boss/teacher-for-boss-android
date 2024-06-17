@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.databinding.ActivityLoginBinding
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.model.response.login.LoginResponseInterface
@@ -59,10 +60,13 @@ class LoginActivity : AppCompatActivity() {
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        LocalDataSource.deleteUserInfo(context)
+        LocalDataSource.resetSinupType(context)
+
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
         if(!token.isNullOrBlank()){
-
+            gotoMainActivity()
         }
 
         //기본 로그인
@@ -73,12 +77,11 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
-
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+                    gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
-                    processError(it.msg)
-
+                    processError("사용자가 없습니다.")
                 }
                 else->{
                     //loading 종료시
@@ -118,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                    gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
 //                    processError(it.msg)
@@ -396,8 +400,15 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun processError(msg:String?){
-        showToast("error:"+msg)
+    private fun gotoMainActivity(){
+        val intent = Intent(context, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+
+
+    fun processError(msg:String){
+        showToast(msg)
     }
     fun showToast(msg:String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()

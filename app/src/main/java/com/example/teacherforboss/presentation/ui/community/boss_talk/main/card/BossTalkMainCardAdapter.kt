@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
 import java.time.format.DateTimeFormatter
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
+import com.example.teacherforboss.domain.model.community.PostEntity
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
@@ -18,7 +23,6 @@ class BossTalkMainCardAdapter(context: Context) :
 
     private var bossTalkCardList: MutableList<BossTalkMainCard> = mutableListOf()
     private var allBossTalkMainCard: List<BossTalkMainCard> = emptyList()
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -89,4 +93,5 @@ class BossTalkMainCardAdapter(context: Context) :
 
         }
     }
+
 }

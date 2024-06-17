@@ -12,5 +12,4 @@ data class BossTalkMainCard (
     val comment_count: String,
     val liked: Boolean,
     val bookmarked: Boolean,
-
     )

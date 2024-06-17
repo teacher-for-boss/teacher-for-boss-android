@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- scroll view-->
+
         <com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
             android:id="@+id/sv_boss_talk_main"
             android:layout_width="match_parent"
@@ -190,6 +190,7 @@
 
             </LinearLayout>
         </com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView>
+      
         <!--플로팅 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_write"

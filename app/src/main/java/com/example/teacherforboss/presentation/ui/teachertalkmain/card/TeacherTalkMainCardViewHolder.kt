@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.teachertalkmain.card
 
+import android.graphics.PorterDuff
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -7,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
+import java.time.format.DateTimeFormatter
 
 class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -14,7 +16,7 @@ class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBind
     fun onBind(cardData: TeacherTalkCard) {
         with(binding) {
             // Q. 부분 색상 설정
-            val questionText = "Q. ${cardData.question}"
+            val questionText = "Q. ${cardData.title}"
             val spannable = SpannableString(questionText)
             val purpleColor = ContextCompat.getColor(root.context, R.color.Purple600)
             val grayColor = ContextCompat.getColor(root.context, R.color.Gray700)
@@ -25,12 +27,21 @@ class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBind
             tvTeacherTalkQuestion.text = spannable
 
             // 다른 텍스트 설정
-            tvTeacherTalkText.text = cardData.answer
-            tvTeacherTalkDate.text = cardData.date
+            tvTeacherTalkText.text = cardData.content
             tvTeacherTalkCardViewStatement.text = cardData.statement_answer
-            tvTeacherTalkBookmarkCount.text = cardData.count_bookmark
-            tvTeacherTalkLikeCount.text = cardData.count_like
-            tvTeacherTalkCommentCount.text = cardData.count_comment
+            tvTeacherTalkBookmarkCount.text = cardData.bookmark_count
+            tvTeacherTalkLikeCount.text = cardData.like_count
+            tvTeacherTalkCommentCount.text = cardData.comment_count
+
+            icTeacherTalkBookmark.isSelected = cardData.bookmarked
+            tvTeacherTalkBookmarkCount.isSelected = cardData.bookmarked
+
+            icTeacherTalkLike.isSelected = cardData.liked
+            tvTeacherTalkLikeCount.isSelected = cardData.liked
+
+            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            val formattedDate = cardData.created_at.format(formatter)
+            tvTeacherTalkDate.text = formattedDate
         }
     }
 }

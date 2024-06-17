@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCard
+import java.time.format.DateTimeFormatter
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
@@ -54,7 +54,7 @@ class BossTalkMainCardAdapter(context: Context) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(bossTalkCard: BossTalkMainCard) {
-            val questionText = "Q. ${bossTalkCard.question}"
+            val questionText = "Q. ${bossTalkCard.title}"
 
             // Q. 부분 색상 설정
             val spannable = SpannableString(questionText)
@@ -68,11 +68,25 @@ class BossTalkMainCardAdapter(context: Context) :
             spannable.setSpan(colorSpanRest, 2, questionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             binding.tvBossTalkTitle.text = spannable
-            binding.tvBossTalkContent.text = bossTalkCard.answer
-            binding.tvBossTalkDate.text = bossTalkCard.date
-            binding.tvBossTalkBookmarkCount.text = bossTalkCard.count_bookmark
-            binding.tvBossTalkLikeCount.text = bossTalkCard.count_like
-            binding.tvBossTalkCommentCount.text = bossTalkCard.count_comment
+            binding.tvBossTalkContent.text = bossTalkCard.content
+            binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmark_count
+            binding.tvBossTalkLikeCount.text = bossTalkCard.like_count
+            binding.tvBossTalkCommentCount.text = bossTalkCard.comment_count
+
+            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            val formattedDate = bossTalkCard.created_at.format(formatter)
+            binding.tvBossTalkDate.text = formattedDate
+
+            binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmark_count
+            binding.tvBossTalkLikeCount.text = bossTalkCard.like_count
+            binding.tvBossTalkCommentCount.text = bossTalkCard.comment_count
+
+            binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmarked
+            binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmarked
+
+            binding.icBossTalkLike.isSelected = bossTalkCard.liked
+            binding.tvBossTalkLikeCount.isSelected = bossTalkCard.liked
+
         }
     }
 }

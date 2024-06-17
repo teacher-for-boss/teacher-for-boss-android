@@ -64,16 +64,6 @@ class BossTalkMainFragment :
 
         binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
 
-//        // RecyclerView를 담은 위젯 높이를 동적으로 설정
-//        binding.svTeacherTalkMain.viewTreeObserver.addOnGlobalLayoutListener {
-//            val parentHeight = binding.svTeacherTalkMain.height
-//            val otherViewsHeight = binding.teacherTalkWidget1.height + binding.teacherTalkWidget2.height + binding.teacherTalkWidget3.height
-//            val widget4Height = parentHeight - otherViewsHeight
-//            binding.teacherTalkWidget4.layoutParams.height = widget4Height
-//            binding.teacherTalkWidget4.requestLayout()
-//        }
-
-
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigateUp()

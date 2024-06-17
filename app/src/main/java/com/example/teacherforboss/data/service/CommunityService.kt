@@ -8,11 +8,11 @@ import retrofit2.http.Query
 interface CommunityService {
     @GET("${BOSS}/posts?")
     suspend fun getBossTalkPosts(
-        @Query("sortBy") sortBy:String,
         @Query("lastPostId") lastPostId:Long,
-        @Query("size") size:Int
+        @Query("size") size:Int,
+        @Query("sortBy") sortBy:String
 
-    ):BaseResponse<ResponseBossTalkPostsDto>
+        ):BaseResponse<ResponseBossTalkPostsDto>
 
     @GET("${BOSS}/search?")
     suspend fun searchKeywordBossTalk(

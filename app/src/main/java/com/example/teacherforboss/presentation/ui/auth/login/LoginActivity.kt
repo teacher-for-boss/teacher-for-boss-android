@@ -78,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+                    gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
                     processError("사용자가 없습니다.")
@@ -120,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                    gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
 //                    processError(it.msg)

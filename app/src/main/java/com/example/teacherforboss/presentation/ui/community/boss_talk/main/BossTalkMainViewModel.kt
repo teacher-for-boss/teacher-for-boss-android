@@ -1,7 +1,7 @@
-package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main
 
 import androidx.lifecycle.ViewModel
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCard
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCard
 import java.time.LocalDateTime
 
 

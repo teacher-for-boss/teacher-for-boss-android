@@ -1,5 +1,5 @@
 // TeacherTalkMainFragment.kt
-package com.example.teacherforboss.presentation.ui.bosstalkmain.basic
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 
 import android.content.Intent
 import android.graphics.Rect
@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
-import com.example.teacherforboss.presentation.ui.bosstalkmain.card.BossTalkMainCardAdapter
-import com.example.teacherforboss.presentation.ui.bosstalkmain.NewScrollView
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
-import com.example.teacherforboss.presentation.ui.teachertalkmain.basic.CustomAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
 class BossTalkMainFragment :

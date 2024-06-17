@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.bosstalkmain.card
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main.card
 
 import android.content.Context
 import android.text.Spannable

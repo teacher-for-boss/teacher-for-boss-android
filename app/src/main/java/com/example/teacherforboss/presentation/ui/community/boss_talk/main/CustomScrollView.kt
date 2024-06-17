@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.bosstalkmain
+package com.example.teacherforboss.presentation.ui.community.boss_talk.main
 
 import android.content.Context
 import android.graphics.Rect

@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.teachertalkmain.basic
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic
 
 import android.content.Intent
 import android.graphics.Rect
@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
-import com.example.teacherforboss.presentation.ui.teachertalkmain.Category.TeacherTalkCategoryAdpapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.card.TeacherTalkCardAdapter
-import com.example.teacherforboss.presentation.ui.teachertalkmain.NewScrollView
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdpapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.example.teacherforboss.util.base.BindingFragment
 
 class TeacherTalkMainFragment :

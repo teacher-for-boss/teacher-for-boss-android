@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.teachertalkmain.card
+package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card
 
 import java.time.LocalDateTime
 

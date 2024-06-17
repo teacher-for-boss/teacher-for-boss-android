@@ -12,7 +12,16 @@ interface CommunityService {
         @Query("size") size:Int,
         @Query("sortBy") sortBy:String
 
+        ):BaseResponse<ResponseBossTalkPostsDto>
+
+    @GET("${BOSS}/search?")
+    suspend fun searchKeywordBossTalk(
+        @Query("keyword") keyword:String,
+        @Query("lastPostId") lastPostId:Long,
+        @Query("size") size:Int
+
     ):BaseResponse<ResponseBossTalkPostsDto>
+
 
 
     companion object {

@@ -19,4 +19,11 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity): BossTalkPostsResponseEntity {
+        return runCatching {
+            communityDataSource.searchKeywordBossTalk(requestBossTalkPostsDto=bossTalkPostsRequestEntity.toRequestBossTalkPostsDto())
+                .result.toBossTalkPostsEntity()
+        }.getOrElse { err->throw err }
+    }
+
 }

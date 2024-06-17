@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.example.teacherforboss.databinding.ItemSpinnerDropdownBinding
-import android.widget.TextView
 import com.example.teacherforboss.R
 
 class CustomAdapter(

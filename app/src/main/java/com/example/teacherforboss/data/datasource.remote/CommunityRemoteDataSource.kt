@@ -6,4 +6,6 @@ import com.example.teacherforboss.util.base.BaseResponse
 
 interface CommunityRemoteDataSource {
     suspend fun getBossTalkPosts(requestBossTalkPostsDto: RequestBossTalkPostsDto):BaseResponse<ResponseBossTalkPostsDto>
+
+    suspend fun searchKeywordBossTalk(requestBossTalkPostsDto: RequestBossTalkPostsDto):BaseResponse<ResponseBossTalkPostsDto>
 }

@@ -1,6 +1,7 @@
 package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
@@ -28,6 +29,12 @@ interface CommunityService {
         @Query("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBookmarkDto>
+
+    @GET("${BOSS}/posts/{postId}/likes")
+    suspend fun getBossTalkLike(
+        @Query("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkLikeDto>
 
 
 

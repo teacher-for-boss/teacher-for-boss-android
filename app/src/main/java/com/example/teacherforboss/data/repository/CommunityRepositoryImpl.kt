@@ -2,6 +2,7 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
@@ -32,6 +33,13 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.getBossTalkBookmark(requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkBookmarkResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun getBossTalkLike(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkLikeResponseEntity {
+        return runCatching {
+            communityDataSource.getBossTalkLike(requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
+                .result.toBossTalkLikeResponseEntity()
         }.getOrElse { err->throw err }
     }
 

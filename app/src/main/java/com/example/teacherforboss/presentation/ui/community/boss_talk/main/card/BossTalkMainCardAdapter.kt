@@ -17,6 +17,7 @@ class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
 
+
     private var bossTalkCardList: MutableList<PostEntity> = mutableListOf()
     private var allBossTalkMainCard: List<PostEntity> = emptyList()
 

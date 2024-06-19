@@ -18,6 +18,7 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewSc
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
 class BossTalkMainFragment :
@@ -33,11 +34,10 @@ class BossTalkMainFragment :
 
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-//        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+        //bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
         getPosts()
         observeSortType()
-
     }
 
     private fun initView(){
@@ -64,10 +64,7 @@ class BossTalkMainFragment :
                 }
                 if(presentSortBy!=items[p2]) viewModel.setSortBy(items[p2])
             }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
+            override fun onNothingSelected(p0: AdapterView<*>?) { }
         }
 
         //scrollview
@@ -89,21 +86,15 @@ class BossTalkMainFragment :
 
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
-            bossTalkCardAdapter.addMoreCards()
+            (binding.rvBossTalkCard.adapter as? BossTalkMainCardAdapter)?.addMoreCards()
         }
-
-        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
-
-
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigateUp()
             }
         })
-
     }
-
 
     private fun getPosts(){
         viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{ result->
@@ -114,9 +105,8 @@ class BossTalkMainFragment :
             }
             else updatePosts()
         })
-
-
     }
+
     private fun observeSortType(){
         viewModel.sortBy.observe(viewLifecycleOwner,{
             viewModel.getBossTalkPosts()
@@ -128,8 +118,6 @@ class BossTalkMainFragment :
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
     }
-
-
 }
 
 class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {

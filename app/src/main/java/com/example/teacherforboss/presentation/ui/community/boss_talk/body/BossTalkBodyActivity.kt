@@ -25,9 +25,13 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBosstalkBodyBinding
     private val viewModel: BossTalkBodyViewModel by viewModels()
+    private var postId: Long? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_body)
+
+        navigateToBossTalkContent()
 
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
@@ -42,7 +46,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
         setRecyclerView()
         //질문 좋아요, 저장
         likeAndBookmark()
-
     }
 
     fun showOptionMenu() {
@@ -130,5 +133,14 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 binding.bookmarkTv.setTextColor(Color.parseColor("#8490A0"))
             }
         })
+    }
+
+    fun navigateToBossTalkContent() {
+        postId = intent.getLongExtra("postId", -1L)
+
+        // TODO
+        if (postId != null && postId != -1L) {
+            // 해당하는 본문 열기 - postId 이용
+        }
     }
 }

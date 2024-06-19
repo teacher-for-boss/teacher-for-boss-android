@@ -13,10 +13,12 @@ import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.example.teacherforboss.domain.model.community.PostEntity
 import java.time.format.DateTimeFormatter
 
-class BossTalkMainCardAdapter(context: Context) :
+class BossTalkMainCardAdapter(
+    context: Context,
+    private val patchOnClick: (Long) -> Unit,
+) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
-
 
     private var bossTalkCardList: MutableList<PostEntity> = mutableListOf()
     private var allBossTalkMainCard: List<PostEntity> = emptyList()
@@ -26,6 +28,7 @@ class BossTalkMainCardAdapter(context: Context) :
         viewType: Int
     ): BossTalkMainCardViewHolder {
         val binding = ItemBossTalkCardBinding.inflate(inflater, parent, false)
+        patchOnClick
         return BossTalkMainCardViewHolder(binding)
     }
 
@@ -84,6 +87,9 @@ class BossTalkMainCardAdapter(context: Context) :
             binding.icBossTalkLike.isSelected = bossTalkCard.like
             binding.tvBossTalkLikeCount.isSelected = bossTalkCard.like
 
+            binding.root.setOnClickListener {
+                patchOnClick(bossTalkCard.postId)
+            }
         }
     }
 

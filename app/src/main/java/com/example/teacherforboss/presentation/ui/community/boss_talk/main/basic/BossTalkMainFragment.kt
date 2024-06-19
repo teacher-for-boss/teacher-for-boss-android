@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
@@ -21,7 +23,10 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Cu
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.util.base.BindingFragment
 
-class BossTalkMainFragment :
+class BossTalkMainFragment(
+    private val patchOnClick: (Long) -> Unit,
+    ) :
+
     BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
     private val viewModel by activityViewModels<BossTalkMainViewModel>()
     private var isInitialziedView=false
@@ -32,7 +37,7 @@ class BossTalkMainFragment :
         val newScrollView = binding.svBossTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         //bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
@@ -48,7 +53,7 @@ class BossTalkMainFragment :
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
 
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
 
@@ -78,6 +83,12 @@ class BossTalkMainFragment :
             }
         }
 
+        //patchOnClick
+        fun navigateToBossTalkContent(postId: Long) {
+            val intent = Intent(requireContext(), BossTalkBodyActivity::class.java)
+            startActivity(intent.putExtra("postId", postId))
+        }
+
         //fab
         binding.fabWrite.setOnClickListener {
             val intent = Intent(requireContext(), BossTalkWriteActivity::class.java)
@@ -86,7 +97,7 @@ class BossTalkMainFragment :
 
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
-            (binding.rvBossTalkCard.adapter as? BossTalkMainCardAdapter)?.addMoreCards()
+            viewModel.loadMorePosts()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -114,9 +125,14 @@ class BossTalkMainFragment :
     }
 
     private fun updatePosts(){
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
+    }
+    companion object {
+        fun newInstance(patchOnClick: (Long) -> Unit): BossTalkMainFragment {
+            return BossTalkMainFragment(patchOnClick)
+        }
     }
 }
 

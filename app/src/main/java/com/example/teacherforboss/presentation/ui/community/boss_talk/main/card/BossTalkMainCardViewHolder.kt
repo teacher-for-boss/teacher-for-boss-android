@@ -7,23 +7,12 @@ import com.example.teacherforboss.domain.model.community.PostEntity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :
+class BossTalkMainCardViewHolder(
+    private val binding: ItemBossTalkCardBinding,
+    private val patchOnClick: (Long) -> Unit,
+) :
     RecyclerView.ViewHolder(binding.root) {
 
-//    fun onBind(cardData: BossTalkMainCard) {
-//        with(binding) {
-//            tvBossTalkTitle.text = "Q. " + cardData.title
-//            tvBossTalkContent.text = cardData.content
-//            tvBossTalkBookmarkCount.text = cardData.bookmark_count
-//            tvBossTalkLikeCount.text = cardData.like_count
-//            tvBossTalkCommentCount.text = cardData.comment_count
-//
-//            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-//            val formattedDate = cardData.created_at.format(formatter)
-//            tvBossTalkDate.text = formattedDate
-//        }
-
-    // 혜원
     fun onBind(cardData: PostEntity) {
         with(binding) {
             tvBossTalkTitle.text = "Q. " + cardData.title
@@ -34,6 +23,8 @@ class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :
             tvBossTalkBookmarkCount.text = cardData.bookmarkCount.toString()
             tvBossTalkLikeCount.text = cardData.likeCount.toString()
             tvBossTalkCommentCount.text = cardData.commentCount.toString()
+
+            root.setOnClickListener{patchOnClick(cardData.postId)}
         }
         if(cardData.like) binding.icBossTalkLike.setImageResource(R.drawable.ic_like_on)
         if(cardData.bookmark) binding.icBossTalkBookmark.setImageResource(R.drawable.ic_bookmark_on)

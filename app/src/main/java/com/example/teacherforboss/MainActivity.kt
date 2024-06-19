@@ -48,7 +48,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     true
                 }
                 R.id.menu_boss_talk -> {
-                    replaceFragment(BossTalkMainFragment())
+                    replaceFragment(BossTalkMainFragment.newInstance { _ -> })
                     true
                 }
                 R.id.menu_my_page -> {

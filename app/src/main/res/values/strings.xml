@@ -4,7 +4,6 @@
     <string name="pwSame">비밀번호가 일치합니다</string>
     <string name="pwDifferent">비밀번호가 일치하지 않습니다</string>
 
-    <string name="home_fragment">home fragement입니다</string>
     <string name="boss_talk_fragment">bosstalk fragement입니다</string>
     <string name="my_page_fragment">mypage fragement입니다</string>
 
@@ -96,5 +95,12 @@
 
 
     <string name="bank_title">은행을 선택해 주세요</string>
+
+    <!-- home -->
+    <string name="home_logo">티쳐포보스</string>
+    <string name="home_teacher_talk_shortcut">티쳐Talk 바로가기</string>
+    <string name="home_teacher_talk_popular_post">티쳐Talk 인기글</string>
+    <string name="home_boss_talk_popular_post">보스Talk 인기글</string>
+    <string name="home_weekly_best_teacher">이번 주 인기 티쳐</string>
 
 </resources>

@@ -60,7 +60,11 @@ class LoginActivity : AppCompatActivity() {
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val token= TokenManager.getAccessToken(this)
+        LocalDataSource.deleteUserInfo(context)
+        LocalDataSource.resetSinupType(context)
+
+        //기본 로그인
+        val token= TokenManager.getAccessToken(this)//ver1. shared preference
         if(!token.isNullOrBlank()){
             gotoMainActivity()
         }
@@ -74,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+                    gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
                     processError("사용자가 없습니다.")
@@ -116,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                    gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
 //                    processError(it.msg)

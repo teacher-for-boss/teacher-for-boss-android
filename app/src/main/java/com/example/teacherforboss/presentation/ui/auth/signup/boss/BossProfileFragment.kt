@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,14 +17,15 @@ import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentBossProfileBinding
-import com.example.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupStartFragment
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.example.teacherforboss.util.base.UploadUtil
 
 class BossProfileFragment : Fragment() {
 
@@ -111,6 +111,8 @@ class BossProfileFragment : Fragment() {
         }
 
         binding.nextBtn.setOnClickListener {
+            getPresignedUrl()
+
             val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
             if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
             else signup()
@@ -170,6 +172,21 @@ class BossProfileFragment : Fragment() {
 
     }
 
+    private fun getPresignedUrl(){
+        viewModel.getPresignedUrlList(null,0,1,"profiles")
+
+        viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+            viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+            Log.d("url",it.presignedUrlList[0].toString())
+            uploadImgtoS3()
+        })
+    }
+
+    private fun uploadImgtoS3(){
+        val uploadUtil=UploadUtil(requireActivity(),viewModel)
+        uploadUtil.uploadImage()
+    }
+
     private fun showSplash(){
         val intent = Intent(activity, SignupFinishActivity::class.java)
         intent.putExtra("nickname",binding.nicknameBox.text.toString())
@@ -188,16 +205,21 @@ class BossProfileFragment : Fragment() {
     }
 
     fun getSocialSignupProvidedInfo(){
-        val activity=activity as SignupActivity
-        val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+        val signupType= LocalDataSource.getSignupType(requireContext(),
+            SignupStartFragment.SIGNUP_TYPE)
 
-        viewModel._name.value=prefs.getString("name", INFO_NULL)
-        viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
-        viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
-        viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
-        viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
-        viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
-        Log.d("s-test",viewModel.name.value.toString())
+        if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
+            val activity=activity as SignupActivity
+            val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
+
+            viewModel._name.value=prefs.getString("name", INFO_NULL)
+            viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
+            viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
+            viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
+            viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
+            viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
+            Log.d("s-test",viewModel.name.value.toString())
+        }
 
     }
 

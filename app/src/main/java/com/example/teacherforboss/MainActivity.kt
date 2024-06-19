@@ -5,12 +5,14 @@ import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.teacherforboss.databinding.ActivityMainBinding
-import com.example.teacherforboss.presentation.ui.community.bosstalk_main.basic.BossTalkMainFragment
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic.BossTalkMainFragment
 import com.example.teacherforboss.presentation.ui.home.HomeFragment
 import com.example.teacherforboss.presentation.ui.mypage.MyPageFragment
-import com.example.teacherforboss.presentation.ui.community.teachertalk_main.basic.TeacherTalkMainFragment
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.example.teacherforboss.util.base.BindingActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
         }
     }
-
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()

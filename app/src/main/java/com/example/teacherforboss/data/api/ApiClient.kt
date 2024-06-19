@@ -1,6 +1,7 @@
 package com.example.teacherforboss.data.api
 
 import com.example.teacherforboss.BuildConfig
+import com.example.teacherforboss.data.service.awsService
 import com.example.teacherforboss.data.tokenmanager.TokenManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,4 +29,15 @@ object ApiClient{
             }
             return mRetrofit
         }
+
+    fun getAwsService():awsService{
+        if(mRetrofit==null){
+            mRetrofit=Retrofit.Builder()
+                .baseUrl("")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+
+        return mRetrofit!!.create(awsService::class.java)
+    }
 }

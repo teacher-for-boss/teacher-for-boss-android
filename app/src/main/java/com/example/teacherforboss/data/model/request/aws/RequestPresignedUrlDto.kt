@@ -5,10 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RequestPresignedUrlDto(
-    @SerializedName("type")
-    val type:String,
-    @SerializedName("id")
-    val id:Long,
+    @SerializedName("uuid")
+    val uuid:String?,
+    @SerializedName("lastIndex")
+    val lastIndex:Int,
     @SerializedName("int")
-    val imageCount:Int
+    val imageCount:Int,
+    @SerializedName("origin")
+    val origin:String,
 )

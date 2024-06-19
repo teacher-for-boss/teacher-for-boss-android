@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- scroll view-->
-        <com.example.teacherforboss.presentation.ui.community.teachertalk_main.NewScrollView
+        <com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
             android:id="@+id/sv_teacher_talk_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -185,7 +185,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_teacher_talk_card"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="24dp"
                         android:layout_marginTop="24dp"
                         android:nestedScrollingEnabled="false"
@@ -211,7 +211,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-        </com.example.teacherforboss.presentation.ui.community.teachertalk_main.NewScrollView>
+        </com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView>
 
         <!--플로팅 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -11,7 +11,7 @@ class AwsRemoteDataSourceImpl @Inject constructor(
     private val awsService: awsService
 ):AwsRemoteDataSource{
     override suspend fun getPresingedUrl(requestPresignedUrlDto: RequestPresignedUrlDto): BaseResponse<ResponsePresignedUrlDto>
-    = awsService.getPresingedUrl(type=requestPresignedUrlDto.type,id=requestPresignedUrlDto.id, imageCount = requestPresignedUrlDto.imageCount)
+    = awsService.getPresingedUrl(uuid=requestPresignedUrlDto.uuid,lastIndex=requestPresignedUrlDto.lastIndex, imageCount = requestPresignedUrlDto.imageCount,origin=requestPresignedUrlDto.origin)
 
 
 }

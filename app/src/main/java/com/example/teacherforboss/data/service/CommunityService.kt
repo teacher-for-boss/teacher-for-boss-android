@@ -1,5 +1,6 @@
 package com.example.teacherforboss.data.service
 
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
@@ -35,6 +36,12 @@ interface CommunityService {
         @Query("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkLikeDto>
+
+    @GET("${BOSS}/posts/{postId}")
+    suspend fun getBossTalkBody(
+        @Query("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkBodyDto>
 
 
 

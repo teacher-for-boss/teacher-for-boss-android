@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
 import com.example.teacherforboss.domain.model.community.PostEntity
+import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCard
 import com.example.teacherforboss.presentation.ui.community.common.TalkMainViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BossTalkMainViewModel @Inject constructor(
-    private val bossTalkPostsUseCase: BossTalkPostsUseCase
+    private val bossTalkPostsUseCase: BossTalkPostsUseCase,
+    private val bossTalkBookmarkUseCase: BossTalkBookmarkUseCase
 ) : ViewModel(),TalkMainViewModel {
     var _lastPostId=MutableLiveData<Long>(0L)
     val lastPostId:LiveData<Long>

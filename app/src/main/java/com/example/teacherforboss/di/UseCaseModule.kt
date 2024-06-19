@@ -3,6 +3,8 @@ package com.example.teacherforboss.di
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
+import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
@@ -30,4 +32,13 @@ class UseCaseModule {
     fun providesBossTalkUseCase(communityRepository: CommunityRepository):BossTalkPostsUseCase=
         BossTalkPostsUseCase(communityRepository=communityRepository)
 
+    @Provides
+    @Singleton
+    fun providesBossTalkBookmarkUseCase(communityRepository: CommunityRepository):BossTalkBookmarkUseCase=
+        BossTalkBookmarkUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossTalkLikeUseCase(communityRepository: CommunityRepository):BossTalkLikeUseCase =
+        BossTalkLikeUseCase(communityRepository=communityRepository)
 }

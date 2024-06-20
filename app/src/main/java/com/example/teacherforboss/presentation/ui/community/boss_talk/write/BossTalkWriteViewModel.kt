@@ -33,6 +33,8 @@ class BossTalkWriteViewModel @Inject constructor(
     var _presignedUrlList = MutableLiveData <List<String>> ()
     val presignedUrlList : LiveData<List<String>> = _presignedUrlList
 
+    var filtered_presigendList= listOf<String>()
+
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
 
@@ -80,7 +82,7 @@ class BossTalkWriteViewModel @Inject constructor(
                     bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
                         title=title.value?:"",
                         content=content.value?:"",
-                        imageUrlList = presignedUrlList.value!!,
+                        imageUrlList = filtered_presigendList,
                         hashtagList = hasTagList
                     )
                 )
@@ -108,6 +110,5 @@ class BossTalkWriteViewModel @Inject constructor(
             }
         }
     }
-
 
 }

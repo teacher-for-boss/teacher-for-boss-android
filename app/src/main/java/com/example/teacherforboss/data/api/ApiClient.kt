@@ -33,7 +33,7 @@ object ApiClient{
     fun getAwsService():awsService{
         if(mRetrofit==null){
             mRetrofit=Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

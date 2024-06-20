@@ -9,7 +9,7 @@ import com.example.teacherforboss.databinding.RvItemImageBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage.ViewHolder
 
-class rvAdapterImage(private val imageList: ArrayList<String>, private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<ViewHolder>() {
+class rvAdapterImage(private val imageList: ArrayList<Uri>, private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {
             fun bind(imagePath: String, viewModel: BossTalkWriteViewModel) {
                 binding.image.setImageURI(Uri.parse(imagePath))
@@ -36,6 +36,6 @@ class rvAdapterImage(private val imageList: ArrayList<String>, private val viewM
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(imageList[position], viewModel = viewModel)
+        holder.bind(imageList[position].toString(), viewModel = viewModel)
     }
 }

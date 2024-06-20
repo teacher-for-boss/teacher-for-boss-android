@@ -37,6 +37,7 @@ class BossTalkMainFragment :
 
         getPosts()
         observeSortType()
+        addListeners()
 
     }
 
@@ -127,6 +128,17 @@ class BossTalkMainFragment :
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
+    }
+
+    private fun addListeners(){
+        binding.fabWrite.setOnClickListener {
+            gotoBossTalkWrite()
+        }
+    }
+
+    private fun gotoBossTalkWrite(){
+        val intent=Intent(requireContext(),BossTalkWriteActivity::class.java)
+        startActivity(intent)
     }
 
 

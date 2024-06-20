@@ -4,10 +4,34 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
+import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
+import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
+import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
+import com.example.teacherforboss.util.base.FileUtils
+import com.example.teacherforboss.util.base.UploadUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BossTalkWriteViewModel : ViewModel() {
+@HiltViewModel
+class BossTalkWriteViewModel @Inject constructor(
+    private val bossUploadPostUseCase: BossUploadPostUseCase,
+    private val presignedUrlUseCase: PresignedUrlUseCase
+): ViewModel() {
+    var _title=MutableLiveData<String>("")
+    val title:LiveData<String> get() = _title
+
+    var _content=MutableLiveData<String>("")
+    val content:LiveData<String> get() = _content
+
     val hasTagList:ArrayList<String> = arrayListOf()
-    val imageList: ArrayList<String> = arrayListOf()
+    var imageList: ArrayList<Uri> = arrayListOf()
+    var _presignedUrlList = MutableLiveData <List<String>> ()
+    val presignedUrlList : LiveData<List<String>> = _presignedUrlList
 
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
@@ -18,6 +42,13 @@ class BossTalkWriteViewModel : ViewModel() {
     private val _textTagLength = MutableLiveData<Int>()
     val textTagLength: LiveData<Int> get()=_textTagLength
 
+    private val _presignedUrlListLiveData = MutableLiveData <presignedUrlListEntity> ()
+    val presignedUrlLiveData : LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
+
+
+    private val _uploadPostLiveData = MutableLiveData <BossTalkUploadPostResponseEntity> ()
+    val uploadPostLiveData : LiveData<BossTalkUploadPostResponseEntity> = _uploadPostLiveData
+
     fun addHashTag(tag: String) {
         hasTagList.add(tag)
     }
@@ -25,8 +56,8 @@ class BossTalkWriteViewModel : ViewModel() {
         hasTagList.removeAt(position)
     }
 
-    fun addImage(imageUri: Uri?) {
-        imageList.add(imageUri.toString())
+    fun addImage(imageUri: Uri) {
+        imageList.add(imageUri)
     }
     fun deleteImage(position: Int) {
         imageList.removeAt(position)
@@ -41,5 +72,42 @@ class BossTalkWriteViewModel : ViewModel() {
     fun setTagLength(length: Int) {
         _textTagLength.value = length
     }
+
+    fun uploadPost(){
+        viewModelScope.launch {
+            try{
+                val bossTalkUploadPostResponseEntity=bossUploadPostUseCase(
+                    bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
+                        title=title.value?:"",
+                        content=content.value?:"",
+                        imageUrlList = presignedUrlList.value!!,
+                        hashtagList = hasTagList
+                    )
+                )
+                _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
+            }catch (ex:Exception){
+
+            }
+        }
+    }
+
+    fun getPresignedUrlList(){
+        viewModelScope.launch {
+            try{
+                val presignedUrlListEntity= presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = null,
+                        lastIndex=0,
+                        imageCount = imageList.size,
+                        origin="posts"
+                    )
+                )
+                _presignedUrlListLiveData.value=presignedUrlListEntity
+            }catch (ex:Exception){
+                throw ex
+            }
+        }
+    }
+
 
 }

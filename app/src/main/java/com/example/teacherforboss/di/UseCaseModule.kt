@@ -4,6 +4,7 @@ import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
+import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
 import dagger.Module
@@ -29,5 +30,11 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkUseCase(communityRepository: CommunityRepository):BossTalkPostsUseCase=
         BossTalkPostsUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossUploadPostUseCase(communityRepository: CommunityRepository):BossUploadPostUseCase=
+        BossUploadPostUseCase(communityRepository=communityRepository)
+
 
 }

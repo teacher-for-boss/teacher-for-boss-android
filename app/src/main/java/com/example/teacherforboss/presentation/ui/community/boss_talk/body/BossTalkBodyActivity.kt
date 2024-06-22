@@ -9,7 +9,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
@@ -17,10 +19,15 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class BossTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBosstalkBodyBinding
@@ -42,6 +49,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         setRecyclerView()
         //질문 좋아요, 저장
         likeAndBookmark()
+        // 서버 api 요청
+        getBossTalkBody()
+        // 뒤로가기
+        onBackBtnPressed()
 
     }
 
@@ -91,8 +102,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //rvTag
-        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList)
-        binding.rvTagArea.layoutManager = layoutManager
+        if(viewModel.tagList!=null){
+            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList!!)
+            binding.rvTagArea.layoutManager = layoutManager
+        }
 
         //rvComment
         binding.rvComment.adapter = rvAdapterCommentBoss(viewModel.commentList, viewModel)
@@ -131,4 +144,52 @@ class BossTalkBodyActivity : AppCompatActivity() {
             }
         })
     }
+
+    fun getBossTalkBody(){
+        val postId=intent.getStringExtra("postId")?.toLong()
+        lifecycleScope.launch {
+            viewModel.getBossTalkBody(postId!!)
+            setBodyView()
+        }
+    }
+    private fun setBodyView(){
+        viewModel.bossTalkBodyLiveData.observe(this, Observer {
+            // 해시태그
+            if(it.hashtagList!=null) viewModel.tagList= it.hashtagList as ArrayList<String>
+            else viewModel.tagList=null
+
+            // 좋아요, 북마크
+            if(it.liked) {
+                viewModel.clickLikeBtn()
+                binding.likeTv.text="좋아요 ${it.likeCount}개"
+            }
+            if(it.bookmarked){
+                viewModel.clickBookmarkBtn()
+                binding.bookmarkTv.text="저장 ${it.bookmarkCount}개"
+            }
+
+            // 본문 글
+            with(binding){
+                bodyTitle.text=it.title
+                bodyBody.text=it.content
+                userNickname.text= it.memberInfo.name
+                date.text=LocalDateFormatter.extractDate(it.createdAt)
+            }
+
+            // 프로필 이미지
+            if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
+
+        })
+
+    }
+    fun onBackBtnPressed(){
+        binding.backBtn.setOnClickListener {
+            val intent=Intent(this,MainActivity::class.java).apply {
+                putExtra("FRAGMENT_DESTINATION","BOSS_TALK")
+            }
+            startActivity(intent)
+        }
+
+    }
+
 }

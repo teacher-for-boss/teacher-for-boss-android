@@ -1,6 +1,7 @@
 package com.example.teacherforboss.presentation.ui.community.boss_talk.main.card
 
 import android.content.Context
+import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -11,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.example.teacherforboss.domain.model.community.PostEntity
-import java.time.format.DateTimeFormatter
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class BossTalkMainCardAdapter(context: Context) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
@@ -19,6 +21,7 @@ class BossTalkMainCardAdapter(context: Context) :
 
     private var bossTalkCardList: MutableList<PostEntity> = mutableListOf()
     private var allBossTalkMainCard: List<PostEntity> = emptyList()
+    private val context=context
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -72,16 +75,21 @@ class BossTalkMainCardAdapter(context: Context) :
             binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmarkCount.toString()
             binding.tvBossTalkLikeCount.text = bossTalkCard.likeCount.toString()
             binding.tvBossTalkCommentCount.text = bossTalkCard.commentCount.toString()
-
-            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-            val formattedDate = bossTalkCard.createdAt.format(formatter)
-            binding.tvBossTalkDate.text = formattedDate
+            binding.tvBossTalkDate.text = LocalDateFormatter.extractDate(bossTalkCard.createdAt)
 
             binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmark
             binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmark
 
             binding.icBossTalkLike.isSelected = bossTalkCard.like
             binding.tvBossTalkLikeCount.isSelected = bossTalkCard.like
+
+            // 상세 글 이동
+            binding.root.setOnClickListener {
+                val intent=Intent(context,BossTalkBodyActivity::class.java).apply{
+                    putExtra("postId",bossTalkCard.postId.toString())
+                }
+                context.startActivity(intent)
+            }
 
         }
     }

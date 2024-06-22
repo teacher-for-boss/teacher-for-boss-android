@@ -34,6 +34,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         })
 
         clickBottomNavigation()
+        setFragment()
     }
 
     private fun clickBottomNavigation() {
@@ -67,5 +68,39 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             .commit()
         Log.d("MainActivity", "Fragment replaced with: ${fragment::class.java.simpleName}")
 
+    }
+
+    private fun setFragment(){
+        val destination=intent.getStringExtra(FRAGMENT_DESTINATION)
+        when (destination) {
+            HOME -> {
+                binding.bnvTeacherForBoss.selectedItemId=R.id.menu_home
+                replaceFragment(HomeFragment())
+                true
+            }
+            TEACHER_TALK -> {
+                binding.bnvTeacherForBoss.selectedItemId=R.id.menu_teacher_talk
+                replaceFragment(TeacherTalkMainFragment())
+                true
+            }
+            BOSS_TALK -> {
+                binding.bnvTeacherForBoss.selectedItemId=R.id.menu_boss_talk
+                replaceFragment(BossTalkMainFragment())
+                true
+            }
+            MYPAGE -> {
+                binding.bnvTeacherForBoss.selectedItemId=R.id.menu_my_page
+                replaceFragment(MyPageFragment())
+                true
+            }
+            else -> false
+        }
+    }
+    companion object{
+        const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
+        const val HOME="HOME"
+        const val BOSS_TALK="BOSS_TALK"
+        const val TEACHER_TALK="TEACHER_TALK"
+        const val MYPAGE="MYPAGE"
     }
 }

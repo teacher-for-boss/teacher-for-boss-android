@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkWriteBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterTagWrite
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
@@ -66,6 +67,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
         showExitDialog()
 
         addListenrs()
+        // 업로드 완료
+        finishUpload()
 
     }
 
@@ -188,7 +191,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
 
         viewModel.presignedUrlLiveData.observe(this,{
             viewModel._presignedUrlList.value= (it.presignedUrlList)
-            viewModel.filtered_presigendList=substring_url(it.presignedUrlList)
+            viewModel.filtered_presigendList=filter_url(it.presignedUrlList)
 
             viewModel.uploadPost()
             uploadImgtoS3()
@@ -207,12 +210,17 @@ class BossTalkWriteActivity : AppCompatActivity() {
         uploadUtil.uploadPostImage(urlList,requestBodyList)
     }
 
-    fun substring_url(urlList:List<String>):List<String>{
-        val filtered_list= mutableListOf<String>()
-        urlList.forEach { it->
-            filtered_list.add(it.substringBefore("?"))
-        }
-        return filtered_list
+    fun filter_url(urlList:List<String>):List<String>{
+        return urlList.map { it.substringBefore("?") }
+    }
+
+    fun finishUpload(){
+        viewModel.uploadPostLiveData.observe(this, Observer {
+            val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
+                putExtra("postId",it.postId.toString())
+            }
+            startActivity(intent)
+        })
     }
 
     fun showExitDialog() {

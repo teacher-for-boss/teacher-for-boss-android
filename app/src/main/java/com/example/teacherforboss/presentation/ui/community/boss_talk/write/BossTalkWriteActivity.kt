@@ -22,10 +22,13 @@ import com.example.teacherforboss.databinding.ActivityBosstalkWriteBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterTagWrite
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
+import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BossTalkWriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBosstalkWriteBinding
     private val viewModel: BossTalkWriteViewModel by viewModels()
@@ -36,6 +39,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_write)
+        binding.viewModel=viewModel
+        binding.lifecycleOwner=this
 
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
@@ -60,6 +65,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
         //나가기
         showExitDialog()
 
+        addListenrs()
 
     }
 
@@ -106,7 +112,9 @@ class BossTalkWriteActivity : AppCompatActivity() {
                 }
             }
 
-            viewModel.addImage(imageUri)
+            if (imageUri != null) {
+                viewModel.addImage(imageUri)
+            }
             adapterImage.notifyDataSetChanged()
         }
     }
@@ -167,6 +175,44 @@ class BossTalkWriteActivity : AppCompatActivity() {
         binding.inputTitle.filters = arrayOf(InputFilter.LengthFilter(30))
         binding.inputBody.filters = arrayOf(InputFilter.LengthFilter(1000))
         binding.inputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
+    }
+
+    fun addListenrs(){
+        binding.registerBtn.setOnClickListener {
+            uploadPost()
+        }
+    }
+
+    fun uploadPost(){
+        viewModel.getPresignedUrlList()
+
+        viewModel.presignedUrlLiveData.observe(this,{
+            viewModel._presignedUrlList.value= (it.presignedUrlList)
+            viewModel.filtered_presigendList=substring_url(it.presignedUrlList)
+
+            viewModel.uploadPost()
+            uploadImgtoS3()
+
+            })
+
+    }
+
+    fun uploadImgtoS3(){
+        val urlList=viewModel.presignedUrlList.value?:return
+        val uriList=viewModel.imageList
+
+        val uploadUtil=UploadUtil(applicationContext)
+        val requestBodyList=uploadUtil.convert_UritoImg(uriList)
+
+        uploadUtil.uploadPostImage(urlList,requestBodyList)
+    }
+
+    fun substring_url(urlList:List<String>):List<String>{
+        val filtered_list= mutableListOf<String>()
+        urlList.forEach { it->
+            filtered_list.add(it.substringBefore("?"))
+        }
+        return filtered_list
     }
 
     fun showExitDialog() {

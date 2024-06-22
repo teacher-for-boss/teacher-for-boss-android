@@ -7,6 +7,7 @@ import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
+import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
 import dagger.Module
@@ -35,6 +36,10 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+    fun providesBossUploadPostUseCase(communityRepository: CommunityRepository):BossUploadPostUseCase=
+        BossUploadPostUseCase(communityRepository=communityRepository)
+
+
     fun providesBossTalkBookmarkUseCase(communityRepository: CommunityRepository):BossTalkBookmarkUseCase=
         BossTalkBookmarkUseCase(communityRepository=communityRepository)
 

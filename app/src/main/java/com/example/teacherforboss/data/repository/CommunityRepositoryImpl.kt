@@ -6,6 +6,8 @@ import com.example.teacherforboss.domain.model.community.BossTalkBookmarkRespons
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
+import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import javax.inject.Inject
@@ -27,6 +29,13 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.searchKeywordBossTalk(requestBossTalkPostsDto=bossTalkPostsRequestEntity.toRequestBossTalkPostsDto())
                 .result.toBossTalkPostsEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun uploadBossTalkPost(bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity): BossTalkUploadPostResponseEntity {
+        return runCatching {
+            communityDataSource.uploadBossTalkPost(bossTalkUploadPostRequestEntity.toBossUploadRequestDto())
+                .result.toBossUploadPostResponseEntity()
         }.getOrElse { err->throw err }
     }
 

@@ -183,8 +183,11 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun uploadImgtoS3(){
-        val uploadUtil=UploadUtil(requireActivity(),viewModel)
-        uploadUtil.uploadImage()
+        val url=viewModel.profilePresignedUrl.value?:return
+        val imgUri=viewModel.profileImgUri.value?:return
+        val uploadUtil=UploadUtil(requireActivity())
+
+        uploadUtil.uploadProfileImage(url,imgUri)
     }
 
     private fun showSplash(){

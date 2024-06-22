@@ -7,13 +7,13 @@ import kotlinx.datetime.LocalDateTime
 data class BossTalkBodyResponseEntity(
     val title:String,
     val content: String,
-    val hashtagList: List<String>,
-    val memberInfo: ArrayList<MemberEntity>,
+    val hashtagList: List<String>?,
+    val memberInfo: MemberEntity,
     val liked: Boolean,
     val bookmarked: Boolean,
     val likeCount: Int,
     val bookmarkCount: Int,
-    val createdAt: LocalDateTime
+    val createdAt: String
 ) {
     fun toResponseBossTalkBodyDto()= ResponseBossTalkBodyDto(
         title =title,
@@ -24,14 +24,14 @@ data class BossTalkBodyResponseEntity(
         likeCount =likeCount,
         bookmarkCount =bookmarkCount,
         createdAt =createdAt,
-        memberInfo =memberInfo.mapTo(ArrayList()) { it.toMemberDto() }
+        memberInfo =memberInfo.toMemberDto()
 
     )
 }
 data class MemberEntity(
     val memberId: Long,
     val name: String,
-    val profileImg: String
+    val profileImg: String?
 ){
     fun toMemberDto()= MemberDto(
         memberId=memberId,

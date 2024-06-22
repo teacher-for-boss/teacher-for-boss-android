@@ -40,6 +40,8 @@ class UseCaseModule {
         BossUploadPostUseCase(communityRepository=communityRepository)
 
 
+    @Provides
+    @Singleton
     fun providesBossTalkBookmarkUseCase(communityRepository: CommunityRepository):BossTalkBookmarkUseCase=
         BossTalkBookmarkUseCase(communityRepository=communityRepository)
 

@@ -10,6 +10,7 @@ import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CommunityService {
@@ -48,7 +49,7 @@ interface CommunityService {
 
     @GET("${BOSS}/posts/{postId}")
     suspend fun getBossTalkBody(
-        @Query("postId") postId:Long
+        @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBodyDto>
 

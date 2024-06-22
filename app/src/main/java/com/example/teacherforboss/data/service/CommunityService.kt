@@ -1,6 +1,9 @@
 package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
 import com.example.teacherforboss.util.base.BaseResponse
@@ -31,6 +34,23 @@ interface CommunityService {
         @Body requestBossUploadPostDto: RequestBossUploadPostDto
     ):BaseResponse<ResponseBossUploadPostDto>
 
+    @GET("${BOSS}/posts/{postId}/bookmark")
+    suspend fun getBossTalkBookmark(
+        @Query("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkBookmarkDto>
+
+    @GET("${BOSS}/posts/{postId}/likes")
+    suspend fun getBossTalkLike(
+        @Query("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkLikeDto>
+
+    @GET("${BOSS}/posts/{postId}")
+    suspend fun getBossTalkBody(
+        @Query("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkBodyDto>
 
 
     companion object {

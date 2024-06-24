@@ -35,6 +35,8 @@ class BossTalkMainFragment :
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
 //        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
+        binding.viewModel=viewModel
+
         getPosts()
         observeSortType()
         addListeners()
@@ -133,6 +135,10 @@ class BossTalkMainFragment :
     private fun addListeners(){
         binding.fabWrite.setOnClickListener {
             gotoBossTalkWrite()
+        }
+        binding.ivSearch.setOnClickListener {
+            viewModel._keyword.value=binding.etSearchView.text.toString()
+            viewModel.searchKeywordBossTalk()
         }
     }
 

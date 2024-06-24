@@ -78,7 +78,7 @@ class BossTalkMainViewModel @Inject constructor(
                 updatedPosts.addAll(morePostsResponseEntity.postList)
 
                 _getBossTalkPostLiveData.value = BossTalkPostsResponseEntity(
-                    totalCount = _getBossTalkPostLiveData.value?.totalCount ?: 0,
+                    hasNext = _getBossTalkPostLiveData.value?.hasNext ?: true,
                     postList = updatedPosts
                 )
             } catch (ex: Exception) {

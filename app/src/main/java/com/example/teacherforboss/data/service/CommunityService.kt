@@ -1,8 +1,10 @@
 package com.example.teacherforboss.data.service
 
+import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -52,6 +54,12 @@ interface CommunityService {
         @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBodyDto>
+    @POST("${BOSS}/posts/{postId}/comments")
+    suspend fun postBossTalkComment(
+        @Body requestBossTalkCommentDto: RequestBossTalkCommentDto,
+        @Path("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkCommentDto>
 
 
     companion object {

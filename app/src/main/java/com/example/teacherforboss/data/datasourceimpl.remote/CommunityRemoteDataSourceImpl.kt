@@ -33,4 +33,6 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     override suspend fun getBossTalkBody(requestBossTalkDto: RequestBossTalkDto): BaseResponse<ResponseBossTalkBodyDto>
     =communityService.getBossTalkBody(postId = requestBossTalkDto.postId)
 
+    override suspend fun modifyBossTalkBody(requestBossTalkDto: RequestBossTalkDto, requestBossUploadPostDto: RequestBossUploadPostDto): BaseResponse<ResponseBossUploadPostDto>
+    =communityService.modifyBossTalkBody(postId = requestBossTalkDto.postId,requestBossUploadPostDto=requestBossUploadPostDto)
 }

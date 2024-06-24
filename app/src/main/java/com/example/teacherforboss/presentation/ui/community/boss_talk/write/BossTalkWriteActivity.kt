@@ -36,13 +36,39 @@ class BossTalkWriteActivity : AppCompatActivity() {
 
     private lateinit var adapterTag: rvAdapterTagWrite
     private lateinit var adapterImage: rvAdapterImage
-
+    private var purpose:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_write)
         binding.viewModel=viewModel
         binding.lifecycleOwner=this
 
+        purpose=intent.getStringExtra("purpose")?:"write"
+
+        // 초기 뷰 설정
+        initView()
+        //해시태그입력
+        inputHashtag()
+        //이미지가져오기
+        getImage()
+        //글자수
+        setTextLength()
+        //나가기
+        showExitDialog()
+
+        addListenrs()
+        // 업로드 완료
+        finishUpload()
+
+    }
+
+    fun initView(){
+        if(purpose=="modify"){
+            viewModel.postId=intent.getStringExtra("postId")!!.toLong()
+            viewModel._title.value=intent.getStringExtra("title").toString()
+            viewModel._content.value=intent.getStringExtra("body").toString()
+            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
+        }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
@@ -56,19 +82,6 @@ class BossTalkWriteActivity : AppCompatActivity() {
         adapterImage = rvAdapterImage(viewModel.imageList, viewModel)
         binding.rvImage.adapter = adapterImage
         binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        //해시태그입력
-        inputHashtag()
-        //이미지가져오기
-        getImage()
-        //글자수
-        setTextLength()
-        //나가기
-        showExitDialog()
-
-        addListenrs()
-        // 업로드 완료
-        finishUpload()
 
     }
 
@@ -191,9 +204,10 @@ class BossTalkWriteActivity : AppCompatActivity() {
 
         viewModel.presignedUrlLiveData.observe(this,{
             viewModel._presignedUrlList.value= (it.presignedUrlList)
-            viewModel.filtered_presigendList=filter_url(it.presignedUrlList)
+            viewModel.filtered_presigendList=it.presignedUrlList.map { it.substringBefore("?")}
 
-            viewModel.uploadPost()
+            if(purpose=="modify") viewModel.modifyPost()
+            else viewModel.uploadPost()
             uploadImgtoS3()
 
             })
@@ -208,10 +222,6 @@ class BossTalkWriteActivity : AppCompatActivity() {
         val requestBodyList=uploadUtil.convert_UritoImg(uriList)
 
         uploadUtil.uploadPostImage(urlList,requestBodyList)
-    }
-
-    fun filter_url(urlList:List<String>):List<String>{
-        return urlList.map { it.substringBefore("?") }
     }
 
     fun finishUpload(){

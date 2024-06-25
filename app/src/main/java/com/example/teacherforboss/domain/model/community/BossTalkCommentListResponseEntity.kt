@@ -3,9 +3,7 @@ package com.example.teacherforboss.domain.model.community
 import com.google.gson.annotations.SerializedName
 
 data class BossTalkCommentListResponseEntity(
-    @SerializedName("totalCount")
     val totalCount:Long,
-    @SerializedName("commentList")
     val commentList:ArrayList<CommentEntity>
 )
 data class CommentEntity(

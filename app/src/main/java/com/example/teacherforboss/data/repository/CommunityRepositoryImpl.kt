@@ -3,6 +3,8 @@ package com.example.teacherforboss.data.repository
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
@@ -57,6 +59,16 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.getBossTalkBody(requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkBodyResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postBossTalkComment(
+        bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
+        bossTalkRequestEntity: BossTalkRequestEntity
+    ): BossTalkCommentResponseEntity {
+        return runCatching {
+            communityDataSource.postBossTalkComment(requestBossTalkCommentDto=bossTalkCommentRequestEntity.toRequestBossTalkCommentDto(), requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
+                .result.toBossTalkCommentResponseEntity()
         }.getOrElse { err->throw err }
     }
 

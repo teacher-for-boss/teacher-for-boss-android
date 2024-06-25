@@ -8,7 +8,7 @@ data class ResponseBossTalkBookmarkDto(
     @SerializedName("bookmark")
     val bookmark:Boolean,
     @SerializedName("updatedAt")
-    val updatedAt: LocalDateTime
+    val updatedAt:String
 ) {
     fun toBossTalkBookmarkResponseEntity()= BossTalkBookmarkResponseEntity(
         bookmark = bookmark,

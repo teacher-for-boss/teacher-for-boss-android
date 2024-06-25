@@ -1,11 +1,13 @@
 package com.example.teacherforboss.data.datasourceimpl.remote
 
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
+import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -35,4 +37,10 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun modifyBossTalkBody(requestBossTalkDto: RequestBossTalkDto, requestBossUploadPostDto: RequestBossUploadPostDto): BaseResponse<ResponseBossUploadPostDto>
     =communityService.modifyBossTalkBody(postId = requestBossTalkDto.postId,requestBossUploadPostDto=requestBossUploadPostDto)
+
+  override suspend fun postBossTalkComment(
+        requestBossTalkCommentDto: RequestBossTalkCommentDto,
+        requestBossTalkDto: RequestBossTalkDto
+    ): BaseResponse<ResponseBossTalkCommentDto> = communityService.postBossTalkComment(requestBossTalkCommentDto, postId = requestBossTalkDto.postId)
+
 }

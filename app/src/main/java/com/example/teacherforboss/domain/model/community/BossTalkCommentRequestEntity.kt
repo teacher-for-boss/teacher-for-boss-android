@@ -4,7 +4,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 
 
 data class BossTalkCommentRequestEntity(
-    val parentCommentId:Long,
+    val parentCommentId:Long?,
     val content:String,
     val imageUrlList:List<String>
 ){

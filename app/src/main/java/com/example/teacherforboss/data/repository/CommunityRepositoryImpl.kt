@@ -65,11 +65,13 @@ class CommunityRepositoryImpl @Inject constructor(
     override suspend fun modifyBossTalkBody(
         bossTalkRequestEntity: BossTalkRequestEntity, bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity
     ): BossTalkUploadPostResponseEntity {
-        return runCatching { communityDataSource.modifyBossTalkBody(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto(),
-            requestBossUploadPostDto = bossTalkUploadPostRequestEntity.toBossUploadRequestDto()).result.toBossUploadPostResponseEntity()
+        return runCatching {
+            communityDataSource.modifyBossTalkBody(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto(),
+                requestBossUploadPostDto = bossTalkUploadPostRequestEntity.toBossUploadRequestDto()).result.toBossUploadPostResponseEntity()
+        }.getOrElse { err->throw err }
+    }
 
-          override suspend fun postBossTalkComment(
-        bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
+    override suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
         bossTalkRequestEntity: BossTalkRequestEntity
     ): BossTalkCommentResponseEntity {
         return runCatching {

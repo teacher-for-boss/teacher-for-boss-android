@@ -62,7 +62,13 @@ class CommunityRepositoryImpl @Inject constructor(
         }.getOrElse { err->throw err }
     }
 
-    override suspend fun postBossTalkComment(
+    override suspend fun modifyBossTalkBody(
+        bossTalkRequestEntity: BossTalkRequestEntity, bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity
+    ): BossTalkUploadPostResponseEntity {
+        return runCatching { communityDataSource.modifyBossTalkBody(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto(),
+            requestBossUploadPostDto = bossTalkUploadPostRequestEntity.toBossUploadRequestDto()).result.toBossUploadPostResponseEntity()
+
+          override suspend fun postBossTalkComment(
         bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
         bossTalkRequestEntity: BossTalkRequestEntity
     ): BossTalkCommentResponseEntity {

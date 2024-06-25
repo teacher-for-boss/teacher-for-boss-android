@@ -7,7 +7,9 @@ import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
@@ -58,6 +60,17 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+    fun providesBossTalkSearchUseCase(communityRepository: CommunityRepository):BossTalkSearchUseCase =
+        BossTalkSearchUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossTalkModifyBodyUseCase(communityRepository: CommunityRepository):BossTalkModifyBodyUseCase =
+        BossTalkModifyBodyUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
     fun providesBossTalkCommentUseCase(communityRepository: CommunityRepository):BossTalkCommentUseCase =
         BossTalkCommentUseCase(communityRepository=communityRepository)
+
 }

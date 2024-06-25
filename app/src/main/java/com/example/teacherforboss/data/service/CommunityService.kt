@@ -11,6 +11,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -34,7 +35,7 @@ interface CommunityService {
 
     @POST("${BOSS}/posts")
     suspend fun uploadPost(
-        @Body requestBossUploadPostDto: RequestBossUploadPostDto
+        @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossUploadPostDto>
 
     @GET("${BOSS}/posts/{postId}/bookmark")
@@ -60,6 +61,12 @@ interface CommunityService {
         @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkCommentDto>
+
+    @PATCH("${BOSS}/posts/{postId}")
+    suspend fun modifyBossTalkBody(
+        @Path("postId") postId:Long,
+        @Body requestBossUploadPostDto: RequestBossUploadPostDto,
+    ):BaseResponse<ResponseBossUploadPostDto>
 
 
     companion object {

@@ -16,7 +16,6 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
@@ -32,6 +31,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBosstalkBodyBinding
     private val viewModel: BossTalkBodyViewModel by viewModels()
+    private var postId:Long=0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_body)
@@ -41,16 +42,17 @@ class BossTalkBodyActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
 
-        //더보기 메뉴 보여주기
-        showOptionMenu()
-        //수정,삭제,신고
-        doOptionMenu()
-        //rv
-        setRecyclerView()
-        //질문 좋아요, 저장
-        likeAndBookmark()
+        // post id
+        postId=intent.getStringExtra("postId")!!.toLong()
+
         // 서버 api 요청
         getBossTalkBody()
+        //더보기 메뉴 보여주기
+        showOptionMenu()
+        //질문 좋아요, 저장
+        likeAndBookmark()
+        //수정,삭제,신고
+        doOptionMenu()
         // 뒤로가기
         onBackBtnPressed()
 
@@ -59,6 +61,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun showOptionMenu() {
         //더보기 버튼
         binding.btnOption.setOnClickListener {
+            //TODO: 작성자 분기처리
             //작성자인 경우
             if (binding.writerOption.visibility == View.GONE) {
                 binding.writerOption.visibility = View.VISIBLE
@@ -66,11 +69,11 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 binding.writerOption.visibility = View.GONE
             }
             //작성자가 아닌 경우
-            if (binding.nonWriterOption.visibility == View.GONE) {
-                binding.nonWriterOption.visibility = View.VISIBLE
-            } else {
-                binding.nonWriterOption.visibility = View.GONE
-            }
+//            if (binding.nonWriterOption.visibility == View.GONE) {
+//                binding.nonWriterOption.visibility = View.VISIBLE
+//            } else {
+//                binding.nonWriterOption.visibility = View.GONE
+//            }
         }
     }
 
@@ -83,9 +86,22 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
         //수정하기
         binding.modifyBtn.setOnClickListener {
-            val intent = Intent(this, BossTalkWriteActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, BossTalkWriteActivity::class.java).apply{
+                putExtra("purpose","modify")
+                putExtra("title",binding.bodyTitle.text.toString())
+                putExtra("body",binding.bodyBody.text.toString())
+                putExtra("postId",postId.toString())
 
+                viewModel.tagList?.let {
+                    if(it.isNotEmpty()) {
+                        putExtra("isTagList","true")
+                        putStringArrayListExtra("tagList",viewModel.tagList)
+                    }
+                    else  putExtra("isTagList","false")
+                }
+                // TODO: 이미지 뷰 구현 후 추가
+            }
+            startActivity(intent)
             //본문 데이터 같이 넘겨주기
         }
 
@@ -146,7 +162,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     fun getBossTalkBody(){
-        val postId=intent.getStringExtra("postId")?.toLong()
         lifecycleScope.launch {
             viewModel.getBossTalkBody(postId!!)
             setBodyView()
@@ -179,6 +194,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
             // 프로필 이미지
             if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
 
+            setRecyclerView()
         })
 
     }

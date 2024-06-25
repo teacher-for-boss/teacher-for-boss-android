@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
+import com.example.teacherforboss.domain.usecase.BossTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.util.base.FileUtils
@@ -20,15 +22,17 @@ import javax.inject.Inject
 @HiltViewModel
 class BossTalkWriteViewModel @Inject constructor(
     private val bossUploadPostUseCase: BossUploadPostUseCase,
-    private val presignedUrlUseCase: PresignedUrlUseCase
+    private val presignedUrlUseCase: PresignedUrlUseCase,
+    private val bossTalkModifyBodyUseCase: BossTalkModifyBodyUseCase
 ): ViewModel() {
+    var postId:Long=0L
     var _title=MutableLiveData<String>("")
     val title:LiveData<String> get() = _title
 
     var _content=MutableLiveData<String>("")
     val content:LiveData<String> get() = _content
 
-    val hasTagList:ArrayList<String> = arrayListOf()
+    var hasTagList:ArrayList<String> = arrayListOf()
     var imageList: ArrayList<Uri> = arrayListOf()
     var _presignedUrlList = MutableLiveData <List<String>> ()
     val presignedUrlList : LiveData<List<String>> = _presignedUrlList
@@ -107,6 +111,27 @@ class BossTalkWriteViewModel @Inject constructor(
                 _presignedUrlListLiveData.value=presignedUrlListEntity
             }catch (ex:Exception){
                 throw ex
+            }
+        }
+    }
+
+    fun modifyPost(){
+        viewModelScope.launch {
+            try{
+                val bossTalkUploadPostResponseEntity=bossTalkModifyBodyUseCase(
+                    bossTalkRequestEntity= BossTalkRequestEntity(
+                        postId = postId
+                    ),
+                    bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
+                        title=title.value?:"",
+                        content=content.value?:"",
+                        imageUrlList = filtered_presigendList,
+                        hashtagList = hasTagList
+                    )
+                )
+                _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
+            }catch (ex:Exception){
+
             }
         }
     }

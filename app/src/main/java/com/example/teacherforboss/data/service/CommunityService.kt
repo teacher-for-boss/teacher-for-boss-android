@@ -1,6 +1,7 @@
 package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
@@ -58,7 +59,7 @@ interface CommunityService {
     suspend fun modifyBossTalkBody(
         @Path("postId") postId:Long,
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
-    ):BaseResponse<ResponseBossUploadPostDto>
+    ):BaseResponse<ResponseBossModifyDto>
 
 
     companion object {

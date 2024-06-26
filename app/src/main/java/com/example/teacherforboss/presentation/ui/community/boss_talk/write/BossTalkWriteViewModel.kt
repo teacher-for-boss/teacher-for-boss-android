@@ -1,12 +1,14 @@
 package com.example.teacherforboss.presentation.ui.community.boss_talk.write
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
@@ -55,6 +57,9 @@ class BossTalkWriteViewModel @Inject constructor(
     private val _uploadPostLiveData = MutableLiveData <BossTalkUploadPostResponseEntity> ()
     val uploadPostLiveData : LiveData<BossTalkUploadPostResponseEntity> = _uploadPostLiveData
 
+    private val _modifyPostLiveData = MutableLiveData <BossTalkModifyPostResponseEntity> ()
+    val modifyPostLiveData : LiveData<BossTalkModifyPostResponseEntity> = _modifyPostLiveData
+
     fun addHashTag(tag: String) {
         hasTagList.add(tag)
     }
@@ -81,6 +86,7 @@ class BossTalkWriteViewModel @Inject constructor(
 
     fun uploadPost(){
         viewModelScope.launch {
+            Log.d("test","up")
             try{
                 val bossTalkUploadPostResponseEntity=bossUploadPostUseCase(
                     bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
@@ -91,6 +97,7 @@ class BossTalkWriteViewModel @Inject constructor(
                     )
                 )
                 _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
+                Log.d("test","up2")
             }catch (ex:Exception){
 
             }
@@ -117,8 +124,9 @@ class BossTalkWriteViewModel @Inject constructor(
 
     fun modifyPost(){
         viewModelScope.launch {
+            Log.d("test","m1")
             try{
-                val bossTalkUploadPostResponseEntity=bossTalkModifyBodyUseCase(
+                val bossTalkModifyPostResponseEntity=bossTalkModifyBodyUseCase(
                     bossTalkRequestEntity= BossTalkRequestEntity(
                         postId = postId
                     ),
@@ -129,9 +137,10 @@ class BossTalkWriteViewModel @Inject constructor(
                         hashtagList = hasTagList
                     )
                 )
-                _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
+                _modifyPostLiveData.value=bossTalkModifyPostResponseEntity
+                Log.d("test","m2")
             }catch (ex:Exception){
-
+                Log.e("ModifyPostError", "Error modifying post", ex)
             }
         }
     }

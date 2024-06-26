@@ -3,6 +3,7 @@ package com.example.teacherforboss.data.repository
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
@@ -68,6 +69,13 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.modifyBossTalkBody(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto(),
                 requestBossUploadPostDto = bossTalkUploadPostRequestEntity.toBossUploadRequestDto()).result.toBossUploadPostResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun getBossTalkCommentList(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentListResponseEntity {
+        return runCatching {
+            communityDataSource.getBossTalkCommentList(requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
+                .result.toBossTalkCommentListResponseEntity()
         }.getOrElse { err->throw err }
     }
 

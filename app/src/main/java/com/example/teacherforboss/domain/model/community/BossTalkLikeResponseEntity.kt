@@ -5,7 +5,7 @@ import kotlinx.datetime.LocalDateTime
 
 data class BossTalkLikeResponseEntity (
     val like:Boolean,
-    val updatedAt: LocalDateTime
+    val updatedAt:String
 ) {
     fun toResponseBossTalkLikeDto()= ResponseBossTalkLikeDto(
         like = like,

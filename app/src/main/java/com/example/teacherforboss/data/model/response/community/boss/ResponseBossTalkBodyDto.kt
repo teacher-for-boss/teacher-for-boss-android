@@ -47,11 +47,14 @@ data class MemberDto(
     @SerializedName("name")
     val name: String,
     @SerializedName("profileImg")
-    val profileImg: String?
+    val profileImg: String?,
+    @SerializedName("level")
+    val level: String?
 ){
     fun toMemberEntity()= MemberEntity(
         memberId=memberId,
         name=name,
-        profileImg=profileImg
+        profileImg=profileImg,
+        level=level
     )
 }

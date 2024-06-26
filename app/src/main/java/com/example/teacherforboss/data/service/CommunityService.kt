@@ -6,6 +6,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -56,6 +57,13 @@ interface CommunityService {
         @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBodyDto>
+
+    @GET("${BOSS}/posts/{postId}/comments")
+    suspend fun getBossTalkCommentList(
+        @Path("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkCommentListDto>
+
     @POST("${BOSS}/posts/{postId}/comments")
     suspend fun postBossTalkComment(
         @Body requestBossTalkCommentDto: RequestBossTalkCommentDto,

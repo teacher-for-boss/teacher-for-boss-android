@@ -5,7 +5,7 @@ import kotlinx.datetime.LocalDateTime
 
 data class BossTalkBookmarkResponseEntity (
     val bookmark:Boolean,
-    val updatedAt: LocalDateTime
+    val updatedAt:String
 ) {
     fun toResponseBossTalkBookmarkDto()= ResponseBossTalkBookmarkDto(
         bookmark = bookmark,

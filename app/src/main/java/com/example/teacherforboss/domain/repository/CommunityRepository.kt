@@ -2,6 +2,8 @@ package com.example.teacherforboss.domain.repository
 
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
@@ -24,5 +26,8 @@ interface CommunityRepository {
     suspend fun getBossTalkBody(bossTalkRequestEntity: BossTalkRequestEntity):BossTalkBodyResponseEntity
 
     suspend fun modifyBossTalkBody(bossTalkRequestEntity: BossTalkRequestEntity,bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity):BossTalkModifyPostResponseEntity
+
+  suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity, bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentResponseEntity
+
 
 }

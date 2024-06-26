@@ -7,13 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
 import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkCommentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BossTalkBodyViewModel @Inject constructor(
-    private val bossTalkBodyUseCase: BossTalkBodyUseCase
+    private val bossTalkBodyUseCase: BossTalkBodyUseCase,
+    private val bossTalkCommentUseCase: BossTalkCommentUseCase
 ): ViewModel() {
 
     var imgUrlList:List<String>? =null

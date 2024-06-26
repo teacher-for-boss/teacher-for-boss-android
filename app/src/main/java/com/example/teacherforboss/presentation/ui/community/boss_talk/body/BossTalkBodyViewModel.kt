@@ -16,6 +16,7 @@ class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkBodyUseCase: BossTalkBodyUseCase
 ): ViewModel() {
 
+    var imgUrlList:List<String>? =null
     var tagList:ArrayList<String>? = arrayListOf()
     var commentList = arrayListOf(
         "강아지 티쳐",

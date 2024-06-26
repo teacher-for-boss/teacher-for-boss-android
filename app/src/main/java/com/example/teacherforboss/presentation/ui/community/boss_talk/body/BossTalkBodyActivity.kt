@@ -16,6 +16,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
+import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
@@ -127,6 +128,13 @@ class BossTalkBodyActivity : AppCompatActivity() {
         binding.rvComment.adapter = rvAdapterCommentBoss(viewModel.commentList, viewModel)
         binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        binding.rvComment.isNestedScrollingEnabled = false
+
+        // image vp
+        viewModel.imgUrlList?.let {
+            binding.vpImgSlider.visibility=View.VISIBLE
+            binding.vpImgSlider.adapter=ImgSliderAdapter(it)
+        }
+
     }
 
     fun likeAndBookmark() {
@@ -193,6 +201,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
             // 프로필 이미지
             if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
+
+            // TODO: 서버에서 전달받은 포스트 이미지 url
 
             setRecyclerView()
         })

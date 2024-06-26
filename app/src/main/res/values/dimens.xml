@@ -3,6 +3,7 @@
     <!-- spacing -->
     <dimen name="spacing3">3dp</dimen>
     <dimen name="spacing4">4dp</dimen>
+    <dimen name="spacing8">8dp</dimen>
     <dimen name="spacing10">10dp</dimen>
     <dimen name="spacing14">14dp</dimen>
     <dimen name="spacing15">15dp</dimen>

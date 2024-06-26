@@ -3,9 +3,195 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <data>
 
-        android:text="@string/home_fragment"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing20"
+            android:layout_marginTop="12dp"
+            android:text="@string/home_logo"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Logo"
+            android:textColor="@color/Purple600"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_home_notification_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="@dimen/spacing20"
+            android:src="@drawable/ic_bell"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_home_notification_button">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="@dimen/spacing16" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="@dimen/spacing16" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_home_banner"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="@id/gl_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_home_banner_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/background_radius4_transparent50_gray800"
+                    android:nestedScrollingEnabled="true"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+                    android:textColor="@color/Gray400"
+                    app:layout_constraintBottom_toBottomOf="@id/vp_home_banner"
+                    app:layout_constraintEnd_toEndOf="@id/vp_home_banner"
+                    tools:text="1 / 3" />
+
+                <TextView
+                    android:id="@+id/tv_home_teacher_talk_shortcut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/home_teacher_talk_shortcut"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Display2"
+                    android:textColor="@color/Gray800"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/vp_home_banner" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home_teacher_talk_shortcut"
+                    android:layout_width="0dp"
+                    app:spanCount="4"
+                    tools:listitem="@layout/item_home_teacher_talk_shortcut"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing8"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@id/gl_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_teacher_talk_shortcut" />
+
+                <View
+                    android:id="@+id/view_home_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:background="@color/Gray200"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_home_teacher_talk_shortcut" />
+
+                <TextView
+                    android:id="@+id/tv_home_teacher_talk_popular_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:text="@string/home_teacher_talk_popular_post"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Display2"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/view_home_divider" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home_teacher_talk_popular_post"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing8"
+                    android:nestedScrollingEnabled="true"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/item_home_teacher_talk_popular_post"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@id/gl_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_teacher_talk_popular_post" />
+
+                <TextView
+                    android:id="@+id/tv_home_boss_talk_popular_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/home_boss_talk_popular_post"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Display2"
+                    android:textColor="@color/Gray800"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/rv_home_teacher_talk_popular_post" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home_boss_talk_popular_post"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing8"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    tools:listitem="@layout/item_home_boss_talk_popular_post"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@id/gl_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_boss_talk_popular_post" />
+
+                <TextView
+                    android:id="@+id/tv_home_weekly_best_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/home_weekly_best_teacher"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Display2"
+                    android:textColor="@color/Gray800"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/rv_home_boss_talk_popular_post" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home_weekly_best_teacher"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing8"
+                    android:nestedScrollingEnabled="true"
+                    tools:listitem="@layout/item_home_weekly_best_teacher"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@id/gl_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_weekly_best_teacher" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -57,7 +57,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
         showExitDialog()
 
         addListenrs()
-        // 업로드 완료
+
         finishUpload()
 
     }
@@ -200,17 +200,19 @@ class BossTalkWriteActivity : AppCompatActivity() {
     }
 
     fun uploadPost(){
-        viewModel.getPresignedUrlList()
-
-        viewModel.presignedUrlLiveData.observe(this,{
-            viewModel._presignedUrlList.value= (it.presignedUrlList)
-            viewModel.filtered_presigendList=it.presignedUrlList.map { it.substringBefore("?")}
-
-            if(purpose=="modify") viewModel.modifyPost()
-            else viewModel.uploadPost()
-            uploadImgtoS3()
-
+        // image upload
+        if(viewModel.imageList.size!=0) {
+            viewModel.getPresignedUrlList()
+            viewModel.presignedUrlLiveData.observe(this, {
+                viewModel._presignedUrlList.value = (it.presignedUrlList)
+                viewModel.filtered_presigendList =
+                    it.presignedUrlList.map { it.substringBefore("?") }
+                uploadImgtoS3()
             })
+
+        }
+        if (purpose == "modify") viewModel.modifyPost()
+        else viewModel.uploadPost()
 
     }
 
@@ -231,6 +233,15 @@ class BossTalkWriteActivity : AppCompatActivity() {
             }
             startActivity(intent)
         })
+
+        viewModel.modifyPostLiveData.observe(this, Observer {
+            val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
+                putExtra("postId",it.postId.toString())
+            }
+            startActivity(intent)
+        })
+
+
     }
 
     fun showExitDialog() {

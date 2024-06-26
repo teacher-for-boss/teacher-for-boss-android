@@ -20,6 +20,7 @@ class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkCommentListUseCase: BossTalkCommentListUseCase
 ): ViewModel() {
 
+    var imgUrlList:List<String>? =null
     var tagList:ArrayList<String>? = arrayListOf()
     var commentList = arrayListOf(
         "강아지 티쳐",

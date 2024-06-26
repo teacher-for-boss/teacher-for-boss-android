@@ -7,6 +7,7 @@ import com.example.teacherforboss.domain.model.community.BossTalkCommentListResp
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
@@ -65,6 +66,14 @@ class CommunityRepositoryImpl @Inject constructor(
 
     override suspend fun modifyBossTalkBody(
         bossTalkRequestEntity: BossTalkRequestEntity, bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity
+    ): BossTalkModifyPostResponseEntity {
+        return runCatching { communityDataSource.modifyBossTalkBody(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto(),
+            requestBossUploadPostDto = bossTalkUploadPostRequestEntity.toBossUploadRequestDto()).result.toBossModifyPostResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postBossTalkComment(
+        bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
     ): BossTalkUploadPostResponseEntity {
         return runCatching {
             communityDataSource.modifyBossTalkBody(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto(),

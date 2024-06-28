@@ -22,14 +22,12 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.util.base.BindingFragment
-
 class BossTalkMainFragment(
     private val patchOnClick: (Long) -> Unit,
-    ) :
-
-    BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
+) : BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
     private val viewModel by activityViewModels<BossTalkMainViewModel>()
-    private var isInitialziedView=false
+    private var isInitializedView = false
+    private lateinit var bossTalkCardAdapter: BossTalkMainCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,42 +35,47 @@ class BossTalkMainFragment(
         val newScrollView = binding.svBossTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
+        bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        //bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
+
+        // ViewModel 옵저버 설정
+        viewModel.bossTalkPosts.observe(viewLifecycleOwner, { updatedPosts ->
+            bossTalkCardAdapter.setCardList(updatedPosts)
+        })
+
+        // 더 불러오기 버튼 클릭 리스너 설정
+        binding.btnMoreCard.setOnClickListener {
+            viewModel.loadMorePosts()
+        }
 
         getPosts()
         observeSortType()
     }
 
-    private fun initView(){
-
+    private fun initView() {
         viewModel.getBossTalkPosts()
 
-        //dropdown
+        // dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
-
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
-
         binding.spinnerDropdown.adapter = adapter
 
-        binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
+        binding.spinnerDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                var presentSortBy=viewModel.sortBy.value
-                when(presentSortBy){
-                    "latest"-> presentSortBy="최신순"
-                    "views"->presentSortBy="조회수순"
-                    "likes"->presentSortBy="좋아요순"
+                var presentSortBy = viewModel.sortBy.value
+                when (presentSortBy) {
+                    "latest" -> presentSortBy = "최신순"
+                    "views" -> presentSortBy = "조회수순"
+                    "likes" -> presentSortBy = "좋아요순"
                 }
-                if(presentSortBy!=items[p2]) viewModel.setSortBy(items[p2])
+                if (presentSortBy != items[p2]) viewModel.setSortBy(items[p2])
             }
-            override fun onNothingSelected(p0: AdapterView<*>?) { }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        //scrollview
+        // scrollview
         binding.svBossTalkMain.run {
             header = binding.bossTalkWidget1
             stickListener = { _ ->
@@ -83,21 +86,10 @@ class BossTalkMainFragment(
             }
         }
 
-        //patchOnClick
-        fun navigateToBossTalkContent(postId: Long) {
-            val intent = Intent(requireContext(), BossTalkBodyActivity::class.java)
-            startActivity(intent.putExtra("postId", postId))
-        }
-
-        //fab
+        // fab
         binding.fabWrite.setOnClickListener {
             val intent = Intent(requireContext(), BossTalkWriteActivity::class.java)
             startActivity(intent)
-        }
-
-        //btnMoreCard
-        binding.btnMoreCard.setOnClickListener {
-            viewModel.loadMorePosts()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -107,37 +99,31 @@ class BossTalkMainFragment(
         })
     }
 
-    private fun getPosts(){
-        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{ result->
-            viewModel._bossTalkPosts.value=result.postList
-            if(!isInitialziedView) {
+    private fun getPosts() {
+        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner, { result ->
+            viewModel._bossTalkPosts.value = result.postList
+            if (!isInitializedView) {
                 initView()
-                isInitialziedView=!isInitialziedView
+                isInitializedView = !isInitializedView
+            } else {
+                updatePosts()
             }
-            else updatePosts()
         })
     }
 
-    private fun observeSortType(){
-        viewModel.sortBy.observe(viewLifecycleOwner,{
+    private fun observeSortType() {
+        viewModel.sortBy.observe(viewLifecycleOwner, {
             viewModel.getBossTalkPosts()
         })
     }
 
-    private fun updatePosts(){
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext(), patchOnClick)
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+    private fun updatePosts() {
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
     }
+
     companion object {
         fun newInstance(patchOnClick: (Long) -> Unit): BossTalkMainFragment {
             return BossTalkMainFragment(patchOnClick)
         }
-    }
-}
-
-class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.right = horizontalSpaceWidth
     }
 }

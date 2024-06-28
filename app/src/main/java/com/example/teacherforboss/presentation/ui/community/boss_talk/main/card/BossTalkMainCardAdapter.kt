@@ -14,21 +14,17 @@ import com.example.teacherforboss.domain.model.community.PostEntity
 import java.time.format.DateTimeFormatter
 
 class BossTalkMainCardAdapter(
-    context: Context,
-    private val patchOnClick: (Long) -> Unit,
-) :
-    RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
-    private val inflater by lazy { LayoutInflater.from(context) }
+    private val context: Context,
+    private val patchOnClick: (Long) -> Unit
+) : RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
 
     private var bossTalkCardList: MutableList<PostEntity> = mutableListOf()
-    private var allBossTalkMainCard: List<PostEntity> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): BossTalkMainCardViewHolder {
-        val binding = ItemBossTalkCardBinding.inflate(inflater, parent, false)
-        patchOnClick
+        val binding = ItemBossTalkCardBinding.inflate(LayoutInflater.from(context), parent, false)
         return BossTalkMainCardViewHolder(binding)
     }
 
@@ -38,20 +34,16 @@ class BossTalkMainCardAdapter(
 
     override fun getItemCount(): Int = bossTalkCardList.size
 
-
     fun setCardList(cardList: List<PostEntity>) {
-        this.allBossTalkMainCard = cardList
-        this.bossTalkCardList = allBossTalkMainCard.take(10).toMutableList()
+        bossTalkCardList.clear()
+        bossTalkCardList.addAll(cardList)
         notifyDataSetChanged()
     }
 
-    fun addMoreCards() {
-        val currentSize = bossTalkCardList.size
-        val nextSize = minOf(currentSize + 10, allBossTalkMainCard.size)
-        if (currentSize < nextSize) {
-            bossTalkCardList.addAll(allBossTalkMainCard.subList(currentSize, nextSize))
-            notifyItemRangeInserted(currentSize, nextSize - currentSize)
-        }
+    fun addMoreCards(cardList: List<PostEntity>) {
+        val previousSize = bossTalkCardList.size
+        bossTalkCardList.addAll(cardList)
+        notifyItemRangeInserted(previousSize, cardList.size)
     }
 
     inner class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :
@@ -86,11 +78,6 @@ class BossTalkMainCardAdapter(
 
             binding.icBossTalkLike.isSelected = bossTalkCard.like
             binding.tvBossTalkLikeCount.isSelected = bossTalkCard.like
-
-            binding.root.setOnClickListener {
-                patchOnClick(bossTalkCard.postId)
-            }
         }
     }
-
 }

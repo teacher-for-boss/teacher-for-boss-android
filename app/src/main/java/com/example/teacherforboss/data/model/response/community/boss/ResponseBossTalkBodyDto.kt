@@ -13,7 +13,7 @@ data class ResponseBossTalkBodyDto(
     @SerializedName("imageUrlList")
     val imageUrlList:List<String>,
     @SerializedName("hashtagList")
-    val hashtagList: List<String>?,
+    val hashtagList: List<String>,
     @SerializedName("memberInfo")
     val memberInfo: MemberDto,
     @SerializedName("liked")

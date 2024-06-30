@@ -45,6 +45,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
         // post id
         postId=intent.getStringExtra("postId")!!.toLong()
+        viewModel.setPostId(postId)
 
         // 서버 api 요청
         getBossTalkBody()
@@ -56,6 +57,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
         doOptionMenu()
         // 뒤로가기
         onBackBtnPressed()
+        // 답글 쓰기
+        setRecommentListener()
 
     }
 
@@ -93,14 +96,22 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 putExtra("body",binding.bodyBody.text.toString())
                 putExtra("postId",postId.toString())
 
-                viewModel.tagList?.let {
+                viewModel.getTagList()?.let {
                     if(it.isNotEmpty()) {
                         putExtra("isTagList","true")
-                        putStringArrayListExtra("tagList",viewModel.tagList)
+                        putStringArrayListExtra("tagList",viewModel.tagList.value)
                     }
                     else  putExtra("isTagList","false")
                 }
-                // TODO: 이미지 뷰 구현 후 추가
+                // TODO: 이미지 바인딩 수정 필요
+                viewModel.imgUrlList?.let {
+                    if(it.isNotEmpty()) {
+                        putExtra("isImgList","true")
+                        val imgArrayList=viewModel.imgUrlList as ArrayList<String>
+                        putStringArrayListExtra("imgList",imgArrayList)
+                    }
+                    else  putExtra("isImgList","false")
+                }
             }
             startActivity(intent)
             //본문 데이터 같이 넘겨주기
@@ -119,22 +130,21 @@ class BossTalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //rvTag
-        if(viewModel.tagList!=null){
-            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList!!)
+        if(viewModel.tagList.value!=null){
+            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!)
             binding.rvTagArea.layoutManager = layoutManager
         }
 
         //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(viewModel.commentList, viewModel)
+        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
         binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        binding.rvComment.isNestedScrollingEnabled = false
 
         // image vp
-        viewModel.imgUrlList?.let {
+        if(viewModel.imgUrlList.isNotEmpty()){
             binding.vpImgSlider.visibility=View.VISIBLE
-            binding.vpImgSlider.adapter=ImgSliderAdapter(it)
+            binding.vpImgSlider.adapter=ImgSliderAdapter(viewModel.imgUrlList)
         }
-
     }
 
     fun likeAndBookmark() {
@@ -173,13 +183,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.getBossTalkBody(postId!!)
             setBodyView()
+            // TODO: 댓글 리스트 조회
+//            viewModel.getCommentList()
+            setCommentView()
         }
     }
     private fun setBodyView(){
         viewModel.bossTalkBodyLiveData.observe(this, Observer {
             // 해시태그
-            if(it.hashtagList!=null) viewModel.tagList= it.hashtagList as ArrayList<String>
-            else viewModel.tagList=null
+            if(it.hashtagList.isNotEmpty()) viewModel.setTagList(it.hashtagList as ArrayList<String>)
 
             // 좋아요, 북마크
             if(it.liked) {
@@ -199,14 +211,39 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 date.text=LocalDateFormatter.extractDate(it.createdAt)
             }
 
+
+            // 본문 업로드된 이미지
+            if(it.imageUrlList.isNotEmpty()) viewModel.imgUrlList=it.imageUrlList
+
             // 프로필 이미지
             if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
-
-            // TODO: 서버에서 전달받은 포스트 이미지 url
 
             setRecyclerView()
         })
 
+    }
+
+
+    private fun setCommentView(){
+        // TODO: 댓글 리스트 조회
+//        viewModel.getCommentListLiveData.observe(this, Observer {
+//            viewModel.setCommentListValue(it.commentList)
+//            //rvComment
+//            binding.rvComment.adapter = rvAdapterCommentBoss(viewModel.getCommentListValue(), viewModel)
+//            binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//
+//        })
+        viewModel.setCommentListValue(viewModel.dummy_commentList)
+        //rvComment
+        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
+        binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
+    fun setRecommentListener(){
+        viewModel.isRecommentClicked.observe(this, Observer {
+            val fragment=supportFragmentManager.findFragmentById(R.id.comment_fragment) as BossTalkBodyFragment
+            fragment.focusCommentText()
+        })
     }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {

@@ -68,6 +68,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
             viewModel._title.value=intent.getStringExtra("title").toString()
             viewModel._content.value=intent.getStringExtra("body").toString()
             if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
+            if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map{Uri.parse(it)} as ArrayList<Uri>
+            Log.d("test",viewModel.imageList.toString())
         }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
@@ -200,20 +202,30 @@ class BossTalkWriteActivity : AppCompatActivity() {
     }
 
     fun uploadPost(){
-        // image upload
-        if(viewModel.imageList.size!=0) {
+        // 이미지 업로드 시
+        if(viewModel.imageList.isNotEmpty()) {
             viewModel.getPresignedUrlList()
             viewModel.presignedUrlLiveData.observe(this, {
                 viewModel._presignedUrlList.value = (it.presignedUrlList)
-                viewModel.filtered_presigendList =
-                    it.presignedUrlList.map { it.substringBefore("?") }
+                viewModel.setFilteredImgUrlList() //post를 위해 이미지 url slicing
+
                 uploadImgtoS3()
             })
 
-        }
-        if (purpose == "modify") viewModel.modifyPost()
-        else viewModel.uploadPost()
+            viewModel.filtered_presigendList.observe(this,{
+                if (purpose == "modify") viewModel.modifyPost()
+                else viewModel.uploadPost()
+            })
 
+        }
+
+        // 이미지 없이 업로드시
+        else{
+            if (purpose == "modify") viewModel.modifyPost()
+            else viewModel.uploadPost()
+        }
+
+        finishUpload()
     }
 
     fun uploadImgtoS3(){

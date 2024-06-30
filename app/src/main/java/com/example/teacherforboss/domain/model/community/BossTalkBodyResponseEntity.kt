@@ -7,6 +7,7 @@ import kotlinx.datetime.LocalDateTime
 data class BossTalkBodyResponseEntity(
     val title:String,
     val content: String,
+    val imageUrlList:List<String>,
     val hashtagList: List<String>?,
     val memberInfo: MemberEntity,
     val liked: Boolean,
@@ -18,6 +19,7 @@ data class BossTalkBodyResponseEntity(
     fun toResponseBossTalkBodyDto()= ResponseBossTalkBodyDto(
         title =title,
         content =content,
+        imageUrlList=imageUrlList,
         hashtagList =hashtagList,
         liked =liked,
         bookmarked =bookmarked,

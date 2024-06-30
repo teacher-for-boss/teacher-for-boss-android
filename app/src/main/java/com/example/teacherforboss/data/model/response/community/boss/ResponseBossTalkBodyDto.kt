@@ -10,6 +10,8 @@ data class ResponseBossTalkBodyDto(
     val title:String,
     @SerializedName("content")
     val content: String,
+    @SerializedName("imageUrlList")
+    val imageUrlList:List<String>,
     @SerializedName("hashtagList")
     val hashtagList: List<String>?,
     @SerializedName("memberInfo")
@@ -30,6 +32,7 @@ data class ResponseBossTalkBodyDto(
         return BossTalkBodyResponseEntity(
             title=title,
             content=content,
+            imageUrlList=imageUrlList,
             hashtagList=hashtagList,
             liked=liked,
             bookmarked=bookmarked,

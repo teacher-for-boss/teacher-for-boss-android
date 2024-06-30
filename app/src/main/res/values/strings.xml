@@ -97,4 +97,7 @@
 
     <string name="bank_title">은행을 선택해 주세요</string>
 
+    <!-- 커뮤니티 -->
+    <string name="recommed_option">추천해요 %d개</string>
+    <string name="not_recommed_option">추천해요 %d개</string>
 </resources>

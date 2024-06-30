@@ -6,10 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RequestBossTalkCommentDto(
-    @SerializedName("parentCommentId")
-    val parentCommentId:Long?,
+    @SerializedName("parentId")
+    val parentId:Long?,
     @SerializedName("content")
-    val content:String,
-    @SerializedName("imageUrlList")
-    val imageUrlList:List<String>
+    val content:String
 )

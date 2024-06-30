@@ -18,7 +18,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            replaceFragment(HomeFragment())
+            if(intent.getStringExtra("gotoTeacherTalk") == "gotoTeacherTalk") {
+                replaceFragment(TeacherTalkMainFragment())
+                binding.bnvTeacherForBoss.selectedItemId = R.id.menu_teacher_talk
+            }
+            else {
+                replaceFragment(HomeFragment())
+            }
         }
 
         // 백 버튼 콜백 설정

@@ -9,8 +9,7 @@ class TeacherTalkAskViewModel: ViewModel() {
     val hasTagList:ArrayList<String> = arrayListOf()
     val imageList: ArrayList<String> = arrayListOf()
     val categoryList = arrayListOf(
-        "마케팅", "위생", "상권", "운영", "직원관리",
-        "카테고리1", "카테고리2", "카테고리3"
+        "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
 
     private val _textTitleLength = MutableLiveData<Int>()
@@ -21,6 +20,7 @@ class TeacherTalkAskViewModel: ViewModel() {
 
     private val _textTagLength = MutableLiveData<Int>()
     val textTagLength: LiveData<Int> get()=_textTagLength
+
 
     fun addHashTag(tag: String) {
         hasTagList.add(tag)

@@ -9,20 +9,25 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
+import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkAskBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
+import com.example.teacherforboss.util.CustomSnackBar
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -50,6 +55,10 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         setTextLength()
         //나가기
         showExitDialog()
+        //editText 배경설정
+        focusOnEditText()
+        //등록 유효 확인
+        IsValidPost()
     }
 
     fun setRecyclerView() {
@@ -74,15 +83,51 @@ class TeacherTalkAskActivity : AppCompatActivity() {
     }
 
     fun inputHashtag() {
+
+        //스페이스바 입력 막기
+        binding.inputHashtag.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                val lastChar = charSequence?.lastOrNull()
+                if (lastChar == ' ') {
+                    Toast.makeText(this@TeacherTalkAskActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                editable?.let {
+                    val text = it.toString()
+                    if (text.endsWith(' ')) {
+                        val start = it.length - 1
+                        // UI 스레드에서 지연 실행
+                        binding.inputHashtag.post {
+                            it.delete(start, start + 1)
+                            binding.inputHashtag.setSelection(start)
+                        }
+                    }
+                }
+            }
+        })
+
+        //해시태그 입력
         binding.inputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
                 val inputText = binding.inputHashtag.text.toString()
 
-                viewModel.addHashTag(inputText)
-                adapterTag.notifyDataSetChanged()
+                if(inputText.isNotBlank()) {
+                    if(viewModel.hasTagList.size < 5) {
+                        viewModel.addHashTag(inputText)
+                        adapterTag.notifyDataSetChanged()
 
-                binding.inputHashtag.text.clear()
-
+                        binding.inputHashtag.text.clear()
+                    }
+                    else {
+                        Toast.makeText(this, "해시태그는 5개까지 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
                 return@OnEditorActionListener true
             }
@@ -94,6 +139,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.inputImage.setOnClickListener {
             if(viewModel.imageList.size < 3) {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                gallery.type = "image/*"
                 startActivityForResult(gallery, 100)
             }
             else {
@@ -183,6 +229,50 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.exitBtn.setOnClickListener {
             val dialog = WriteExitDialog(this)
             dialog.show()
+        }
+    }
+
+    fun focusOnEditText() {
+        binding.inputTitle.setOnFocusChangeListener{ v, hasFocus ->
+            if(hasFocus) {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
+            }
+            else {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
+            }
+        }
+
+        binding.inputBody.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus) {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
+            }
+            else {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
+            }
+        }
+    }
+
+    fun IsValidPost() {
+        binding.postBtn.setOnClickListener {
+            val title = binding.inputTitle.text.toString()
+            val body = binding.inputBody.text.toString()
+
+            if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
+                val toast = Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT)
+//                toast.view = layoutInflater.inflate(R.layout.toast_board, findViewById(R.id.toast_board_layout))
+//                toast.setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 100)
+//                toast.show()
+
+//                CustomSnackBar.make(findViewById(R.id.teacher_talk_layout), "제목과 본문을 작성해야 등록할 수 있습니다.", 2000, findViewById(R.id.teacher_talk_layout)).show()
+            }
+            else {
+                Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("gotoTeacherTalk", "gotoTeacherTalk")
+                startActivity(intent)
+                finish()
+            }
+
         }
     }
 }

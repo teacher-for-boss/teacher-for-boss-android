@@ -9,6 +9,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/teacher_talk_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -42,6 +43,7 @@
                     android:layout_marginTop="12dp" />
 
                 <TextView
+                    android:id="@+id/postBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="등록"
@@ -256,7 +258,7 @@
                     android:id="@+id/hashtag_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="nn/10"
+                    android:text="0/10"
                     android:textSize="14dp"
                     android:textColor="@color/Gray400"
                     app:layout_constraintEnd_toEndOf="@id/input_hashtag"

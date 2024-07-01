@@ -26,7 +26,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val runnable = object : Runnable {
         override fun run() {
             val itemCount = viewPagerAdapter.itemCount
-            if (itemCount > 0) {
+            if (itemCount > ZERO) {
                 binding.apply {
                     vpHomeBanner.setCurrentItem(
                         (vpHomeBanner.currentItem + INC_POSITION) % itemCount,
@@ -120,6 +120,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     companion object {
+        private const val ZERO = 0
         private const val START_SPAN_INDEX = 0
         private const val END_SPAN_INDEX = 2
         private const val INC_POSITION = 1

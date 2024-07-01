@@ -65,6 +65,11 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         gotoAnswer()
         //뒤로 가기
         onBackBtnPressed()
+        // 좋아요 업데이트
+        updateLike()
+        // 북마크 업데이트
+        updateBookmark()
+
     }
 
     fun showOptionMenu() {
@@ -214,7 +219,23 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
             setRecyclerView()
         })
+    }
 
+    fun updateLike(){
+        binding.like.setOnClickListener {
+            viewModel.postLike()
+            viewModel.teacherTalkBodyLikeLiveData.observe(this, Observer {
+                if(it.liked)viewModel.clickLikeBtn()
+            })
+        }
+    }
+    fun updateBookmark(){
+        binding.bookmark.setOnClickListener {
+            viewModel.postBookmark()
+            viewModel.teacherTalkBodyBookmarkLiveData.observe(this, Observer {
+                if(it.bookmarked)viewModel.clickBookmarkBtn()
+            })
+        }
     }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {

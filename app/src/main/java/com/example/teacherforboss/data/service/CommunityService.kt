@@ -72,14 +72,14 @@ interface CommunityService {
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossUploadPostDto>
 
-    @GET("${TEACHER}questions/{questionId}/likes")
+    @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(
-        @Query("questionId") questionId:Long
+        @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkLikeDto>
 
-    @GET("${TEACHER}questions/{questionId}/bookmark")
+    @POST("${TEACHER}questions/{questionId}/bookmark")
     suspend fun getTeacherTalkBookmark(
-        @Query("questionId") questionId:Long
+        @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkBookmarkDto>
 
     @GET("${TEACHER}/posts/{postId}")

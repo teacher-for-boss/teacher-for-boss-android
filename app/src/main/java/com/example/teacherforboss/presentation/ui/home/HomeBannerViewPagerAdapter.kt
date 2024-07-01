@@ -8,7 +8,7 @@ import com.example.teacherforboss.databinding.ItemHomeBannerBinding
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.util.context.navigateToWebView
 
-class BannerViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeBannerViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var bannerItemList: List<BannerModel>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

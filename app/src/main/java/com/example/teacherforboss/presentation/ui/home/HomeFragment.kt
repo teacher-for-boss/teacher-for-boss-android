@@ -20,7 +20,8 @@ import kotlinx.coroutines.flow.onEach
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by activityViewModels()
-    private lateinit var viewPagerAdapter: BannerViewPagerAdapter
+    private lateinit var viewPagerAdapter: HomeBannerViewPagerAdapter
+    private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
@@ -48,14 +49,24 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         collectData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopAutoScroll()
+        removeAdapter()
+    }
+
     private fun initLayout() {
         initAdapter()
-        viewModel.setBannerItems()
+        viewModel.apply {
+            setBannerItems()
+            setTeacherTalkShortcutItems()
+        }
+        teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
         startAutoScroll()
     }
 
     private fun initAdapter() {
-        viewPagerAdapter = BannerViewPagerAdapter()
+        viewPagerAdapter = HomeBannerViewPagerAdapter()
         with(binding.vpHomeBanner) {
             this.adapter = viewPagerAdapter
             registerOnPageChangeCallback(object :
@@ -66,6 +77,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 }
             })
         }
+
+        binding.rvHomeTeacherTalkShortcut.adapter = teacherTalkShortcutAdapter
     }
 
     private fun addListeners() {
@@ -110,13 +123,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun removeAdapter() {
-        binding.vpHomeBanner.adapter = null
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        stopAutoScroll()
-        removeAdapter()
+        with(binding) {
+            vpHomeBanner.adapter = null
+            rvHomeTeacherTalkShortcut.adapter = null
+            rvHomeTeacherTalkPopularPost.adapter = null
+            rvHomeBossTalkPopularPost.adapter = null
+            rvHomeWeeklyBestTeacher.adapter = null
+        }
     }
 
     companion object {

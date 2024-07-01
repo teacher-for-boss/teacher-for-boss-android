@@ -98,6 +98,7 @@
 
     <!-- home -->
     <string name="home_logo">티쳐포보스</string>
+    <string name="home_banner_position">%s / %s</string>
     <string name="home_teacher_talk_shortcut">티쳐Talk 바로가기</string>
     <string name="home_teacher_talk_popular_post">티쳐Talk 인기글</string>
     <string name="home_boss_talk_popular_post">보스Talk 인기글</string>

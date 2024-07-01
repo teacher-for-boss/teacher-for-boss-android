@@ -7,7 +7,7 @@ import com.example.teacherforboss.databinding.ItemHomeBannerBinding
 import com.example.teacherforboss.presentation.model.BannerModel
 
 class BannerViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var bannerItemList: List<BannerModel> ?= null
+    private var bannerItemList: List<BannerModel>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return BannerViewHolder(
@@ -19,12 +19,17 @@ class BannerViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         )
     }
 
-    override fun getItemCount(): Int = bannerItemList?.size.toString().toInt()
+    override fun getItemCount(): Int = 3
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         bannerItemList?.let { bannerItemList ->
             (holder as BannerViewHolder).onBind(bannerItemList[position])
         }
+    }
+
+    fun submitList(bannerList: List<BannerModel>?) {
+        bannerItemList = bannerList
+        notifyDataSetChanged()
     }
 
     class BannerViewHolder(private val binding: ItemHomeBannerBinding) :

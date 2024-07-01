@@ -19,24 +19,56 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkWriteBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterTagWrite
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
+import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BossTalkWriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBosstalkWriteBinding
     private val viewModel: BossTalkWriteViewModel by viewModels()
 
     private lateinit var adapterTag: rvAdapterTagWrite
     private lateinit var adapterImage: rvAdapterImage
-
+    private var purpose:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_write)
+        binding.viewModel=viewModel
+        binding.lifecycleOwner=this
 
+        purpose=intent.getStringExtra("purpose")?:"write"
+
+        // 초기 뷰 설정
+        initView()
+        //해시태그입력
+        inputHashtag()
+        //이미지가져오기
+        getImage()
+        //글자수
+        setTextLength()
+        //나가기
+        showExitDialog()
+
+        addListenrs()
+        // 업로드 완료
+        finishUpload()
+
+    }
+
+    fun initView(){
+        if(purpose=="modify"){
+            viewModel.postId=intent.getStringExtra("postId")!!.toLong()
+            viewModel._title.value=intent.getStringExtra("title").toString()
+            viewModel._content.value=intent.getStringExtra("body").toString()
+            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
+        }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
@@ -50,16 +82,6 @@ class BossTalkWriteActivity : AppCompatActivity() {
         adapterImage = rvAdapterImage(viewModel.imageList, viewModel)
         binding.rvImage.adapter = adapterImage
         binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        //해시태그입력
-        inputHashtag()
-        //이미지가져오기
-        getImage()
-        //글자수
-        setTextLength()
-        //나가기
-        showExitDialog()
-
 
     }
 
@@ -106,7 +128,9 @@ class BossTalkWriteActivity : AppCompatActivity() {
                 }
             }
 
-            viewModel.addImage(imageUri)
+            if (imageUri != null) {
+                viewModel.addImage(imageUri)
+            }
             adapterImage.notifyDataSetChanged()
         }
     }
@@ -167,6 +191,46 @@ class BossTalkWriteActivity : AppCompatActivity() {
         binding.inputTitle.filters = arrayOf(InputFilter.LengthFilter(30))
         binding.inputBody.filters = arrayOf(InputFilter.LengthFilter(1000))
         binding.inputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
+    }
+
+    fun addListenrs(){
+        binding.registerBtn.setOnClickListener {
+            uploadPost()
+        }
+    }
+
+    fun uploadPost(){
+        viewModel.getPresignedUrlList()
+
+        viewModel.presignedUrlLiveData.observe(this,{
+            viewModel._presignedUrlList.value= (it.presignedUrlList)
+            viewModel.filtered_presigendList=it.presignedUrlList.map { it.substringBefore("?")}
+
+            if(purpose=="modify") viewModel.modifyPost()
+            else viewModel.uploadPost()
+            uploadImgtoS3()
+
+            })
+
+    }
+
+    fun uploadImgtoS3(){
+        val urlList=viewModel.presignedUrlList.value?:return
+        val uriList=viewModel.imageList
+
+        val uploadUtil=UploadUtil(applicationContext)
+        val requestBodyList=uploadUtil.convert_UritoImg(uriList)
+
+        uploadUtil.uploadPostImage(urlList,requestBodyList)
+    }
+
+    fun finishUpload(){
+        viewModel.uploadPostLiveData.observe(this, Observer {
+            val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
+                putExtra("postId",it.postId.toString())
+            }
+            startActivity(intent)
+        })
     }
 
     fun showExitDialog() {

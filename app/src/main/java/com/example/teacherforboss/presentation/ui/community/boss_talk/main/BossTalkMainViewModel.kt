@@ -11,6 +11,7 @@ import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEn
 import com.example.teacherforboss.domain.model.community.PostEntity
 import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCard
 import com.example.teacherforboss.presentation.ui.community.common.TalkMainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BossTalkMainViewModel @Inject constructor(
     private val bossTalkPostsUseCase: BossTalkPostsUseCase,
+    private val bossTalkSearchUseCase: BossTalkSearchUseCase,
     private val bossTalkBookmarkUseCase: BossTalkBookmarkUseCase
 ) : ViewModel(),TalkMainViewModel {
     var _lastPostId=MutableLiveData<Long>(0L)
@@ -304,13 +306,13 @@ class BossTalkMainViewModel @Inject constructor(
             }
         }
     }
-    suspend fun searchKeywordBossTalk(){
+    fun searchKeywordBossTalk(){
         viewModelScope.launch {
             try{
-                val bossTalkPostsResponseEntity=bossTalkPostsUseCase(
+                val bossTalkPostsResponseEntity=bossTalkSearchUseCase(
                     BossTalkPostsRequestEntity(
                         lastPostId = lastPostId.value?:0L,
-                        size=size.value?:0,
+                        size=size.value?:10,
                         sortBy=null,
                         keyword =keyword.value
                     ))

@@ -59,6 +59,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
         onBackBtnPressed()
         // 답글 쓰기
         setRecommentListener()
+        // 북마크 업데이트
+        updateBookmark()
 
     }
 
@@ -247,6 +249,16 @@ class BossTalkBodyActivity : AppCompatActivity() {
             val fragment=supportFragmentManager.findFragmentById(R.id.comment_fragment) as BossTalkBodyFragment
             fragment.focusCommentText()
         })
+    }
+
+    fun updateBookmark(){
+        binding.bookmark.setOnClickListener {
+            viewModel.postBookmark()
+            viewModel.bossTalkBodyBookmarkLiveData.observe(this, Observer {
+                if(it.bookmark)viewModel.clickBookmarkBtn()
+            })
+        }
+
     }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {

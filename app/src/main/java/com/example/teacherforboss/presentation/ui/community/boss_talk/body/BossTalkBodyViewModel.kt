@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
@@ -14,6 +16,8 @@ import com.example.teacherforboss.domain.model.community.MemberEntity
 import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentListUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkBodyUseCase: BossTalkBodyUseCase,
+    private val bossTalkBookmarkUseCase: BossTalkBookmarkUseCase,
+    private val bossTalkLikeUseCase: BossTalkLikeUseCase,
     private val bossTalkCommentUseCase: BossTalkCommentUseCase,
     private val bossTalkCommentListUseCase: BossTalkCommentListUseCase
 ): ViewModel() {
@@ -78,6 +84,9 @@ class BossTalkBodyViewModel @Inject constructor(
 
     private var _bossTalkBodyLiveData=MutableLiveData<BossTalkBodyResponseEntity>()
     val bossTalkBodyLiveData:LiveData<BossTalkBodyResponseEntity> get() = _bossTalkBodyLiveData
+    private var _bossTalkBodyBookmarkLiveData=MutableLiveData<BossTalkBookmarkResponseEntity>()
+    val bossTalkBodyBookmarkLiveData:LiveData<BossTalkBookmarkResponseEntity> get() = _bossTalkBodyBookmarkLiveData
+
     fun getBossTalkBody(postId:Long){
         viewModelScope.launch {
             try{
@@ -90,6 +99,17 @@ class BossTalkBodyViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun postBookmark(){
+        viewModelScope.launch {
+            try{
+                val bossTalkBookmarkResponseEntity=bossTalkBookmarkUseCase(
+                    BossTalkRequestEntity(postId=postId.value!!)
+                )
+                _bossTalkBodyBookmarkLiveData.value=bossTalkBookmarkResponseEntity
+            }catch (ex:Exception){}
+        }
     }
 
     fun postComment(){

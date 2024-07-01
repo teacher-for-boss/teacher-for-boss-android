@@ -45,13 +45,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
         _isBookmark.value = _isBookmark.value?.not()
     }
 
-    val tagList = arrayListOf(
-        "유저가",
-        "직접작성하는",
-        "태그입니다",
-        "여러줄에걸쳐서",
-        "나타나도록했어요"
-    )
+    var tagList:ArrayList<String>? = arrayListOf()
 
     data class Answer(
         val content: String,

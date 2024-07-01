@@ -11,6 +11,10 @@ import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEn
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import javax.inject.Inject
 
@@ -77,6 +81,27 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.postBossTalkComment(requestBossTalkCommentDto=bossTalkCommentRequestEntity.toRequestBossTalkCommentDto(), requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkCommentResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity):TeacherTalkBookmarkResponseEntity {
+        return runCatching {
+            communityDataSource.getTeacherTalkBookmark(requestTeacherTalkDto=teacherTalkRequestEntity.toRequestTeacherTalkDto())
+                .result.toTeacherTalkBookmarkResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBodyResponseEntity {
+        return runCatching {
+            communityDataSource.getTeacherTalkBody(requestTeacherTalkDto = teacherTalkRequestEntity.toRequestTeacherTalkDto())
+                .result.toTeacherTalkBodyResponseEntity()
+        }.getOrElse { err -> throw err }
+    }
+
+    override suspend fun getTeacherTalkLike(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkLikeResponseEntity {
+        return runCatching {
+            communityDataSource.getTeacherTalkLike(requestTeacherTalkDto=teacherTalkRequestEntity.toRequestTeacherTalkDto())
+                .result.toTeacherTalkLikeResponseEntity()
         }.getOrElse { err->throw err }
     }
 

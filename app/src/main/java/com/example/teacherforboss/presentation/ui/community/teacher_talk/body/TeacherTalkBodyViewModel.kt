@@ -1,17 +1,42 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.body
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.usecase.TeacherTalkBodyUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TeacherTalkBodyViewModel: ViewModel() {
+@HiltViewModel
+class TeacherTalkBodyViewModel @Inject constructor(
+    private val teacherTalkBodyUseCase: TeacherTalkBodyUseCase,
+): ViewModel() {
 
     private val _isLike = MutableLiveData<Boolean>().apply { value = false }
     val isLike: LiveData<Boolean> get() = _isLike
 
     private val _isBookmark = MutableLiveData<Boolean>().apply { value = false }
     val isBookmark: LiveData<Boolean> get() = _isBookmark
+
+    private var _teacherTalkBodyLiveData=MutableLiveData<TeacherTalkBodyResponseEntity>()
+    val teacherTalkBodyLiveData:LiveData<TeacherTalkBodyResponseEntity> get() = _teacherTalkBodyLiveData
+    fun getTeacherTalkBody(postId:Long){
+        viewModelScope.launch {
+            try{
+                val teacherTalkBodyResponseEntity = teacherTalkBodyUseCase(
+                    TeacherTalkRequestEntity(questionId = postId)
+                )
+                _teacherTalkBodyLiveData.value=teacherTalkBodyResponseEntity
+            }catch (ex:Exception){
+                throw ex
+            }
+        }
+
+    }
 
     fun clickLikeBtn() {
         _isLike.value = _isLike.value?.not()

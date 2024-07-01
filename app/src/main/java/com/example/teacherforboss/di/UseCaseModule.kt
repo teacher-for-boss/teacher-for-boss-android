@@ -13,6 +13,9 @@ import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.TeacherTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.TeacherTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.TeacherTalkLikeUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,5 +75,20 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkCommentUseCase(communityRepository: CommunityRepository):BossTalkCommentUseCase =
         BossTalkCommentUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkBodyUseCase(communityRepository: CommunityRepository):TeacherTalkBodyUseCase =
+        TeacherTalkBodyUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkLikeUseCase(communityRepository: CommunityRepository): TeacherTalkLikeUseCase =
+        TeacherTalkLikeUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkBookmarkUseCase(communityRepository: CommunityRepository): TeacherTalkBookmarkUseCase =
+        TeacherTalkBookmarkUseCase(communityRepository = communityRepository)
 
 }

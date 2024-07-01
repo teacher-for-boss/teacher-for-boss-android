@@ -68,8 +68,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
             viewModel._title.value=intent.getStringExtra("title").toString()
             viewModel._content.value=intent.getStringExtra("body").toString()
             if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
-            if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map{Uri.parse(it)} as ArrayList<Uri>
-            Log.d("test",viewModel.imageList.toString())
+            if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
         }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)

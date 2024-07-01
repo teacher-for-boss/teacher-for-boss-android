@@ -65,19 +65,19 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun showOptionMenu() {
         //더보기 버튼
         binding.btnOption.setOnClickListener {
-            //TODO: 작성자 분기처리
-            //작성자인 경우
-            if (binding.writerOption.visibility == View.GONE) {
-                binding.writerOption.visibility = View.VISIBLE
-            } else {
-                binding.writerOption.visibility = View.GONE
+            if(viewModel.isMine.value==true){ //작성자인 경우
+                if (binding.writerOption.visibility == View.GONE) {
+                    binding.writerOption.visibility = View.VISIBLE
+                } else {
+                    binding.writerOption.visibility = View.GONE
+                }
+            }else{ //작성자가 아닌 경우
+                if (binding.nonWriterOption.visibility == View.GONE) {
+                    binding.nonWriterOption.visibility = View.VISIBLE
+                } else {
+                    binding.nonWriterOption.visibility = View.GONE
+                }
             }
-            //작성자가 아닌 경우
-//            if (binding.nonWriterOption.visibility == View.GONE) {
-//                binding.nonWriterOption.visibility = View.VISIBLE
-//            } else {
-//                binding.nonWriterOption.visibility = View.GONE
-//            }
         }
     }
 
@@ -136,7 +136,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         }
 
         //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
+        binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
         binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        binding.rvComment.isNestedScrollingEnabled = false
 
@@ -218,6 +218,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
             // 프로필 이미지
             if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
 
+            // 사용자 본인 작성 여부
+            viewModel._isMine.value=it.isMine
+
             setRecyclerView()
         })
 
@@ -235,7 +238,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 //        })
         viewModel.setCommentListValue(viewModel.dummy_commentList)
         //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
+        binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
         binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 

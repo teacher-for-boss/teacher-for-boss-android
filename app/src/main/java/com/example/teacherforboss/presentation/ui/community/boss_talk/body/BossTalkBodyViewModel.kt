@@ -73,6 +73,9 @@ class BossTalkBodyViewModel @Inject constructor(
 
     val isRecommentClicked=MutableLiveData<Unit>()
 
+    var _isMine = MutableLiveData<Boolean>().apply { value = false }
+    val isMine: LiveData<Boolean> get() = _isMine
+
     private var _bossTalkBodyLiveData=MutableLiveData<BossTalkBodyResponseEntity>()
     val bossTalkBodyLiveData:LiveData<BossTalkBodyResponseEntity> get() = _bossTalkBodyLiveData
     fun getBossTalkBody(postId:Long){

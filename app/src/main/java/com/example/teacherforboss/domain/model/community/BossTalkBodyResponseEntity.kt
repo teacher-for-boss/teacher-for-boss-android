@@ -14,7 +14,8 @@ data class BossTalkBodyResponseEntity(
     val bookmarked: Boolean,
     val likeCount: Int,
     val bookmarkCount: Int,
-    val createdAt: String
+    val createdAt: String,
+    val isMine:Boolean,
 ) {
     fun toResponseBossTalkBodyDto()= ResponseBossTalkBodyDto(
         title =title,
@@ -26,7 +27,8 @@ data class BossTalkBodyResponseEntity(
         likeCount =likeCount,
         bookmarkCount =bookmarkCount,
         createdAt =createdAt,
-        memberInfo =memberInfo.toMemberDto()
+        memberInfo =memberInfo.toMemberDto(),
+        isMine = isMine
 
     )
 }

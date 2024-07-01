@@ -25,7 +25,9 @@ data class ResponseBossTalkBodyDto(
     @SerializedName("bookmarkCount")
     val bookmarkCount: Int,
     @SerializedName("createdAt")
-    val createdAt: String
+    val createdAt: String,
+    @SerializedName("isMine")
+    val isMine:Boolean,
 ){
     fun toBossTalkBodyResponseEntity(): BossTalkBodyResponseEntity {
         val memberEntities = memberInfo.toMemberEntity()
@@ -39,7 +41,8 @@ data class ResponseBossTalkBodyDto(
             likeCount=likeCount,
             bookmarkCount=bookmarkCount,
             createdAt=createdAt,
-            memberInfo=memberEntities
+            memberInfo=memberEntities,
+            isMine=isMine,
         )
     }
 

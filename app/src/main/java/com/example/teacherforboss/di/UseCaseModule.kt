@@ -13,6 +13,7 @@ import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.TeacherTalkQuestionsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +37,12 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkUseCase(communityRepository: CommunityRepository):BossTalkPostsUseCase=
         BossTalkPostsUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkUseCase(communityRepository: CommunityRepository):TeacherTalkQuestionsUseCase=
+        TeacherTalkQuestionsUseCase(communityRepository=communityRepository)
+
 
     @Provides
     @Singleton

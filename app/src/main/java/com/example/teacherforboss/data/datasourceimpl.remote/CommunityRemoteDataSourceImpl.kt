@@ -5,12 +5,14 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.service.CommunityService
 import com.example.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
@@ -21,6 +23,8 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     override suspend fun getBossTalkPosts(requestBossTalkPostsDto: RequestBossTalkPostsDto): BaseResponse<ResponseBossTalkPostsDto>
     =communityService.getBossTalkPosts(lastPostId = requestBossTalkPostsDto.lastPostId, size = requestBossTalkPostsDto.size, sortBy = requestBossTalkPostsDto.sortBy?:"latest")
 
+    override suspend fun getTeacherTalkQuestions(requestTeacherTalkQuestionsDto: RequestTeacherTalkQuestionsDto): BaseResponse<ResponseTeacherTalkQuestionsDto>
+    =communityService.getTeacherTalkQuestions(lastQuestionId = requestTeacherTalkQuestionsDto.lastQuestionId, size = requestTeacherTalkQuestionsDto.size, sortBy = requestTeacherTalkQuestionsDto.sortBy?:"latest", category = requestTeacherTalkQuestionsDto.category?:"")
     override suspend fun searchKeywordBossTalk(requestBossTalkPostsDto: RequestBossTalkPostsDto): BaseResponse<ResponseBossTalkPostsDto>
     =communityService.searchKeywordBossTalk(lastPostId = requestBossTalkPostsDto.lastPostId,size=requestBossTalkPostsDto.size, keyword = requestBossTalkPostsDto.keyword?:"")
 

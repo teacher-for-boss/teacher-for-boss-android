@@ -8,6 +8,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,6 +25,15 @@ interface CommunityService {
         @Query("sortBy") sortBy:String
 
         ):BaseResponse<ResponseBossTalkPostsDto>
+
+    @GET("${TEACHER}/questions?")
+    suspend fun getTeacherTalkQuestions(
+        @Query("lastQuestionId") lastQuestionId:Long,
+        @Query("size") size:Int,
+        @Query("sortBy") sortBy:String,
+        @Query("category") category:String
+
+    ):BaseResponse<ResponseTeacherTalkQuestionsDto>
 
     @GET("${BOSS}/search?")
     suspend fun searchKeywordBossTalk(
@@ -71,5 +81,6 @@ interface CommunityService {
 
     companion object {
         const val BOSS = "board/boss"
+        const val TEACHER = "board/teacher"
     }
 }

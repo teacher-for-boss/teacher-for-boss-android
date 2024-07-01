@@ -10,10 +10,13 @@ import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEn
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsResponseEntity
 
 interface CommunityRepository {
     suspend fun getBossTalkPosts(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
 
+    suspend fun getTeacherTalkQuestions(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity):TeacherTalkQuestionsResponseEntity
     suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
 
     suspend fun uploadBossTalkPost(bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity):BossTalkUploadPostResponseEntity

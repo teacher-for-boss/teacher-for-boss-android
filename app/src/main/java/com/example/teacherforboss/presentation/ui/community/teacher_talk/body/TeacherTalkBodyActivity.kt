@@ -25,7 +25,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 
-class TeachertalkBodyActivity : AppCompatActivity() {
+class TeacherTalkBodyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
 

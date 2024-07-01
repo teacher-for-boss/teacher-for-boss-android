@@ -31,9 +31,9 @@ class BossTalkMainFragment :
         val newScrollView = binding.svBossTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-//        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
+//        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+//        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+////        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
         binding.viewModel=viewModel
 
@@ -50,12 +50,11 @@ class BossTalkMainFragment :
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
+        binding.spinnerDropdown.adapter = adapter
 
         val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
-
-        binding.spinnerDropdown.adapter = adapter
 
         binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

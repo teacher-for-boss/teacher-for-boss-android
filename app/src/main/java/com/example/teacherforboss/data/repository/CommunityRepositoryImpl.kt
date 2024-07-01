@@ -11,6 +11,8 @@ import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEn
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsResponseEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import javax.inject.Inject
 
@@ -22,6 +24,16 @@ class CommunityRepositoryImpl @Inject constructor(
             communityDataSource.getBossTalkPosts(
                 requestBossTalkPostsDto = bossTalkPostsRequestEntity.toRequestBossTalkPostsDto()
             ).result.toBossTalkPostsEntity()
+        }.getOrElse { err->
+            throw err
+        }
+    }
+
+    override suspend fun getTeacherTalkQuestions(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity {
+        return runCatching {
+            communityDataSource.getTeacherTalkQuestions(
+                requestTeacherTalkQuestionsDto = teacherTalkQuestionsRequestEntity.toRequestTeacherTalkQuestionsDto()
+            ).result.toTeacherTalkQuestionsEntity()
         }.getOrElse { err->
             throw err
         }

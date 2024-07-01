@@ -1,6 +1,8 @@
 package com.example.teacherforboss.presentation.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -20,6 +22,22 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var viewPagerAdapter: BannerViewPagerAdapter
 
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = object : Runnable {
+        override fun run() {
+            val itemCount = viewPagerAdapter.itemCount
+            if (itemCount > 0) {
+                binding.apply {
+                    vpHomeBanner.setCurrentItem(
+                        (vpHomeBanner.currentItem + INC_POSITION) % itemCount,
+                        true,
+                    )
+                }
+                handler.postDelayed(this, AUTO_SCROLL_INTERVAL)
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -33,6 +51,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initLayout() {
         initAdapter()
         viewModel.setBannerItems()
+        startAutoScroll()
     }
 
     private fun initAdapter() {
@@ -64,15 +83,15 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     getString(
                         R.string.home_banner_position,
                         (currentPosition + INC_POSITION).toString(),
-                        viewModel.bannerItemList.value.size.toString()
+                        viewModel.bannerItemList.value.size.toString(),
                     ),
                 ).apply {
                     setSpan(
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.white
-                            )
+                                R.color.white,
+                            ),
                         ),
                         START_SPAN_INDEX,
                         END_SPAN_INDEX,
@@ -82,9 +101,28 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+    private fun startAutoScroll() {
+        handler.postDelayed(runnable, AUTO_SCROLL_INTERVAL)
+    }
+
+    private fun stopAutoScroll() {
+        handler.removeCallbacks(runnable)
+    }
+
+    private fun removeAdapter() {
+        binding.vpHomeBanner.adapter = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopAutoScroll()
+        removeAdapter()
+    }
+
     companion object {
         private const val START_SPAN_INDEX = 0
         private const val END_SPAN_INDEX = 2
         private const val INC_POSITION = 1
+        private const val AUTO_SCROLL_INTERVAL = 2500L
     }
 }

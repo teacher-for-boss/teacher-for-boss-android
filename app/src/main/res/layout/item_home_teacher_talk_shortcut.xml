@@ -5,43 +5,46 @@
 
     <data>
 
+        <variable
+            name="teacherTalkShortcutItem"
+            type="com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="14dp"
-        android:paddingVertical="10dp"
-        android:layout_height="wrap_content">
+        android:paddingVertical="10dp">
 
         <View
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/view_category_background"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/background_oval_gray100"/>
+            android:background="@drawable/background_oval_gray100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            app:layout_constraintStart_toStartOf="@id/view_category_background"
-            app:layout_constraintEnd_toEndOf="@id/view_category_background"
-            app:layout_constraintTop_toTopOf="@id/view_category_background"
-            app:layout_constraintBottom_toBottomOf="@id/view_category_background"
             android:id="@+id/iv_category_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_category_all_44"/>
+            android:translationZ="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/view_category_background"
+            app:layout_constraintEnd_toEndOf="@id/view_category_background"
+            app:layout_constraintStart_toStartOf="@id/view_category_background"
+            app:layout_constraintTop_toTopOf="@id/view_category_background" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{teacherTalkShortcutItem.shortCutTitle}"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
             android:textColor="@color/Gray500"
-            tools:text="전체"
-            android:layout_marginTop="4dp"
-            app:layout_constraintTop_toBottomOf="@id/view_category_background"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/view_category_background" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

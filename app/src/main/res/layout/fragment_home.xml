@@ -99,16 +99,16 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_home_teacher_talk_shortcut"
                     android:layout_width="0dp"
-                    app:spanCount="4"
-                    tools:listitem="@layout/item_home_teacher_talk_shortcut"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing8"
+                    android:layout_marginTop="2dp"
                     android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@id/gl_end"
-                    app:layout_constraintStart_toStartOf="@id/gl_start"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_teacher_talk_shortcut" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_teacher_talk_shortcut"
+                    app:spanCount="4"
+                    tools:listitem="@layout/item_home_teacher_talk_shortcut" />
 
                 <View
                     android:id="@+id/view_home_divider"
@@ -138,11 +138,11 @@
                     android:layout_marginTop="@dimen/spacing8"
                     android:nestedScrollingEnabled="true"
                     android:orientation="horizontal"
-                    tools:listitem="@layout/item_home_teacher_talk_popular_post"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="@id/gl_end"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_teacher_talk_popular_post" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_teacher_talk_popular_post"
+                    tools:listitem="@layout/item_home_teacher_talk_popular_post" />
 
                 <TextView
                     android:id="@+id/tv_home_boss_talk_popular_post"
@@ -162,11 +162,11 @@
                     android:layout_marginTop="@dimen/spacing8"
                     android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
-                    tools:listitem="@layout/item_home_boss_talk_popular_post"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="@id/gl_end"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_boss_talk_popular_post" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_boss_talk_popular_post"
+                    tools:listitem="@layout/item_home_boss_talk_popular_post" />
 
                 <TextView
                     android:id="@+id/tv_home_weekly_best_teacher"
@@ -185,12 +185,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing8"
                     android:nestedScrollingEnabled="true"
-                    tools:listitem="@layout/item_home_weekly_best_teacher"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="@id/gl_end"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_weekly_best_teacher" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_weekly_best_teacher"
+                    tools:listitem="@layout/item_home_weekly_best_teacher" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

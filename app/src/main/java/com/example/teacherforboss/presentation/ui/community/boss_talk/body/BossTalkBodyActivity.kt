@@ -59,8 +59,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
         onBackBtnPressed()
         // 답글 쓰기
         setRecommentListener()
-        // 북마크 업데이트
-        updateBookmark()
 
     }
 
@@ -152,7 +150,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun likeAndBookmark() {
         //질문 좋아요
         binding.like.setOnClickListener {
-            viewModel.clickLikeBtn()
+            viewModel.postLike()
         }
         viewModel.isLike.observe(this, Observer { isLike ->
             if(isLike) {
@@ -167,7 +165,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
         //질문 저장하기
         binding.bookmark.setOnClickListener {
-            viewModel.clickBookmarkBtn()
+            viewModel.postBookmark()
         }
         viewModel.isBookmark.observe(this, Observer {isBookmark ->
             if(isBookmark) {
@@ -228,7 +226,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     }
 
-
     private fun setCommentView(){
         // TODO: 댓글 리스트 조회
 //        viewModel.getCommentListLiveData.observe(this, Observer {
@@ -251,15 +248,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
         })
     }
 
-    fun updateBookmark(){
-        binding.bookmark.setOnClickListener {
-            viewModel.postBookmark()
-            viewModel.bossTalkBodyBookmarkLiveData.observe(this, Observer {
-                if(it.bookmark)viewModel.clickBookmarkBtn()
-            })
-        }
-
-    }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent=Intent(this,MainActivity::class.java).apply {

@@ -101,13 +101,26 @@ class BossTalkBodyViewModel @Inject constructor(
 
     }
 
+    fun postLike(){
+        clickLikeBtn()
+        viewModelScope.launch {
+            try{
+                val bossTalkLikeResponseEntity=bossTalkLikeUseCase(
+                    BossTalkRequestEntity(postId=postId.value!!)
+                )
+                _isLike.value=bossTalkLikeResponseEntity.like
+            }catch (ex:Exception){}
+        }
+    }
+
     fun postBookmark(){
+        clickBookmarkBtn()
         viewModelScope.launch {
             try{
                 val bossTalkBookmarkResponseEntity=bossTalkBookmarkUseCase(
                     BossTalkRequestEntity(postId=postId.value!!)
                 )
-                _bossTalkBodyBookmarkLiveData.value=bossTalkBookmarkResponseEntity
+                _isBookmark.value=bossTalkBookmarkResponseEntity.bookmark
             }catch (ex:Exception){}
         }
     }

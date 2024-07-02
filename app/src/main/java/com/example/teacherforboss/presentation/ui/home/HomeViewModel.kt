@@ -2,6 +2,7 @@ package com.example.teacherforboss.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.example.teacherforboss.R
+import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,10 @@ class HomeViewModel : ViewModel() {
             emptyList(),
         )
     val teacherTalkShortCutList get() = _teacherTalkShortcutList.asStateFlow()
+
+    private val _teacherTalkPopularPostList: MutableStateFlow<List<TeacherTalkPopularPostEntity>> =
+        MutableStateFlow(emptyList())
+    val teacherTalkPopularPostList get() = _teacherTalkPopularPostList.asStateFlow()
 
     fun setBannerItems() {
         _bannerItemList.value = listOf(
@@ -63,6 +68,41 @@ class HomeViewModel : ViewModel() {
                 R.drawable.ic_category_policy_44,
                 R.string.home_teacher_talk_policy,
             ),
+        )
+    }
+
+    fun setTeacherTalkPopularPost() {
+        _teacherTalkPopularPostList.value = listOf(
+            TeacherTalkPopularPostEntity(
+                category = "운영",
+                title = "고민이 있다네요",
+                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요?",
+                comment = "16"
+            ),
+            TeacherTalkPopularPostEntity(
+                category = "마케팅",
+                title = "고민이 있다네요",
+                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? 이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? 혹시 제발요!!",
+                comment = "87"
+            ),
+            TeacherTalkPopularPostEntity(
+                category = "직원관리",
+                title = "최대한 길게 한번 타이틀 만들어볼게요 어떻게 되려나 함 봅시다 질문 늘리기 쭈우우욱 길어져라 길어져라",
+                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요?",
+                comment = "0"
+            ),
+            TeacherTalkPopularPostEntity(
+                category = "상권",
+                title = "상권이 다 죽은 동네에서 장사하고 있습니다. 도와주세요. 이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요?",
+                content = "힝",
+                comment = "3"
+            ),
+            TeacherTalkPopularPostEntity(
+                category = "위생",
+                title = "매일 물청소하는데 바퀴벌레가 나와요",
+                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? ",
+                comment = "03"
+            )
         )
     }
 

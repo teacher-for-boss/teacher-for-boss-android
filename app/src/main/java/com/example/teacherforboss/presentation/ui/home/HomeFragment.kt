@@ -22,6 +22,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var viewPagerAdapter: HomeBannerViewPagerAdapter
     private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
+    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter() }
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
@@ -60,8 +61,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         viewModel.apply {
             setBannerItems()
             setTeacherTalkShortcutItems()
+            // TODO 옮기기
+            setTeacherTalkPopularPost()
         }
         teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
+
+        // TODO 서버통신 후 collectData에서 서버통신 결과값 불러오기
+        teacherTalkPopularPostAdapter.submitList(viewModel.teacherTalkPopularPostList.value)
+
         startAutoScroll()
     }
 
@@ -79,6 +86,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
 
         binding.rvHomeTeacherTalkShortcut.adapter = teacherTalkShortcutAdapter
+        binding.rvHomeTeacherTalkPopularPost.adapter = teacherTalkPopularPostAdapter
     }
 
     private fun addListeners() {

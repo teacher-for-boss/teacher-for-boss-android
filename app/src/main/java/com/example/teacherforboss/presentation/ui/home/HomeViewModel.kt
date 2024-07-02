@@ -2,6 +2,7 @@ package com.example.teacherforboss.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.example.teacherforboss.R
+import com.example.teacherforboss.domain.model.home.BossTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel
@@ -24,6 +25,10 @@ class HomeViewModel : ViewModel() {
     private val _teacherTalkPopularPostList: MutableStateFlow<List<TeacherTalkPopularPostEntity>> =
         MutableStateFlow(emptyList())
     val teacherTalkPopularPostList get() = _teacherTalkPopularPostList.asStateFlow()
+
+    private val _bossTalkPopularPostList: MutableStateFlow<List<BossTalkPopularPostEntity>> =
+        MutableStateFlow(emptyList())
+    val bossTalkPopularPostList get() = _bossTalkPopularPostList.asStateFlow()
 
     fun setBannerItems() {
         _bannerItemList.value = listOf(
@@ -103,6 +108,31 @@ class HomeViewModel : ViewModel() {
                 content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? ",
                 comment = "03"
             )
+        )
+    }
+
+    fun setBossTalkPopularPost() {
+        _bossTalkPopularPostList.value = listOf(
+            BossTalkPopularPostEntity(
+                number = "1",
+                title = "제목 이러합니다. 어쩌구 저쩌구 이게 1등인 제목임용 얼마나 더 길어야 되지?"
+            ),
+            BossTalkPopularPostEntity(
+                number = "2",
+                title = "제목 이러합니다."
+            ),
+            BossTalkPopularPostEntity(
+                number = "3",
+                title = "어쩌구 저쩌구"
+            ),
+            BossTalkPopularPostEntity(
+                number = "4",
+                title = "고민이 있다네요"
+            ),
+            BossTalkPopularPostEntity(
+                number = "5",
+                title = "우와앙! 우와앙!"
+            ),
         )
     }
 

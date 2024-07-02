@@ -10,10 +10,13 @@ import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeRequ
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.domain.model.community.MemberEntity
 import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkCommentDisLikeUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentListUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
@@ -28,10 +31,18 @@ class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkBookmarkUseCase: BossTalkBookmarkUseCase,
     private val bossTalkLikeUseCase: BossTalkLikeUseCase,
     private val bossTalkCommentUseCase: BossTalkCommentUseCase,
-    private val bossTalkCommentListUseCase: BossTalkCommentListUseCase
+    private val bossTalkCommentLikeUseCase: BossTalkCommentLikeUseCase,
+    private val bossTalkCommentDisLikeUseCase: BossTalkCommentDisLikeUseCase,
+    private val bossTalkCommentListUseCase: BossTalkCommentListUseCase,
 ): ViewModel() {
     private var _postCommentLiveData=MutableLiveData<BossTalkCommentResponseEntity>()
     val postCommentLiveData:LiveData<BossTalkCommentResponseEntity> get() = _postCommentLiveData
+
+    private var _bossTalkCommentLikeLiveData=MutableLiveData<BossTalkCommentLikeResponseEntity>()
+    val bossTalkCommentLikeLiveData:LiveData<BossTalkCommentLikeResponseEntity> get() = _bossTalkCommentLikeLiveData
+
+    private var _bossTalkCommentdisLikeLiveData=MutableLiveData<BossTalkCommentLikeResponseEntity>()
+    val bossTalkCommentdisLikeLiveData:LiveData<BossTalkCommentLikeResponseEntity> get() = _bossTalkCommentdisLikeLiveData
 
     private var _getCommentListLiveData=MutableLiveData<BossTalkCommentListResponseEntity>()
     val getCommentListLiveData:LiveData<BossTalkCommentListResponseEntity> get() = _getCommentListLiveData
@@ -84,8 +95,6 @@ class BossTalkBodyViewModel @Inject constructor(
 
     private var _bossTalkBodyLiveData=MutableLiveData<BossTalkBodyResponseEntity>()
     val bossTalkBodyLiveData:LiveData<BossTalkBodyResponseEntity> get() = _bossTalkBodyLiveData
-    private var _bossTalkBodyBookmarkLiveData=MutableLiveData<BossTalkBookmarkResponseEntity>()
-    val bossTalkBodyBookmarkLiveData:LiveData<BossTalkBookmarkResponseEntity> get() = _bossTalkBodyBookmarkLiveData
 
     fun getBossTalkBody(postId:Long){
         viewModelScope.launch {
@@ -153,6 +162,34 @@ class BossTalkBodyViewModel @Inject constructor(
             }catch (ex:Exception){
 
             }
+        }
+    }
+
+    fun postCommentLike(commentId:Long){
+        viewModelScope.launch {
+            try{
+                val bosstalkCommentLikeResponseEntity=bossTalkCommentLikeUseCase(
+                    BossTalkCommentLikeRequestEntity(
+                        postId = postId.value!!,
+                        commentId = commentId
+                        )
+                )
+                _bossTalkCommentLikeLiveData.value=bosstalkCommentLikeResponseEntity
+            }catch (ex:Exception){}
+        }
+    }
+
+    fun postCommentDisLike(commentId:Long){
+        viewModelScope.launch {
+            try{
+                val bossTalkDisLikeResponseEntity=bossTalkCommentDisLikeUseCase(
+                    BossTalkCommentLikeRequestEntity(
+                        postId = postId.value!!,
+                        commentId = commentId
+                    )
+                )
+                _bossTalkCommentdisLikeLiveData.value=bossTalkDisLikeResponseEntity
+            }catch (ex:Exception){}
         }
     }
 

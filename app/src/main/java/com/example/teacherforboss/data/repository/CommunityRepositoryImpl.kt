@@ -3,9 +3,11 @@ package com.example.teacherforboss.data.repository
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
@@ -86,6 +88,20 @@ class CommunityRepositoryImpl @Inject constructor(
             communityDataSource.postBossTalkComment(requestBossTalkCommentDto=bossTalkCommentRequestEntity.toRequestBossTalkCommentDto(), requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkCommentResponseEntity()
         }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postBossTalkCommentLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity {
+        return runCatching {
+            communityDataSource.postBossTalkCommentLike(requestBossTalkCommentLikeDto =bossTalkCommentLikeRequestEntity.toBossTalkCommentLikeDto())
+                .result.toResponseBossTalkLikeResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postBossTalkCommentdisLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity {
+        return runCatching {
+            communityDataSource.postBossTalkCommentdisLike(requestBossTalkCommentLikeDto = bossTalkCommentLikeRequestEntity.toBossTalkCommentLikeDto())
+                .result.toResponseBossTalkLikeResponseEntity()
+        }.getOrElse { err -> throw err }
     }
 
 }

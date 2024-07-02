@@ -1,6 +1,7 @@
 package com.example.teacherforboss.data.datasource.remote
 
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
+import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentLikeDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
@@ -9,6 +10,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -32,4 +34,8 @@ interface CommunityRemoteDataSource {
     suspend fun postBossTalkComment(requestBossTalkCommentDto: RequestBossTalkCommentDto, requestBossTalkDto: RequestBossTalkDto):BaseResponse<ResponseBossTalkCommentDto>
 
     suspend fun modifyBossTalkBody(requestBossTalkDto: RequestBossTalkDto,requestBossUploadPostDto: RequestBossUploadPostDto):BaseResponse<ResponseBossModifyDto>
+
+    suspend fun postBossTalkCommentLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto):BaseResponse<ResponseBossTalkCommentLikeDto>
+
+    suspend fun postBossTalkCommentdisLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto):BaseResponse<ResponseBossTalkCommentLikeDto>
 }

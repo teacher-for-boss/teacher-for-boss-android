@@ -7,6 +7,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -77,6 +78,17 @@ interface CommunityService {
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossModifyDto>
 
+    @POST("${BOSS}/posts/{postId}/comments/{commentId}/likes")
+    suspend fun likeBossTalkComment(
+        @Path("postId") postId:Long,
+        @Path("commentId") commentId:Long,
+    ):BaseResponse<ResponseBossTalkCommentLikeDto>
+
+    @POST("${BOSS}/posts/{postId}/comments/{commentId}/dislikes")
+    suspend fun dislikeBossTalkComment(
+        @Path("postId") postId:Long,
+        @Path("commentId") commentId:Long,
+    ):BaseResponse<ResponseBossTalkCommentLikeDto>
 
     companion object {
         const val BOSS = "board/boss"

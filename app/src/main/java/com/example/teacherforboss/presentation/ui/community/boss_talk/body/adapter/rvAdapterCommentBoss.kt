@@ -7,6 +7,8 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
@@ -17,6 +19,7 @@ import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentBoss(
+    private val lifecycleOwner: LifecycleOwner,
     private val context: Context,
     private val commentList: List<CommentEntity>,
     private val viewModel: BossTalkBodyViewModel
@@ -64,10 +67,14 @@ class rvAdapterCommentBoss(
             //사용자의 추천 비추천 여부 -TODO: 서버에 변수 추가 후 수정 필요
             var isCommentGood = false
             var isCommentBad = false
+
+            // 추천 비추천 onclick
             fun updateComment() {
                 if(isCommentGood) {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
+
+                    viewModel.postCommentLike(comment.commentId)
                 } else {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#8490A0"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good)
@@ -76,6 +83,8 @@ class rvAdapterCommentBoss(
                 if(isCommentBad) {
                     binding.commentBadTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad_on)
+
+                    viewModel.postCommentDisLike(comment.commentId)
                 } else {
                     binding.commentBadTv.setTextColor(Color.parseColor("#8490A0"))
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad)
@@ -95,6 +104,14 @@ class rvAdapterCommentBoss(
                 }
                 updateComment()
             }
+
+            // 추천/비추천 카운트 업데이트
+            viewModel.bossTalkCommentLikeLiveData.observe(lifecycleOwner, Observer {
+                binding.commentGoodTv.text=context.getString(R.string.recommed_option,it.likeCount)
+            })
+            viewModel.bossTalkCommentdisLikeLiveData.observe(lifecycleOwner, Observer {
+                binding.commentBadTv.text=context.getString(R.string.recommed_option,it.dislikeCount)
+            })
 
             // 답글쓰기
             binding.writeRecommentBtn.setOnClickListener {

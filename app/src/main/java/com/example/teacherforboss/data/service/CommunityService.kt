@@ -40,15 +40,15 @@ interface CommunityService {
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossUploadPostDto>
 
-    @GET("${BOSS}/posts/{postId}/bookmark")
+    @POST("${BOSS}/posts/{postId}/bookmark")
     suspend fun getBossTalkBookmark(
-        @Query("postId") postId:Long
+        @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBookmarkDto>
 
-    @GET("${BOSS}/posts/{postId}/likes")
+    @POST("${BOSS}/posts/{postId}/likes")
     suspend fun getBossTalkLike(
-        @Query("postId") postId:Long
+        @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkLikeDto>
 

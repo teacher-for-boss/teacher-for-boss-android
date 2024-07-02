@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ResponseBossTalkCommentListDto(
     @SerializedName("totalCount")
-    val totalCount:Long,
+    val totalCount:Int,
     @SerializedName("commentList")
     val commentList:ArrayList<CommentDto>
 ) {
@@ -26,18 +26,18 @@ data class CommentDto(
     @SerializedName("content")
     val content:String,
     @SerializedName("likeCount")
-    val likeCount:Long,
+    val likeCount:Int,
     @SerializedName("dislikeCount")
     val dislikeCount:Int,
     @SerializedName("createdAt")
     val createdAt:String,
     @SerializedName("memberInfo")
-    val memberInfo:ArrayList<MemberDto>,
+    val memberInfo:MemberDto,
     @SerializedName("children")
     val children:ArrayList<CommentDto>
 ){
     fun toCommentEntity(): CommentEntity {
-        val memberEntities = memberInfo.mapTo(ArrayList()) { it.toMemberEntity() }
+        val memberEntities = memberInfo.toMemberEntity()
         val children = children.mapTo(ArrayList()) { it.toCommentEntity() }
         return CommentEntity(
             commentId=commentId,

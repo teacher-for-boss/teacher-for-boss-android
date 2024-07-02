@@ -11,18 +11,40 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentBossBinding
+import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDateFormatter
 
-class rvAdapterCommentBoss(private val commentList: List<String>,
-                           private val viewModel: BossTalkBodyViewModel
+class rvAdapterCommentBoss(
+    private val context: Context,
+    private val commentList: List<CommentEntity>,
+    private val viewModel: BossTalkBodyViewModel
     ): RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
 
     inner class ViewHolder(private val binding: RvItemCommentBossBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(comment: String, viewModel: BossTalkBodyViewModel) {
-            binding.userName.text = comment
+        fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
 
-            //대댓글
-            binding.rvRecomment.adapter = rvAdapterRecommentBoss(viewModel.reCommentList)
+            // 유저 정보
+            val member=comment.memberInfo
+            binding.userName.text = member.name
+            member.profileImg?.let {
+                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
+            }
+
+            // 날짜
+            binding.createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
+
+            // 댓글 본문
+            binding.commentBody.text=comment.content
+
+            // 추천, 비추천 갯수
+            binding.commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
+            binding.commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
+
+            // 대댓글 리스트
+            val reCommentList=comment.children
+            binding.rvRecomment.adapter = rvAdapterRecommentBoss(context,reCommentList)
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
@@ -39,7 +61,7 @@ class rvAdapterCommentBoss(private val commentList: List<String>,
                 binding.root.context.startActivity(intent)
             }
 
-            //추천비추천
+            //사용자의 추천 비추천 여부 -TODO: 서버에 변수 추가 후 수정 필요
             var isCommentGood = false
             var isCommentBad = false
             fun updateComment() {
@@ -72,6 +94,12 @@ class rvAdapterCommentBoss(private val commentList: List<String>,
                     isCommentGood = !isCommentGood
                 }
                 updateComment()
+            }
+
+            // 답글쓰기
+            binding.writeRecommentBtn.setOnClickListener {
+                viewModel.isRecommentClicked.value=Unit
+                viewModel.setParentId(comment.commentId)
             }
         }
     }

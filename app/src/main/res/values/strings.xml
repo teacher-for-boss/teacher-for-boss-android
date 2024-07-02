@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">티쳐 포 보스</string>
+    <string name="app_name">티처 포 보스</string>
 
     <string name="pwSame">비밀번호가 일치합니다</string>
     <string name="pwDifferent">비밀번호가 일치하지 않습니다</string>
@@ -24,7 +24,7 @@
 
     <!-- bnv -->
     <string name="string_menu_home">홈</string>
-    <string name="string_menu_teacher_talk">티쳐Talk</string>
+    <string name="string_menu_teacher_talk">티처Talk</string>
     <string name="string_menu_boss_talk">보스Talk</string>
     <string name="string_menu_my_page">마이페이지</string>
 
@@ -99,8 +99,8 @@
     <!-- home -->
     <string name="home_logo">티쳐포보스</string>
     <string name="home_banner_position">%s / %s</string>
-    <string name="home_teacher_talk_shortcut">티쳐Talk 바로가기</string>
-    <string name="home_teacher_talk_popular_post">티쳐Talk 인기글</string>
+    <string name="home_teacher_talk_shortcut">티처Talk 바로가기</string>
+    <string name="home_teacher_talk_popular_post">티처Talk 인기글</string>
     <string name="home_boss_talk_popular_post">보스Talk 인기글</string>
     <string name="home_weekly_best_teacher">이번 주 인기 티쳐</string>
     

@@ -119,24 +119,72 @@
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 
+    <style name="TextAppearance.TeacherForBoss.Title6" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">18dp</item>
+        <item name="android:lineSpacingMultiplier">1.6</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Title7" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">12dp</item>
+        <item name="lineHeight">19.2dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
     <!--body-->
 
     <style name="TextAppearance.TeacherForBoss.Body1" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">16dp</item>
-        <item name="android:lineSpacingMultiplier">1.6</item>
+        <item name="android:lineHeight">25.6dp</item>
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Body2" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">16dp</item>
-        <item name="android:lineSpacingMultiplier">1.6</item>
+        <item name="android:lineHeight">25.6dp</item>
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Body3" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">14dp</item>
-        <item name="android:lineSpacingMultiplier">1.6</item>
+        <item name="android:lineHeight">22.4dp</item>
         <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body4" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">12dp</item>
+        <item name="android:lineHeight">19.2dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body5" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">12dp</item>
+        <item name="android:lineHeight">21.6dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body6" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">12dp</item>
+        <item name="android:lineHeight">21.6dp</item>
+        <item name="fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body7" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">9dp</item>
+        <item name="android:lineHeight">13.5dp</item>
+        <item name="fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body8" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">12dp</item>
+        <item name="android:lineHeight">19.2dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Body9" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">10dp</item>
+        <item name="android:lineHeight">15dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
     </style>
 
     <!--label-->
@@ -184,6 +232,12 @@
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 
+    <style name="TextAppearance.TeacherForBoss.Caption2" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">9dp</item>
+        <item name="lineHeight">13.5dp</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
     <style name="TextAppearance.TeacherForBoss.Caption3" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">8dp</item>
         <item name="android:lineSpacingMultiplier">1.0</item>
@@ -193,7 +247,7 @@
     <!--display-->
     <style name="TextAppearance.TeacherForBoss.Display2" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">18dp</item>
-        <item name="android:lineSpacingMultiplier">1.6</item>
+        <item name="lineHeight">28.8dp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="fontFamily">@font/pretendard_bold</item>
     </style>

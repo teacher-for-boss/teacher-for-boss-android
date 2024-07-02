@@ -2,9 +2,11 @@ package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -38,15 +40,15 @@ interface CommunityService {
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossUploadPostDto>
 
-    @GET("${BOSS}/posts/{postId}/bookmark")
+    @POST("${BOSS}/posts/{postId}/bookmark")
     suspend fun getBossTalkBookmark(
-        @Query("postId") postId:Long
+        @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBookmarkDto>
 
-    @GET("${BOSS}/posts/{postId}/likes")
+    @POST("${BOSS}/posts/{postId}/likes")
     suspend fun getBossTalkLike(
-        @Query("postId") postId:Long
+        @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkLikeDto>
 
@@ -55,6 +57,13 @@ interface CommunityService {
         @Path("postId") postId:Long
 
     ):BaseResponse<ResponseBossTalkBodyDto>
+
+    @GET("${BOSS}/posts/{postId}/comments")
+    suspend fun getBossTalkCommentList(
+        @Path("postId") postId:Long
+
+    ):BaseResponse<ResponseBossTalkCommentListDto>
+
     @POST("${BOSS}/posts/{postId}/comments")
     suspend fun postBossTalkComment(
         @Body requestBossTalkCommentDto: RequestBossTalkCommentDto,
@@ -66,7 +75,7 @@ interface CommunityService {
     suspend fun modifyBossTalkBody(
         @Path("postId") postId:Long,
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
-    ):BaseResponse<ResponseBossUploadPostDto>
+    ):BaseResponse<ResponseBossModifyDto>
 
 
     companion object {

@@ -31,6 +31,13 @@ object BindingImgAdapter {
                 .skipMemoryCache(false))
             .into(imageView)
     }
+
+    fun bindImgUri(imageView: ImageView,imageUri: Uri){
+        Glide.with(imageView.context)
+            .load(imageUri)
+            .apply(RequestOptions())
+            .into(imageView)
+    }
     fun bindProfileImgUrl(context: Context, imageView: ImageView, url:String){
         Glide.with(context)
             .load(url)

@@ -5,8 +5,8 @@ import com.example.teacherforboss.domain.model.community.PostEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseBossTalkPostsDto(
-    @SerializedName("totalCount")
-    val totalCount:Int,
+    @SerializedName("hasNext")
+    val hasNext:Boolean,
     @SerializedName("postList")
     val postList: ArrayList<PostDto>
 ){
@@ -14,7 +14,7 @@ data class ResponseBossTalkPostsDto(
         val postEntities = postList.mapTo(ArrayList()) { it.toPostEntity() }
         return BossTalkPostsResponseEntity(
             postList=postEntities,
-            totalCount = totalCount
+            hasNext = hasNext
         )
     }
 

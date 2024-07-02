@@ -8,7 +8,7 @@ data class ResponseBossTalkLikeDto(
     @SerializedName("like")
     val like:Boolean,
     @SerializedName("updatedAt")
-    val updatedAt: LocalDateTime
+    val updatedAt:String
 ) {
     fun toBossTalkLikeResponseEntity()= BossTalkLikeResponseEntity(
         like = like,

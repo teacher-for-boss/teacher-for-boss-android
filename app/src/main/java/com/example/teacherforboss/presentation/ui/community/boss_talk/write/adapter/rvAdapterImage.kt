@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.RvItemImageBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage.ViewHolder
+import com.example.teacherforboss.util.base.BindingImgAdapter
 
-class rvAdapterImage(private val imageList: ArrayList<Uri>, private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<ViewHolder>() {
+class rvAdapterImage(private val imageList: ArrayList<Uri>,private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {
             fun bind(imagePath: String, viewModel: BossTalkWriteViewModel) {
-                binding.image.setImageURI(Uri.parse(imagePath))
+                BindingImgAdapter.bindImgUri(binding.image,Uri.parse(imagePath))
 
                 binding.deleteButton.setOnClickListener {
                     val position = adapterPosition

@@ -57,7 +57,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
         showExitDialog()
 
         addListenrs()
-        // 업로드 완료
+
         finishUpload()
 
     }
@@ -68,6 +68,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
             viewModel._title.value=intent.getStringExtra("title").toString()
             viewModel._content.value=intent.getStringExtra("body").toString()
             if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
+            if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
         }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
@@ -200,18 +201,30 @@ class BossTalkWriteActivity : AppCompatActivity() {
     }
 
     fun uploadPost(){
-        viewModel.getPresignedUrlList()
+        // 이미지 업로드 시
+        if(viewModel.imageList.isNotEmpty()) {
+            viewModel.getPresignedUrlList()
+            viewModel.presignedUrlLiveData.observe(this, {
+                viewModel._presignedUrlList.value = (it.presignedUrlList)
+                viewModel.setFilteredImgUrlList() //post를 위해 이미지 url slicing
 
-        viewModel.presignedUrlLiveData.observe(this,{
-            viewModel._presignedUrlList.value= (it.presignedUrlList)
-            viewModel.filtered_presigendList=it.presignedUrlList.map { it.substringBefore("?")}
-
-            if(purpose=="modify") viewModel.modifyPost()
-            else viewModel.uploadPost()
-            uploadImgtoS3()
-
+                uploadImgtoS3()
             })
 
+            viewModel.filtered_presigendList.observe(this,{
+                if (purpose == "modify") viewModel.modifyPost()
+                else viewModel.uploadPost()
+            })
+
+        }
+
+        // 이미지 없이 업로드시
+        else{
+            if (purpose == "modify") viewModel.modifyPost()
+            else viewModel.uploadPost()
+        }
+
+        finishUpload()
     }
 
     fun uploadImgtoS3(){
@@ -231,6 +244,15 @@ class BossTalkWriteActivity : AppCompatActivity() {
             }
             startActivity(intent)
         })
+
+        viewModel.modifyPostLiveData.observe(this, Observer {
+            val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
+                putExtra("postId",it.postId.toString())
+            }
+            startActivity(intent)
+        })
+
+
     }
 
     fun showExitDialog() {

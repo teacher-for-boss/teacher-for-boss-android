@@ -41,6 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
+            android:id="@+id/createdAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2000.01.01"
@@ -94,103 +95,126 @@
             app:layout_constraintTop_toBottomOf="@id/comment_body"
             android:layout_marginTop="14dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/comment_good"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/option"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/line"
             app:layout_constraintTop_toTopOf="@id/line"
-            app:layout_constraintBottom_toBottomOf="@id/line">
+            app:layout_constraintBottom_toBottomOf="@id/line"
+            android:weightSum="3"
+            >
 
-            <ImageView
-                android:id="@+id/comment_good_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/comment_good"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="4dp" />
-
-            <TextView
-                android:id="@+id/comment_good_tv"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/comment_good"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="추천해요 NN개"
-                android:textSize="10dp"
-                android:textColor="@color/Gray400"
-                app:layout_constraintStart_toEndOf="@id/comment_good_iv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp" />
+                android:layout_weight="1"
+                >
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/comment_good_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/comment_good"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="4dp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/comment_bad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/line"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/line"
-            app:layout_constraintBottom_toBottomOf="@id/line">
+                <TextView
+                    android:id="@+id/comment_good_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:textColor="@color/Gray400"
+                    app:layout_constraintStart_toEndOf="@id/comment_good_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp" />
 
-            <ImageView
-                android:id="@+id/comment_bad_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/comment_bad"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="4dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/comment_bad_tv"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/comment_bad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="추천하지 않아요 NN개"
-                android:textSize="10dp"
-                android:textColor="@color/Gray400"
-                app:layout_constraintStart_toEndOf="@id/comment_bad_iv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp" />
+                android:layout_weight="1">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/write_recomment_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_radius8_purple200"
-            app:layout_constraintTop_toBottomOf="@id/comment_bad"
-            android:layout_marginTop="12dp">
+                <ImageView
+                    android:id="@+id/comment_bad_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/comment_bad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="4dp" />
 
-            <TextView
+                <TextView
+                    android:id="@+id/comment_bad_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:textColor="@color/Gray400"
+                    app:layout_constraintStart_toEndOf="@id/comment_bad_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/write_recomment_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="답글 작성하기"
-                android:textSize="14dp"
-                android:textColor="@color/Purple600"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginVertical="9dp" />
+                android:layout_weight="1">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/recomment_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/icon_recomment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginStart="4dp"
+                    />
+
+
+                <TextView
+                    android:id="@+id/recommnet_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:textColor="@color/Gray400"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="  답글 쓰기  "
+
+                    app:layout_constraintStart_toEndOf="@id/recomment_iv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recomment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/write_recomment_btn"
+            app:layout_constraintTop_toBottomOf="@id/option"
             android:layout_marginTop="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

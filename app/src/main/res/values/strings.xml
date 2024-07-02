@@ -103,7 +103,7 @@
     <string name="home_teacher_talk_popular_post">티처Talk 인기글</string>
     <string name="home_boss_talk_popular_post">보스Talk 인기글</string>
     <string name="home_weekly_best_teacher">이번 주 인기 티쳐</string>
-    
+
     <string name="home_teacher_talk_all">전체</string>
     <string name="home_teacher_talk_marketing">마케팅</string>
     <string name="home_teacher_talk_hygiene">위생</string>
@@ -113,4 +113,7 @@
     <string name="home_teacher_talk_interior">인테리어</string>
     <string name="home_teacher_talk_policy">정책</string>
 
+    <!-- 커뮤니티 -->
+    <string name="recommed_option">추천해요 %d개</string>
+    <string name="not_recommed_option">추천해요 %d개</string>
 </resources>

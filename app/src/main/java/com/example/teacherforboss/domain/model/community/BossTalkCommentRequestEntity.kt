@@ -4,13 +4,11 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 
 
 data class BossTalkCommentRequestEntity(
-    val parentCommentId:Long?,
-    val content:String,
-    val imageUrlList:List<String>
+    val parentId:Long?,
+    val content:String
 ){
     fun toRequestBossTalkCommentDto() = RequestBossTalkCommentDto(
-        parentCommentId = parentCommentId,
-        content = content,
-        imageUrlList = imageUrlList
+        parentId = parentId,
+        content = content
     )
 }

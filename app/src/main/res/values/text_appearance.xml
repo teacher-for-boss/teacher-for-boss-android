@@ -226,9 +226,8 @@
     </style>
 
     <!--caption-->
-    <style name="TextAppearance.TeacherForBoss.Caption" parent="TextAppearance.TeacherForBoss">
+    <style name="TextAppearance.TeacherForBoss.Caption1" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">10dp</item>
-        <item name="android:lineSpacingMultiplier">1.0</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 

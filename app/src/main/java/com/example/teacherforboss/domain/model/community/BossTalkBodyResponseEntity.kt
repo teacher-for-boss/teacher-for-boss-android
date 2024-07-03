@@ -7,7 +7,7 @@ data class BossTalkBodyResponseEntity(
     val title:String,
     val content: String,
     val imageUrlList:List<String>,
-    val hashtagList: List<String>?,
+    val hashtagList: List<String>,
     val memberInfo: Member,
     val liked: Boolean,
     val bookmarked: Boolean,

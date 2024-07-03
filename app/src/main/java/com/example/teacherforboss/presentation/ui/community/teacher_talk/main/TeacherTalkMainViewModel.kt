@@ -64,7 +64,7 @@ class TeacherTalkMainViewModel @Inject constructor(
                         lastQuestionId = lastQuestionId.value?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
-                        category =null
+                        category ="전체"
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity

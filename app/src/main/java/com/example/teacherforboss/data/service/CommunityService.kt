@@ -28,10 +28,10 @@ interface CommunityService {
 
     @GET("${TEACHER}/questions?")
     suspend fun getTeacherTalkQuestions(
+        @Query("category") category:String,
         @Query("lastQuestionId") lastQuestionId:Long,
         @Query("size") size:Int,
         @Query("sortBy") sortBy:String,
-        @Query("category") category:String
 
     ):BaseResponse<ResponseTeacherTalkQuestionsDto>
 

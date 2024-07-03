@@ -137,7 +137,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- 칩 리사이클러뷰 -->
+                    <!-- 카테고리 리사이클러뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_teacher_talk_category"
                         android:layout_width="0dp"

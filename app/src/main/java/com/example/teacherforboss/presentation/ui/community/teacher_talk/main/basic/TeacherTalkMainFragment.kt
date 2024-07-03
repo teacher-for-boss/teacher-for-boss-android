@@ -42,6 +42,7 @@ class TeacherTalkMainFragment :
         val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
         binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
         binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
+
         teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
 
         binding.viewModel=viewModel

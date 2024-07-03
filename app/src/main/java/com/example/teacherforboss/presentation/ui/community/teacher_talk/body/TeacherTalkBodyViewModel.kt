@@ -64,23 +64,25 @@ class TeacherTalkBodyViewModel @Inject constructor(
     }
 
     fun postBookmark(){
+        clickBookmarkBtn()
         viewModelScope.launch {
             try{
                 val teacherTalkBookmarkResponseEntity=teacherTalkBookmarkUseCase(
                     TeacherTalkRequestEntity(questionId=questionId.value!!)
                 )
-                _teacherTalkBodyBookmarkLiveData.value=teacherTalkBookmarkResponseEntity
+                _isBookmark.value=teacherTalkBookmarkResponseEntity.bookmarked
             }catch (ex:Exception){}
         }
     }
 
     fun postLike(){
+        clickLikeBtn()
         viewModelScope.launch {
             try{
                 val teacherTalkLikeResponseEntity=teacherTalkLikeUseCase(
                     TeacherTalkRequestEntity(questionId=questionId.value!!)
                 )
-                _teacherTalkBodyLikeLiveData.value=teacherTalkLikeResponseEntity
+                _isLike.value=teacherTalkLikeResponseEntity.liked
             }catch (ex:Exception){}
         }
     }

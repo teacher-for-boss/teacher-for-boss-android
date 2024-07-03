@@ -9,10 +9,4 @@ data class TeacherTalkBookmarkResponseEntity (
     val bookmarked: Boolean,
     val updatedAt: LocalDateTime,
     val questionId: Long,
-){
-    fun toResponseTeacherTalkBookmarkDto()= ResponseTeacherTalkBookmarkDto(
-        bookmarked = bookmarked,
-        updatedAt = updatedAt,
-        questionId = questionId
-    )
-}
+){ }

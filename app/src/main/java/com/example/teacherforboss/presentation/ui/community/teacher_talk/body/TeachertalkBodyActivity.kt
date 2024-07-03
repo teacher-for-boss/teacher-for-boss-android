@@ -65,11 +65,6 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         gotoAnswer()
         //뒤로 가기
         onBackBtnPressed()
-        // 좋아요 업데이트
-        updateLike()
-        // 북마크 업데이트
-        updateBookmark()
-
     }
 
     fun showOptionMenu() {
@@ -117,7 +112,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     fun likeAndBookmark() {
         //질문 좋아요
         binding.like.setOnClickListener {
-            viewModel.clickLikeBtn()
+            viewModel.postLike()
         }
         viewModel.isLike.observe(this, Observer { isLike ->
             if(isLike) {
@@ -132,7 +127,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
         //질문 저장하기
         binding.bookmark.setOnClickListener {
-            viewModel.clickBookmarkBtn()
+            viewModel.postBookmark()
         }
         viewModel.isBookmark.observe(this, Observer {isBookmark ->
             if(isBookmark) {
@@ -229,14 +224,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
             })
         }
     }
-    fun updateBookmark(){
-        binding.bookmark.setOnClickListener {
-            viewModel.postBookmark()
-            viewModel.teacherTalkBodyBookmarkLiveData.observe(this, Observer {
-                if(it.bookmarked)viewModel.clickBookmarkBtn()
-            })
-        }
-    }
+
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent=Intent(this, MainActivity::class.java).apply {

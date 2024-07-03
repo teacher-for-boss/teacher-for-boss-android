@@ -6,12 +6,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
-import com.example.teacherforboss.domain.model.community.PostEntity
-import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
+import com.example.teacherforboss.domain.model.community.boss.BossTalkPostsRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkPostsResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.PostEntity
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkPostsUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkSearchUseCase
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCard
 import com.example.teacherforboss.presentation.ui.community.common.TalkMainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -299,7 +299,8 @@ class BossTalkMainViewModel @Inject constructor(
                     size=size.value?:10,
                     sortBy=sortBy.value?:"latest",
                     keyword =null
-                ))
+                )
+                )
                 _getBossTalkPostLiveData.value=bossTalkPostsResponseEntity
 
             }catch (ex:Exception){
@@ -315,7 +316,8 @@ class BossTalkMainViewModel @Inject constructor(
                         size=size.value?:10,
                         sortBy=null,
                         keyword =keyword.value
-                    ))
+                    )
+                )
                 _getBossTalkPostLiveData.value=bossTalkPostsResponseEntity
 
             }catch (ex:Exception){

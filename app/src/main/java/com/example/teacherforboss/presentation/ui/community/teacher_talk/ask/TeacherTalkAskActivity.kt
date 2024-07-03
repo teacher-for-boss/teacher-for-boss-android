@@ -31,7 +31,9 @@ import com.example.teacherforboss.util.CustomSnackBar
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeacherTalkAskActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeachertalkAskBinding
@@ -44,6 +46,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_ask)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         //rv
         setRecyclerView()
@@ -59,6 +63,9 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         focusOnEditText()
         //등록 유효 확인
         IsValidPost()
+
+        uploadPost()
+        finishUploadPost()
     }
 
     fun setRecyclerView() {
@@ -67,7 +74,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-        adapterTag = rvAdapterTagTeacher(viewModel.hasTagList, viewModel)
+        adapterTag = rvAdapterTagTeacher(viewModel.hashTagList, viewModel)
         binding.rvHashtag.adapter = adapterTag
         binding.rvHashtag.layoutManager = layoutManager
 
@@ -77,7 +84,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         //categoryRv
-        adapterCategory = rvAdapterCategory(viewModel.categoryList)
+        adapterCategory = rvAdapterCategory(viewModel.categoryList, viewModel)
         binding.rvCategory.adapter = adapterCategory
         binding.rvCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
@@ -118,7 +125,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
                 val inputText = binding.inputHashtag.text.toString()
 
                 if(inputText.isNotBlank()) {
-                    if(viewModel.hasTagList.size < 5) {
+                    if(viewModel.hashTagList.size < 5) {
                         viewModel.addHashTag(inputText)
                         adapterTag.notifyDataSetChanged()
 
@@ -259,11 +266,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT)
-//                toast.view = layoutInflater.inflate(R.layout.toast_board, findViewById(R.id.toast_board_layout))
-//                toast.setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 100)
-//                toast.show()
-
-//                CustomSnackBar.make(findViewById(R.id.teacher_talk_layout), "제목과 본문을 작성해야 등록할 수 있습니다.", 2000, findViewById(R.id.teacher_talk_layout)).show()
+                //토스트 메시지
             }
             else {
                 Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
@@ -274,5 +277,18 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun uploadPost() {
+        binding.postBtn.setOnClickListener {
+            viewModel.uploadPost()
+        }
+    }
+
+    fun finishUploadPost() {
+        viewModel.uploadPostLiveData.observe(this, Observer {
+            Log.d("teacherTalkAskActivity", it.toString())
+        })
+//        “질문이 등록되었습니다.” 토스트 2초 노출되며 <1-0. 게시글 본문>으로 이동
     }
 }

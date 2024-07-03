@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -110,7 +116,7 @@
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
                     app:layout_constraintTop_toBottomOf="@id/title_tv"
                     android:layout_marginTop="8dp"
-
+                    android:text="@={viewModel._title}"
                     android:hint="제목을 입력해주세요"
                     android:textSize="14dp"
                     android:textColor="@color/black"
@@ -150,7 +156,7 @@
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
                     app:layout_constraintTop_toBottomOf="@id/body_tv"
                     android:layout_marginTop="8dp"
-
+                    android:text="@={viewModel._content}"
                     android:hint=" ∙ 답변이 달리면 질문글 수정 및 삭제를 할 수 없어요.\n
 ∙ 최종 수정 시간을 기준으로 일주일 내에 답변이 달리지 않았을 때 연장과 환불을 선택할 수 있어요. 선택하지 않으면 자동으로 연장되고, 최대 연장 기간(2번, 각 1주)이 지나면 자동 환불 돼요.\n
 ∙ 일주일 내에 질문글을 삭제하면 환불이 불가능해요.\n

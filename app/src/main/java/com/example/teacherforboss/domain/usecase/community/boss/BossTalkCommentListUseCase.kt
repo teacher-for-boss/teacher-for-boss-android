@@ -1,7 +1,7 @@
-package com.example.teacherforboss.domain.usecase
+package com.example.teacherforboss.domain.usecase.community.boss
 
-import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentListResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 
 class BossTalkCommentListUseCase(

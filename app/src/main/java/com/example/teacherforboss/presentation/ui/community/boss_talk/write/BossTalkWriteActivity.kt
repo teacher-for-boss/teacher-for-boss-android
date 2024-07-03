@@ -67,7 +67,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
             viewModel.postId=intent.getStringExtra("postId")!!.toLong()
             viewModel._title.value=intent.getStringExtra("title").toString()
             viewModel._content.value=intent.getStringExtra("body").toString()
-            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
+            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hashTagList=intent.getStringArrayListExtra("tagList")!!
             if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
         }
         //FlexboxLayoutManager
@@ -75,7 +75,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-        adapterTag = rvAdapterTagWrite(viewModel.hasTagList, viewModel)
+        adapterTag = rvAdapterTagWrite(viewModel.hashTagList, viewModel)
         binding.rvHashtag.adapter = adapterTag
         binding.rvHashtag.layoutManager = layoutManager
 

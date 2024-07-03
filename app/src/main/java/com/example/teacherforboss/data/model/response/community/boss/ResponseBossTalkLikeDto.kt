@@ -1,8 +1,7 @@
 package com.example.teacherforboss.data.model.response.community.boss
 
-import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkLikeResponseEntity
 import com.google.gson.annotations.SerializedName
-import kotlinx.datetime.LocalDateTime
 
 data class ResponseBossTalkLikeDto(
     @SerializedName("like")

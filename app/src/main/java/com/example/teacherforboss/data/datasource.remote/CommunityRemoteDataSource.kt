@@ -4,7 +4,6 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
-import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -13,9 +12,6 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
-import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
-import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
-import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
 import com.example.teacherforboss.util.base.BaseResponse
 
 interface CommunityRemoteDataSource {
@@ -41,5 +37,9 @@ interface CommunityRemoteDataSource {
 
     suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto):BaseResponse<ResponseTeacherTalkBodyDto>
 
-  suspend fun modifyBossTalkBody(requestBossTalkDto: RequestBossTalkDto,requestBossUploadPostDto: RequestBossUploadPostDto):BaseResponse<ResponseBossModifyDto>
+    suspend fun modifyBossTalkBody(requestBossTalkDto: RequestBossTalkDto,requestBossUploadPostDto: RequestBossUploadPostDto):BaseResponse<ResponseBossModifyDto>
+
+
+    //TeacherTalk
+    suspend fun uploadTeacherTalkPost(requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherUploadPostDto>
 }

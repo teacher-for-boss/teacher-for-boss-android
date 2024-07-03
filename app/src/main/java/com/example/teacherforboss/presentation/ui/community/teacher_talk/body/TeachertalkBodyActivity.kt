@@ -13,26 +13,44 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyFragment
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterComment
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import kotlinx.coroutines.launch
 
 class TeachertalkBodyActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
+    private var questionId:Long=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+
+        //questionId
+        questionId=intent.getStringExtra("questionId")!!.toLong()
+
+        // 서버 api 요청
+        getTeacherTalkBody()
         //텍스트 색상입히기
         setTextColor()
         //더보기 메뉴 보여주기
@@ -45,7 +63,8 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         setRecyclerView()
         //답변 작성
         gotoAnswer()
-
+        //뒤로 가기
+        onBackBtnPressed()
     }
 
     fun showOptionMenu() {
@@ -93,7 +112,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     fun likeAndBookmark() {
         //질문 좋아요
         binding.like.setOnClickListener {
-            viewModel.clickLikeBtn()
+            viewModel.postLike()
         }
         viewModel.isLike.observe(this, Observer { isLike ->
             if(isLike) {
@@ -108,7 +127,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
         //질문 저장하기
         binding.bookmark.setOnClickListener {
-            viewModel.clickBookmarkBtn()
+            viewModel.postBookmark()
         }
         viewModel.isBookmark.observe(this, Observer {isBookmark ->
             if(isBookmark) {
@@ -128,7 +147,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList)
+        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList!!)
         binding.rvTagArea.layoutManager = layoutManager
 
         //commentRv
@@ -155,5 +174,64 @@ class TeachertalkBodyActivity : AppCompatActivity() {
             startActivity(intent)
             //나중에 질문 제목이랑 내용 연결해주기
         }
+    }
+
+    fun getTeacherTalkBody(){
+        lifecycleScope.launch {
+            viewModel.getTeacherTalkBody(questionId!!)
+            setBodyView()
+        }
+    }
+
+    private fun setBodyView(){
+        viewModel.teacherTalkBodyLiveData.observe(this, Observer {
+            // 해시태그
+            if(it.hashtagList!=null) viewModel.tagList= it.hashtagList as ArrayList<String>
+            else viewModel.tagList=null
+
+            // 좋아요, 북마크
+            if(it.liked) {
+                viewModel.clickLikeBtn()
+                binding.likeTv.text="좋아요 ${it.likeCount}개"
+            }
+            if(it.bookmarked){
+                viewModel.clickBookmarkBtn()
+                binding.bookmarkTv.text="저장 ${it.bookmarkCount}개"
+            }
+
+            // 본문 글
+            with(binding){
+                bodyTitle.text=it.title
+                bodyBody.text=it.content
+                userNickname.text= it.memberInfo.toMemberDto().name
+                date.text= LocalDateFormatter.extractDate(it.createdAt)
+            }
+
+            // 프로필 이미지
+            if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,
+                it.memberInfo.toMemberDto().profileImg!!
+            )
+
+            setRecyclerView()
+        })
+    }
+
+    fun updateLike(){
+        binding.like.setOnClickListener {
+            viewModel.postLike()
+            viewModel.teacherTalkBodyLikeLiveData.observe(this, Observer {
+                if(it.liked)viewModel.clickLikeBtn()
+            })
+        }
+    }
+
+    fun onBackBtnPressed(){
+        binding.backBtn.setOnClickListener {
+            val intent=Intent(this, MainActivity::class.java).apply {
+                putExtra("FRAGMENT_DESTINATION","TEACHER_TALK")
+            }
+            startActivity(intent)
+        }
+
     }
 }

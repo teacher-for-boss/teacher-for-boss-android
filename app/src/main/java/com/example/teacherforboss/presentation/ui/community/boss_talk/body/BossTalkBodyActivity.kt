@@ -207,7 +207,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
             with(binding){
                 bodyTitle.text=it.title
                 bodyBody.text=it.content
-                userNickname.text= it.memberInfo.name
+                userNickname.text= it.memberInfo.toMemberDto().name
                 date.text=LocalDateFormatter.extractDate(it.createdAt)
             }
 
@@ -216,7 +216,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
             if(it.imageUrlList.isNotEmpty()) viewModel.imgUrlList=it.imageUrlList
 
             // 프로필 이미지
-            if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
+            if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,
+                it.memberInfo.toMemberDto().profileImg!!
+            )
 
             // 사용자 본인 작성 여부
             viewModel._isMine.value=it.isMine

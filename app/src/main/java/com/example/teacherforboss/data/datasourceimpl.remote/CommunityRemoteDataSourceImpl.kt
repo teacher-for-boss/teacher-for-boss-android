@@ -5,6 +5,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -13,6 +14,9 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
 import com.example.teacherforboss.data.service.CommunityService
 import com.example.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
@@ -48,4 +52,12 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
         requestBossTalkDto: RequestBossTalkDto
     ): BaseResponse<ResponseBossTalkCommentDto> = communityService.postBossTalkComment(requestBossTalkCommentDto, postId = requestBossTalkDto.postId)
 
+    override suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBodyDto>
+    =communityService.getTeacherTalkBody(questionId = requestTeacherTalkDto.questionId)
+
+    override suspend fun getTeacherTalkLike(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkLikeDto>
+    =communityService.getTeacherTalkLike(questionId = requestTeacherTalkDto.questionId)
+
+    override suspend fun getTeacherTalkBookmark(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBookmarkDto>
+    =communityService.getTeacherTalkBookmark(questionId = requestTeacherTalkDto.questionId)
 }

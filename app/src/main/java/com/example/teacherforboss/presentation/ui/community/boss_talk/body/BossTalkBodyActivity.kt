@@ -136,7 +136,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         }
 
         //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
+        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
         binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        binding.rvComment.isNestedScrollingEnabled = false
 
@@ -237,7 +237,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 //        })
         viewModel.setCommentListValue(viewModel.dummy_commentList)
         //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
+        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
         binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 

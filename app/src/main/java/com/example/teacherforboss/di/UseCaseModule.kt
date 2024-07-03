@@ -5,6 +5,7 @@ import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.BossTalkCommentListUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkModifyBodyUseCase
@@ -70,6 +71,11 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkModifyBodyUseCase(communityRepository: CommunityRepository):BossTalkModifyBodyUseCase =
         BossTalkModifyBodyUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossTalkCommentListUseCase(communityRepository: CommunityRepository): BossTalkCommentListUseCase =
+        BossTalkCommentListUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton

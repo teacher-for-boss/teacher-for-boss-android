@@ -11,8 +11,10 @@ data class ResponseBossTalkBodyDto(
     val title:String,
     @SerializedName("content")
     val content: String,
+    @SerializedName("imageUrlList")
+    val imageUrlList:List<String>,
     @SerializedName("hashtagList")
-    val hashtagList: List<String>?,
+    val hashtagList: List<String>,
     @SerializedName("memberInfo")
     val memberInfo: MemberDto,
     @SerializedName("liked")
@@ -24,20 +26,24 @@ data class ResponseBossTalkBodyDto(
     @SerializedName("bookmarkCount")
     val bookmarkCount: Int,
     @SerializedName("createdAt")
-    val createdAt: String
+    val createdAt: String,
+    @SerializedName("isMine")
+    val isMine:Boolean,
 ){
     fun toBossTalkBodyResponseEntity(): BossTalkBodyResponseEntity {
         val memberEntities = memberInfo.toMemberEntity()
         return BossTalkBodyResponseEntity(
             title=title,
             content=content,
+            imageUrlList=imageUrlList,
             hashtagList=hashtagList,
             liked=liked,
             bookmarked=bookmarked,
             likeCount=likeCount,
             bookmarkCount=bookmarkCount,
             createdAt=createdAt,
-            memberInfo=memberEntities
+            memberInfo=memberEntities,
+            isMine=isMine,
         )
     }
 
@@ -48,11 +54,14 @@ data class MemberDto(
     @SerializedName("name")
     val name: String,
     @SerializedName("profileImg")
-    val profileImg: String?
+    val profileImg: String?,
+    @SerializedName("level")
+    val level: String?
 ){
     fun toMemberEntity()= MemberEntity(
         memberId=memberId,
         name=name,
-        profileImg=profileImg
+        profileImg=profileImg,
+        level=level
     )
 }

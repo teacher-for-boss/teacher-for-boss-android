@@ -4,11 +4,11 @@ import com.example.teacherforboss.data.model.response.community.boss.PostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 
 data class BossTalkPostsResponseEntity(
-    val totalCount:Int,
+    val hasNext:Boolean,
     val postList: ArrayList<PostEntity>
 ) {
     fun toBossTalkResponseDto()=ResponseBossTalkPostsDto(
-        totalCount =totalCount,
+        hasNext=hasNext,
         postList =postList.mapTo(ArrayList()) { it.toPostDto() }
     )
 }

@@ -1,20 +1,20 @@
-package com.example.teacherforboss.data.model.response.community.boss
+package com.example.teacherforboss.data.model.response.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.MemberDto
-import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.MemberEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
 import com.google.gson.annotations.SerializedName
-import kotlinx.datetime.LocalDateTime
 
-data class ResponseBossTalkBodyDto(
+
+data class ResponseTeacherTalkBodyDto(
     @SerializedName("title")
-    val title:String,
+    val title: String,
     @SerializedName("content")
     val content: String,
-    @SerializedName("imageUrlList")
-    val imageUrlList:List<String>,
+    @SerializedName("category")
+    val category: String,
     @SerializedName("hashtagList")
-    val hashtagList: List<String>,
+    val hashtagList: List<String>?,
     @SerializedName("memberInfo")
     val memberInfo: MemberDto,
     @SerializedName("liked")
@@ -28,14 +28,14 @@ data class ResponseBossTalkBodyDto(
     @SerializedName("createdAt")
     val createdAt: String,
     @SerializedName("isMine")
-    val isMine:Boolean,
+    val isMine: Boolean
 ){
-    fun toBossTalkBodyResponseEntity(): BossTalkBodyResponseEntity {
+    fun toTeacherTalkBodyResponseEntity(): TeacherTalkBodyResponseEntity {
         val memberEntities = memberInfo.toMemberEntity()
-        return BossTalkBodyResponseEntity(
+        return TeacherTalkBodyResponseEntity(
             title=title,
             content=content,
-            imageUrlList=imageUrlList,
+            category=category,
             hashtagList=hashtagList,
             liked=liked,
             bookmarked=bookmarked,
@@ -43,7 +43,7 @@ data class ResponseBossTalkBodyDto(
             bookmarkCount=bookmarkCount,
             createdAt=createdAt,
             memberInfo=memberEntities,
-            isMine=isMine,
+            isMine=isMine
         )
     }
 
@@ -62,6 +62,6 @@ data class MemberDto(
         memberId=memberId,
         name=name,
         profileImg=profileImg,
-        level=level
+        level = level
     )
 }

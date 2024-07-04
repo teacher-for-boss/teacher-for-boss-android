@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity

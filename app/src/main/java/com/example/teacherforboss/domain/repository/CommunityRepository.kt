@@ -12,6 +12,10 @@ import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEn
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
 
 interface CommunityRepository {
     suspend fun getBossTalkPosts(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
@@ -32,5 +36,9 @@ interface CommunityRepository {
 
     suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity, bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentResponseEntity
 
+    suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity):TeacherTalkBodyResponseEntity
 
+    suspend fun getTeacherTalkLike(teacherTalkRequestEntity: TeacherTalkRequestEntity):TeacherTalkLikeResponseEntity
+
+    suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBookmarkResponseEntity
 }

@@ -1,25 +1,24 @@
 package com.example.teacherforboss.domain.model.community
 
-import com.example.teacherforboss.data.model.response.community.boss.MemberDto
-import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 
-data class BossTalkBodyResponseEntity(
+data class TeacherTalkBodyResponseEntity(
     val title:String,
     val content: String,
-    val imageUrlList:List<String>,
-    val hashtagList: List<String>,
+    val category: String,
+    val hashtagList: List<String>?,
     val memberInfo: Member,
     val liked: Boolean,
     val bookmarked: Boolean,
     val likeCount: Int,
     val bookmarkCount: Int,
     val createdAt: String,
-    val isMine:Boolean,
-) {
-    fun toResponseBossTalkBodyDto()= ResponseBossTalkBodyDto(
+    val isMine: Boolean
+){
+    fun toResponseTeacherTalkBodyDto() = ResponseTeacherTalkBodyDto(
         title =title,
         content =content,
-        imageUrlList=imageUrlList,
+        category =category,
         hashtagList =hashtagList,
         liked =liked,
         bookmarked =bookmarked,
@@ -27,7 +26,6 @@ data class BossTalkBodyResponseEntity(
         bookmarkCount =bookmarkCount,
         createdAt =createdAt,
         memberInfo =memberInfo.toMemberDto(),
-        isMine = isMine
-
+        isMine =isMine
     )
 }

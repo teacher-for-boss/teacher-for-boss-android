@@ -12,7 +12,7 @@
         <item name="android:letterSpacing">-0.12</item>
         <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
-    
+
     <!-- title -->
     <style name="TextAppearance.TeacherForBoss.Title.SemiBold.24" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">24dp</item>
@@ -191,38 +191,50 @@
 
     <style name="TextAppearance.TeacherForBoss.Label1" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">20dp</item>
-        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineHeight">20dp</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Label2" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">18dp</item>
-        <item name="android:lineSpacingMultiplier">1.5</item>
+        <item name="android:lineHeight">27dp</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Label3" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">16dp</item>
-        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineHeight">16dp</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Label4" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">14dp</item>
-        <item name="android:lineSpacingMultiplier">0.224</item>
+        <item name="android:lineHeight">14dp</item>
         <item name="fontFamily">@font/pretendard_bold</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Label5" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">14dp</item>
-        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineHeight">14dp</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
     </style>
 
     <style name="TextAppearance.TeacherForBoss.Label6" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">12dp</item>
-        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:lineHeight">12dp</item>
         <item name="fontFamily">@font/pretendard_semibold</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Label7" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">14dp</item>
+        <item name="android:lineHeight">22.4dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="TextAppearance.TeacherForBoss.Label8" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">10dp</item>
+        <item name="android:lineHeight">16dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
     </style>
 
     <!--caption-->

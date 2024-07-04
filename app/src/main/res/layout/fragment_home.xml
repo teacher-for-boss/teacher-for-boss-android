@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_marginEnd="@dimen/spacing20"
-            android:src="@drawable/ic_bell"
             android:padding="12dp"
+            android:src="@drawable/ic_bell"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

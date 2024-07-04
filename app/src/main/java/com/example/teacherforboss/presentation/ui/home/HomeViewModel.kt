@@ -7,7 +7,7 @@ import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel
-import com.example.teacherforboss.presentation.type.KeyWordType
+import com.example.teacherforboss.presentation.type.KeywordType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -149,14 +149,14 @@ class HomeViewModel : ViewModel() {
                 nickName = "티쳐입니달라",
                 specialty = "경영컨설턴트",
                 career = "23",
-                keyword = listOf(KeyWordType.PASSIONATE),
+                keyword = listOf(KeywordType.PASSIONATE),
             ),
             WeeklyBestTeacherEntity(
                 profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
                 nickName = "티쳐입니달라",
                 specialty = "경영컨설턴트",
                 career = "23",
-                keyword = listOf(KeyWordType.PASSIONATE, KeyWordType.CAREFUL, KeyWordType.PRACTICAL),
+                keyword = listOf(KeywordType.PASSIONATE, KeywordType.CAREFUL, KeywordType.PRACTICAL),
             ),
             WeeklyBestTeacherEntity(
                 profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
@@ -164,11 +164,11 @@ class HomeViewModel : ViewModel() {
                 specialty = "경영컨설턴트",
                 career = "23",
                 keyword = listOf(
-                    KeyWordType.PASSIONATE,
-                    KeyWordType.CAREFUL,
-                    KeyWordType.ANALYTICAL,
-                    KeyWordType.DEPENDABLE,
-                    KeyWordType.COMMUNICATE,
+                    KeywordType.PASSIONATE,
+                    KeywordType.CAREFUL,
+                    KeywordType.ANALYTICAL,
+                    KeywordType.DEPENDABLE,
+                    KeywordType.COMMUNICATE,
                 ),
             ),
             WeeklyBestTeacherEntity(
@@ -176,14 +176,14 @@ class HomeViewModel : ViewModel() {
                 nickName = "티쳐입니달라",
                 specialty = "경영컨설턴트",
                 career = "23",
-                keyword = listOf(KeyWordType.CAREFUL, KeyWordType.ACTIVE),
+                keyword = listOf(KeywordType.CAREFUL, KeywordType.ACTIVE),
             ),
             WeeklyBestTeacherEntity(
                 profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
                 nickName = "티쳐입니달라",
                 specialty = "경영컨설턴트",
                 career = "23",
-                keyword = listOf(KeyWordType.PASSIONATE, KeyWordType.CAREFUL),
+                keyword = listOf(KeywordType.PASSIONATE, KeywordType.CAREFUL),
             ),
         )
     }

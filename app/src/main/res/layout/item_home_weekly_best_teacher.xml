@@ -96,7 +96,7 @@
             app:layout_constraintTop_toBottomOf="@id/layout_weekly_best_teacher_top">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_weekly_best_teacher"
+                android:id="@+id/rv_weekly_best_teacher_keyword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"

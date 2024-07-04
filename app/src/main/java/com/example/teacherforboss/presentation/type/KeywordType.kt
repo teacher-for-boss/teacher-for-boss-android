@@ -1,6 +1,6 @@
 package com.example.teacherforboss.presentation.type
 
-enum class KeyWordType(val keyWord: String) {
+enum class KeywordType(private val keyword: String) {
     PASSIONATE("열정적인"), ACTIVE("적극적인"),
     DELICATE("섬세한"), STRATEGIC("전략적인"),
     LOGICAL("논리적인"), ANALYTICAL("분석적인"),
@@ -19,6 +19,6 @@ enum class KeyWordType(val keyWord: String) {
     INITIATIVE("주도적인"), INTUITIVE("직관적인");
 
     fun getKeyword(): String {
-        return keyWord
+        return keyword
     }
 }

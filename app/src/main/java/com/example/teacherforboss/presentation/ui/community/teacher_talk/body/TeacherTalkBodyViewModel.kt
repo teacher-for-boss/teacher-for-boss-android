@@ -32,6 +32,14 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val _isBookmark = MutableLiveData<Boolean>().apply { value = false }
     val isBookmark: LiveData<Boolean> get() = _isBookmark
 
+    private var _tagList = MutableLiveData<ArrayList<String>>()
+    val tagList:LiveData<ArrayList<String>> get()=_tagList
+
+    var imageUrlList: List<String> = arrayListOf()
+
+    var _isMine = MutableLiveData<Boolean>().apply { value = false }
+    val isMine: LiveData<Boolean> get() =_isMine
+
     private var _teacherTalkBodyLiveData=MutableLiveData<TeacherTalkBodyResponseEntity>()
     val teacherTalkBodyLiveData:LiveData<TeacherTalkBodyResponseEntity> get() = _teacherTalkBodyLiveData
 
@@ -87,7 +95,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
         }
     }
 
-    var tagList:ArrayList<String>? = arrayListOf()
+    fun setTagList(tagList:ArrayList<String>){
+        _tagList.value=tagList
+    }
 
     data class Answer(
         val content: String,

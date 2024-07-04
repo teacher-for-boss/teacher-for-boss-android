@@ -11,6 +11,9 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -87,6 +90,21 @@ interface CommunityService {
         @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto
     ): BaseResponse<ResponseTeacherUploadPostDto>
 
+    @PATCH("${TEACHER}/questions/{questionId}")
+    suspend fun modifyTeacherTalkBody(
+        @Path("questionId") questionId: Long,
+        @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto
+    ): BaseResponse<ResponseTeacherModifyDto>
+
+    @POST("${TEACHER}/questions/{questionId}")
+    suspend fun deleteTeacherTalkBody(
+        @Path("questionId") questionId: Long
+    ): BaseResponse<ResponseTeacherDeleteDto>
+
+    @GET("${TEACHER}/questions/{questionId}/answers")
+    suspend fun getTeacherTalkAnswerList(
+        @Path("questionId") questionId: Long
+    ): BaseResponse<ResponseTeacherAnswerListDto>
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(

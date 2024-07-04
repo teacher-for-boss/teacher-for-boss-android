@@ -4,6 +4,8 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -12,6 +14,13 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherUploadPostDto
 import com.example.teacherforboss.util.base.BaseResponse
 
 interface CommunityRemoteDataSource {
@@ -42,4 +51,10 @@ interface CommunityRemoteDataSource {
 
     //TeacherTalk
     suspend fun uploadTeacherTalkPost(requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherUploadPostDto>
+
+    suspend fun modifyTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherModifyDto>
+
+    suspend fun deleteTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherDeleteDto>
+
+    suspend fun getTeacherTalkAnswerList(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherAnswerListDto>
 }

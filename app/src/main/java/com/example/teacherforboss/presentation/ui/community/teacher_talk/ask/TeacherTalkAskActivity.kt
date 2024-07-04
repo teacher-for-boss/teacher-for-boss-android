@@ -90,16 +90,13 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         //스페이스바 입력 막기
         binding.inputHashtag.addTextChangedListener(object : TextWatcher {
 
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
                 if (lastChar == ' ') {
                     Toast.makeText(this@TeacherTalkAskActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun afterTextChanged(editable: Editable?) {
                 editable?.let {
                     val text = it.toString()

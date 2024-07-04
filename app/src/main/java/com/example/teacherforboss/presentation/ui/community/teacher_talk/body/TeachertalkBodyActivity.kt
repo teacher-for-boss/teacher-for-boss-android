@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
-import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyFragment
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterComment
@@ -29,8 +28,10 @@ import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TeachertalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeachertalkBodyBinding
@@ -41,16 +42,16 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
+//        val transaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
+//        transaction.addToBackStack(null)
+//        transaction.commit()
 
         //questionId
-        questionId=intent.getStringExtra("questionId")!!.toLong()
+//        questionId=intent.getStringExtra("questionId")!!.toLong()
 
         // 서버 api 요청
-        getTeacherTalkBody()
+//        getTeacherTalkBody()
         //텍스트 색상입히기
         setTextColor()
         //더보기 메뉴 보여주기
@@ -70,19 +71,21 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     fun showOptionMenu() {
         //더보기 버튼
         binding.btnOption.setOnClickListener {
-            //작성자인 경우
-            if(binding.writerOption.visibility == View.GONE) {
-                binding.writerOption.visibility = View.VISIBLE
-            }
-            else {
-                binding.writerOption.visibility = View.GONE
-            }
-            //작성자가 아닌 경우
-            if(binding.nonWriterOption.visibility == View.GONE) {
-                binding.nonWriterOption.visibility = View.VISIBLE
-            }
-            else {
-                binding.nonWriterOption.visibility = View.GONE
+            if(viewModel.isMine.value==true){ //작성자인 경우
+                if(binding.writerOption.visibility == View.GONE) {
+                    binding.writerOption.visibility = View.VISIBLE
+                }
+                else {
+                    binding.writerOption.visibility = View.GONE
+                }
+            } else { //작성자가 아닌 경우
+
+                if(binding.nonWriterOption.visibility == View.GONE) {
+                    binding.nonWriterOption.visibility = View.VISIBLE
+                }
+                else {
+                    binding.nonWriterOption.visibility = View.GONE
+                }
             }
         }
     }
@@ -147,7 +150,9 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList!!)
+//        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value?: emptyList())
+        val tagList = viewModel.tagList.value ?: emptyList()
+        binding.rvTagArea.adapter = rvAdapterTag(tagList)
         binding.rvTagArea.layoutManager = layoutManager
 
         //commentRv
@@ -186,8 +191,10 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     private fun setBodyView(){
         viewModel.teacherTalkBodyLiveData.observe(this, Observer {
             // 해시태그
-            if(it.hashtagList!=null) viewModel.tagList= it.hashtagList as ArrayList<String>
-            else viewModel.tagList=null
+//            if(it.hashtagList!=null) viewModel.tagList= it.hashtagList as ArrayList<String>
+//            else viewModel.tagList=null
+            if(it.hashtagList!!.isNotEmpty()) viewModel.setTagList(it.hashtagList as ArrayList<String>)
+
 
             // 좋아요, 북마크
             if(it.liked) {
@@ -211,6 +218,9 @@ class TeachertalkBodyActivity : AppCompatActivity() {
             if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,
                 it.memberInfo.toMemberDto().profileImg!!
             )
+
+            // 사용자 본인 작성 여부
+            viewModel._isMine.value=it.isMine
 
             setRecyclerView()
         })

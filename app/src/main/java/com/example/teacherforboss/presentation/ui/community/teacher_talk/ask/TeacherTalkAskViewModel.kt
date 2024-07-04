@@ -1,12 +1,16 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.ask
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
+import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
+import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,14 +18,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeacherTalkAskViewModel @Inject constructor(
-    private val teacherUploadPostUseCase: TeacherUploadPostUseCase
+    private val teacherUploadPostUseCase: TeacherUploadPostUseCase,
+    private val presignedUrlUseCase: PresignedUrlUseCase
 ): ViewModel() {
     val hashTagList:ArrayList<String> = arrayListOf()
-    val imageList: ArrayList<String> = arrayListOf()
+    val imageList: ArrayList<Uri> = arrayListOf()
     val categoryList = arrayListOf(
         "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
-    var filtered_presignedList = listOf<String>()
+    var _presignedUrlList = MutableLiveData<List<String>>()
+    val presignedUrlList: LiveData<List<String>> = _presignedUrlList
+    var filtered_presignedList = MutableLiveData<List<String>>()
 
     var postId:Long = 0L
 
@@ -36,6 +43,9 @@ class TeacherTalkAskViewModel @Inject constructor(
 
     private val _uploadPostLiveData = MutableLiveData<TeacherUploadPostResponseEntity>()
     val uploadPostLiveData: LiveData<TeacherUploadPostResponseEntity> = _uploadPostLiveData
+
+    private val _presignedUrlListLiveData = MutableLiveData<presignedUrlListEntity>()
+    val presignedUrlLiveData: LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
 
 
     private val _textTitleLength = MutableLiveData<Int>()
@@ -57,12 +67,36 @@ class TeacherTalkAskViewModel @Inject constructor(
                         title = title.value?:"",
                         content = content.value?:"",
                         hashtagList = hashTagList,
-                        imageUrlList = filtered_presignedList
+                        imageUrlList = filtered_presignedList.value?: emptyList()
                     )
                 )
                 _uploadPostLiveData.value = teacherUploadResponseEntity
-            } catch(ex:Exception) {}
+            } catch (ex:Exception) {}
         }
+    }
+
+    fun getPresignedUrlList() {
+        viewModelScope.launch {
+            try {
+                val presignedUrlListEntity=presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = null,
+                        lastIndex = 0,
+                        imageCount = imageList.size,
+                        origin = "posts"
+                    )
+                )
+                _presignedUrlListLiveData.value = presignedUrlListEntity
+                Log.d("imageList", _presignedUrlListLiveData.toString())
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun setFilteredImgUrlList() {
+        filtered_presignedList.value = presignedUrlList.value?.let {
+            it.map { it.substringBefore("?") }
+        }
+        Log.d("filteredImageList", filtered_presignedList.toString())
     }
 
     fun addHashTag(tag: String) {
@@ -72,8 +106,8 @@ class TeacherTalkAskViewModel @Inject constructor(
         hashTagList.removeAt(position)
     }
 
-    fun addImage(imageUri: Uri?) {
-        imageList.add(imageUri.toString())
+    fun addImage(imageUri: Uri) {
+        imageList.add(imageUri)
     }
     fun deleteImage(position: Int) {
         imageList.removeAt(position)

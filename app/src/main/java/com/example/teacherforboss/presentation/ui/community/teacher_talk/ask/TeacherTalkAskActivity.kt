@@ -9,14 +9,11 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
-import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +24,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
-import com.example.teacherforboss.util.CustomSnackBar
+import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -65,7 +62,6 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         IsValidPost()
 
         uploadPost()
-        finishUploadPost()
     }
 
     fun setRecyclerView() {
@@ -166,10 +162,13 @@ class TeacherTalkAskActivity : AppCompatActivity() {
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
                     Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    return
                 }
             }
 
-            viewModel.addImage(imageUri)
+            if(imageUri != null) {
+                viewModel.addImage(imageUri)
+            }
             adapterImage.notifyDataSetChanged()
         }
     }
@@ -281,7 +280,26 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun uploadPost() {
         binding.postBtn.setOnClickListener {
-            viewModel.uploadPost()
+            //이미지 업로드 시
+            if(viewModel.imageList.isNotEmpty()) {
+                viewModel.getPresignedUrlList()
+                viewModel.presignedUrlLiveData.observe(this, {
+                    viewModel._presignedUrlList.value = (it.presignedUrlList)
+                    viewModel.setFilteredImgUrlList()
+
+                    uploadImgtoS3()
+                })
+
+                viewModel.filtered_presignedList.observe(this, {
+                    viewModel.uploadPost()
+                })
+            }
+
+            else {
+                viewModel.uploadPost()
+            }
+
+            finishUploadPost()
         }
     }
 
@@ -290,5 +308,15 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             Log.d("teacherTalkAskActivity", it.toString())
         })
 //        “질문이 등록되었습니다.” 토스트 2초 노출되며 <1-0. 게시글 본문>으로 이동
+    }
+
+    fun uploadImgtoS3() {
+        val urlList = viewModel.presignedUrlList.value?:return
+        val uriList = viewModel.imageList
+
+        val uploadutil = UploadUtil(applicationContext)
+        val requestBodyList = uploadutil.convert_UritoImg(uriList)
+
+        uploadutil.uploadPostImage(urlList, requestBodyList)
     }
 }

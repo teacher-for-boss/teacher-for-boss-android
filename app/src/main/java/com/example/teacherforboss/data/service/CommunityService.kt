@@ -2,6 +2,7 @@ package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -10,6 +11,10 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherUploadPostDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -76,6 +81,12 @@ interface CommunityService {
         @Path("postId") postId:Long,
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossModifyDto>
+
+    @POST("${TEACHER}/questions")
+    suspend fun uploadPostTeacher(
+        @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto
+    ): BaseResponse<ResponseTeacherUploadPostDto>
+
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(

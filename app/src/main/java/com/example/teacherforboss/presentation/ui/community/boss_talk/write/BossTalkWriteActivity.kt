@@ -126,6 +126,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
                     Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    return
                 }
             }
 

@@ -9,5 +9,8 @@ class HomeWeeklyBestTeacherViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: WeeklyBestTeacherEntity) {
         binding.weeklyBestTeacherItem = item
+
+        val keywordAdapter = HomeWeeklyBestTeacherKeywordAdapter(item.keyword)
+        binding.rvWeeklyBestTeacherKeyword.adapter = keywordAdapter
     }
 }

@@ -20,15 +20,16 @@ import kotlinx.coroutines.flow.onEach
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by activityViewModels()
-    private lateinit var viewPagerAdapter: HomeBannerViewPagerAdapter
+    private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
     private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
     private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter() }
     private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter() }
+    private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter() }
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
         override fun run() {
-            val itemCount = viewPagerAdapter.itemCount
+            val itemCount = bannerViewPagerAdapter.itemCount
             if (itemCount > ZERO) {
                 binding.apply {
                     vpHomeBanner.setCurrentItem(
@@ -66,20 +67,22 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             // TODO 옮기기
             setTeacherTalkPopularPost()
             setBossTalkPopularPost()
+            setWeeklyBestTeacher()
         }
         teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
 
         // TODO 서버통신 후 collectData에서 서버통신 결과값 불러오기
         teacherTalkPopularPostAdapter.submitList(viewModel.teacherTalkPopularPostList.value)
         bossTalkPopularPostAdapter.submitList(viewModel.bossTalkPopularPostList.value)
+        weeklyBestTeacherAdapter.submitList(viewModel.weeklyBestTeacherList.value)
 
         startAutoScroll()
     }
 
     private fun initAdapter() {
-        viewPagerAdapter = HomeBannerViewPagerAdapter()
+        bannerViewPagerAdapter = HomeBannerViewPagerAdapter()
         with(binding.vpHomeBanner) {
-            this.adapter = viewPagerAdapter
+            this.adapter = bannerViewPagerAdapter
             registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -93,6 +96,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             rvHomeTeacherTalkShortcut.adapter = teacherTalkShortcutAdapter
             rvHomeTeacherTalkPopularPost.adapter = teacherTalkPopularPostAdapter
             rvHomeBossTalkPopularPost.adapter = bossTalkPopularPostAdapter
+            rvHomeWeeklyBestTeacher.adapter = weeklyBestTeacherAdapter
         }
     }
 
@@ -102,7 +106,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun collectData() {
         viewModel.bannerItemList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { bannerItemList ->
-                viewPagerAdapter.submitList(bannerItemList)
+                bannerViewPagerAdapter.submitList(bannerItemList)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.currentBannerPosition.flowWithLifecycle(viewLifecycleOwner.lifecycle)

@@ -4,6 +4,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
@@ -15,6 +16,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
@@ -57,4 +59,6 @@ interface CommunityRemoteDataSource {
     suspend fun deleteTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherDeleteDto>
 
     suspend fun getTeacherTalkAnswerList(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherAnswerListDto>
+
+    suspend fun postTeacherTalkAnswer(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto): BaseResponse<ResponseTeacherAnswerPostDto>
 }

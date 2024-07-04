@@ -2,6 +2,7 @@ package com.example.teacherforboss.data.service
 
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
@@ -12,6 +13,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
@@ -105,6 +107,12 @@ interface CommunityService {
     suspend fun getTeacherTalkAnswerList(
         @Path("questionId") questionId: Long
     ): BaseResponse<ResponseTeacherAnswerListDto>
+
+    @POST("${TEACHER}/questions/{questionId}/answers")
+    suspend fun postTeacherTalkAnswer(
+        @Path("questionId") questionId: Long,
+        @Body requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto
+    ): BaseResponse<ResponseTeacherAnswerPostDto>
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(

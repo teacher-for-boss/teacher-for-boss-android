@@ -16,7 +16,9 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkPostsRespo
 import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
@@ -55,4 +57,6 @@ interface CommunityRepository {
     suspend fun deleteTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkDeleteResponseEntity
 
     suspend fun getTeacherTalkAnswerList(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherAnswerListResponseEntity
+
+    suspend fun postTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerPostResponseEntity
 }

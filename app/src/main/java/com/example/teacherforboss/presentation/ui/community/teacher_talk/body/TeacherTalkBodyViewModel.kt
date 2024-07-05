@@ -9,10 +9,12 @@ import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponse
 import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.usecase.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.TeacherTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.TeacherTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,14 +26,13 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkBookmarkUseCase: TeacherTalkBookmarkUseCase,
     private val teacherTalkLikeUseCase: TeacherTalkLikeUseCase,
     private val teacherTalkDeleteBodyUseCase: TeacherTalkDeleteBodyUseCase,
+    private val teacherTalkAnswerListUseCase: TeacherTalkAnswerListUseCase,
 
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
 ): ViewModel() {
 
-//    var _questionId=MutableLiveData<Long>().apply { value=0L }
-//    val questionId:LiveData<Long> get()=_questionId
-
-    var questionId: Long = 0L
+    var _questionId=MutableLiveData<Long>().apply { value=0L }
+    val questionId:LiveData<Long> get()=_questionId
 
     private val _isLike = MutableLiveData<Boolean>().apply { value = false }
     val isLike: LiveData<Boolean> get() = _isLike
@@ -47,6 +48,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
     var _isMine = MutableLiveData<Boolean>().apply { value = false }
     val isMine: LiveData<Boolean> get() =_isMine
 
+    private var _answerList = MutableLiveData<List<TeacherAnswerListResponseEntity.AnswerEntity>>().apply { value = emptyList() }
+    val answerList:LiveData<List<TeacherAnswerListResponseEntity.AnswerEntity>> get() = _answerList
+
     private var _teacherTalkBodyLiveData=MutableLiveData<TeacherTalkBodyResponseEntity>()
     val teacherTalkBodyLiveData:LiveData<TeacherTalkBodyResponseEntity> get() = _teacherTalkBodyLiveData
 
@@ -58,6 +62,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     private var _deleteLiveData = MutableLiveData<TeacherTalkDeleteResponseEntity>()
     val deleteLiveData: MutableLiveData<TeacherTalkDeleteResponseEntity> get() = _deleteLiveData
+
+    private var _teacherAnswerListLiveData = MutableLiveData<TeacherAnswerListResponseEntity>()
+    val teacherAnswerListLiveData: LiveData<TeacherAnswerListResponseEntity> get() = _teacherAnswerListLiveData
 
 
     fun getTeacherTalkBody(postId:Long){
@@ -87,6 +94,17 @@ class TeacherTalkBodyViewModel @Inject constructor(
         }
     }
 
+    fun getAnswerList() {
+        viewModelScope.launch {
+            try {
+                val teacherTalkAnswerListResponseEntity = teacherTalkAnswerListUseCase(
+                    TeacherTalkRequestEntity(questionId = questionId.value!!)
+                )
+                _teacherAnswerListLiveData.value = teacherTalkAnswerListResponseEntity
+            } catch (ex:Exception) {}
+        }
+    }
+
     fun clickLikeBtn() {
         _isLike.value = _isLike.value?.not()
     }
@@ -99,7 +117,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
         viewModelScope.launch {
             try{
                 val teacherTalkBookmarkResponseEntity=teacherTalkBookmarkUseCase(
-                    TeacherTalkRequestEntity(questionId=questionId)
+                    TeacherTalkRequestEntity(questionId=questionId.value!!)
                 )
                 _isBookmark.value=teacherTalkBookmarkResponseEntity.bookmarked
             }catch (ex:Exception){}
@@ -111,7 +129,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
         viewModelScope.launch {
             try{
                 val teacherTalkLikeResponseEntity=teacherTalkLikeUseCase(
-                    TeacherTalkRequestEntity(questionId=questionId)
+                    TeacherTalkRequestEntity(questionId=questionId.value!!)
                 )
                 _isLike.value=teacherTalkLikeResponseEntity.liked
             }catch (ex:Exception){}
@@ -124,19 +142,15 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     fun getTagList(): List<String> = tagList.value?: emptyList<String>()
 
-    data class Answer(
-        val content: String,
-        val likeCount: Int,
-        val dislikeCount: Int,
-        val like: Boolean,
-        val dislike: Boolean,
-        val selected: Boolean,
-        val name: String
-    )
+    fun setQuestionId(questionId: Long) {
+        _questionId.value = questionId
+    }
 
-    val answerList = listOf(
-        Answer("내용1", 10, 10, false, false, false, "윤희재짱짱 티쳐"),
-        Answer("내용1", 10, 10, false, false, false, "하치와레 티쳐"),
-        Answer("내용1", 10, 10, false, false, false, "아야어여오요 티쳐")
-    )
+    fun setAnswerList(answerList: List<TeacherAnswerListResponseEntity.AnswerEntity>) {
+        _answerList.value = answerList
+    }
+
+    fun getAnswerListValue(): List<TeacherAnswerListResponseEntity.AnswerEntity>
+    =answerList.value?: emptyList<TeacherAnswerListResponseEntity.AnswerEntity>()
+
 }

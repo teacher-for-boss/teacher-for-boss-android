@@ -7,29 +7,53 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentTeacherBinding
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDateFormatter
 
-class rvAdapterComment(private val AnswerList: List<TeacherTalkBodyViewModel.Answer>,
-                       private val viewModel: TeacherTalkBodyViewModel,
-                       private val lifecycleOwner: LifecycleOwner, private val context: Context
-): RecyclerView.Adapter<rvAdapterComment.ViewHolder>() {
+class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResponseEntity.AnswerEntity>,
+                              private val viewModel: TeacherTalkBodyViewModel,
+                              private val context: Context
+): RecyclerView.Adapter<rvAdapterCommentTeacher.ViewHolder>() {
     class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(teacher: TeacherTalkBodyViewModel.Answer,
+        fun bind(answer: TeacherAnswerListResponseEntity.AnswerEntity,
                  viewModel: TeacherTalkBodyViewModel,
-                 lifecycleOwner: LifecycleOwner,
                  context: Context) {
-            binding.userName.text = teacher.name
 
-            //추천 비추천
-            //서버에서 가져와서 연결해주면 됨 -> 일단은 둘다 false로 설정함
+            // 유저 정보
+            val member = answer.memberInfo
+            binding.userName.text = member.name
+            binding.profileLevel.text = context.getString(R.string.user_level, member.level)
+            member.profileImg?.let {
+                if(it!="") BindingImgAdapter.bindImage(binding.userImage, it)
+            }
+
+            // 날짜
+            binding.createdAt.text = LocalDateFormatter.extractDate(answer.createdAt)
+
+            // 댓글 본문
+            binding.commentBody.text = answer.content
+
+            // 추천, 비추천 개수
+            binding.commentGoodTv.text = context.getString(R.string.recommed_option, answer.likeCount)
+            binding.commentBadTv.text = context.getString(R.string.not_recommed_option, answer.dislikeCount)
+
+            // 채택된 답변
+            if(answer.selected) binding.commentChoice.visibility = View.VISIBLE
+
+            // 본인 작성 여부 -> 채택 버튼이 보임
+            if(viewModel.isMine.value!!) binding.selectAnswer.visibility = View.VISIBLE
+            else binding.selectAnswer.visibility = View.GONE
+
+            //사용자의 추천 비추천 여부
             var isCommentGood = false
             var isCommentBad = false
             fun updateComment() {
@@ -109,7 +133,7 @@ class rvAdapterComment(private val AnswerList: List<TeacherTalkBodyViewModel.Ans
         return AnswerList.size
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(AnswerList[position], viewModel, lifecycleOwner, context)
+        holder.bind(answer = AnswerList[position], viewModel = viewModel, context = context)
 
     }
 }

@@ -8,7 +8,6 @@ import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +20,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterComment
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
@@ -51,9 +50,14 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
+        viewModel.setQuestionId(questionId)
 
         // 서버 api 요청
         getTeacherTalkBody()
+        // 본문
+        setBodyView()
+        // 댓글
+        setCommentView()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //수정,삭제,신고
@@ -168,14 +172,13 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-//        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value?: emptyList())
         val tagList = viewModel.tagList.value ?: emptyList()
         binding.rvTagArea.adapter = rvAdapterTag(tagList)
         binding.rvTagArea.layoutManager = layoutManager
 
         //commentRv
-        binding.rvComment.adapter = rvAdapterComment(viewModel.answerList, viewModel = viewModel, this, this)
-        binding.rvComment.layoutManager = LinearLayoutManager(this)
+//        binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.answerList, viewModel = viewModel, this, this)
+//        binding.rvComment.layoutManager = LinearLayoutManager(this)
     }
 
     fun gotoAnswer() {
@@ -190,7 +193,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     fun getTeacherTalkBody(){
         lifecycleScope.launch {
             viewModel.getTeacherTalkBody(questionId)
-            setBodyView()
+            viewModel.getAnswerList()
         }
     }
 
@@ -211,7 +214,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
             // 본문 글
             with(binding){
-                bodyTitle.text="Q. ${it.title}"
+                bodyTitle.text= getString(R.string.teacher_talk_card_view_question, it.title)
                 bodyBody.text=it.content
                 userNickname.text= it.memberInfo.toMemberDto().name
                 date.text= LocalDateFormatter.extractDate(it.createdAt)
@@ -233,6 +236,21 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
             setRecyclerView()
             setTextColor()
+        })
+    }
+
+    fun setCommentView() {
+        viewModel.teacherAnswerListLiveData.observe(this, Observer {
+            if(it.answerList.isNotEmpty()) {
+                viewModel.setAnswerList(it.answerList)
+
+                // 답변 개수
+                binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
+
+                // 답변 rv
+                binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
+                binding.rvComment.layoutManager = LinearLayoutManager(this)
+            }
         })
     }
 

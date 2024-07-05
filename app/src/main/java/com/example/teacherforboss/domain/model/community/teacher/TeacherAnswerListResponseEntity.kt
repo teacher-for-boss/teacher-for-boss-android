@@ -4,7 +4,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.domain.model.community.MemberEntity
 
 data class TeacherAnswerListResponseEntity(
-    val totalCount: Int,
+    val hasNext: Boolean,
     val answerList: ArrayList<AnswerEntity>
 ) {
     data class AnswerEntity(

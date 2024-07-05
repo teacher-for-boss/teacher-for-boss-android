@@ -5,11 +5,11 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerLi
 import com.google.gson.annotations.SerializedName
 
 data class ResponseTeacherAnswerListDto (
-    @SerializedName("totalCount") val totalCount: Int,
+    @SerializedName("hasNext") val hasNext: Boolean,
     @SerializedName("answerList") val answerList: ArrayList<AnswerDto>
 ) {
     fun toTeacherAnswerListResponseEntity() = TeacherAnswerListResponseEntity(
-        totalCount = totalCount,
+        hasNext = hasNext,
         answerList = answerList.map { it.toAnswerEntity() } as ArrayList<TeacherAnswerListResponseEntity.AnswerEntity>
     )
     data class AnswerDto(

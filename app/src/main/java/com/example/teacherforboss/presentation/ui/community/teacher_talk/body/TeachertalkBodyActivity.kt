@@ -175,18 +175,17 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         val tagList = viewModel.tagList.value ?: emptyList()
         binding.rvTagArea.adapter = rvAdapterTag(tagList)
         binding.rvTagArea.layoutManager = layoutManager
-
-        //commentRv
-//        binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.answerList, viewModel = viewModel, this, this)
-//        binding.rvComment.layoutManager = LinearLayoutManager(this)
     }
 
     fun gotoAnswer() {
         //답변 작성하기
         binding.answerBtn.setOnClickListener {
-            val intent = Intent(this, TeacherTalkAnswerActivity::class.java)
+            val intent = Intent(this, TeacherTalkAnswerActivity::class.java).apply {
+                putExtra("title", binding.bodyTitle.text.toString())
+                putExtra("body", binding.bodyBody.text.toString())
+                putExtra("questionId", viewModel.questionId.value.toString())
+            }
             startActivity(intent)
-            //나중에 질문 제목이랑 내용 연결해주기
         }
     }
 

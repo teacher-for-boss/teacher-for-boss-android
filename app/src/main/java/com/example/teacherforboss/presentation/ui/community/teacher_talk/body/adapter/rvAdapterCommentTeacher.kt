@@ -53,7 +53,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
             if(viewModel.isMine.value!!) binding.selectAnswer.visibility = View.VISIBLE
             else binding.selectAnswer.visibility = View.GONE
 
-            //사용자의 추천 비추천 여부
+            //사용자의 추천 비추천 여부 -> 이건 추천, 비추천 하면서 수정
             var isCommentGood = false
             var isCommentBad = false
             fun updateComment() {
@@ -104,6 +104,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
                 else {
                     binding.nonWriterOption.visibility = View.GONE
                 }
+
             }
 
             //삭제하기

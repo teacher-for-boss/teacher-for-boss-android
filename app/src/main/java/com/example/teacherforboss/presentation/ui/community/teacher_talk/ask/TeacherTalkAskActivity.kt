@@ -17,12 +17,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkAskBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacher
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacherAsk
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
 import com.example.teacherforboss.util.base.UploadUtil
@@ -38,7 +37,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
     private val viewModel: TeacherTalkAskViewModel by viewModels()
 
     private lateinit var adapterTag: rvAdapterTagTeacher
-    private lateinit var adapterImage: rvAdapterImageTeacher
+    private lateinit var adapterImage: rvAdapterImageTeacherAsk
     private lateinit var adapterCategory: rvAdapterCategory
     private var purpose: String=""
     private var categoryIndex = 0
@@ -90,7 +89,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.rvHashtag.layoutManager = layoutManager
 
         //imageRv
-        adapterImage = rvAdapterImageTeacher(viewModel.imageList, viewModel)
+        adapterImage = rvAdapterImageTeacherAsk(viewModel.imageList, viewModel)
         binding.rvImage.adapter = adapterImage
         binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 

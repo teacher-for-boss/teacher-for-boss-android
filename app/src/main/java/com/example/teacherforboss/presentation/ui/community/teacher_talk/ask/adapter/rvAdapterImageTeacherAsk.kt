@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.RvItemImageBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskViewModel
 
-class rvAdapterImageTeacher(private val imageList: ArrayList<Uri>, private val viewModel: TeacherTalkAskViewModel): RecyclerView.Adapter<rvAdapterImageTeacher.ViewHolder>() {
+class rvAdapterImageTeacherAsk(private val imageList: ArrayList<Uri>, private val viewModel: TeacherTalkAskViewModel): RecyclerView.Adapter<rvAdapterImageTeacherAsk.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(imagePath: Uri, viewModel: TeacherTalkAskViewModel) {
             binding.image.setImageURI(Uri.parse(imagePath.toString()))

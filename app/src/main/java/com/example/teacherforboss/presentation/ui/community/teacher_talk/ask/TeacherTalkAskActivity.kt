@@ -24,6 +24,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
 import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -302,9 +303,14 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            Log.d("teacherTalkAskActivity", it.toString())
+            Log.d("questionId", it.toString())
+
+            val intent = Intent(this, TeachertalkBodyActivity::class.java).apply {
+                putExtra("questionId", it.questionId.toString())
+            }
+            startActivity(intent)
+
         })
-//        “질문이 등록되었습니다.” 토스트 2초 노출되며 <1-0. 게시글 본문>으로 이동
     }
 
     fun uploadImgtoS3() {

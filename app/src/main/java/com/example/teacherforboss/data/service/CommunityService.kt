@@ -124,10 +124,9 @@ interface CommunityService {
         @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkBookmarkDto>
 
-    @GET("${TEACHER}/posts/{postId}")
+    @GET("${TEACHER}/questions/{questionId}")
     suspend fun getTeacherTalkBody(
-        @Path("postId") questionId:Long
-
+        @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkBodyDto>
 
     companion object {

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -48,20 +49,16 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 //        transaction.commit()
 
         //questionId
-//        questionId=intent.getStringExtra("questionId")!!.toLong()
+        questionId=intent.getStringExtra("questionId")!!.toLong()
 
         // 서버 api 요청
-//        getTeacherTalkBody()
-        //텍스트 색상입히기
-        setTextColor()
+        getTeacherTalkBody()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //수정,삭제,신고
         doOptionMenu()
         //질문 좋아요, 저장
         likeAndBookmark()
-        //rv
-        setRecyclerView()
         //답변 작성
         gotoAnswer()
         //뒤로 가기
@@ -160,18 +157,6 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         binding.rvComment.layoutManager = LinearLayoutManager(this)
     }
 
-    fun setTextColor() {
-        //텍스트에 색상입히기
-        val title = binding.bodyTitle
-        val fullText = title.text
-        val spannableString = SpannableString(fullText)
-
-        val color = ContextCompat.getColor(this, R.color.Purple600)
-        spannableString.setSpan(ForegroundColorSpan(color), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        title.text = spannableString
-    }
-
     fun gotoAnswer() {
         //답변 작성하기
         binding.answerBtn.setOnClickListener {
@@ -191,10 +176,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     private fun setBodyView(){
         viewModel.teacherTalkBodyLiveData.observe(this, Observer {
             // 해시태그
-//            if(it.hashtagList!=null) viewModel.tagList= it.hashtagList as ArrayList<String>
-//            else viewModel.tagList=null
             if(it.hashtagList!!.isNotEmpty()) viewModel.setTagList(it.hashtagList as ArrayList<String>)
-
 
             // 좋아요, 북마크
             if(it.liked) {
@@ -208,11 +190,14 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
             // 본문 글
             with(binding){
-                bodyTitle.text=it.title
+                bodyTitle.text="Q. ${it.title}"
                 bodyBody.text=it.content
                 userNickname.text= it.memberInfo.toMemberDto().name
                 date.text= LocalDateFormatter.extractDate(it.createdAt)
             }
+
+            // 본문 업로드 이미지
+            if(it.imageUrlList.isNotEmpty()) viewModel.imageUrlList=it.imageUrlList
 
             // 프로필 이미지
             if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,
@@ -223,6 +208,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
             viewModel._isMine.value=it.isMine
 
             setRecyclerView()
+            setTextColor()
         })
     }
 
@@ -243,5 +229,17 @@ class TeachertalkBodyActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    fun setTextColor() {
+        //텍스트에 색상입히기
+        val title = binding.bodyTitle
+        val fullText = title.text?.toString() ?: return
+        val spannableString = SpannableString(fullText)
+
+        val color = ContextCompat.getColor(this, R.color.Purple600)
+        spannableString.setSpan(ForegroundColorSpan(color), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        title.text = spannableString
     }
 }

@@ -83,10 +83,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     fun doOptionMenu() {
         //삭제하기
-        binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this)
-            dialog.show()
-        }
+//        binding.deleteBtn.setOnClickListener {
+//            val dialog = DeleteBodyDialog(this, viewModel)
+//            dialog.show()
+//        }
 
         //수정하기
         binding.modifyBtn.setOnClickListener {

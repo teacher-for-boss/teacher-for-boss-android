@@ -11,10 +11,9 @@ import com.example.teacherforboss.databinding.RvItemCategoryBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskViewModel
 
 class rvAdapterCategory(private val categoryList: ArrayList<String>,
-    private val viewModel: TeacherTalkAskViewModel
+    private val viewModel: TeacherTalkAskViewModel, private var selectedItemPosition: Int = DEFAULT_TAG_POSITION
 ): RecyclerView.Adapter<rvAdapterCategory.ViewHolder>(){
 
-    var selectedItemPosition = DEFAULT_TAG_POSITION
     var previousItemPosition = RecyclerView.NO_POSITION
 
     inner class ViewHolder(private val binding: RvItemCategoryBinding):RecyclerView.ViewHolder(binding.root) {

@@ -38,6 +38,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
     private var questionId:Long=0
+    private var categoryName:String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +77,6 @@ class TeachertalkBodyActivity : AppCompatActivity() {
                     binding.writerOption.visibility = View.GONE
                 }
             } else { //작성자가 아닌 경우
-
                 if(binding.nonWriterOption.visibility == View.GONE) {
                     binding.nonWriterOption.visibility = View.VISIBLE
                 }
@@ -90,16 +90,37 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     fun doOptionMenu() {
         //삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this)
+            val dialog = DeleteBodyDialog(this, viewModel, this, questionId)
             dialog.show()
         }
 
         //수정하기
         binding.modifyBtn.setOnClickListener {
-            val intent = Intent(this, TeacherTalkAskActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, TeacherTalkAskActivity::class.java).apply {
+                putExtra("purpose", "modify")
+                putExtra("title", binding.bodyTitle.text.toString())
+                putExtra("body", binding.bodyBody.text.toString())
+                putExtra("questionId", questionId.toString())
+                putExtra("categoryName", categoryName)
 
-            //본문 데이터 같이 넘겨주기
+                viewModel.getTagList()?.let {
+                    if(it.isNotEmpty()) {
+                        putExtra("isTagList", "true")
+                        putStringArrayListExtra("tagList", viewModel.tagList.value)
+                    }
+                    else putExtra("isTagList", "false")
+                }
+
+                viewModel.imageUrlList?.let {
+                    if(it.isNotEmpty()) {
+                        putExtra("isImgList", "true")
+                        val imgArrayList = viewModel.imageUrlList as ArrayList<String>
+                        putStringArrayListExtra("imgList", imgArrayList)
+                    }
+                    else putExtra("isImgList", "false")
+                }
+            }
+            startActivity(intent)
         }
 
         //신고하기
@@ -168,7 +189,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
     fun getTeacherTalkBody(){
         lifecycleScope.launch {
-            viewModel.getTeacherTalkBody(questionId!!)
+            viewModel.getTeacherTalkBody(questionId)
             setBodyView()
         }
     }
@@ -206,6 +227,9 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
             // 사용자 본인 작성 여부
             viewModel._isMine.value=it.isMine
+
+            //카테고리
+            categoryName = it.category
 
             setRecyclerView()
             setTextColor()

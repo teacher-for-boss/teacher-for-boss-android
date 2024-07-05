@@ -8,9 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,10 +25,11 @@ import javax.inject.Inject
 @HiltViewModel
 class TeacherTalkAskViewModel @Inject constructor(
     private val teacherUploadPostUseCase: TeacherUploadPostUseCase,
+    private val teacherModifyBodyUseCase: TeacherTalkModifyBodyUseCase,
     private val presignedUrlUseCase: PresignedUrlUseCase
 ): ViewModel() {
-    val hashTagList:ArrayList<String> = arrayListOf()
-    val imageList: ArrayList<Uri> = arrayListOf()
+    var hashTagList:ArrayList<String> = arrayListOf()
+    var imageList: ArrayList<Uri> = arrayListOf()
     val categoryList = arrayListOf(
         "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
@@ -30,7 +37,9 @@ class TeacherTalkAskViewModel @Inject constructor(
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList
     var filtered_presignedList = MutableLiveData<List<String>>()
 
-    var postId:Long = 0L
+    var questionId:Long = 0L
+
+    var categoryName: String =""
 
     var _categoryId = MutableLiveData<Long>(1)
     val categoryId: LiveData<Long> get()=_categoryId
@@ -47,6 +56,8 @@ class TeacherTalkAskViewModel @Inject constructor(
     private val _presignedUrlListLiveData = MutableLiveData<presignedUrlListEntity>()
     val presignedUrlLiveData: LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
 
+    private val _modifyPostLiveData = MutableLiveData<TeacherTalkModifyResponseEntity>()
+    val modifyPostLiveData: MutableLiveData<TeacherTalkModifyResponseEntity> = _modifyPostLiveData
 
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
@@ -71,6 +82,26 @@ class TeacherTalkAskViewModel @Inject constructor(
                     )
                 )
                 _uploadPostLiveData.value = teacherUploadResponseEntity
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun modifyPost() {
+        viewModelScope.launch {
+            try {
+                val teacherModifyResponseEntity = teacherModifyBodyUseCase(
+                    teacherTalkRequestEntity = TeacherTalkRequestEntity(
+                        questionId = questionId
+                    ),
+                    teacherUploadPostRequestEntity = TeacherUploadPostRequestEntity(
+                        categoryId = categoryId.value?:0,
+                        title = title.value?:"",
+                        content = content.value?:"",
+                        hashtagList = hashTagList,
+                        imageUrlList = filtered_presignedList.value?: emptyList()
+                    )
+                )
+                _modifyPostLiveData.value = teacherModifyResponseEntity
             } catch (ex:Exception) {}
         }
     }

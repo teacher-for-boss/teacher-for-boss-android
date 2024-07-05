@@ -40,6 +40,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
     private lateinit var adapterTag: rvAdapterTagTeacher
     private lateinit var adapterImage: rvAdapterImageTeacher
     private lateinit var adapterCategory: rvAdapterCategory
+    private var purpose: String=""
+    private var categoryIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,25 +49,37 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        //rv
-        setRecyclerView()
-        //해시태그 입력
+        purpose = intent.getStringExtra("purpose")?:"write"
+
+        // 초기 뷰 설정
+        initView()
+        // 해시태그 입력
         inputHashtag()
         //이미지 가져오기
         getImage()
-        //글자수
-        setTextLength()
-        //나가기
-        showExitDialog()
-        //editText 배경설정
-        focusOnEditText()
-        //등록 유효 확인
-        IsValidPost()
 
-        uploadPost()
+        addListeners()
     }
 
-    fun setRecyclerView() {
+    fun initView() {
+        if(purpose=="modify") {
+            viewModel.questionId = intent.getStringExtra("questionId")!!.toLong()
+            //title
+            val fullText = intent.getStringExtra("title").toString()
+            val modifiedText = if (fullText.length > 3) fullText.substring(3) else ""
+            viewModel._title.value = modifiedText
+            //content
+            viewModel._content.value = intent.getStringExtra("body").toString()
+            //category
+            viewModel.categoryName = intent.getStringExtra("categoryName")!!
+            categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
+
+            if(intent.getStringExtra("isTagList").toString()=="true")
+                viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
+            if(intent.getStringExtra("isImgList").toString()=="true")
+                viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+        }
+
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
@@ -81,13 +95,32 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         //categoryRv
-        adapterCategory = rvAdapterCategory(viewModel.categoryList, viewModel)
+        adapterCategory = rvAdapterCategory(viewModel.categoryList, viewModel, categoryIndex)
         binding.rvCategory.adapter = adapterCategory
-        binding.rvCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val categoryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCategory.layoutManager = categoryLayoutManager
+
+        // 선택된 카테고리 index로 스크롤
+        if (categoryIndex != -1) {
+            binding.rvCategory.post {
+                categoryLayoutManager.scrollToPosition(categoryIndex)
+            }
+        }
+
+        //글자수
+        setTextLength()
+        //editText 배경설정
+        focusOnEditText()
+    }
+
+    fun addListeners(){
+        // 등록 유효 확인 후 uploadPost
+        IsValidPost()
+        // 나가기
+        showExitDialog()
     }
 
     fun inputHashtag() {
-
         //스페이스바 입력 막기
         binding.inputHashtag.addTextChangedListener(object : TextWatcher {
 
@@ -112,7 +145,6 @@ class TeacherTalkAskActivity : AppCompatActivity() {
                 }
             }
         })
-
         //해시태그 입력
         binding.inputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
@@ -229,13 +261,6 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         binding.inputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
     }
 
-    fun showExitDialog() {
-        binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this)
-            dialog.show()
-        }
-    }
-
     fun focusOnEditText() {
         binding.inputTitle.setOnFocusChangeListener{ v, hasFocus ->
             if(hasFocus) {
@@ -262,54 +287,54 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                val toast = Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT)
-                //토스트 메시지
+                Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
             }
-            else {
-                Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("gotoTeacherTalk", "gotoTeacherTalk")
-                startActivity(intent)
-                finish()
-            }
-
+            else uploadPost()
         }
     }
 
     fun uploadPost() {
-        binding.postBtn.setOnClickListener {
-            //이미지 업로드 시
-            if(viewModel.imageList.isNotEmpty()) {
-                viewModel.getPresignedUrlList()
-                viewModel.presignedUrlLiveData.observe(this, {
-                    viewModel._presignedUrlList.value = (it.presignedUrlList)
-                    viewModel.setFilteredImgUrlList()
+        //이미지 업로드 시
+        if(viewModel.imageList.isNotEmpty()) {
+            viewModel.getPresignedUrlList()
+            viewModel.presignedUrlLiveData.observe(this, {
+                viewModel._presignedUrlList.value = (it.presignedUrlList)
+                viewModel.setFilteredImgUrlList()
 
-                    uploadImgtoS3()
-                })
+                uploadImgtoS3()
+            })
 
-                viewModel.filtered_presignedList.observe(this, {
-                    viewModel.uploadPost()
-                })
-            }
-
-            else {
-                viewModel.uploadPost()
-            }
-
-            finishUploadPost()
+            viewModel.filtered_presignedList.observe(this, {
+                if(purpose == "modify") viewModel.modifyPost()
+                else viewModel.uploadPost()
+            })
         }
+        // 이미지 없이 업로드시
+        else {
+            if(purpose == "modify") viewModel.modifyPost()
+            else viewModel.uploadPost()
+        }
+        finishUploadPost()
+
     }
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            Log.d("questionId", it.toString())
+            Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeachertalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
             }
             startActivity(intent)
+        })
 
+        viewModel.modifyPostLiveData.observe(this, Observer {
+            Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this, TeachertalkBodyActivity::class.java).apply {
+                putExtra("questionId", it.questionId.toString())
+            }
+            startActivity(intent)
         })
     }
 
@@ -321,5 +346,12 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         val requestBodyList = uploadutil.convert_UritoImg(uriList)
 
         uploadutil.uploadPostImage(urlList, requestBodyList)
+    }
+
+    fun showExitDialog() {
+        binding.exitBtn.setOnClickListener {
+            val dialog = WriteExitDialog(this)
+            dialog.show()
+        }
     }
 }

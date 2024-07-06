@@ -88,6 +88,18 @@
     </style>
 
     <!--재정비 후-->
+    <!-- Heading -->
+    <style name="TextAppearance.TeacherForBoss.Heading1" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">20dp</item>
+        <item name="lineHeight">36dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+    <style name="TextAppearance.TeacherForBoss.Heading2" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">18dp</item>
+        <item name="lineHeight">27dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
     <!--title-->
     <style name="TextAppearance.TeacherForBoss.Title1" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">24dp</item>
@@ -255,11 +267,25 @@
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
 
+    <style name="TextAppearance.TeacherForBoss.Caption4" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">8dp</item>
+        <item name="android:lineHeight">14dp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
     <!--display-->
     <style name="TextAppearance.TeacherForBoss.Display2" parent="TextAppearance.TeacherForBoss">
         <item name="android:textSize">18dp</item>
         <item name="lineHeight">28.8dp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <!-- etc -->
+    <style name="TextAppearance.TeacherForBoss.Level" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">8dp</item>
+        <item name="lineHeight">11.2dp</item>
+        <item name="android:letterSpacing">-0.04</item>
+        <item name="fontFamily">@font/nanum_square_round_bold</item>
     </style>
 </resources>

@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.RvItemTagBinding
 
-class rvAdapterTag(private val tagList:ArrayList<String>): RecyclerView.Adapter<rvAdapterTag.ViewHolder>() {
+class rvAdapterTag(private val tagList: List<String>): RecyclerView.Adapter<rvAdapterTag.ViewHolder>() {
 
     class ViewHolder(binding: RvItemTagBinding):RecyclerView.ViewHolder(binding.root) {
         val tag: TextView = binding.tagName

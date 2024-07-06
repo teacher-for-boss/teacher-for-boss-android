@@ -52,7 +52,7 @@
     <string name="boss_talk_content">%s</string>
     <string name="boss_talk_date">%s</string>
     <string name="boss_talk_bookmark_count">%s</string>
-    <string name="boss_talk_comment_count">%s</string>
+    <string name="boss_talk_comment_count">답변 %d개</string>
     <string name="boss_talk_like_count">%s</string>
 
 
@@ -117,5 +117,6 @@
 
     <!-- 커뮤니티 -->
     <string name="recommed_option">추천해요 %d개</string>
-    <string name="not_recommed_option">추천해요 %d개</string>
+    <string name="not_recommed_option">추천하지 않아요 %d개</string>
+    <string name="user_level">Lv.%s 지식의 별</string>
 </resources>

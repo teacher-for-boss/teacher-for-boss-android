@@ -13,6 +13,8 @@ data class ResponseTeacherTalkBodyDto(
     val content: String,
     @SerializedName("category")
     val category: String,
+    @SerializedName("imageUrlList")
+    val imageUrlList: List<String>,
     @SerializedName("hashtagList")
     val hashtagList: List<String>?,
     @SerializedName("memberInfo")
@@ -36,6 +38,7 @@ data class ResponseTeacherTalkBodyDto(
             title=title,
             content=content,
             category=category,
+            imageUrlList = imageUrlList,
             hashtagList=hashtagList,
             liked=liked,
             bookmarked=bookmarked,

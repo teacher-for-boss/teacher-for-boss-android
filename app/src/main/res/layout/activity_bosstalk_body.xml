@@ -353,7 +353,7 @@
 
     </ScrollView>
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/comment_fragment"
             android:layout_width="match_parent"
             android:layout_height="60dp"

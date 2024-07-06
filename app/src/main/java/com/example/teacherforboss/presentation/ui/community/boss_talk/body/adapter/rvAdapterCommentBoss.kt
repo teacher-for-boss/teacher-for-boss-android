@@ -90,7 +90,7 @@ class rvAdapterCommentBoss(
 
             // 추천 비추천 onclick
             fun updateComment() {
-                viewModel.bossTalkCommentLikeLiveData.observe(lifecycleOwner, Observer {
+                viewModel.getCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
                     // 추천,비추천 개수 업데이트
                     binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
                     binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)

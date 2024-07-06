@@ -37,8 +37,9 @@ class BossTalkBodyViewModel @Inject constructor(
     private var _postCommentLiveData=MutableLiveData<BossTalkCommentResponseEntity>()
     val postCommentLiveData:LiveData<BossTalkCommentResponseEntity> get() = _postCommentLiveData
 
-    private var _bossTalkCommentLikeLiveData=MutableLiveData<BossTalkCommentLikeResponseEntity>()
-    val bossTalkCommentLikeLiveData:LiveData<BossTalkCommentLikeResponseEntity> get() = _bossTalkCommentLikeLiveData
+    private val _commentLikeLiveDataMap = mutableMapOf<Long, MutableLiveData<BossTalkCommentLikeResponseEntity>>()
+
+    private val _reCommentLikeLiveDataMap = mutableMapOf<Long, MutableLiveData<BossTalkCommentLikeResponseEntity>>()
 
     private var _getCommentListLiveData=MutableLiveData<BossTalkCommentListResponseEntity>()
     val getCommentListLiveData:LiveData<BossTalkCommentListResponseEntity> get() = _getCommentListLiveData
@@ -154,8 +155,7 @@ class BossTalkBodyViewModel @Inject constructor(
                         commentId = commentId
                         )
                 )
-                _bossTalkCommentLikeLiveData.value=bosstalkCommentLikeResponseEntity
-
+                _commentLikeLiveDataMap[commentId]?.value=bosstalkCommentLikeResponseEntity
             }catch (ex:Exception){}
         }
     }
@@ -169,7 +169,37 @@ class BossTalkBodyViewModel @Inject constructor(
                         commentId = commentId
                     )
                 )
-                _bossTalkCommentLikeLiveData.value=bossTalkDisLikeResponseEntity
+                _commentLikeLiveDataMap[commentId]?.value=bossTalkDisLikeResponseEntity
+            }catch (ex:Exception){
+            }
+        }
+    }
+
+    fun postReCommentLike(commentId:Long){
+        viewModelScope.launch {
+            try{
+                val bosstalkCommentLikeResponseEntity=bossTalkCommentLikeUseCase(
+                    BossTalkCommentLikeRequestEntity(
+                        postId = postId.value!!,
+                        commentId = commentId
+                    )
+                )
+                _reCommentLikeLiveDataMap[commentId]?.value=bosstalkCommentLikeResponseEntity
+
+            }catch (ex:Exception){}
+        }
+    }
+
+    fun postReCommentDisLike(commentId:Long){
+        viewModelScope.launch {
+            try{
+                val bossTalkDisLikeResponseEntity=bossTalkCommentDisLikeUseCase(
+                    BossTalkCommentLikeRequestEntity(
+                        postId = postId.value!!,
+                        commentId = commentId
+                    )
+                )
+                _reCommentLikeLiveDataMap[commentId]?.value=bossTalkDisLikeResponseEntity
             }catch (ex:Exception){
             }
         }
@@ -201,5 +231,12 @@ class BossTalkBodyViewModel @Inject constructor(
         _commentList.value=commentList
     }
     fun getCommentListValue():List<CommentEntity> = commentList.value?: emptyList<CommentEntity>()
+
+    fun getCommentLikeLiveData(commentId: Long): LiveData<BossTalkCommentLikeResponseEntity> {
+        return _commentLikeLiveDataMap.getOrPut(commentId) { MutableLiveData() }
+    }
+    fun getReCommentLikeLiveData(commentId:Long):LiveData<BossTalkCommentLikeResponseEntity>{
+        return _reCommentLikeLiveDataMap.getOrPut(commentId){ MutableLiveData() }
+    }
 
 }

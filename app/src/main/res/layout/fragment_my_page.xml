@@ -1,14 +1,518 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.ui.mypage.MyPageFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/my_page_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <include
+            android:id="@+id/include_my_page_top_app_bar"
+            layout="@layout/view_top_app_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include_my_page_top_app_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_my_page_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing20"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:background="@drawable/background_radius12_gray200"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent">
+
+                    <View
+                        android:id="@+id/view_my_page_profile_background"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginVertical="27dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/background_oval_gray100"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_my_page_profile"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginVertical="27dp"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="9dp"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Title6"
+                        android:textColor="@color/Gray700"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toTopOf="@id/tv_my_page_level"
+                        app:layout_constraintStart_toEndOf="@id/view_my_page_profile_background"
+                        app:layout_constraintTop_toTopOf="@id/view_my_page_profile_background"
+                        tools:text="티처포보스 티처" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_my_page_profile_fix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/background_radius4_gray100"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_my_page_profile_name"
+                        app:layout_constraintStart_toEndOf="@id/tv_my_page_profile_name"
+                        app:layout_constraintTop_toTopOf="@id/tv_my_page_profile_name">
+
+                        <ImageView
+                            android:id="@+id/iv_profile_fix"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginVertical="2dp"
+                            android:src="@drawable/ic_pencil_30"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/Gray400" />
+
+                        <TextView
+                            android:id="@+id/tv_profile_fix"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:text="@string/my_page_profile_change"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
+                            android:textColor="@color/Gray400"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_profile_fix"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_profile_fix"
+                            app:layout_constraintTop_toTopOf="@id/iv_profile_fix" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tv_my_page_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="9dp"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Level"
+                        android:textColor="@color/Purple600"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/view_my_page_profile_background"
+                        app:layout_constraintStart_toEndOf="@id/view_my_page_profile_background"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_profile_name"
+                        tools:text="Lv5. 지식의 별" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_my_page_level_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/background_radius100_purple100"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_my_page_level"
+                        app:layout_constraintStart_toEndOf="@id/tv_my_page_level"
+                        app:layout_constraintTop_toTopOf="@id/tv_my_page_level">
+
+                        <ImageView
+                            android:id="@+id/iv_my_page_level_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/ic_info_10"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/Purple500" />
+
+                        <TextView
+                            android:id="@+id/tv_my_page_level_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="8dp"
+                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption4"
+                            android:textColor="@color/Purple500"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_my_page_level_info"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_my_page_level_info"
+                            app:layout_constraintTop_toTopOf="@id/iv_my_page_level_info"
+                            tools:text="다음 레벨까지 답변 12회 남았어요!" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_my_page_menu_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing20"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:background="@drawable/background_radius12_purple600"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_my_page_profile">
+
+                    <ImageView
+                        android:id="@+id/iv_my_page_menu_bar_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="22dp"
+                        android:src="@drawable/ic_comment_30"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/iv_my_page_menu_bar_bookmark"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_bar_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/my_page_boss_menu_bar_question"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="@id/iv_my_page_menu_bar_first"
+                        app:layout_constraintStart_toStartOf="@id/iv_my_page_menu_bar_first"
+                        app:layout_constraintTop_toBottomOf="@id/iv_my_page_menu_bar_first" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_bar_first_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="-4dp"
+                        android:background="@drawable/background_radius100_purple100"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="1dp"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+                        android:textColor="@color/Purple600"
+                        app:layout_constraintStart_toStartOf="@id/iv_my_page_menu_bar_first"
+                        app:layout_constraintTop_toTopOf="@id/iv_my_page_menu_bar_first"
+                        tools:text="20" />
+
+                    <ImageView
+                        android:id="@+id/iv_my_page_menu_bar_bookmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="22dp"
+                        android:src="@drawable/ic_bookmark_30"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/iv_my_page_menu_bar_third"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toEndOf="@id/iv_my_page_menu_bar_first"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_bar_bookmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/my_page_menu_bar_save"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="@id/iv_my_page_menu_bar_bookmark"
+                        app:layout_constraintStart_toStartOf="@id/iv_my_page_menu_bar_bookmark"
+                        app:layout_constraintTop_toBottomOf="@id/iv_my_page_menu_bar_bookmark" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_bar_bookmark_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="-4dp"
+                        android:background="@drawable/background_radius100_purple100"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="1dp"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+                        android:textColor="@color/Purple600"
+                        app:layout_constraintStart_toStartOf="@id/iv_my_page_menu_bar_bookmark"
+                        app:layout_constraintTop_toTopOf="@id/iv_my_page_menu_bar_bookmark"
+                        tools:text="12" />
+
+                    <ImageView
+                        android:id="@+id/iv_my_page_menu_bar_third"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="44dp"
+                        android:layout_marginBottom="22dp"
+                        android:src="@drawable/ic_question_ticket_30"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toEndOf="@id/iv_my_page_menu_bar_bookmark"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_bar_third"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/my_page_boss_menu_bar_question_ticket"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="@id/iv_my_page_menu_bar_third"
+                        app:layout_constraintStart_toStartOf="@id/iv_my_page_menu_bar_third"
+                        app:layout_constraintTop_toBottomOf="@id/iv_my_page_menu_bar_third" />
+
+                    <View
+                        android:id="@+id/view_my_page_menu_bar_divider_left"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="14dp"
+                        android:background="@color/Purple500"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/view_my_page_menu_bar_divider_right"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view_my_page_menu_bar_divider_right"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="14dp"
+                        android:background="@color/Purple500"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/view_my_page_menu_bar_divider_left"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_my_page_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing20"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:background="@drawable/background_radius12_gray200"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gl_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="@dimen/spacing20" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gl_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="@dimen/spacing20" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gl_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="@dimen/spacing20" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gl_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_end="@dimen/spacing20" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_page_my_information_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toTopOf="@id/gl_top" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_account"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing12"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_account"
+                        app:title="@{@string/my_page_menu_account}" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_reward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/my_page_reward_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_account_change"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing12"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_reward"
+                        app:title="@{@string/my_page_menu_account_change}" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_exchange"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account_change"
+                        app:title="@{@string/my_page_menu_exchange}" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_exchange_details"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_exchange"
+                        app:title="@{@string/my_page_menu_exchange_details}" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_community"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/my_page_community_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_exchange_details" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_saved_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_community"
+                        app:title="@{@string/my_page_menu_saved_post}" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_teacher_talk_question_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_saved_post"
+                        app:title="@{@string/my_page_menu_teacher_talk_question_post}" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_boss_talk_written_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_teacher_talk_question_post"
+                        app:title="@{@string/my_page_menu_boss_talk_written_post}" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_boss_talk_comment_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_boss_talk_written_post"
+                        app:title="@{@string/my_page_menu_boss_talk_comment_post}" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_app_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/my_page_app_information_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_boss_talk_comment_post" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_inquire"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_app_information"
+                        app:title="@{@string/my_page_menu_inquire}" />
+
+                    <include
+                        android:id="@+id/include_my_page_menu_terms"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintBottom_toBottomOf="@id/gl_bottom"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_inquire"
+                        app:title="@{@string/my_page_menu_terms}" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="17dp"
+                    android:text="@string/log_out" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

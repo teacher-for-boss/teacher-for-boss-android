@@ -32,7 +32,7 @@
             android:layout_marginTop="7dp"
             android:layout_marginEnd="@dimen/spacing20"
             android:padding="12dp"
-            android:src="@drawable/ic_bell"
+            android:src="@drawable/ic_bell_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

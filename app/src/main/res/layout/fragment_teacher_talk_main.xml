@@ -221,7 +221,7 @@
             android:layout_marginEnd="23dp"
             android:layout_marginBottom="40dp"
             android:backgroundTint="@color/Purple600"
-            android:src="@drawable/ic_pencil"
+            android:src="@drawable/ic_pencil_30"
             app:backgroundTint="@color/Purple600"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

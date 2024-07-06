@@ -24,6 +24,8 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerLi
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
@@ -37,6 +39,16 @@ class CommunityRepositoryImpl @Inject constructor(
             communityDataSource.getBossTalkPosts(
                 requestBossTalkPostsDto = bossTalkPostsRequestEntity.toRequestBossTalkPostsDto()
             ).result.toBossTalkPostsEntity()
+        }.getOrElse { err->
+            throw err
+        }
+    }
+
+    override suspend fun getTeacherTalkQuestions(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity {
+        return runCatching {
+            communityDataSource.getTeacherTalkQuestions(
+                requestTeacherTalkQuestionsDto = teacherTalkQuestionsRequestEntity.toRequestTeacherTalkQuestionsDto()
+            ).result.toTeacherTalkQuestionsEntity()
         }.getOrElse { err->
             throw err
         }

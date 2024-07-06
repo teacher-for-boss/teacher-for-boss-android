@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_teacher_talk_text"
+                android:id="@+id/tv_teacher_talk_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -59,7 +59,7 @@
                 android:textColor="@color/Gray400"
                 android:textSize="9sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_content" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,12 +115,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_comment_24"
-                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_comment_count"
-                app:layout_constraintEnd_toStartOf="@id/tv_teacher_talk_comment_count"
-                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_comment_count" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_answer_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_teacher_talk_answer_count"
+                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_answer_count" />
 
             <TextView
-                android:id="@+id/tv_teacher_talk_comment_count"
+                android:id="@+id/tv_teacher_talk_answer_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/teacher_talk_comment_count"

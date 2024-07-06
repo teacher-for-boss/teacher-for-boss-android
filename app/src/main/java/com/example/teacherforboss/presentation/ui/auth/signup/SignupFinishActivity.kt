@@ -1,7 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.signup
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupFinishBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity

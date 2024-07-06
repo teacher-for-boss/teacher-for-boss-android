@@ -23,6 +23,7 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAn
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import dagger.Module
 import dagger.Provides
@@ -47,6 +48,12 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkUseCase(communityRepository: CommunityRepository):BossTalkPostsUseCase=
         BossTalkPostsUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkUseCase(communityRepository: CommunityRepository):TeacherTalkQuestionsUseCase=
+        TeacherTalkQuestionsUseCase(communityRepository=communityRepository)
+
 
     @Provides
     @Singleton

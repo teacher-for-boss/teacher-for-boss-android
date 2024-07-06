@@ -25,9 +25,13 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDele
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
 
 interface CommunityRepository {
     suspend fun getBossTalkPosts(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
+
+    suspend fun getTeacherTalkQuestions(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity
 
     suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
 

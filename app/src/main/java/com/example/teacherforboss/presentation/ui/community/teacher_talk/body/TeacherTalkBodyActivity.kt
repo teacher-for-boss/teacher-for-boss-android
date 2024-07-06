@@ -64,6 +64,8 @@ class TeachertalkBodyActivity : AppCompatActivity() {
         doOptionMenu()
         //질문 좋아요, 저장
         likeAndBookmark()
+        //rv
+        setRecyclerView()
         //답변 작성
         gotoAnswer()
         //뒤로 가기
@@ -283,4 +285,13 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
         title.text = spannableString
     }
+
+//    fun gotoAnswer() {
+//        //답변 작성하기
+//        binding.answerBtn.setOnClickListener {
+//            val intent = Intent(this, TeacherTalkAnswerActivity::class.java)
+//            startActivity(intent)
+//            //나중에 질문 제목이랑 내용 연결해주기
+//        }
+//    }
 }

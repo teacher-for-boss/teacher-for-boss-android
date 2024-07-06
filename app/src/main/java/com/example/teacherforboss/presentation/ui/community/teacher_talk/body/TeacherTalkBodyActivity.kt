@@ -13,28 +13,51 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterComment
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-class TeacherTalkBodyActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class TeachertalkBodyActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
+    private var questionId:Long=0
+    private var categoryName:String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
-        //텍스트 색상입히기
-        setTextColor()
+//        val transaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
+//        transaction.addToBackStack(null)
+//        transaction.commit()
+
+        //questionId
+        questionId=intent.getStringExtra("questionId")!!.toLong()
+        viewModel.setQuestionId(questionId)
+
+        // 서버 api 요청
+        getTeacherTalkBody()
+        // 본문
+        setBodyView()
+        // 댓글
+        setCommentView()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //수정,삭제,신고
@@ -45,25 +68,27 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         setRecyclerView()
         //답변 작성
         gotoAnswer()
-
+        //뒤로 가기
+        onBackBtnPressed()
     }
 
     fun showOptionMenu() {
         //더보기 버튼
         binding.btnOption.setOnClickListener {
-            //작성자인 경우
-            if(binding.writerOption.visibility == View.GONE) {
-                binding.writerOption.visibility = View.VISIBLE
-            }
-            else {
-                binding.writerOption.visibility = View.GONE
-            }
-            //작성자가 아닌 경우
-            if(binding.nonWriterOption.visibility == View.GONE) {
-                binding.nonWriterOption.visibility = View.VISIBLE
-            }
-            else {
-                binding.nonWriterOption.visibility = View.GONE
+            if(viewModel.isMine.value==true){ //작성자인 경우
+                if(binding.writerOption.visibility == View.GONE) {
+                    binding.writerOption.visibility = View.VISIBLE
+                }
+                else {
+                    binding.writerOption.visibility = View.GONE
+                }
+            } else { //작성자가 아닌 경우
+                if(binding.nonWriterOption.visibility == View.GONE) {
+                    binding.nonWriterOption.visibility = View.VISIBLE
+                }
+                else {
+                    binding.nonWriterOption.visibility = View.GONE
+                }
             }
         }
     }
@@ -71,16 +96,37 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
     fun doOptionMenu() {
         //삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this)
+            val dialog = DeleteBodyDialog(this, viewModel, this, questionId)
             dialog.show()
         }
 
         //수정하기
         binding.modifyBtn.setOnClickListener {
-            val intent = Intent(this, TeacherTalkAskActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, TeacherTalkAskActivity::class.java).apply {
+                putExtra("purpose", "modify")
+                putExtra("title", binding.bodyTitle.text.toString())
+                putExtra("body", binding.bodyBody.text.toString())
+                putExtra("questionId", questionId.toString())
+                putExtra("categoryName", categoryName)
 
-            //본문 데이터 같이 넘겨주기
+                viewModel.getTagList()?.let {
+                    if(it.isNotEmpty()) {
+                        putExtra("isTagList", "true")
+                        putStringArrayListExtra("tagList", viewModel.tagList.value)
+                    }
+                    else putExtra("isTagList", "false")
+                }
+
+                viewModel.imageUrlList?.let {
+                    if(it.isNotEmpty()) {
+                        putExtra("isImgList", "true")
+                        val imgArrayList = viewModel.imageUrlList as ArrayList<String>
+                        putStringArrayListExtra("imgList", imgArrayList)
+                    }
+                    else putExtra("isImgList", "false")
+                }
+            }
+            startActivity(intent)
         }
 
         //신고하기
@@ -93,7 +139,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
     fun likeAndBookmark() {
         //질문 좋아요
         binding.like.setOnClickListener {
-            viewModel.clickLikeBtn()
+            viewModel.postLike()
         }
         viewModel.isLike.observe(this, Observer { isLike ->
             if(isLike) {
@@ -108,7 +154,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
         //질문 저장하기
         binding.bookmark.setOnClickListener {
-            viewModel.clickBookmarkBtn()
+            viewModel.postBookmark()
         }
         viewModel.isBookmark.observe(this, Observer {isBookmark ->
             if(isBookmark) {
@@ -128,18 +174,110 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-        binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList)
+        val tagList = viewModel.tagList.value ?: emptyList()
+        binding.rvTagArea.adapter = rvAdapterTag(tagList)
         binding.rvTagArea.layoutManager = layoutManager
+    }
 
-        //commentRv
-        binding.rvComment.adapter = rvAdapterComment(viewModel.answerList, viewModel = viewModel, this, this)
-        binding.rvComment.layoutManager = LinearLayoutManager(this)
+    fun gotoAnswer() {
+        //답변 작성하기
+        binding.answerBtn.setOnClickListener {
+            val intent = Intent(this, TeacherTalkAnswerActivity::class.java).apply {
+                putExtra("title", binding.bodyTitle.text.toString())
+                putExtra("body", binding.bodyBody.text.toString())
+                putExtra("questionId", viewModel.questionId.value.toString())
+            }
+            startActivity(intent)
+        }
+    }
+
+    fun getTeacherTalkBody(){
+        lifecycleScope.launch {
+            viewModel.getTeacherTalkBody(questionId)
+            viewModel.getAnswerList()
+        }
+    }
+
+    private fun setBodyView(){
+        viewModel.teacherTalkBodyLiveData.observe(this, Observer {
+            // 해시태그
+            if(it.hashtagList!!.isNotEmpty()) viewModel.setTagList(it.hashtagList as ArrayList<String>)
+
+            // 좋아요, 북마크
+            if(it.liked) {
+                viewModel.clickLikeBtn()
+                binding.likeTv.text="좋아요 ${it.likeCount}개"
+            }
+            if(it.bookmarked){
+                viewModel.clickBookmarkBtn()
+                binding.bookmarkTv.text="저장 ${it.bookmarkCount}개"
+            }
+
+            // 본문 글
+            with(binding){
+                bodyTitle.text= getString(R.string.teacher_talk_card_view_question, it.title)
+                bodyBody.text=it.content
+                userNickname.text= it.memberInfo.toMemberDto().name
+                date.text= LocalDateFormatter.extractDate(it.createdAt)
+            }
+
+            // 본문 업로드 이미지
+            if(it.imageUrlList.isNotEmpty()) viewModel.imageUrlList=it.imageUrlList
+
+            // 프로필 이미지
+            if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,
+                it.memberInfo.toMemberDto().profileImg!!
+            )
+
+            // 사용자 본인 작성 여부
+            viewModel._isMine.value=it.isMine
+
+            //카테고리
+            categoryName = it.category
+
+            setRecyclerView()
+            setTextColor()
+        })
+    }
+
+    fun setCommentView() {
+        viewModel.teacherAnswerListLiveData.observe(this, Observer {
+            if(it.answerList.isNotEmpty()) {
+                viewModel.setAnswerList(it.answerList)
+
+                // 답변 개수
+                binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
+
+                // 답변 rv
+                binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
+                binding.rvComment.layoutManager = LinearLayoutManager(this)
+            }
+        })
+    }
+
+    fun updateLike(){
+        binding.like.setOnClickListener {
+            viewModel.postLike()
+            viewModel.teacherTalkBodyLikeLiveData.observe(this, Observer {
+                if(it.liked)viewModel.clickLikeBtn()
+            })
+        }
+    }
+
+    fun onBackBtnPressed(){
+        binding.backBtn.setOnClickListener {
+            val intent=Intent(this, MainActivity::class.java).apply {
+                putExtra("FRAGMENT_DESTINATION","TEACHER_TALK")
+            }
+            startActivity(intent)
+        }
+
     }
 
     fun setTextColor() {
         //텍스트에 색상입히기
         val title = binding.bodyTitle
-        val fullText = title.text
+        val fullText = title.text?.toString() ?: return
         val spannableString = SpannableString(fullText)
 
         val color = ContextCompat.getColor(this, R.color.Purple600)
@@ -148,12 +286,12 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         title.text = spannableString
     }
 
-    fun gotoAnswer() {
-        //답변 작성하기
-        binding.answerBtn.setOnClickListener {
-            val intent = Intent(this, TeacherTalkAnswerActivity::class.java)
-            startActivity(intent)
-            //나중에 질문 제목이랑 내용 연결해주기
-        }
-    }
+//    fun gotoAnswer() {
+//        //답변 작성하기
+//        binding.answerBtn.setOnClickListener {
+//            val intent = Intent(this, TeacherTalkAnswerActivity::class.java)
+//            startActivity(intent)
+//            //나중에 질문 제목이랑 내용 연결해주기
+//        }
+//    }
 }

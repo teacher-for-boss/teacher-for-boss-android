@@ -10,13 +10,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
-import com.example.teacherforboss.domain.model.community.PostEntity
-import com.example.teacherforboss.domain.model.community.QuestionEntity
-import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
-import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class TeacherTalkCardAdapter(context: Context) :
@@ -90,7 +86,7 @@ class TeacherTalkCardAdapter(context: Context) :
 
             // 상세 글 이동
             binding.root.setOnClickListener {
-                val intent= Intent(context, TeacherTalkBodyActivity::class.java).apply{
+                val intent= Intent(context, TeachertalkBodyActivity::class.java).apply{
                     putExtra("questionId",teacherTalkCard.questionId.toString())
                 }
                 context.startActivity(intent)

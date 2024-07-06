@@ -1,14 +1,13 @@
 package com.example.teacherforboss.data.model.response.community.boss
 
-import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
 import com.google.gson.annotations.SerializedName
-import kotlinx.datetime.LocalDateTime
 
 data class ResponseBossTalkBookmarkDto(
     @SerializedName("bookmark")
     val bookmark:Boolean,
     @SerializedName("updatedAt")
-    val updatedAt: LocalDateTime
+    val updatedAt:String
 ) {
     fun toBossTalkBookmarkResponseEntity()= BossTalkBookmarkResponseEntity(
         bookmark = bookmark,

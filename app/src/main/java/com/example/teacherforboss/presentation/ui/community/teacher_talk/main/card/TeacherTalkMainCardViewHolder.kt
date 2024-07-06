@@ -1,13 +1,9 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card
 
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
-import com.example.teacherforboss.domain.model.community.QuestionEntity
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
 import java.time.format.DateTimeFormatter
 
 class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBinding) :

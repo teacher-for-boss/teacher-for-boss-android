@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.community.QuestionEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsRequestEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsResponseEntity
-import com.example.teacherforboss.domain.usecase.TeacherTalkQuestionsUseCase
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
 import com.example.teacherforboss.presentation.ui.community.common.TalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategory
 import dagger.hilt.android.lifecycle.HiltViewModel

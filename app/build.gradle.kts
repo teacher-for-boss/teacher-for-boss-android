@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.android.*
 import java.util.Properties
 
 plugins {
@@ -45,7 +44,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -97,7 +96,7 @@ dependencies {
     implementation("androidx.room:room-common:2.6.1")
     implementation("androidx.activity:activity:1.8.0")
 
-    //room db
+    // room db
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -107,10 +106,9 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
 
-
     // Hilt
     implementation("com.google.dagger:hilt-android:2.50")
-    kapt ("com.google.dagger:hilt-compiler:2.50")
+    kapt("com.google.dagger:hilt-compiler:2.50")
 //    annotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
 
     // For instrumentation tests
@@ -159,22 +157,22 @@ dependencies {
     // progress Bar
     implementation("com.github.skydoves:progressview:1.1.3")
 
-    //view pager 2
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    // view pager 2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
-    //etc
+    // etc
 
-    //event bus
+    // event bus
     implementation("org.greenrobot:eventbus:3.3.1")
 
-    //sms
+    // sms
     implementation("com.google.android.gms:play-services-auth-api-phone:18.0.1")
 
-    //naver
+    // naver
     // groovy
-    implementation ("com.navercorp.nid:oauth:5.9.0") // jdk 11
+    implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
 
-    //kts
+    // kts
     implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
 
     // coil
@@ -182,12 +180,11 @@ dependencies {
     implementation("io.coil-kt:coil:1.2.0")
     implementation("io.coil-kt:coil-svg:1.2.0")
 
-    //glide
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    //firebase
+    // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 

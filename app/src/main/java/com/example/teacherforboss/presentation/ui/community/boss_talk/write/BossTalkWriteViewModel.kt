@@ -1,17 +1,19 @@
 package com.example.teacherforboss.presentation.ui.community.boss_talk.write
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
-import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
-import com.example.teacherforboss.domain.usecase.BossTalkModifyBodyUseCase
-import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
+import com.example.teacherforboss.domain.model.community.boss.BossTalkModifyPostResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.util.base.FileUtils
 import com.example.teacherforboss.util.base.UploadUtil
@@ -32,12 +34,12 @@ class BossTalkWriteViewModel @Inject constructor(
     var _content=MutableLiveData<String>("")
     val content:LiveData<String> get() = _content
 
-    var hasTagList:ArrayList<String> = arrayListOf()
+    var hashTagList:ArrayList<String> = arrayListOf()
     var imageList: ArrayList<Uri> = arrayListOf()
     var _presignedUrlList = MutableLiveData <List<String>> ()
     val presignedUrlList : LiveData<List<String>> = _presignedUrlList
 
-    var filtered_presigendList= listOf<String>()
+    var filtered_presigendList=MutableLiveData<List<String>> ()
 
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
@@ -55,11 +57,14 @@ class BossTalkWriteViewModel @Inject constructor(
     private val _uploadPostLiveData = MutableLiveData <BossTalkUploadPostResponseEntity> ()
     val uploadPostLiveData : LiveData<BossTalkUploadPostResponseEntity> = _uploadPostLiveData
 
+    private val _modifyPostLiveData = MutableLiveData <BossTalkModifyPostResponseEntity> ()
+    val modifyPostLiveData : LiveData<BossTalkModifyPostResponseEntity> = _modifyPostLiveData
+
     fun addHashTag(tag: String) {
-        hasTagList.add(tag)
+        hashTagList.add(tag)
     }
     fun deleteHashTag(position: Int) {
-        hasTagList.removeAt(position)
+        hashTagList.removeAt(position)
     }
 
     fun addImage(imageUri: Uri) {
@@ -81,16 +86,18 @@ class BossTalkWriteViewModel @Inject constructor(
 
     fun uploadPost(){
         viewModelScope.launch {
+            Log.d("test","up")
             try{
                 val bossTalkUploadPostResponseEntity=bossUploadPostUseCase(
                     bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
                         title=title.value?:"",
                         content=content.value?:"",
-                        imageUrlList = filtered_presigendList,
-                        hashtagList = hasTagList
+                        imageUrlList = filtered_presigendList.value?: emptyList(),
+                        hashtagList = hashTagList
                     )
                 )
                 _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
+                Log.d("test","up2")
             }catch (ex:Exception){
 
             }
@@ -117,23 +124,30 @@ class BossTalkWriteViewModel @Inject constructor(
 
     fun modifyPost(){
         viewModelScope.launch {
+            Log.d("test","m1")
             try{
-                val bossTalkUploadPostResponseEntity=bossTalkModifyBodyUseCase(
+                val bossTalkModifyPostResponseEntity=bossTalkModifyBodyUseCase(
                     bossTalkRequestEntity= BossTalkRequestEntity(
                         postId = postId
                     ),
                     bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
                         title=title.value?:"",
                         content=content.value?:"",
-                        imageUrlList = filtered_presigendList,
-                        hashtagList = hasTagList
+                        imageUrlList = filtered_presigendList.value?: emptyList<String>(),
+                        hashtagList = hashTagList
                     )
                 )
-                _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
+                _modifyPostLiveData.value=bossTalkModifyPostResponseEntity
+                Log.d("test","m2")
             }catch (ex:Exception){
-
+                Log.e("ModifyPostError", "Error modifying post", ex)
             }
         }
+    }
+    fun setFilteredImgUrlList(){
+       filtered_presigendList.value=presignedUrlList.value?.let{
+           it.map { it.substringBefore("?") }
+       }
     }
 
 }

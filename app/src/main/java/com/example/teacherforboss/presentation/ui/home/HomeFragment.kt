@@ -1,60 +1,161 @@
 package com.example.teacherforboss.presentation.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.os.Handler
+import android.os.Looper
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
+import com.example.teacherforboss.databinding.FragmentHomeBinding
+import com.example.teacherforboss.util.base.BindingFragment
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+    private val viewModel: HomeViewModel by activityViewModels()
+    private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
+    private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
+    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter() }
+    private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter() }
+    private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter(requireContext()) }
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = object : Runnable {
+        override fun run() {
+            val itemCount = bannerViewPagerAdapter.itemCount
+            if (itemCount > ZERO) {
+                binding.apply {
+                    vpHomeBanner.setCurrentItem(
+                        (vpHomeBanner.currentItem + INC_POSITION) % itemCount,
+                        true,
+                    )
+                }
+                handler.postDelayed(this, AUTO_SCROLL_INTERVAL)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.homeViewModel = viewModel
+
+        initLayout()
+        addListeners()
+        collectData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopAutoScroll()
+        removeAdapter()
+    }
+
+    private fun initLayout() {
+        initAdapter()
+        viewModel.apply {
+            setBannerItems()
+            setTeacherTalkShortcutItems()
+
+            // TODO 옮기기
+            setTeacherTalkPopularPost()
+            setBossTalkPopularPost()
+            setWeeklyBestTeacher()
+        }
+        teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
+
+        // TODO 서버통신 후 collectData에서 서버통신 결과값 불러오기
+        teacherTalkPopularPostAdapter.submitList(viewModel.teacherTalkPopularPostList.value)
+        bossTalkPopularPostAdapter.submitList(viewModel.bossTalkPopularPostList.value)
+        weeklyBestTeacherAdapter.submitList(viewModel.weeklyBestTeacherList.value)
+
+        startAutoScroll()
+    }
+
+    private fun initAdapter() {
+        bannerViewPagerAdapter = HomeBannerViewPagerAdapter()
+        with(binding.vpHomeBanner) {
+            this.adapter = bannerViewPagerAdapter
+            registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    viewModel.setCurrentBannerPosition(position)
+                }
+            })
+        }
+
+        with(binding) {
+            rvHomeTeacherTalkShortcut.adapter = teacherTalkShortcutAdapter
+            rvHomeTeacherTalkPopularPost.adapter = teacherTalkPopularPostAdapter
+            rvHomeBossTalkPopularPost.adapter = bossTalkPopularPostAdapter
+            rvHomeWeeklyBestTeacher.adapter = weeklyBestTeacherAdapter
+        }
+    }
+
+    private fun addListeners() {
+    }
+
+    private fun collectData() {
+        viewModel.bannerItemList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { bannerItemList ->
+                bannerViewPagerAdapter.submitList(bannerItemList)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.currentBannerPosition.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { currentPosition ->
+                binding.tvHomeBannerPosition.text = SpannableString(
+                    getString(
+                        R.string.home_banner_position,
+                        (currentPosition + INC_POSITION).toString(),
+                        viewModel.bannerItemList.value.size.toString(),
+                    ),
+                ).apply {
+                    setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.white,
+                            ),
+                        ),
+                        START_SPAN_INDEX,
+                        END_SPAN_INDEX,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                    )
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun startAutoScroll() {
+        handler.postDelayed(runnable, AUTO_SCROLL_INTERVAL)
+    }
+
+    private fun stopAutoScroll() {
+        handler.removeCallbacks(runnable)
+    }
+
+    private fun removeAdapter() {
+        with(binding) {
+            vpHomeBanner.adapter = null
+            rvHomeTeacherTalkShortcut.adapter = null
+            rvHomeTeacherTalkPopularPost.adapter = null
+            rvHomeBossTalkPopularPost.adapter = null
+            rvHomeWeeklyBestTeacher.adapter = null
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        private const val ZERO = 0
+        private const val START_SPAN_INDEX = 0
+        private const val END_SPAN_INDEX = 2
+        private const val INC_POSITION = 1
+        private const val AUTO_SCROLL_INTERVAL = 2500L
     }
 }

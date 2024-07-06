@@ -1,7 +1,7 @@
 package com.example.teacherforboss.data.model.response.community.teacher
 
-import com.example.teacherforboss.domain.model.community.QuestionEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseTeacherTalkQuestionsDto (

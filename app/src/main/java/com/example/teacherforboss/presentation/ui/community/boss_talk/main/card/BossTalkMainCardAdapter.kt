@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
-import com.example.teacherforboss.domain.model.community.PostEntity
+import com.example.teacherforboss.domain.model.community.boss.PostEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.example.teacherforboss.util.base.LocalDateFormatter
 

@@ -1,6 +1,6 @@
 package com.example.teacherforboss.data.model.request.community.teacher
 
-import com.example.teacherforboss.domain.model.community.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
 import com.google.gson.annotations.SerializedName
 
 data class RequestTeacherTalkQuestionsDto (

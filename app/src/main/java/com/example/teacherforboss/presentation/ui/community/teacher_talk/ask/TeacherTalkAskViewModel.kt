@@ -1,17 +1,60 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.ask
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
+import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
+import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TeacherTalkAskViewModel: ViewModel() {
-    val hasTagList:ArrayList<String> = arrayListOf()
-    val imageList: ArrayList<String> = arrayListOf()
+@HiltViewModel
+class TeacherTalkAskViewModel @Inject constructor(
+    private val teacherUploadPostUseCase: TeacherUploadPostUseCase,
+    private val teacherModifyBodyUseCase: TeacherTalkModifyBodyUseCase,
+    private val presignedUrlUseCase: PresignedUrlUseCase
+): ViewModel() {
+    var hashTagList:ArrayList<String> = arrayListOf()
+    var imageList: ArrayList<Uri> = arrayListOf()
     val categoryList = arrayListOf(
-        "마케팅", "위생", "상권", "운영", "직원관리",
-        "카테고리1", "카테고리2", "카테고리3"
+        "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
+    var _presignedUrlList = MutableLiveData<List<String>>()
+    val presignedUrlList: LiveData<List<String>> = _presignedUrlList
+    var filtered_presignedList = MutableLiveData<List<String>>()
+
+    var questionId:Long = 0L
+
+    var categoryName: String =""
+
+    var _categoryId = MutableLiveData<Long>(1)
+    val categoryId: LiveData<Long> get()=_categoryId
+
+    var _title = MutableLiveData<String>("")
+    val title: LiveData<String> get()=_title
+
+    var _content = MutableLiveData<String>("")
+    val content: LiveData<String> get()=_content
+
+    private val _uploadPostLiveData = MutableLiveData<TeacherUploadPostResponseEntity>()
+    val uploadPostLiveData: LiveData<TeacherUploadPostResponseEntity> = _uploadPostLiveData
+
+    private val _presignedUrlListLiveData = MutableLiveData<presignedUrlListEntity>()
+    val presignedUrlLiveData: LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
+
+    private val _modifyPostLiveData = MutableLiveData<TeacherTalkModifyResponseEntity>()
+    val modifyPostLiveData: MutableLiveData<TeacherTalkModifyResponseEntity> = _modifyPostLiveData
 
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
@@ -22,15 +65,77 @@ class TeacherTalkAskViewModel: ViewModel() {
     private val _textTagLength = MutableLiveData<Int>()
     val textTagLength: LiveData<Int> get()=_textTagLength
 
-    fun addHashTag(tag: String) {
-        hasTagList.add(tag)
-    }
-    fun deleteHashTag(position: Int) {
-        hasTagList.removeAt(position)
+
+    fun uploadPost() {
+        viewModelScope.launch {
+            try {
+                val teacherUploadResponseEntity=teacherUploadPostUseCase(
+                    teacherUploadPostRequestEntity = TeacherUploadPostRequestEntity(
+                        categoryId = categoryId.value?:0,
+                        title = title.value?:"",
+                        content = content.value?:"",
+                        hashtagList = hashTagList,
+                        imageUrlList = filtered_presignedList.value?: emptyList()
+                    )
+                )
+                _uploadPostLiveData.value = teacherUploadResponseEntity
+            } catch (ex:Exception) {}
+        }
     }
 
-    fun addImage(imageUri: Uri?) {
-        imageList.add(imageUri.toString())
+    fun modifyPost() {
+        viewModelScope.launch {
+            try {
+                val teacherModifyResponseEntity = teacherModifyBodyUseCase(
+                    teacherTalkRequestEntity = TeacherTalkRequestEntity(
+                        questionId = questionId
+                    ),
+                    teacherUploadPostRequestEntity = TeacherUploadPostRequestEntity(
+                        categoryId = categoryId.value?:0,
+                        title = title.value?:"",
+                        content = content.value?:"",
+                        hashtagList = hashTagList,
+                        imageUrlList = filtered_presignedList.value?: emptyList()
+                    )
+                )
+                _modifyPostLiveData.value = teacherModifyResponseEntity
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun getPresignedUrlList() {
+        viewModelScope.launch {
+            try {
+                val presignedUrlListEntity=presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = null,
+                        lastIndex = 0,
+                        imageCount = imageList.size,
+                        origin = "posts"
+                    )
+                )
+                _presignedUrlListLiveData.value = presignedUrlListEntity
+                Log.d("imageList", _presignedUrlListLiveData.toString())
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun setFilteredImgUrlList() {
+        filtered_presignedList.value = presignedUrlList.value?.let {
+            it.map { it.substringBefore("?") }
+        }
+        Log.d("filteredImageList", filtered_presignedList.toString())
+    }
+
+    fun addHashTag(tag: String) {
+        hashTagList.add(tag)
+    }
+    fun deleteHashTag(position: Int) {
+        hashTagList.removeAt(position)
+    }
+
+    fun addImage(imageUri: Uri) {
+        imageList.add(imageUri)
     }
     fun deleteImage(position: Int) {
         imageList.removeAt(position)
@@ -44,5 +149,9 @@ class TeacherTalkAskViewModel: ViewModel() {
     }
     fun setTagLength(length: Int) {
         _textTagLength.value = length
+    }
+
+    fun selectCategoryId(id: Long) {
+        _categoryId.value = id + 1
     }
 }

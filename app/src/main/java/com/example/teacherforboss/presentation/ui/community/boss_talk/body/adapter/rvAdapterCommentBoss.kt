@@ -7,22 +7,47 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentBossBinding
+import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDateFormatter
 
-class rvAdapterCommentBoss(private val commentList: List<String>,
-                           private val viewModel: BossTalkBodyViewModel
+class rvAdapterCommentBoss(
+    private val lifecycleOwner: LifecycleOwner,
+    private val context: Context,
+    private val commentList: List<CommentEntity>,
+    private val viewModel: BossTalkBodyViewModel
     ): RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
 
     inner class ViewHolder(private val binding: RvItemCommentBossBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(comment: String, viewModel: BossTalkBodyViewModel) {
-            binding.userName.text = comment
+        fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
 
-            //대댓글
-            binding.rvRecomment.adapter = rvAdapterRecommentBoss(viewModel.reCommentList)
+            // 유저 정보
+            val member=comment.memberInfo
+            binding.userName.text = member.name
+            member.profileImg?.let {
+                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
+            }
+
+            // 날짜
+            binding.createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
+
+            // 댓글 본문
+            binding.commentBody.text=comment.content
+
+            // 추천, 비추천 갯수
+            binding.commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
+            binding.commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
+
+            // 대댓글 리스트
+            val reCommentList=comment.children
+            binding.rvRecomment.adapter = rvAdapterRecommentBoss(lifecycleOwner,context,reCommentList,viewModel)
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
@@ -39,10 +64,11 @@ class rvAdapterCommentBoss(private val commentList: List<String>,
                 binding.root.context.startActivity(intent)
             }
 
-            //추천비추천
-            var isCommentGood = false
-            var isCommentBad = false
-            fun updateComment() {
+            //사용자의 추천 비추천 여부
+            var isCommentGood = comment.liked
+            var isCommentBad = comment.disliked
+
+            fun handleCommentBtnColor(){
                 if(isCommentGood) {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
@@ -59,11 +85,25 @@ class rvAdapterCommentBoss(private val commentList: List<String>,
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad)
                 }
             }
+
+            handleCommentBtnColor()
+
+            // 추천 비추천 onclick
+            fun updateComment() {
+                viewModel.getCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
+                    // 추천,비추천 개수 업데이트
+                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                    handleCommentBtnColor()
+                })
+            }
+
             binding.commentGood.setOnClickListener {
                 isCommentGood = !isCommentGood
                 if(isCommentGood && isCommentBad) {
                     isCommentBad = !isCommentBad
                 }
+                viewModel.postCommentLike(comment.commentId)
                 updateComment()
             }
             binding.commentBad.setOnClickListener {
@@ -71,7 +111,14 @@ class rvAdapterCommentBoss(private val commentList: List<String>,
                 if(isCommentGood && isCommentBad) {
                     isCommentGood = !isCommentGood
                 }
+                viewModel.postCommentDisLike(comment.commentId)
                 updateComment()
+            }
+
+            // 답글쓰기
+            binding.writeRecommentBtn.setOnClickListener {
+                viewModel.isRecommentClicked.value=Unit
+                viewModel.setParentId(comment.commentId)
             }
         }
     }

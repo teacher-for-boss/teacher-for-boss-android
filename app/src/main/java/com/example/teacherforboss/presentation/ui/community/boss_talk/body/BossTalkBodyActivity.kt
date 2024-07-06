@@ -49,6 +49,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
         // 서버 api 요청
         getBossTalkBody()
+        // 본문
+        setBodyView()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //질문 좋아요, 저장
@@ -57,6 +59,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         doOptionMenu()
         // 뒤로가기
         onBackBtnPressed()
+        //댓글 관찰
+        observePostComment()
+        // 댓글
+        setCommentView()
         // 답글 쓰기
         setRecommentListener()
 
@@ -130,15 +136,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //rvTag
-        if(viewModel.tagList.value!=null){
+        if(viewModel.getTagList().isNotEmpty()){
             binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!)
             binding.rvTagArea.layoutManager = layoutManager
         }
-
-        //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
-        binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        binding.rvComment.isNestedScrollingEnabled = false
 
         // image vp
         if(viewModel.imgUrlList.isNotEmpty()){
@@ -182,10 +183,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun getBossTalkBody(){
         lifecycleScope.launch {
             viewModel.getBossTalkBody(postId!!)
-            setBodyView()
-            // TODO: 댓글 리스트 조회
-//            viewModel.getCommentList()
-            setCommentView()
+            viewModel.getCommentList()
         }
     }
     private fun setBodyView(){
@@ -207,16 +205,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
             with(binding){
                 bodyTitle.text=it.title
                 bodyBody.text=it.content
-                userNickname.text= it.memberInfo.name
+                userNickname.text= it.memberInfo.toMemberDto().name
                 date.text=LocalDateFormatter.extractDate(it.createdAt)
             }
-
 
             // 본문 업로드된 이미지
             if(it.imageUrlList.isNotEmpty()) viewModel.imgUrlList=it.imageUrlList
 
             // 프로필 이미지
-            if(it.memberInfo.profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,it.memberInfo.profileImg)
+            if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage, it.memberInfo.toMemberDto().profileImg!!)
 
             // 사용자 본인 작성 여부
             viewModel._isMine.value=it.isMine
@@ -227,18 +224,25 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     private fun setCommentView(){
-        // TODO: 댓글 리스트 조회
-//        viewModel.getCommentListLiveData.observe(this, Observer {
-//            viewModel.setCommentListValue(it.commentList)
-//            //rvComment
-//            binding.rvComment.adapter = rvAdapterCommentBoss(viewModel.getCommentListValue(), viewModel)
-//            binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//
-//        })
-        viewModel.setCommentListValue(viewModel.dummy_commentList)
-        //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
-        binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        viewModel.getCommentListLiveData.observe(this, Observer {
+            if(it.commentList.isNotEmpty()){
+                viewModel.setCommentListValue(it.commentList)
+
+                // 댓글 개수
+                binding.commentNumber.text=getString(R.string.comment_cnt,it.commentList.size)
+
+                // 댓글 rv
+                binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
+                binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+            }
+        })
+
+    }
+    fun observePostComment(){
+        viewModel.postCommentLiveData.observe(this, Observer {
+            viewModel.getCommentList()
+        })
     }
 
     fun setRecommentListener(){

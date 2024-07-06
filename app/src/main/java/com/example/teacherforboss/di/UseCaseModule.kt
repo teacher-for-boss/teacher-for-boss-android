@@ -90,4 +90,4 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkCommentdisLikeUseCase(communityRepository: CommunityRepository):BossTalkCommentDisLikeUseCase=
         BossTalkCommentDisLikeUseCase(communityRepository=communityRepository)
-}
+ }

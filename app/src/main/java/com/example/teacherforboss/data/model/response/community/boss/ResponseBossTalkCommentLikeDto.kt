@@ -4,19 +4,22 @@ import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeResp
 import com.google.gson.annotations.SerializedName
 
 data class ResponseBossTalkCommentLikeDto(
-@SerializedName("like")
-val like:Boolean,
-@SerializedName("likeCount")
-val likeCount:Int,
-@SerializedName("dislikeCount")
-val dislikeCount:Int,
-@SerializedName("updatedAt")
-val updatedAt:String
+    @SerializedName("commentId")
+    val commentId:Long,
+    @SerializedName("liked")
+    val liked:Boolean,
+    @SerializedName("likedCount")
+    val likedCount:Int,
+    @SerializedName("dislikedCount")
+    val dislikedCount:Int,
+    @SerializedName("updatedAt")
+    val updatedAt:String
 ){
     fun toResponseBossTalkLikeResponseEntity()=BossTalkCommentLikeResponseEntity(
-        like=like,
-        likeCount=likeCount,
-        dislikeCount=dislikeCount,
+        commentId=commentId,
+        liked=liked,
+        likedCount=likedCount,
+        dislikedCount=dislikedCount,
         updatedAt=updatedAt
     )
 }

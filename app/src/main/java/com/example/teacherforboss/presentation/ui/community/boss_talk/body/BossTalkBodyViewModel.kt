@@ -13,7 +13,6 @@ import com.example.teacherforboss.domain.model.community.BossTalkCommentResponse
 import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.CommentEntity
-import com.example.teacherforboss.domain.model.community.MemberEntity
 import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.BossTalkCommentLikeUseCase
@@ -41,9 +40,6 @@ class BossTalkBodyViewModel @Inject constructor(
     private var _bossTalkCommentLikeLiveData=MutableLiveData<BossTalkCommentLikeResponseEntity>()
     val bossTalkCommentLikeLiveData:LiveData<BossTalkCommentLikeResponseEntity> get() = _bossTalkCommentLikeLiveData
 
-    private var _bossTalkCommentdisLikeLiveData=MutableLiveData<BossTalkCommentLikeResponseEntity>()
-    val bossTalkCommentdisLikeLiveData:LiveData<BossTalkCommentLikeResponseEntity> get() = _bossTalkCommentdisLikeLiveData
-
     private var _getCommentListLiveData=MutableLiveData<BossTalkCommentListResponseEntity>()
     val getCommentListLiveData:LiveData<BossTalkCommentListResponseEntity> get() = _getCommentListLiveData
 
@@ -52,24 +48,6 @@ class BossTalkBodyViewModel @Inject constructor(
     private var _tagList=MutableLiveData<ArrayList<String>>()
     val tagList:LiveData<ArrayList<String>> get() = _tagList
 
-    var dummy_reCommentList = arrayListOf(
-        CommentEntity(
-            commentId=1,
-            content="dummy2",
-            likeCount = 1,
-            dislikeCount = 12,
-            createdAt = "2024-06-28",
-            memberInfo = MemberEntity(2L,"hw2","","2"), children = arrayListOf<CommentEntity>())
-    )
-    var dummy_commentList :ArrayList<CommentEntity> = arrayListOf(
-        CommentEntity(
-            commentId=1,
-            content="dummy",
-            likeCount = 2,
-            dislikeCount = 22,
-            createdAt = "2024-06-27",
-            memberInfo = MemberEntity(2L,"hw","https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/common/profile/profile_pig_owner.png","2"), children = dummy_reCommentList)
-    )
     private var _commentList=MutableLiveData<List<CommentEntity>>().apply { value= emptyList<CommentEntity>()}
     val commentList:LiveData<List<CommentEntity>> get() = _commentList
 
@@ -79,7 +57,7 @@ class BossTalkBodyViewModel @Inject constructor(
     var _postId=MutableLiveData<Long>().apply { value=0L }
     val postId:LiveData<Long> get()=_postId
 
-    private var _parentId=MutableLiveData<Long>().apply { value=0L }
+    private var _parentId=MutableLiveData<Long>().apply { value=null }
     val parentId:LiveData<Long> get()=_parentId
 
     private val _isLike = MutableLiveData<Boolean>().apply { value = false }
@@ -95,6 +73,8 @@ class BossTalkBodyViewModel @Inject constructor(
 
     private var _bossTalkBodyLiveData=MutableLiveData<BossTalkBodyResponseEntity>()
     val bossTalkBodyLiveData:LiveData<BossTalkBodyResponseEntity> get() = _bossTalkBodyLiveData
+    private var _bossTalkBodyBookmarkLiveData=MutableLiveData<BossTalkBookmarkResponseEntity>()
+    val bossTalkBodyBookmarkLiveData:LiveData<BossTalkBookmarkResponseEntity> get() = _bossTalkBodyBookmarkLiveData
 
     fun getBossTalkBody(postId:Long){
         viewModelScope.launch {
@@ -145,7 +125,7 @@ class BossTalkBodyViewModel @Inject constructor(
                     BossTalkRequestEntity(postId=postId.value!!))
 
                 _postCommentLiveData.value=bossTalkCommentResponseEntity
-
+                _parentId.value=null
             }catch(ex:Exception){
             }
         }
@@ -175,6 +155,7 @@ class BossTalkBodyViewModel @Inject constructor(
                         )
                 )
                 _bossTalkCommentLikeLiveData.value=bosstalkCommentLikeResponseEntity
+
             }catch (ex:Exception){}
         }
     }
@@ -188,8 +169,9 @@ class BossTalkBodyViewModel @Inject constructor(
                         commentId = commentId
                     )
                 )
-                _bossTalkCommentdisLikeLiveData.value=bossTalkDisLikeResponseEntity
-            }catch (ex:Exception){}
+                _bossTalkCommentLikeLiveData.value=bossTalkDisLikeResponseEntity
+            }catch (ex:Exception){
+            }
         }
     }
 

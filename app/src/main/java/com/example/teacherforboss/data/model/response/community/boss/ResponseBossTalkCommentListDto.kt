@@ -29,6 +29,10 @@ data class CommentDto(
     val likeCount:Int,
     @SerializedName("dislikeCount")
     val dislikeCount:Int,
+    @SerializedName("liked")
+    val liked:Boolean,
+    @SerializedName("disliked")
+    val disliked:Boolean,
     @SerializedName("createdAt")
     val createdAt:String,
     @SerializedName("memberInfo")
@@ -44,6 +48,8 @@ data class CommentDto(
             content=content,
             likeCount=likeCount,
             dislikeCount=dislikeCount,
+            liked=liked,
+            disliked=disliked,
             createdAt=createdAt,
             memberInfo=memberEntities,
             children=children

@@ -68,7 +68,6 @@ class TeacherTalkMainViewModel @Inject constructor(
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
-                _teacherTalkQuestions.value=teacherTalkQuestionsResponseEntity.questionList
 
             }catch (ex:Exception){
             }

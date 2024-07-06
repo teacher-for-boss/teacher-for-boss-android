@@ -121,6 +121,7 @@ class TeacherTalkMainFragment :
         viewModel.getTeacherTalkQuestions()
 
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
+            viewModel._teacherTalkQuestions.value=result.questionList
             if (!isInitialziedView) {
                 initView()
                 isInitialziedView = !isInitialziedView

@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -42,6 +48,7 @@
                     android:layout_marginTop="12dp" />
 
                 <TextView
+                    android:id="@+id/postBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="등록"
@@ -80,6 +87,8 @@
                     android:layout_height="wrap_content"
                     android:text="건강과 지속 가능성을 추구하는 이들을 위해, 맛과 영양이 가득한 채식 요리 레시피를 소개합니다. 이 글에서는 간단하지만 맛있는 채 ..."
                     android:textSize="12dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textColor="@color/Gray500"
                     app:layout_constraintTop_toBottomOf="@id/ask_title"
                     android:layout_marginEnd="28dp"
@@ -116,15 +125,29 @@
                 <EditText
                     android:id="@+id/input_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="600dp"
+                    android:background="@color/transparent"
+                    android:gravity="top"
                     android:hint="구체적인 답변으로 보스와의 멘토까지 진행해 보세요."
+                    android:paddingVertical="20dp"
+                    android:paddingEnd="8dp"
+                    android:text="@={viewModel._content}"
                     android:textColor="@color/Gray400"
                     android:textSize="12dp"
-                    android:gravity="top"
-                    android:background="@color/transparent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:paddingVertical="20dp"
-                    android:paddingEnd="8dp" />
+                    tools:layout_editor_absoluteX="16dp" />
+
+                <TextView
+                    android:id="@+id/body_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/5000"
+                    android:textSize="14dp"
+                    android:textColor="@color/Gray400"
+                    app:layout_constraintBottom_toBottomOf="@id/input_answer"
+                    app:layout_constraintEnd_toEndOf="@id/input_answer"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="14dp" />
 
                 <View
                     android:id="@+id/line"
@@ -133,38 +156,91 @@
                     android:background="@color/Gray400"
                     app:layout_constraintTop_toBottomOf="@id/input_answer" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/input_image"
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/input_image"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:layout_constraintTop_toTopOf="@id/line"-->
+<!--                    app:layout_constraintStart_toStartOf="parent">-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/image"-->
+<!--                        android:layout_width="24dp"-->
+<!--                        android:layout_height="24dp"-->
+<!--                        android:src="@drawable/image"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        android:layout_marginVertical="12dp"-->
+<!--                        android:layout_marginStart="4dp" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="이미지 첨부(최대 3장)"-->
+<!--                        android:textColor="@color/Gray400"-->
+<!--                        android:textSize="10dp"-->
+<!--                        app:layout_constraintStart_toEndOf="@id/image"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        android:layout_marginStart="4dp"-->
+<!--                        android:layout_marginEnd="4dp" />-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+                <TextView
+                    android:id="@+id/image_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/line"
+                    android:text="이미지"
+                    android:textColor="@color/Gray700"
+                    android:textSize="14dp"
+                    app:layout_constraintTop_toBottomOf="@id/line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="8dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/input_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/background_radius8_gray200"
+                    app:layout_constraintTop_toBottomOf="@id/image_tv"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
-                        android:id="@+id/image"
+                        android:id="@+id/input_iamge_iv"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/image"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginVertical="12dp"
-                        android:layout_marginStart="4dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="이미지 첨부(최대 3장)"
-                        android:textColor="@color/Gray400"
-                        android:textSize="10dp"
-                        app:layout_constraintStart_toEndOf="@id/image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp" />
+                        android:layout_marginTop="20dp" />
+
+                    <TextView
+                        android:id="@+id/input_image_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="첨부하기"
+                        android:textSize="10dp"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/input_iamge_iv"
+                        android:layout_marginTop="4dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/input_image"
+                    app:layout_constraintTop_toTopOf="@id/input_image"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,15 @@ class ShowBodyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_body)
 
+        val askTitle = intent.getStringExtra("title").toString()
+        val askBody = intent.getStringExtra("body").toString()
+
+        binding.bodyTitle.text = askTitle
+        binding.bodyBody.text = askBody
+
+        //이미지는 따로 표시 안해줘도 되는지??
+        //해시태그도 안 보여줘도 되는지??
+
         binding.exitBtn.setOnClickListener {
             finish()
         }

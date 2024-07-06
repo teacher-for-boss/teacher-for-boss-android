@@ -3,19 +3,27 @@ package com.example.teacherforboss.di
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
-import com.example.teacherforboss.domain.usecase.BossTalkBodyUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkBookmarkUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkCommentDisLikeUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkCommentLikeUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkCommentListUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkCommentUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkLikeUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkModifyBodyUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkPostsUseCase
-import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
-import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentListUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkPostsUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkSearchUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -83,11 +91,52 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesBossTalkCommentLikeUseCase(communityRepository: CommunityRepository):BossTalkCommentLikeUseCase=
+    fun providesBossTalkCommentLikeUseCase(communityRepository: CommunityRepository): BossTalkCommentLikeUseCase =
         BossTalkCommentLikeUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
-    fun providesBossTalkCommentdisLikeUseCase(communityRepository: CommunityRepository):BossTalkCommentDisLikeUseCase=
+    fun providesBossTalkCommentdisLikeUseCase(communityRepository: CommunityRepository): BossTalkCommentDisLikeUseCase =
         BossTalkCommentDisLikeUseCase(communityRepository=communityRepository)
- }
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkBodyUseCase(communityRepository: CommunityRepository): TeacherTalkBodyUseCase =
+        TeacherTalkBodyUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkLikeUseCase(communityRepository: CommunityRepository): TeacherTalkLikeUseCase =
+        TeacherTalkLikeUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkBookmarkUseCase(communityRepository: CommunityRepository): TeacherTalkBookmarkUseCase =
+        TeacherTalkBookmarkUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherUploadPostUseCase(communityRepository: CommunityRepository): TeacherUploadPostUseCase =
+        TeacherUploadPostUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkModifyBodyUseCase(communityRepository: CommunityRepository): TeacherTalkModifyBodyUseCase =
+        TeacherTalkModifyBodyUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkDeleteBodyUseCase(communityRepository: CommunityRepository): TeacherTalkDeleteBodyUseCase =
+        TeacherTalkDeleteBodyUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnswerListUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerListUseCase =
+        TeacherTalkAnswerListUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnswerPostUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerPostUseCase =
+        TeacherTalkAnswerPostUseCase(communityRepository = communityRepository)
+
+}

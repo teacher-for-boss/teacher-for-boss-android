@@ -1,7 +1,6 @@
 package com.example.teacherforboss.data.model.response.community.boss
 
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.google.gson.annotations.SerializedName
 

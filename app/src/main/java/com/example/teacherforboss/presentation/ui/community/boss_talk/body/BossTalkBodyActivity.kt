@@ -89,10 +89,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     fun doOptionMenu() {
         //삭제하기
-        binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this)
-            dialog.show()
-        }
+//        binding.deleteBtn.setOnClickListener {
+//            val dialog = DeleteBodyDialog(this, viewModel)
+//            dialog.show()
+//        }
 
         //수정하기
         binding.modifyBtn.setOnClickListener {
@@ -213,7 +213,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
             if(it.imageUrlList.isNotEmpty()) viewModel.imgUrlList=it.imageUrlList
 
             // 프로필 이미지
-            if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage, it.memberInfo.toMemberDto().profileImg!!)
+            if(it.memberInfo.toMemberDto().profileImg !=null) BindingImgAdapter.bindImage(binding.profileImage,
+                it.memberInfo.toMemberDto().profileImg!!
+            )
 
             // 사용자 본인 작성 여부
             viewModel._isMine.value=it.isMine

@@ -1,6 +1,6 @@
 package com.example.teacherforboss.data.model.request.community.boss
 
-import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkPostsRequestEntity
 import com.google.gson.annotations.SerializedName
 
 data class RequestBossTalkPostsDto (
@@ -13,7 +13,7 @@ data class RequestBossTalkPostsDto (
     @SerializedName("keyword")
     val keyword:String?
 ){
-    fun toRequestBossTalkPostsEntity()=BossTalkPostsRequestEntity(
+    fun toRequestBossTalkPostsEntity()= BossTalkPostsRequestEntity(
         lastPostId=lastPostId,
         size=size,
         sortBy=sortBy,

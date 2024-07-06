@@ -47,19 +47,12 @@ class BossTalkWriteActivity : AppCompatActivity() {
 
         // 초기 뷰 설정
         initView()
-        //해시태그입력
+        // 해시태그 입력
         inputHashtag()
-        //이미지가져오기
+        // 이미지 가져오기
         getImage()
-        //글자수
-        setTextLength()
-        //나가기
-        showExitDialog()
 
         addListenrs()
-
-        finishUpload()
-
     }
 
     fun initView(){
@@ -67,7 +60,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
             viewModel.postId=intent.getStringExtra("postId")!!.toLong()
             viewModel._title.value=intent.getStringExtra("title").toString()
             viewModel._content.value=intent.getStringExtra("body").toString()
-            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hasTagList=intent.getStringArrayListExtra("tagList")!!
+            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hashTagList=intent.getStringArrayListExtra("tagList")!!
             if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
         }
         //FlexboxLayoutManager
@@ -75,7 +68,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //tagRv
-        adapterTag = rvAdapterTagWrite(viewModel.hasTagList, viewModel)
+        adapterTag = rvAdapterTagWrite(viewModel.hashTagList, viewModel)
         binding.rvHashtag.adapter = adapterTag
         binding.rvHashtag.layoutManager = layoutManager
 
@@ -84,9 +77,38 @@ class BossTalkWriteActivity : AppCompatActivity() {
         binding.rvImage.adapter = adapterImage
         binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
+        //글자수
+        setTextLength()
+        //editText 배경설정
+        focusOnEditText()
     }
 
     fun inputHashtag() {
+        //스페이스바 입력 막기
+        binding.inputHashtag.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                val lastChar = charSequence?.lastOrNull()
+                if (lastChar == ' ') {
+                    Toast.makeText(this@BossTalkWriteActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun afterTextChanged(editable: Editable?) {
+                editable?.let {
+                    val text = it.toString()
+                    if (text.endsWith(' ')) {
+                        val start = it.length - 1
+                        // UI 스레드에서 지연 실행
+                        binding.inputHashtag.post {
+                            it.delete(start, start + 1)
+                            binding.inputHashtag.setSelection(start)
+                        }
+                    }
+                }
+            }
+        })
+        //해시태그 입력
         binding.inputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener {v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
                 val inputText = binding.inputHashtag.text.toString()
@@ -126,6 +148,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
                     Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    return
                 }
             }
 
@@ -194,9 +217,42 @@ class BossTalkWriteActivity : AppCompatActivity() {
         binding.inputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
     }
 
+    fun focusOnEditText() {
+        binding.inputTitle.setOnFocusChangeListener{ v, hasFocus ->
+            if(hasFocus) {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
+            }
+            else {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
+            }
+        }
+
+        binding.inputBody.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus) {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
+            }
+            else {
+                v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
+            }
+        }
+    }
+
     fun addListenrs(){
+        // 등록 유효 확인 후 uploadPost
+        IsValidPost()
+        //나가기
+        showExitDialog()
+    }
+
+    fun IsValidPost() {
         binding.registerBtn.setOnClickListener {
-            uploadPost()
+            val title = binding.inputTitle.text.toString()
+            val body = binding.inputBody.text.toString()
+
+            if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
+                Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+            }
+            else uploadPost()
         }
     }
 

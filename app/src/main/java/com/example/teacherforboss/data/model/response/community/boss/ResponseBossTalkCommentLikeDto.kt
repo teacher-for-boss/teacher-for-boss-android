@@ -1,6 +1,6 @@
 package com.example.teacherforboss.data.model.response.community.boss
 
-import com.example.teacherforboss.domain.model.community.BossTalkCommentLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseBossTalkCommentLikeDto(
@@ -15,7 +15,7 @@ data class ResponseBossTalkCommentLikeDto(
     @SerializedName("updatedAt")
     val updatedAt:String
 ){
-    fun toResponseBossTalkLikeResponseEntity()=BossTalkCommentLikeResponseEntity(
+    fun toResponseBossTalkLikeResponseEntity()= BossTalkCommentLikeResponseEntity(
         commentId=commentId,
         liked=liked,
         likedCount=likedCount,

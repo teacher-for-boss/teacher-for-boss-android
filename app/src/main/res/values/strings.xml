@@ -118,5 +118,7 @@
     <!-- 커뮤니티 -->
     <string name="recommed_option">추천해요 %d개</string>
     <string name="not_recommed_option">추천하지 않아요 %d개</string>
+
+    <string name="comment_cnt">댓글 %d개</string>
     <string name="user_level">Lv.%s 지식의 별</string>
 </resources>

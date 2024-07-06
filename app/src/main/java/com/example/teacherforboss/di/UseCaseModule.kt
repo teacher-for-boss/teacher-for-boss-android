@@ -5,6 +5,8 @@ import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
@@ -43,38 +45,38 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesBossTalkUseCase(communityRepository: CommunityRepository): BossTalkPostsUseCase =
+    fun providesBossTalkUseCase(communityRepository: CommunityRepository):BossTalkPostsUseCase=
         BossTalkPostsUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
-    fun providesBossUploadPostUseCase(communityRepository: CommunityRepository): BossUploadPostUseCase =
+    fun providesBossUploadPostUseCase(communityRepository: CommunityRepository):BossUploadPostUseCase=
         BossUploadPostUseCase(communityRepository=communityRepository)
 
 
     @Provides
     @Singleton
-    fun providesBossTalkBookmarkUseCase(communityRepository: CommunityRepository): BossTalkBookmarkUseCase =
+    fun providesBossTalkBookmarkUseCase(communityRepository: CommunityRepository):BossTalkBookmarkUseCase=
         BossTalkBookmarkUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
-    fun providesBossTalkLikeUseCase(communityRepository: CommunityRepository): BossTalkLikeUseCase =
+    fun providesBossTalkLikeUseCase(communityRepository: CommunityRepository):BossTalkLikeUseCase =
         BossTalkLikeUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
-    fun providesBossTalkBodyUseCase(communityRepository: CommunityRepository): BossTalkBodyUseCase =
+    fun providesBossTalkBodyUseCase(communityRepository: CommunityRepository):BossTalkBodyUseCase =
         BossTalkBodyUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
-    fun providesBossTalkSearchUseCase(communityRepository: CommunityRepository): BossTalkSearchUseCase =
+    fun providesBossTalkSearchUseCase(communityRepository: CommunityRepository):BossTalkSearchUseCase =
         BossTalkSearchUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
-    fun providesBossTalkModifyBodyUseCase(communityRepository: CommunityRepository): BossTalkModifyBodyUseCase =
+    fun providesBossTalkModifyBodyUseCase(communityRepository: CommunityRepository):BossTalkModifyBodyUseCase =
         BossTalkModifyBodyUseCase(communityRepository=communityRepository)
 
     @Provides
@@ -84,8 +86,18 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesBossTalkCommentUseCase(communityRepository: CommunityRepository): BossTalkCommentUseCase =
+    fun providesBossTalkCommentUseCase(communityRepository: CommunityRepository):BossTalkCommentUseCase =
         BossTalkCommentUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossTalkCommentLikeUseCase(communityRepository: CommunityRepository): BossTalkCommentLikeUseCase =
+        BossTalkCommentLikeUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossTalkCommentdisLikeUseCase(communityRepository: CommunityRepository): BossTalkCommentDisLikeUseCase =
+        BossTalkCommentDisLikeUseCase(communityRepository=communityRepository)
 
     @Provides
     @Singleton
@@ -126,4 +138,5 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherTalkAnswerPostUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerPostUseCase =
         TeacherTalkAnswerPostUseCase(communityRepository = communityRepository)
+
 }

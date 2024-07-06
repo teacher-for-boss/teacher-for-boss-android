@@ -7,6 +7,8 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLike
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkLikeResponseEntity
@@ -27,7 +29,7 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPo
 interface CommunityRepository {
     suspend fun getBossTalkPosts(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
 
-    suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity): BossTalkPostsResponseEntity
+    suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
 
     suspend fun uploadBossTalkPost(bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity):BossTalkUploadPostResponseEntity
 
@@ -42,6 +44,10 @@ interface CommunityRepository {
     suspend fun getBossTalkCommentList(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentListResponseEntity
 
     suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity, bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentResponseEntity
+
+    suspend fun postBossTalkCommentLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity
+
+    suspend fun postBossTalkCommentdisLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity):BossTalkCommentLikeResponseEntity
 
     suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBodyResponseEntity
 

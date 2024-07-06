@@ -8,6 +8,8 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLike
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkLikeResponseEntity
@@ -87,16 +89,30 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.getBossTalkCommentList(requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkCommentListResponseEntity()
-        }.getOrElse { err ->throw err }
+        }.getOrElse { err->throw err }
     }
 
     override suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
-                                             bossTalkRequestEntity: BossTalkRequestEntity
+        bossTalkRequestEntity: BossTalkRequestEntity
     ): BossTalkCommentResponseEntity {
         return runCatching {
             communityDataSource.postBossTalkComment(requestBossTalkCommentDto=bossTalkCommentRequestEntity.toRequestBossTalkCommentDto(), requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkCommentResponseEntity()
         }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postBossTalkCommentLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity {
+        return runCatching {
+            communityDataSource.postBossTalkCommentLike(requestBossTalkCommentLikeDto =bossTalkCommentLikeRequestEntity.toBossTalkCommentLikeDto())
+                .result.toResponseBossTalkLikeResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postBossTalkCommentdisLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity {
+        return runCatching {
+            communityDataSource.postBossTalkCommentdisLike(requestBossTalkCommentLikeDto = bossTalkCommentLikeRequestEntity.toBossTalkCommentLikeDto())
+                .result.toResponseBossTalkLikeResponseEntity()
+        }.getOrElse { err -> throw err }
     }
 
     override suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBookmarkResponseEntity {

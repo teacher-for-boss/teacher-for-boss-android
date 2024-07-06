@@ -9,6 +9,8 @@ data class CommentEntity(
     val content:String,
     val likeCount:Int,
     val dislikeCount:Int,
+    val liked:Boolean,
+    val disliked:Boolean,
     val createdAt:String,
     val memberInfo:MemberEntity,
     val children:ArrayList<CommentEntity>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
@@ -18,6 +19,7 @@ import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentBoss(
+    private val lifecycleOwner: LifecycleOwner,
     private val context: Context,
     private val commentList: List<CommentEntity>,
     private val viewModel: BossTalkBodyViewModel
@@ -45,7 +47,7 @@ class rvAdapterCommentBoss(
 
             // 대댓글 리스트
             val reCommentList=comment.children
-            binding.rvRecomment.adapter = rvAdapterRecommentBoss(context,reCommentList)
+            binding.rvRecomment.adapter = rvAdapterRecommentBoss(lifecycleOwner,context,reCommentList,viewModel)
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
@@ -62,10 +64,11 @@ class rvAdapterCommentBoss(
                 binding.root.context.startActivity(intent)
             }
 
-            //사용자의 추천 비추천 여부 -TODO: 서버에 변수 추가 후 수정 필요
-            var isCommentGood = false
-            var isCommentBad = false
-            fun updateComment() {
+            //사용자의 추천 비추천 여부
+            var isCommentGood = comment.liked
+            var isCommentBad = comment.disliked
+
+            fun handleCommentBtnColor(){
                 if(isCommentGood) {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
@@ -82,11 +85,25 @@ class rvAdapterCommentBoss(
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad)
                 }
             }
+
+            handleCommentBtnColor()
+
+            // 추천 비추천 onclick
+            fun updateComment() {
+                viewModel.getCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
+                    // 추천,비추천 개수 업데이트
+                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                    handleCommentBtnColor()
+                })
+            }
+
             binding.commentGood.setOnClickListener {
                 isCommentGood = !isCommentGood
                 if(isCommentGood && isCommentBad) {
                     isCommentBad = !isCommentBad
                 }
+                viewModel.postCommentLike(comment.commentId)
                 updateComment()
             }
             binding.commentBad.setOnClickListener {
@@ -94,6 +111,7 @@ class rvAdapterCommentBoss(
                 if(isCommentGood && isCommentBad) {
                     isCommentGood = !isCommentGood
                 }
+                viewModel.postCommentDisLike(comment.commentId)
                 updateComment()
             }
 

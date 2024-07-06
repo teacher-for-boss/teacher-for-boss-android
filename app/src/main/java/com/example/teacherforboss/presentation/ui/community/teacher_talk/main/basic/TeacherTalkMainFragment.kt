@@ -36,9 +36,6 @@ class TeacherTalkMainFragment :
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
-        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
-
         val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
         binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
         binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
@@ -61,14 +58,12 @@ class TeacherTalkMainFragment :
     }
 
     private fun initView() {
-
-        viewModel.getTeacherTalkQuestions()
-
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
 
+        // rv
         val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
         binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
         teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
@@ -123,8 +118,9 @@ class TeacherTalkMainFragment :
     }
 
     private fun getQuestions() {
+        viewModel.getTeacherTalkQuestions()
+
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
-            viewModel._teacherTalkQuestions.value = result.questionList
             if (!isInitialziedView) {
                 initView()
                 isInitialziedView = !isInitialziedView

@@ -18,7 +18,7 @@ data class QuestionEntity(
     val title: String,
     val content: String,
     val solved: Boolean,
-    val selectedTeacher: String,
+    val selectedTeacher: String?,
     val bookmarkCount: Int,
     val answerCount: Int,
     val likeCount: Int,

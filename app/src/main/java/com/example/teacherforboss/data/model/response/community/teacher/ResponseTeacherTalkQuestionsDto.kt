@@ -29,7 +29,7 @@ data class QuestionDto(
     @SerializedName("solved")
     val solved: Boolean,
     @SerializedName("selectedTeacher")
-    val selectedTeacher: String,
+    val selectedTeacher: String?,
     @SerializedName("bookmarkCount")
     val bookmarkCount: Int,
     @SerializedName("answerCount")

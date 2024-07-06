@@ -2,7 +2,7 @@ package com.example.teacherforboss.data.model.response.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.MemberDto
 import com.example.teacherforboss.domain.model.community.MemberEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.google.gson.annotations.SerializedName
 
 

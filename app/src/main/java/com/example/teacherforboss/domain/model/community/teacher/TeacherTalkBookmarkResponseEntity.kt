@@ -1,4 +1,4 @@
-package com.example.teacherforboss.domain.model.community
+package com.example.teacherforboss.domain.model.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto

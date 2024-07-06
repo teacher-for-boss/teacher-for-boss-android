@@ -5,9 +5,9 @@ import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkBodyUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkBookmarkUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentListUseCase

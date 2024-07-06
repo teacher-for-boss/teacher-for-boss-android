@@ -1,7 +1,7 @@
-package com.example.teacherforboss.domain.usecase
+package com.example.teacherforboss.domain.usecase.community.teacher
 
-import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 
 class TeacherTalkBookmarkUseCase (

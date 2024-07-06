@@ -1,7 +1,7 @@
 package com.example.teacherforboss.domain.model.community.boss
 
-import com.example.teacherforboss.data.model.response.community.boss.MemberDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
+import com.example.teacherforboss.domain.model.community.Member
 
 data class BossTalkBodyResponseEntity(
     val title:String,
@@ -19,7 +19,7 @@ data class BossTalkBodyResponseEntity(
     fun toResponseBossTalkBodyDto()= ResponseBossTalkBodyDto(
         title =title,
         content =content,
-        imageUrlList=imageUrlList,
+        imageUrlList =imageUrlList,
         hashtagList =hashtagList,
         liked =liked,
         bookmarked =bookmarked,

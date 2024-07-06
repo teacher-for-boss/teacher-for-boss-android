@@ -8,14 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
-import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
-import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

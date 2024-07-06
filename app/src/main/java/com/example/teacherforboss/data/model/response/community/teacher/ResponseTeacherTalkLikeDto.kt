@@ -1,6 +1,6 @@
 package com.example.teacherforboss.data.model.response.community.teacher
 
-import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
 import com.google.gson.annotations.SerializedName
 import kotlinx.datetime.LocalDateTime
 

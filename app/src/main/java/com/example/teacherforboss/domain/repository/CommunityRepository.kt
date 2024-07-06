@@ -1,10 +1,10 @@
 package com.example.teacherforboss.domain.repository
 
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity

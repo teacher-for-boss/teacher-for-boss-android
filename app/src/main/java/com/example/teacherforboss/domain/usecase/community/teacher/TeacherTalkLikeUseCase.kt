@@ -1,9 +1,8 @@
-package com.example.teacherforboss.domain.usecase
+package com.example.teacherforboss.domain.usecase.community.teacher
 
-import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
-import javax.inject.Inject
 
 class TeacherTalkLikeUseCase (
     private val communityRepository: CommunityRepository

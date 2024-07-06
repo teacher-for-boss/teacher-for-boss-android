@@ -1,4 +1,4 @@
-package com.example.teacherforboss.domain.model.community
+package com.example.teacherforboss.domain.model.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
 import kotlinx.datetime.LocalDateTime

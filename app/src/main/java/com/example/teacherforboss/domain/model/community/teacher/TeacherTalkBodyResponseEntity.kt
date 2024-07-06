@@ -1,6 +1,7 @@
-package com.example.teacherforboss.domain.model.community
+package com.example.teacherforboss.domain.model.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
+import com.example.teacherforboss.domain.model.community.Member
 
 data class TeacherTalkBodyResponseEntity(
     val title:String,

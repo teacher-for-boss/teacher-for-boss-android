@@ -69,6 +69,7 @@
     <color name="Gray600">#333D4B</color>
     <color name="Gray700">#222B39</color>
     <color name="Gray800">#191F28</color>
+    <color name="TransparentGray800">#B3191F28</color>
 
     <color name="success">#24CD5D</color>
     <color name="error">#FF6565</color>

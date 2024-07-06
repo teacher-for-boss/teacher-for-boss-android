@@ -80,7 +80,7 @@
             android:id="@+id/ic_boss_talk_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_comment"
+            android:src="@drawable/ic_comment_24"
             app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_comment_count"
             app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_comment_count"
             app:layout_constraintTop_toTopOf="@id/tv_boss_talk_comment_count" />

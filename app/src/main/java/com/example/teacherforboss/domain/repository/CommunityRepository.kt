@@ -5,6 +5,7 @@ import com.example.teacherforboss.domain.model.community.BossTalkBookmarkRespons
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
@@ -35,6 +36,8 @@ interface CommunityRepository {
     suspend fun getBossTalkCommentList(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentListResponseEntity
 
     suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity, bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentResponseEntity
+
+    suspend fun deleteBossTalkPost(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkDeletePostResponseEntity
 
     suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity):TeacherTalkBodyResponseEntity
 

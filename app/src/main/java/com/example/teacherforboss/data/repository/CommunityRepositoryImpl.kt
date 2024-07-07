@@ -6,6 +6,7 @@ import com.example.teacherforboss.domain.model.community.BossTalkBookmarkRespons
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
@@ -84,11 +85,18 @@ class CommunityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity,
-        bossTalkRequestEntity: BossTalkRequestEntity
+                                             bossTalkRequestEntity: BossTalkRequestEntity
     ): BossTalkCommentResponseEntity {
         return runCatching {
             communityDataSource.postBossTalkComment(requestBossTalkCommentDto=bossTalkCommentRequestEntity.toRequestBossTalkCommentDto(), requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkCommentResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun deleteBossTalkPost(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkDeletePostResponseEntity {
+        return runCatching {
+            communityDataSource.deleteBossTalkPost(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto())
+                .result.toBossTalkDeletePostResponseEntity()
         }.getOrElse { err->throw err }
     }
 
@@ -112,5 +120,4 @@ class CommunityRepositoryImpl @Inject constructor(
                 .result.toTeacherTalkLikeResponseEntity()
         }.getOrElse { err->throw err }
     }
-
 }

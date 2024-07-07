@@ -11,6 +11,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkDeletePostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -51,6 +52,9 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
         requestBossTalkCommentDto: RequestBossTalkCommentDto,
         requestBossTalkDto: RequestBossTalkDto
     ): BaseResponse<ResponseBossTalkCommentDto> = communityService.postBossTalkComment(requestBossTalkCommentDto, postId = requestBossTalkDto.postId)
+
+    override suspend fun deleteBossTalkPost(requestBossTalkDto: RequestBossTalkDto): BaseResponse<ResponseBossTalkDeletePostDto>
+    =communityService.deleteBossTalkPost(postId = requestBossTalkDto.postId)
 
     override suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBodyDto>
     =communityService.getTeacherTalkBody(questionId = requestTeacherTalkDto.questionId)

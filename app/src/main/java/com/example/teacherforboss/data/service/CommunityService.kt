@@ -7,6 +7,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkDeletePostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
@@ -15,6 +16,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -28,7 +30,7 @@ interface CommunityService {
         @Query("size") size:Int,
         @Query("sortBy") sortBy:String
 
-        ):BaseResponse<ResponseBossTalkPostsDto>
+    ):BaseResponse<ResponseBossTalkPostsDto>
 
     @GET("${BOSS}/search?")
     suspend fun searchKeywordBossTalk(
@@ -79,6 +81,11 @@ interface CommunityService {
         @Path("postId") postId:Long,
         @Body requestBossUploadPostDto: RequestBossUploadPostDto,
     ):BaseResponse<ResponseBossModifyDto>
+
+    @DELETE("${BOSS}/posts/{postId}")
+    suspend fun deleteBossTalkPost(
+        @Path("postId") postId:Long
+    ):BaseResponse<ResponseBossTalkDeletePostDto>
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(

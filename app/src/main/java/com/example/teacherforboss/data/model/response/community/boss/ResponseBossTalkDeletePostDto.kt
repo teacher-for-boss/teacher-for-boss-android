@@ -8,10 +8,10 @@ data class ResponseBossTalkDeletePostDto(
     @SerializedName("postId")
     val postId:Long,
     @SerializedName("updatedAt")
-    val updatedAt: String
+    val deletedAt: String?
 ) {
     fun toBossTalkDeletePostResponseEntity()= BossTalkDeletePostResponseEntity(
         postId = postId,
-        updatedAt = updatedAt
+        deletedAt = deletedAt
     )
 }

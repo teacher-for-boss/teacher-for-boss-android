@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -53,17 +54,18 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
                     Log.d("deleteTeacherTalk", it.questionId.toString())
                     dismiss()
                     val intent = Intent(context, MainActivity::class.java).apply {
-                        putExtra("gotoTeacherTalk", "gotoTeacherTalk")
+                        putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
                     }
                     context.startActivity(intent)
                 })*/
             } else if (viewModel is BossTalkBodyViewModel) {
             viewModel.deleteLiveData.observe(lifecycleOwner, Observer {
-                dismiss()
                 val intent = Intent(context, MainActivity::class.java).apply {
-                    putExtra("gotoBossTalk", "gotoBossTalk")
+                    putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
                 }
                 context.startActivity(intent)
+                dismiss()
+
             })
             }
         }

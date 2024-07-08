@@ -9,10 +9,12 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkDeletePostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
@@ -40,7 +42,7 @@ interface CommunityService {
         @Query("size") size:Int,
         @Query("sortBy") sortBy:String
 
-        ):BaseResponse<ResponseBossTalkPostsDto>
+    ):BaseResponse<ResponseBossTalkPostsDto>
 
     @GET("${TEACHER}/questions?")
     suspend fun getTeacherTalkQuestions(
@@ -139,7 +141,12 @@ interface CommunityService {
         @Body requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto
     ): BaseResponse<ResponseTeacherAnswerPostDto>
 
-    @PATCH("${TEACHER}/questions/{questionId}/answers/{answerId}")
+    @DELETE("${BOSS}/posts/{postId}")
+    suspend fun deleteBossTalkPost(
+        @Path("postId") postId:Long
+    ):BaseResponse<ResponseBossTalkDeletePostDto>
+
+   @PATCH("${TEACHER}/questions/{questionId}/answers/{answerId}")
     suspend fun modifyTeacherTalkAnswer(
         @Path("questionId") questionId: Long,
         @Path("answerId") answerId: Long,
@@ -151,6 +158,7 @@ interface CommunityService {
         @Path("questionId") questionId: Long,
         @Path("answerId") answerId: Long
     ): BaseResponse<ResponseTeacherSelectDto>
+
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(
@@ -166,6 +174,12 @@ interface CommunityService {
     suspend fun getTeacherTalkBody(
         @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkBodyDto>
+
+    @DELETE("${TEACHER}/questions/{questionId}/answers/{answerId}")
+    suspend fun deleteTeacherTalkAns(
+        @Path("questionId") questionId:Long,
+        @Path("answerId") answerId:Long
+    ):BaseResponse<ResponseTeacherTalkAnsDto>
 
     companion object {
         const val BOSS = "board/boss"

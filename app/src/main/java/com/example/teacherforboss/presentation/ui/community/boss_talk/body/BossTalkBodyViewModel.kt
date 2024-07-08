@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
@@ -13,6 +14,7 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLik
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
+import com.example.teacherforboss.domain.usecase.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
@@ -33,6 +35,7 @@ class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkCommentLikeUseCase: BossTalkCommentLikeUseCase,
     private val bossTalkCommentDisLikeUseCase: BossTalkCommentDisLikeUseCase,
     private val bossTalkCommentListUseCase: BossTalkCommentListUseCase,
+    private val bossTalkDeletePostUseCase: BossTalkDeletePostUseCase
 ): ViewModel() {
     private var _postCommentLiveData=MutableLiveData<BossTalkCommentResponseEntity>()
     val postCommentLiveData:LiveData<BossTalkCommentResponseEntity> get() = _postCommentLiveData
@@ -43,6 +46,9 @@ class BossTalkBodyViewModel @Inject constructor(
 
     private var _getCommentListLiveData=MutableLiveData<BossTalkCommentListResponseEntity>()
     val getCommentListLiveData:LiveData<BossTalkCommentListResponseEntity> get() = _getCommentListLiveData
+
+    private var _deleteLiveData=MutableLiveData<BossTalkDeletePostResponseEntity>()
+    val deleteLiveData:LiveData<BossTalkDeletePostResponseEntity> get()=_deleteLiveData
 
     var imgUrlList:List<String> = arrayListOf()
 
@@ -139,6 +145,19 @@ class BossTalkBodyViewModel @Inject constructor(
                     BossTalkRequestEntity(postId=postId.value!!)
                 )
                 _getCommentListLiveData.value=bossTalkCommentListResponseEntity
+
+            }catch (ex:Exception){
+
+            }
+        }
+    }
+    fun deletePost(postId: Long){
+        viewModelScope.launch {
+            try{
+                val bossTalkDeletePostResponseEntity=bossTalkDeletePostUseCase(
+                    BossTalkRequestEntity(postId=postId)
+                )
+                _deleteLiveData.value=bossTalkDeletePostResponseEntity
 
             }catch (ex:Exception){
 

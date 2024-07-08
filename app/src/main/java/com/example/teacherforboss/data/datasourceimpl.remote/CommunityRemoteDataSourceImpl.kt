@@ -6,6 +6,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerDto
@@ -16,10 +17,12 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentListDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkDeletePostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkCommentLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerModifyDto
@@ -77,6 +80,9 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
         requestBossTalkDto: RequestBossTalkDto
     ): BaseResponse<ResponseBossTalkCommentDto> = communityService.postBossTalkComment(requestBossTalkCommentDto, postId = requestBossTalkDto.postId)
 
+    override suspend fun deleteBossTalkPost(requestBossTalkDto: RequestBossTalkDto): BaseResponse<ResponseBossTalkDeletePostDto>
+    =communityService.deleteBossTalkPost(postId = requestBossTalkDto.postId)
+
     override suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBodyDto>
     =communityService.getTeacherTalkBody(questionId = requestTeacherTalkDto.questionId)
 
@@ -107,6 +113,9 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     ): BaseResponse<ResponseTeacherAnswerPostDto>
     =communityService.postTeacherTalkAnswer(
         questionId = requestTeacherTalkDto.questionId, requestTeacherAnswerPostDto = requestTeacherAnswerPostDto)
+
+    override suspend fun deleteTeacherTalkAns(requestTeacherTalkAnsDto: RequestTeacherTalkAnsDto): BaseResponse<ResponseTeacherTalkAnsDto>
+    =communityService.deleteTeacherTalkAns(questionId = requestTeacherTalkAnsDto.questionId, answerId = requestTeacherTalkAnsDto.answerId)
 
     override suspend fun modifyTeacherTalkAnswer(
         requestTeacherTalkDto: RequestTeacherTalkDto,

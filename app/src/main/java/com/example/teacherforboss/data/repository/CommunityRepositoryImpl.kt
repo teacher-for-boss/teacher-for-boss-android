@@ -2,6 +2,9 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
@@ -85,7 +88,7 @@ class CommunityRepositoryImpl @Inject constructor(
         }.getOrElse { err->throw err }
     }
 
-    override suspend fun getBossTalkBody(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkBodyResponseEntity {
+    override suspend fun getBossTalkBody(bossTalkRequestEntity: BossTalkRequestEntity):BossTalkBodyResponseEntity {
         return runCatching {
             communityDataSource.getBossTalkBody(requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkBodyResponseEntity()
@@ -113,6 +116,13 @@ class CommunityRepositoryImpl @Inject constructor(
         return runCatching {
             communityDataSource.postBossTalkComment(requestBossTalkCommentDto=bossTalkCommentRequestEntity.toRequestBossTalkCommentDto(), requestBossTalkDto=bossTalkRequestEntity.toRequestBossTalkDto())
                 .result.toBossTalkCommentResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun deleteBossTalkPost(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkDeletePostResponseEntity {
+        return runCatching {
+            communityDataSource.deleteBossTalkPost(requestBossTalkDto = bossTalkRequestEntity.toRequestBossTalkDto())
+                .result.toBossTalkDeletePostResponseEntity()
         }.getOrElse { err->throw err }
     }
 
@@ -195,7 +205,14 @@ class CommunityRepositoryImpl @Inject constructor(
         }.getOrElse { err -> throw err }
     }
 
-    override suspend fun modifyTeacherTalkAnswer(
+   override suspend fun deleteTeacherTalkAns(teacherTalkAnsRequestEntity: TeacherTalkAnsRequestEntity): TeacherTalkAnsResponseEntity {
+        return runCatching {
+            communityDataSource.deleteTeacherTalkAns(requestTeacherTalkAnsDto=teacherTalkAnsRequestEntity.toRequestTeacherTalkAnsDto())
+                .result.toTeacherTalkAnsResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+  override suspend fun modifyTeacherTalkAnswer(
         teacherTalkRequestEntity: TeacherTalkRequestEntity,
         teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity,
         teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity

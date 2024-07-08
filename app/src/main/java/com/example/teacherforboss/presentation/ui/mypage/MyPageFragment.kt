@@ -5,10 +5,13 @@ import android.view.View
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMyPageBinding
 import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.context.navigateToWebView
 
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        addListeners()
     }
 
     private fun initLayout() {
@@ -20,5 +23,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 // menu bar String 수정
             }
         }
+    }
+
+    private fun addListeners() {
+        with(binding) {
+            includeMyPageMenuInquire.root.setOnClickListener { requireActivity().startActivity(requireActivity().navigateToWebView(INQUIRE_WEB_LINK)) }
+            includeMyPageMenuTerms.root.setOnClickListener { requireActivity().startActivity(requireActivity().navigateToWebView(TERMS_WEB_LINK)) }
+        }
+    }
+
+    companion object {
+        private const val INQUIRE_WEB_LINK =
+            "https://docs.google.com/forms/d/e/1FAIpQLScvoVxh-1jlqyKhVKiFS4pZDhk-GtYbZOHKh4KJHveutN2TYw/viewform"
+        private const val TERMS_WEB_LINK =
+            "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
     }
 }

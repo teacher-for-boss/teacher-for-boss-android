@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -84,7 +85,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun doOptionMenu() {
         //삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this)
+            val dialog = DeleteBodyDialog(this,viewModel,this,postId)
             dialog.show()
         }
 

@@ -90,7 +90,7 @@ class TeachertalkBodyActivity : AppCompatActivity() {
     fun doOptionMenu() {
         //삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this)
+            val dialog = DeleteBodyDialog(this,viewModel,this,questionId)
             dialog.show()
         }
 

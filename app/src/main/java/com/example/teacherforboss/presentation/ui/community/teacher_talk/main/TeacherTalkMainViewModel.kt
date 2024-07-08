@@ -32,7 +32,7 @@ class TeacherTalkMainViewModel @Inject constructor(
     var _sortBy= MutableLiveData<String>("latest")
     val sortBy: LiveData<String>
         get() = _sortBy
-    var _category= MutableLiveData<String>("위생")
+    var _category = MutableLiveData<String>("위생")
     val category: LiveData<String>
         get() = _category
 
@@ -71,8 +71,30 @@ class TeacherTalkMainViewModel @Inject constructor(
         }
     }
 
+    fun changeTeacherTalkCategory(changeCategory: String) {
+        viewModelScope.launch {
+            try{
+                val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
+                    TeacherTalkQuestionsRequestEntity(
+                        lastQuestionId = lastQuestionId.value?:0L,
+                        size=size.value?:10,
+                        sortBy=sortBy.value?:"latest",
+                        category =changeCategory
+                    )
+                )
+                _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
+
+            }catch (ex:Exception){
+            }
+        }
+    }
+
     fun setSolved(isSolved: Boolean) {
         _solved.value = isSolved
+    }
+
+    fun setCategory(category: String) {
+        _category.value = category
     }
 
     override fun setSortBy(sortBy: String) {

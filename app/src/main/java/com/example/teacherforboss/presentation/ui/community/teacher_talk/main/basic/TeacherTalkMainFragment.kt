@@ -28,28 +28,21 @@ class TeacherTalkMainFragment :
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
     private var isInitialziedView = false
 
-    private lateinit var adapterCategory: TeacherTalkCategoryAdapter
-
-    private var categoryIndex = 0
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        binding.viewModel=viewModel
+        binding.viewModel = viewModel
         binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
         val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
-        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
-
 
         getQuestions()
         observeSortType()
+        observeCategory()
         addListeners()
-
-
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -83,8 +76,7 @@ class TeacherTalkMainFragment :
                     if (presentSortBy != items[p2]) viewModel.setSortBy(items[p2])
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
         //fab
@@ -103,7 +95,6 @@ class TeacherTalkMainFragment :
                 Log.d("LOGGER_TAG", "freeListener")
             }
         }
-
 
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
@@ -125,7 +116,7 @@ class TeacherTalkMainFragment :
         viewModel.getTeacherTalkQuestions()
 
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
-            viewModel._teacherTalkQuestions.value=result.questionList
+            viewModel._teacherTalkQuestions.value = result.questionList
             if (!isInitialziedView) {
                 initView()
                 isInitialziedView = !isInitialziedView
@@ -133,18 +124,18 @@ class TeacherTalkMainFragment :
         })
     }
 
-    private fun setCategory() {
-//        adapterCategory = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
-        binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
-        val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
-        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
-    }
-    private fun observeSortType(){
-        viewModel.sortBy.observe(viewLifecycleOwner,{
+    private fun observeSortType() {
+        viewModel.sortBy.observe(viewLifecycleOwner, {
             viewModel.getTeacherTalkQuestions()
         })
     }
+
+    private fun observeCategory() {
+        viewModel.category.observe(viewLifecycleOwner, {
+            viewModel.getTeacherTalkQuestions()
+        })
+    }
+
     private fun updateQuestions() {
         val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
         binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
@@ -158,16 +149,5 @@ class TeacherTalkMainFragment :
         binding.ivSearch.setOnClickListener {
             viewModel._keyword.value = binding.etSearchView.text.toString()
         }
-    }
-
-//    private fun gotoTeacherTalkWrite() {
-//        val intent = Intent(requireContext(), TeacherTalkWriteActivity::class.java)
-//        startActivity(intent)
-//    }
-}
-
-    class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.right = horizontalSpaceWidth
     }
 }

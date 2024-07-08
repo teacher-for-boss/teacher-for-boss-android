@@ -11,29 +11,32 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 
-class TeacherTalkCategoryAdapter(context: Context, private val categoryList:ArrayList<String>,
-        private val viewModel: TeacherTalkMainViewModel,
-) :RecyclerView.Adapter<TeacherTalkCategoryAdapter.ViewHolder>() {
+class TeacherTalkCategoryAdapter(
+    private val context: Context,
+    private val categoryList: ArrayList<String>,
+    private val viewModel: TeacherTalkMainViewModel
+) : RecyclerView.Adapter<TeacherTalkCategoryAdapter.ViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
-    var selectedItemPosition= DEFAULT_TAG_POSITION
-    var previousItemPosition= RecyclerView.NO_POSITION
+    var selectedItemPosition = DEFAULT_TAG_POSITION
+    var previousItemPosition = RecyclerView.NO_POSITION
 
-//    private var teacherTalkCategoryList: List<TeacherTalkCategory> = emptyList()
-    inner class ViewHolder(private val binding: ItemTeacherTalkCategoryBinding):RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.teacherTalkCategory.setOnClickListener {
                 previousItemPosition = selectedItemPosition
                 selectedItemPosition = adapterPosition
 
-                viewModel.selectCategoryId(selectedItemPosition.toLong())
+                val selectedCategory = categoryList[selectedItemPosition]
+                viewModel.setCategory(selectedCategory)
 
                 Log.d("category", selectedItemPosition.toString())
 
-                //bind에 보내는 함수
                 notifyItemChanged(previousItemPosition)
                 notifyItemChanged(selectedItemPosition)
             }
         }
+
         @SuppressLint("ResourceAsColor")
         fun bind(category: String, position: Int) {
             binding.teacherTalkCategory.text = category
@@ -49,7 +52,6 @@ class TeacherTalkCategoryAdapter(context: Context, private val categoryList:Arra
                 binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple200)
             }
         }
-
     }
 
     override fun onCreateViewHolder(
@@ -66,14 +68,7 @@ class TeacherTalkCategoryAdapter(context: Context, private val categoryList:Arra
 
     override fun getItemCount() = categoryList.size
 
-//    fun setTeacherTalkCategoryList(categoryList: ArrayList<String>) {
-//        this.teacherTalkCategoryList = categoryList.toList()
-//        notifyDataSetChanged()
-//    }
-
-    companion object{
+    companion object {
         const val DEFAULT_TAG_POSITION = 0
     }
 }
-
-

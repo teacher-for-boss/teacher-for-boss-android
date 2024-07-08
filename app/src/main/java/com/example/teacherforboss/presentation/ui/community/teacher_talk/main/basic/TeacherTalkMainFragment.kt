@@ -7,11 +7,14 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.InvalidationTracker
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
@@ -47,6 +50,8 @@ class TeacherTalkMainFragment :
         getQuestions()
         observeSortType()
         addListeners()
+
+
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,

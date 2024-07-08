@@ -34,6 +34,9 @@ class TeacherTalkMainViewModel @Inject constructor(
     val category: LiveData<String>
         get() = _category
 
+    private val _solved = MutableLiveData<Boolean>()
+    val solved: LiveData<Boolean> get() = _solved
+
     var _keyword= MutableLiveData<String>("")
     val keyword: LiveData<String>
         get() = _keyword
@@ -72,6 +75,10 @@ class TeacherTalkMainViewModel @Inject constructor(
             }catch (ex:Exception){
             }
         }
+    }
+
+    fun setSolved(isSolved: Boolean) {
+        _solved.value = isSolved
     }
 
     override fun setSortBy(sortBy: String) {

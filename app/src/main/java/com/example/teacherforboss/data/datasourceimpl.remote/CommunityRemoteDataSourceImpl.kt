@@ -5,6 +5,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkPostsDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
@@ -15,6 +16,7 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -64,4 +66,8 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getTeacherTalkBookmark(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBookmarkDto>
     =communityService.getTeacherTalkBookmark(questionId = requestTeacherTalkDto.questionId)
+
+    override suspend fun deleteTeacherTalkAns(requestTeacherTalkAnsDto: RequestTeacherTalkAnsDto): BaseResponse<ResponseTeacherTalkAnsDto>
+    =communityService.deleteTeacherTalkAns(questionId = requestTeacherTalkAnsDto.questionId, answerId = requestTeacherTalkAnsDto.answerId)
+
 }

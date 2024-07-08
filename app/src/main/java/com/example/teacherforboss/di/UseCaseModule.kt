@@ -15,6 +15,7 @@ import com.example.teacherforboss.domain.usecase.BossTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.TeacherTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.TeacherTalkLikeUseCase
@@ -102,5 +103,10 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherTalkBookmarkUseCase(communityRepository: CommunityRepository): TeacherTalkBookmarkUseCase =
         TeacherTalkBookmarkUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnsUseCase(communityRepository: CommunityRepository): TeacherTalkAnsUseCase =
+        TeacherTalkAnsUseCase(communityRepository = communityRepository)
 
 }

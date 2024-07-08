@@ -161,6 +161,9 @@ class UseCaseModule {
     fun providesTeacherTalkAnsUseCase(communityRepository: CommunityRepository): TeacherTalkAnsUseCase =
         TeacherTalkAnsUseCase(communityRepository = communityRepository)
 
+
+    @Provides
+    @Singleton
     fun providesTeacherTalkModifyAnswerUseCase(communityRepository: CommunityRepository): TeacherTalkModifyAnswerUseCase =
         TeacherTalkModifyAnswerUseCase(communityRepository = communityRepository)
 

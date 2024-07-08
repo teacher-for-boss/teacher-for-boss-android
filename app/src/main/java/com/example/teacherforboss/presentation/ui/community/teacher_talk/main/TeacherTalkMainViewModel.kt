@@ -23,16 +23,24 @@ class TeacherTalkMainViewModel @Inject constructor(
     var _lastQuestionId= MutableLiveData<Long>(0L)
     val lastQuestionId: LiveData<Long>
         get() = _lastQuestionId
-
+    val categoryList = arrayListOf(
+        "전체", "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
+    )
     var _size= MutableLiveData<Int>(10)
     val size: LiveData<Int>
         get() = _size
     var _sortBy= MutableLiveData<String>("latest")
     val sortBy: LiveData<String>
         get() = _sortBy
-    var _category= MutableLiveData<String>("마케팅")
+    var _category = MutableLiveData<String>("위생")
     val category: LiveData<String>
         get() = _category
+
+    var _categoryId = MutableLiveData<Long>(1)
+    val categoryId: LiveData<Long> get()=_categoryId
+
+    private val _solved = MutableLiveData<Boolean>()
+    val solved: LiveData<Boolean> get() = _solved
 
     var _keyword= MutableLiveData<String>("")
     val keyword: LiveData<String>
@@ -45,17 +53,6 @@ class TeacherTalkMainViewModel @Inject constructor(
     var _teacherTalkQuestions= MutableLiveData<List<QuestionEntity>>()
     val teacherTalkQuestions: LiveData<List<QuestionEntity>> =_teacherTalkQuestions
 
-     val mockTeacherTalkCategoryList =listOf<TeacherTalkCategory>(
-         TeacherTalkCategory( category_name = "전체" ),
-         TeacherTalkCategory( category_name = "마케팅" ),
-         TeacherTalkCategory( category_name = "위생" ),
-         TeacherTalkCategory( category_name = "상권" ),
-         TeacherTalkCategory( category_name = "운영" ),
-         TeacherTalkCategory( category_name = "직원관리" ),
-         TeacherTalkCategory( category_name = "인테리어" ),
-         TeacherTalkCategory( category_name = "정책" ),
-         )
-
     fun getTeacherTalkQuestions(){
         viewModelScope.launch {
             try{
@@ -64,7 +61,7 @@ class TeacherTalkMainViewModel @Inject constructor(
                         lastQuestionId = lastQuestionId.value?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
-                        category ="마케팅"
+                        category ="위생"
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
@@ -72,6 +69,32 @@ class TeacherTalkMainViewModel @Inject constructor(
             }catch (ex:Exception){
             }
         }
+    }
+
+    fun changeTeacherTalkCategory(changeCategory: String) {
+        viewModelScope.launch {
+            try{
+                val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
+                    TeacherTalkQuestionsRequestEntity(
+                        lastQuestionId = lastQuestionId.value?:0L,
+                        size=size.value?:10,
+                        sortBy=sortBy.value?:"latest",
+                        category =changeCategory
+                    )
+                )
+                _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
+
+            }catch (ex:Exception){
+            }
+        }
+    }
+
+    fun setSolved(isSolved: Boolean) {
+        _solved.value = isSolved
+    }
+
+    fun setCategory(category: String) {
+        _category.value = category
     }
 
     override fun setSortBy(sortBy: String) {
@@ -83,5 +106,9 @@ class TeacherTalkMainViewModel @Inject constructor(
             "좋아요순"->sort="likes"
         }
         _sortBy.value=sort
+    }
+
+    fun selectCategoryId(id: Long) {
+        _categoryId.value = id + 1
     }
 }

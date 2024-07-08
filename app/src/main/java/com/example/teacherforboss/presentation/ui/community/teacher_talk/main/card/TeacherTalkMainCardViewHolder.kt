@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card
 
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
@@ -22,6 +23,11 @@ class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBind
         }
         if(cardData.liked) binding.icTeacherTalkLike.setImageResource(R.drawable.ic_like_on)
         if(cardData.bookmarked) binding.icTeacherTalkBookmark.setImageResource(R.drawable.ic_bookmark_on)
+
+        if(cardData.solved)
+            binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
+        else binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+
     }
 
     fun extractDate(text:String):String{

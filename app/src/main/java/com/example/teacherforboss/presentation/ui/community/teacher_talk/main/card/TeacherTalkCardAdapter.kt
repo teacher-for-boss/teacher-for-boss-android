@@ -6,9 +6,11 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
 import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
@@ -83,6 +85,14 @@ class TeacherTalkCardAdapter(context: Context) :
 
             binding.icTeacherTalkLike.isSelected = teacherTalkCard.liked
             binding.tvTeacherTalkLikeCount.isSelected = teacherTalkCard.liked
+
+            if(teacherTalkCard.solved) {
+                binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
+                Glide.with(binding.root.context)
+                    .load(teacherTalkCard.selectedTeacher)
+                    .into(binding.ivSelectedTeacher)
+            }
+            else binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
 
             // 상세 글 이동
             binding.root.setOnClickListener {

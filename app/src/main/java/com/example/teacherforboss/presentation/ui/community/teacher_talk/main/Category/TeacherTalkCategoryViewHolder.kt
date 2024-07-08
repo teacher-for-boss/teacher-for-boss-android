@@ -1,23 +1,12 @@
-package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category
-
-import androidx.recyclerview.widget.RecyclerView
-import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
-
-class TeacherTalkCategoryViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
-RecyclerView.ViewHolder(binding.root) {
-
-//    init {
+//package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category
 //
-//        binding.teacherTalkCategory.setOnClickListener {
-//            previousItemPosition = selectedItemPosition
-//            selectedItemPosition = adapterPosition
+//import androidx.recyclerview.widget.RecyclerView
+//import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
 //
-//            //bind에 보내는 함수
-//            notifyItemChanged(previousItemPosition)
-//            notifyItemChanged(selectedItemPosition)
-//        }
+//class TeacherTalkCategoryViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
+//RecyclerView.ViewHolder(binding.root) {
+//
+//    fun onBind(categoryData: TeacherTalkCategory) {
+//            binding.teacherTalkCategory.text= categoryData.category_name
 //    }
-    fun onBind(categoryData: TeacherTalkCategory) {
-            binding.teacherTalkCategory.text= categoryData.category_name
-    }
-}
+//}

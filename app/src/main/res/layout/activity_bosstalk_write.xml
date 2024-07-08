@@ -65,131 +65,133 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/top_menu"
+                android:background="@color/white"
                 android:paddingHorizontal="16dp"
-                android:background="@color/white">
+                app:layout_constraintTop_toBottomOf="@id/top_menu"
+                tools:layout_editor_absoluteX="31dp">
 
                 <TextView
                     android:id="@+id/title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:text="글 제목*"
                     android:textColor="@color/Gray700"
                     android:textSize="14dp"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="20dp" />
-                
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <EditText
                     android:id="@+id/input_title"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:background="@drawable/background_radius12_transparent_gray200_stroke"
-                    app:layout_constraintTop_toBottomOf="@id/title_tv"
                     android:layout_marginTop="8dp"
-                    android:text="@={viewModel._title}"
+                    android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:gravity="top"
                     android:hint="제목을 입력해주세요"
-                    android:textSize="14dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/Gray400"
+                    android:paddingVertical="12dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="70dp"
-                    android:paddingVertical="12dp"
-                    android:gravity="top"/>
-                
+                    android:text="@={viewModel._title}"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/Gray400"
+                    android:textSize="14dp"
+                    app:layout_constraintTop_toBottomOf="@id/title_tv"
+                    tools:layout_editor_absoluteX="16dp" />
+
                 <TextView
                     android:id="@+id/title_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/30"
-                    android:textSize="14dp"
-                    android:textColor="@color/Gray400"
-                    app:layout_constraintEnd_toEndOf="@id/input_title"
-                    app:layout_constraintBottom_toBottomOf="@id/input_title"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:text="0/30"
+                    android:textColor="@color/Gray400"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/input_title"
+                    app:layout_constraintEnd_toEndOf="@id/input_title" />
 
                 <TextView
                     android:id="@+id/body_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:text="글 본문"
                     android:textColor="@color/Gray700"
                     android:textSize="14dp"
-                    app:layout_constraintTop_toBottomOf="@id/input_title"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="30dp" />
-                
+                    app:layout_constraintTop_toBottomOf="@id/input_title" />
+
                 <EditText
                     android:id="@+id/input_body"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
-                    android:background="@drawable/background_radius12_transparent_gray200_stroke"
-                    app:layout_constraintTop_toBottomOf="@id/body_tv"
                     android:layout_marginTop="8dp"
-                    android:text="@={viewModel._content}"
+                    android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:gravity="top"
                     android:hint="내용을 자유롭게 작성해주세요."
-                    android:textSize="12dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/Gray400"
                     android:paddingHorizontal="10dp"
                     android:paddingTop="14dp"
                     android:paddingBottom="40dp"
-                    android:gravity="top"/>
+                    android:text="@={viewModel._content}"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/Gray400"
+                    android:textSize="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/body_tv" />
 
                 <TextView
                     android:id="@+id/body_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/1000"
-                    android:textSize="14dp"
-                    android:textColor="@color/Gray400"
-                    app:layout_constraintBottom_toBottomOf="@id/input_body"
-                    app:layout_constraintEnd_toEndOf="@id/input_body"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="14dp" />
+                    android:layout_marginBottom="14dp"
+                    android:text="0/1000"
+                    android:textColor="@color/Gray400"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/input_body"
+                    app:layout_constraintEnd_toEndOf="@id/input_body" />
 
                 <TextView
                     android:id="@+id/image_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="이미지"
                     android:textColor="@color/Gray700"
                     android:textSize="14dp"
-                    app:layout_constraintTop_toBottomOf="@id/input_body"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="8dp" />
+                    app:layout_constraintTop_toBottomOf="@id/input_body" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/input_image"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/background_radius8_gray200"
-                    app:layout_constraintTop_toBottomOf="@id/image_tv"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:background="@drawable/background_radius8_gray200"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image_tv">
 
                     <ImageView
                         android:id="@+id/input_iamge_iv"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_marginTop="20dp"
                         android:src="@drawable/image"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="20dp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/input_image_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="첨부하기"
-                        android:textSize="10dp"
                         android:textColor="@color/Gray400"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/input_iamge_iv"
-                        android:layout_marginTop="4dp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/input_iamge_iv" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -197,58 +199,58 @@
                     android:id="@+id/rv_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/input_image"
-                    app:layout_constraintTop_toTopOf="@id/input_image"
                     android:layout_marginStart="8dp"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toEndOf="@id/input_image"
+                    app:layout_constraintTop_toTopOf="@id/input_image" />
 
                 <TextView
                     android:id="@+id/hashtag_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:text="해시태그"
-                    android:textSize="14dp"
                     android:textColor="@color/Gray700"
-                    app:layout_constraintTop_toBottomOf="@id/input_image"
+                    android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="20dp" />
+                    app:layout_constraintTop_toBottomOf="@id/input_image" />
 
                 <EditText
                     android:id="@+id/input_hashtag"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@drawable/background_radius12_transparent_gray200_stroke"
-                    app:layout_constraintTop_toBottomOf="@id/hashtag_tv"
                     android:layout_marginTop="8dp"
-
+                    android:background="@drawable/background_radius12_transparent_gray200_stroke"
                     android:hint="#해시태그를 입력해주세요"
-                    android:textColorHint="@color/Gray400"
-                    android:singleLine="true"
+
+                    android:paddingVertical="13dp"
                     android:paddingStart="10dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/Gray400"
                     android:textSize="14dp"
-                    android:paddingVertical="13dp" />
+                    app:layout_constraintTop_toBottomOf="@id/hashtag_tv" />
 
                 <TextView
                     android:id="@+id/hashtag_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
                     android:text="nn/10"
-                    android:textSize="14dp"
                     android:textColor="@color/Gray400"
-                    app:layout_constraintEnd_toEndOf="@id/input_hashtag"
-                    app:layout_constraintTop_toTopOf="@id/input_hashtag"
+                    android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="@id/input_hashtag"
-                    android:layout_marginEnd="20dp" />
+                    app:layout_constraintEnd_toEndOf="@id/input_hashtag"
+                    app:layout_constraintTop_toTopOf="@id/input_hashtag" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_hashtag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    app:layout_constraintTop_toBottomOf="@id/input_hashtag"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal" />
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layout_constraintTop_toBottomOf="@id/input_hashtag" />
 
                 <View
                     android:layout_width="match_parent"

@@ -53,7 +53,7 @@
             android:exported="false"
             android:theme="@style/Theme.TeacherForBoss" />
         <activity
-            android:name=".presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity"
+            android:name=".presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
@@ -84,6 +84,10 @@
             android:name=".presentation.ui.auth.signup.SignupFinishActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".presentation.common.WebViewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true"

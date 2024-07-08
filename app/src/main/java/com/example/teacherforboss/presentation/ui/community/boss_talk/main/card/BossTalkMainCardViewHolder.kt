@@ -3,8 +3,7 @@ package com.example.teacherforboss.presentation.ui.community.boss_talk.main.card
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.example.teacherforboss.R
-import com.example.teacherforboss.domain.model.community.PostEntity
-import java.time.LocalDateTime
+import com.example.teacherforboss.domain.model.community.boss.PostEntity
 import java.time.format.DateTimeFormatter
 
 class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :

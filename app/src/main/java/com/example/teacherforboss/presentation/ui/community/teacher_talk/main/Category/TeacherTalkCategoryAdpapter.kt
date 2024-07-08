@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 
-class TeacherTalkCategoryAdpapter(context: Context) :RecyclerView.Adapter<TeacherTalkCategoryViewHolder>() {
+class TeacherTalkCategoryAdpapter(context: Context
+) :RecyclerView.Adapter<TeacherTalkCategoryViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
+    var selectedItemPosition= DEFAULT_TAG_POSITION
+    var previousItemPosition= RecyclerView.NO_POSITION
 
     private var teacherTalkCategoryList: List<TeacherTalkCategory> = emptyList()
 
@@ -28,6 +32,10 @@ class TeacherTalkCategoryAdpapter(context: Context) :RecyclerView.Adapter<Teache
     fun setTeacherTalkCategoryList(teacherTalkCategoryList: List<TeacherTalkCategory>) {
         this.teacherTalkCategoryList = teacherTalkCategoryList.toList()
         notifyDataSetChanged()
+    }
+
+    companion object{
+        const val DEFAULT_TAG_POSITION = 0
     }
 }
 

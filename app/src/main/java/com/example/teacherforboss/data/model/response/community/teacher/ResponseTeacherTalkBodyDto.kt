@@ -2,7 +2,7 @@ package com.example.teacherforboss.data.model.response.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.MemberDto
 import com.example.teacherforboss.domain.model.community.MemberEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.google.gson.annotations.SerializedName
 
 
@@ -13,6 +13,8 @@ data class ResponseTeacherTalkBodyDto(
     val content: String,
     @SerializedName("category")
     val category: String,
+    @SerializedName("imageUrlList")
+    val imageUrlList: List<String>,
     @SerializedName("hashtagList")
     val hashtagList: List<String>?,
     @SerializedName("memberInfo")
@@ -36,6 +38,7 @@ data class ResponseTeacherTalkBodyDto(
             title=title,
             content=content,
             category=category,
+            imageUrlList = imageUrlList,
             hashtagList=hashtagList,
             liked=liked,
             bookmarked=bookmarked,

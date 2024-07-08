@@ -1,16 +1,21 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.body
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
-import com.example.teacherforboss.domain.usecase.TeacherTalkBodyUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkBookmarkUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkLikeUseCase
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +25,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkBodyUseCase: TeacherTalkBodyUseCase,
     private val teacherTalkBookmarkUseCase: TeacherTalkBookmarkUseCase,
     private val teacherTalkLikeUseCase: TeacherTalkLikeUseCase,
+    private val teacherTalkDeleteBodyUseCase: TeacherTalkDeleteBodyUseCase,
+    private val teacherTalkAnswerListUseCase: TeacherTalkAnswerListUseCase,
+
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
 ): ViewModel() {
 
@@ -32,6 +40,17 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val _isBookmark = MutableLiveData<Boolean>().apply { value = false }
     val isBookmark: LiveData<Boolean> get() = _isBookmark
 
+    private var _tagList = MutableLiveData<ArrayList<String>>()
+    val tagList:LiveData<ArrayList<String>> get()=_tagList
+
+    var imageUrlList: List<String> = arrayListOf()
+
+    var _isMine = MutableLiveData<Boolean>().apply { value = false }
+    val isMine: LiveData<Boolean> get() =_isMine
+
+    private var _answerList = MutableLiveData<List<TeacherAnswerListResponseEntity.AnswerEntity>>().apply { value = emptyList() }
+    val answerList:LiveData<List<TeacherAnswerListResponseEntity.AnswerEntity>> get() = _answerList
+
     private var _teacherTalkBodyLiveData=MutableLiveData<TeacherTalkBodyResponseEntity>()
     val teacherTalkBodyLiveData:LiveData<TeacherTalkBodyResponseEntity> get() = _teacherTalkBodyLiveData
 
@@ -40,6 +59,12 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     private var _teacherTalkBodyLikeLiveData=MutableLiveData<TeacherTalkLikeResponseEntity>()
     val teacherTalkBodyLikeLiveData:LiveData<TeacherTalkLikeResponseEntity> get() = _teacherTalkBodyLikeLiveData
+
+    private var _deleteLiveData = MutableLiveData<TeacherTalkDeleteResponseEntity>()
+    val deleteLiveData: MutableLiveData<TeacherTalkDeleteResponseEntity> get() = _deleteLiveData
+
+    private var _teacherAnswerListLiveData = MutableLiveData<TeacherAnswerListResponseEntity>()
+    val teacherAnswerListLiveData: LiveData<TeacherAnswerListResponseEntity> get() = _teacherAnswerListLiveData
 
 
     fun getTeacherTalkBody(postId:Long){
@@ -53,7 +78,31 @@ class TeacherTalkBodyViewModel @Inject constructor(
                 throw ex
             }
         }
+    }
 
+    fun deletePost(questionId: Long) {
+        Log.d("delete", "questionId: ${questionId.toString()}")
+        viewModelScope.launch {
+            try {
+                val teacherDeleteResponseEntity = teacherTalkDeleteBodyUseCase(
+                    teacherTakRequestEntity = TeacherTalkRequestEntity(
+                        questionId = questionId
+                    )
+                )
+                _deleteLiveData.value = teacherDeleteResponseEntity
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun getAnswerList() {
+        viewModelScope.launch {
+            try {
+                val teacherTalkAnswerListResponseEntity = teacherTalkAnswerListUseCase(
+                    TeacherTalkRequestEntity(questionId = questionId.value!!)
+                )
+                _teacherAnswerListLiveData.value = teacherTalkAnswerListResponseEntity
+            } catch (ex:Exception) {}
+        }
     }
 
     fun clickLikeBtn() {
@@ -87,21 +136,21 @@ class TeacherTalkBodyViewModel @Inject constructor(
         }
     }
 
-    var tagList:ArrayList<String>? = arrayListOf()
+    fun setTagList(tagList:ArrayList<String>){
+        _tagList.value=tagList
+    }
 
-    data class Answer(
-        val content: String,
-        val likeCount: Int,
-        val dislikeCount: Int,
-        val like: Boolean,
-        val dislike: Boolean,
-        val selected: Boolean,
-        val name: String
-    )
+    fun getTagList(): List<String> = tagList.value?: emptyList<String>()
 
-    val answerList = listOf(
-        Answer("내용1", 10, 10, false, false, false, "윤희재짱짱 티쳐"),
-        Answer("내용1", 10, 10, false, false, false, "하치와레 티쳐"),
-        Answer("내용1", 10, 10, false, false, false, "아야어여오요 티쳐")
-    )
+    fun setQuestionId(questionId: Long) {
+        _questionId.value = questionId
+    }
+
+    fun setAnswerList(answerList: List<TeacherAnswerListResponseEntity.AnswerEntity>) {
+        _answerList.value = answerList
+    }
+
+    fun getAnswerListValue(): List<TeacherAnswerListResponseEntity.AnswerEntity>
+    =answerList.value?: emptyList<TeacherAnswerListResponseEntity.AnswerEntity>()
+
 }

@@ -50,6 +50,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
         // 서버 api 요청
         getBossTalkBody()
+        // 본문
+        setBodyView()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //질문 좋아요, 저장
@@ -58,6 +60,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         doOptionMenu()
         // 뒤로가기
         onBackBtnPressed()
+        //댓글 관찰
+        observePostComment()
+        // 댓글
+        setCommentView()
         // 답글 쓰기
         setRecommentListener()
 
@@ -131,15 +137,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         //rvTag
-        if(viewModel.tagList.value!=null){
+        if(viewModel.getTagList().isNotEmpty()){
             binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!)
             binding.rvTagArea.layoutManager = layoutManager
         }
-
-        //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
-        binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        binding.rvComment.isNestedScrollingEnabled = false
 
         // image vp
         if(viewModel.imgUrlList.isNotEmpty()){
@@ -183,10 +184,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun getBossTalkBody(){
         lifecycleScope.launch {
             viewModel.getBossTalkBody(postId!!)
-            setBodyView()
-            // TODO: 댓글 리스트 조회
-//            viewModel.getCommentList()
-            setCommentView()
+            viewModel.getCommentList()
         }
     }
     private fun setBodyView(){
@@ -212,7 +210,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 date.text=LocalDateFormatter.extractDate(it.createdAt)
             }
 
-
             // 본문 업로드된 이미지
             if(it.imageUrlList.isNotEmpty()) viewModel.imgUrlList=it.imageUrlList
 
@@ -230,18 +227,25 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     private fun setCommentView(){
-        // TODO: 댓글 리스트 조회
-//        viewModel.getCommentListLiveData.observe(this, Observer {
-//            viewModel.setCommentListValue(it.commentList)
-//            //rvComment
-//            binding.rvComment.adapter = rvAdapterCommentBoss(viewModel.getCommentListValue(), viewModel)
-//            binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//
-//        })
-        viewModel.setCommentListValue(viewModel.dummy_commentList)
-        //rvComment
-        binding.rvComment.adapter = rvAdapterCommentBoss(this,viewModel.getCommentListValue(), viewModel)
-        binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        viewModel.getCommentListLiveData.observe(this, Observer {
+            if(it.commentList.isNotEmpty()){
+                viewModel.setCommentListValue(it.commentList)
+
+                // 댓글 개수
+                binding.commentNumber.text=getString(R.string.comment_cnt,it.commentList.size)
+
+                // 댓글 rv
+                binding.rvComment.adapter = rvAdapterCommentBoss(this,this,viewModel.getCommentListValue(), viewModel)
+                binding.rvComment.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+            }
+        })
+
+    }
+    fun observePostComment(){
+        viewModel.postCommentLiveData.observe(this, Observer {
+            viewModel.getCommentList()
+        })
     }
 
     fun setRecommentListener(){

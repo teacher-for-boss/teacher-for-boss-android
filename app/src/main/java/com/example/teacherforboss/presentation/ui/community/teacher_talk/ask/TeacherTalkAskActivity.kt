@@ -23,7 +23,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacherAsk
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -321,7 +321,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         viewModel.uploadPostLiveData.observe(this, Observer {
             Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
 
-            val intent = Intent(this, TeachertalkBodyActivity::class.java).apply {
+            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
             }
             startActivity(intent)
@@ -330,7 +330,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         viewModel.modifyPostLiveData.observe(this, Observer {
             Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
 
-            val intent = Intent(this, TeachertalkBodyActivity::class.java).apply {
+            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
             }
             startActivity(intent)

@@ -7,6 +7,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
@@ -20,9 +21,11 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -71,4 +74,8 @@ interface CommunityRemoteDataSource {
     suspend fun getTeacherTalkAnswerList(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherAnswerListDto>
 
     suspend fun postTeacherTalkAnswer(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto): BaseResponse<ResponseTeacherAnswerPostDto>
+
+    suspend fun modifyTeacherTalkAnswer(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherTalkAnswerDto: RequestTeacherTalkAnswerDto, requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto): BaseResponse<ResponseTeacherAnswerModifyDto>
+
+    suspend fun selectTeacherTalkAnswer(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherTalkAnswerDto: RequestTeacherTalkAnswerDto): BaseResponse<ResponseTeacherSelectDto>
 }

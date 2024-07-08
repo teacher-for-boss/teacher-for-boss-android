@@ -44,7 +44,7 @@ class DeleteBodyDialog(context: Context,
         binding.deleteBtn.setOnClickListener {
 
             lifecycleOwner.lifecycleScope.launch {
-                viewModel.deletePost(id)
+                viewModel.deletePost()
             }
 
             viewModel.deleteLiveData.observe(lifecycleOwner, Observer{

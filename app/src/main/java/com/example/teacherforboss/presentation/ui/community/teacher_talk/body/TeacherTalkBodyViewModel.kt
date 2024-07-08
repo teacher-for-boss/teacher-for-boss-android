@@ -10,12 +10,15 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBook
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,12 +30,22 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkLikeUseCase: TeacherTalkLikeUseCase,
     private val teacherTalkDeleteBodyUseCase: TeacherTalkDeleteBodyUseCase,
     private val teacherTalkAnswerListUseCase: TeacherTalkAnswerListUseCase,
+    private val teacherTalkSelectUseCase: TeacherTalkSelectUseCase,
 
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
 ): ViewModel() {
 
     var _questionId=MutableLiveData<Long>().apply { value=0L }
     val questionId:LiveData<Long> get()=_questionId
+
+    var _answerId = MutableLiveData<Long>().apply { value=0L }
+    val answerId: LiveData<Long> get()=_answerId
+
+    var _title = MutableLiveData<String>("")
+    val title: LiveData<String> get()=_title
+
+    var _content = MutableLiveData<String>("")
+    val content: LiveData<String> get()=_content
 
     private val _isLike = MutableLiveData<Boolean>().apply { value = false }
     val isLike: LiveData<Boolean> get() = _isLike
@@ -47,6 +60,11 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     var _isMine = MutableLiveData<Boolean>().apply { value = false }
     val isMine: LiveData<Boolean> get() =_isMine
+
+    val isSelectClicked=MutableLiveData<Unit>()
+
+    var _isSelected = MutableLiveData<Boolean>().apply { value = false }
+    val isSelected: LiveData<Boolean> get()=_isSelected
 
     private var _answerList = MutableLiveData<List<TeacherAnswerListResponseEntity.AnswerEntity>>().apply { value = emptyList() }
     val answerList:LiveData<List<TeacherAnswerListResponseEntity.AnswerEntity>> get() = _answerList
@@ -66,6 +84,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private var _teacherAnswerListLiveData = MutableLiveData<TeacherAnswerListResponseEntity>()
     val teacherAnswerListLiveData: LiveData<TeacherAnswerListResponseEntity> get() = _teacherAnswerListLiveData
 
+    private var _teacherSelectAnswerLiveData = MutableLiveData<TeacherTalkSelectResponseEntity>()
+    val teacherSelectAnswerLiveData: LiveData<TeacherTalkSelectResponseEntity> get() = _teacherSelectAnswerLiveData
+
 
     fun getTeacherTalkBody(postId:Long){
         viewModelScope.launch {
@@ -80,13 +101,13 @@ class TeacherTalkBodyViewModel @Inject constructor(
         }
     }
 
-    fun deletePost(questionId: Long) {
+    fun deletePost() {
         Log.d("delete", "questionId: ${questionId.toString()}")
         viewModelScope.launch {
             try {
                 val teacherDeleteResponseEntity = teacherTalkDeleteBodyUseCase(
                     teacherTakRequestEntity = TeacherTalkRequestEntity(
-                        questionId = questionId
+                        questionId = questionId.value!!
                     )
                 )
                 _deleteLiveData.value = teacherDeleteResponseEntity
@@ -102,6 +123,19 @@ class TeacherTalkBodyViewModel @Inject constructor(
                 )
                 _teacherAnswerListLiveData.value = teacherTalkAnswerListResponseEntity
             } catch (ex:Exception) {}
+        }
+    }
+
+    fun selectAnswer() {
+        viewModelScope.launch {
+            try {
+                Log.d("questionId", questionId.value.toString())
+                val teacherTalkSelectResponseEntity = teacherTalkSelectUseCase(
+                    TeacherTalkRequestEntity(questionId = questionId.value!!),
+                    TeacherTalkAnswerRequestEntity(answerId = answerId.value!!)
+                )
+                _teacherSelectAnswerLiveData.value = teacherTalkSelectResponseEntity
+            } catch (ex: Exception) {}
         }
     }
 
@@ -144,6 +178,10 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     fun setQuestionId(questionId: Long) {
         _questionId.value = questionId
+    }
+
+    fun setAnswerId(answerId: Long) {
+        _answerId.value = answerId
     }
 
     fun setAnswerList(answerList: List<TeacherAnswerListResponseEntity.AnswerEntity>) {

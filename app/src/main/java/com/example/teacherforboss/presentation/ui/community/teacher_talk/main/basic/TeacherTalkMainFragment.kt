@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -7,22 +8,16 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.InvalidationTracker
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
-import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
-import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdpapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.example.teacherforboss.util.base.BindingFragment
@@ -33,22 +28,22 @@ class TeacherTalkMainFragment :
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
     private var isInitialziedView = false
 
+    private lateinit var adapterCategory: TeacherTalkCategoryAdapter
+
+    private var categoryIndex = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
-        binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
-        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
-
-        teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
-
         binding.viewModel=viewModel
+
 
         getQuestions()
         observeSortType()
+        setCategory()
         addListeners()
 
 
@@ -106,6 +101,7 @@ class TeacherTalkMainFragment :
             }
         }
 
+
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
             (binding.rvTeacherTalkCard.adapter as? TeacherTalkCardAdapter)?.addMoreCards()
@@ -134,6 +130,14 @@ class TeacherTalkMainFragment :
         })
     }
 
+    private fun setCategory() {
+        adapterCategory = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
+        binding.rvTeacherTalkCategory.adapter = adapterCategory
+
+        val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
+        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
+    }
     private fun observeSortType(){
         viewModel.sortBy.observe(viewLifecycleOwner,{
             viewModel.getTeacherTalkQuestions()

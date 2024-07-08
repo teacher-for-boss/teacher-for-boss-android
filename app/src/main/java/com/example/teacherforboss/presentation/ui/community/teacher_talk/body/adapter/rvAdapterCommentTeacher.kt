@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentTeacherBinding
@@ -46,12 +49,17 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
             binding.commentGoodTv.text = context.getString(R.string.recommed_option, answer.likeCount)
             binding.commentBadTv.text = context.getString(R.string.not_recommed_option, answer.dislikeCount)
 
-            // 채택된 답변
-            if(answer.selected) binding.commentChoice.visibility = View.VISIBLE
-
-            // 본인 작성 여부 -> 채택 버튼이 보임
-            if(viewModel.isMine.value!!) binding.selectAnswer.visibility = View.VISIBLE
-            else binding.selectAnswer.visibility = View.GONE
+            // 채택된 답변이 있는지
+            if(viewModel.isSelected.value!!) {  // 채택된 답변이 있는 경우
+                // 채택된 답변
+                if(answer.selected) binding.commentChoice.visibility = View.VISIBLE
+                binding.selectAnswer.visibility = View.GONE
+            }
+            else {  // 채택된 답변이 없는 경우
+                // 본인 작성 여부 -> 채택 버튼이 보임
+                if(viewModel.isMine.value!!) binding.selectAnswer.visibility = View.VISIBLE
+                else binding.selectAnswer.visibility = View.GONE
+            }
 
             //사용자의 추천 비추천 여부 -> 이건 추천, 비추천 하면서 수정
             var isCommentGood = false
@@ -98,13 +106,31 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
                     binding.writerOption.visibility = View.GONE
                 }
                 //작성자가 아닌 경우
-                if(binding.nonWriterOption.visibility == View.GONE) {
-                    binding.nonWriterOption.visibility = View.VISIBLE
-                }
-                else {
-                    binding.nonWriterOption.visibility = View.GONE
-                }
+//                if(binding.nonWriterOption.visibility == View.GONE) {
+//                    binding.nonWriterOption.visibility = View.VISIBLE
+//                }
+//                else {
+//                    binding.nonWriterOption.visibility = View.GONE
+//                }
 
+            }
+
+            //채택하기
+            binding.selectAnswer.setOnClickListener {
+                // answerId
+                viewModel.setAnswerId(answer.answerId)
+
+                viewModel.selectAnswer()
+
+                if(context is LifecycleOwner) {
+                    viewModel.teacherSelectAnswerLiveData.observe(context, Observer {
+
+                        // 채택하기 버튼이 안보이도록
+                        viewModel._isSelected.value = true
+                        // 채택된 답변 ui 수정 -> 리스트 다시 불러옴
+                        viewModel.isSelectClicked.value = Unit
+                    })
+                }
             }
 
             //삭제하기
@@ -115,7 +141,26 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
 
             //수정하기
             binding.modifyBtn.setOnClickListener {
-                val intent = Intent(context, TeacherTalkAnswerActivity::class.java)
+                // answerId
+                viewModel.setAnswerId(answer.answerId)
+
+                val intent = Intent(context, TeacherTalkAnswerActivity::class.java).apply {
+                    putExtra("purpose", "modify")
+                    putExtra("title", viewModel.title.value.toString())
+                    putExtra("body", viewModel.content.value.toString())
+                    putExtra("questionId", viewModel.questionId.value.toString())
+                    putExtra("answerId", viewModel.answerId.value.toString())
+                    putExtra("answerContent", binding.commentBody.text)
+
+                    viewModel.imageUrlList?.let {
+                        if(it.isNotEmpty()) {
+                            putExtra("isImgList", "true")
+                            val imgArrayList = viewModel.imageUrlList as ArrayList<String>
+                            putStringArrayListExtra("imgList", imgArrayList)
+                        }
+                        else putExtra("isImgList", "false")
+                    }
+                }
                 context.startActivity(intent)
             }
 

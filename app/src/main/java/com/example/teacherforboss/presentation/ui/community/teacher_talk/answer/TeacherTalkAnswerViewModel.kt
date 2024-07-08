@@ -10,9 +10,12 @@ import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyAnswerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TeacherTalkAnswerViewModel @Inject constructor(
     private val teacherTalkAnswerPostUseCase: TeacherTalkAnswerPostUseCase,
+    private val teacherTalkModifyAnswerUseCase: TeacherTalkModifyAnswerUseCase,
     private val presignedUrlUseCase: PresignedUrlUseCase
 ): ViewModel() {
     var imageList: ArrayList<Uri> = arrayListOf()
@@ -29,6 +33,9 @@ class TeacherTalkAnswerViewModel @Inject constructor(
 
     var _questionId=MutableLiveData<Long>().apply { value=0L }
     val questionId:LiveData<Long> get()=_questionId
+
+    var _answerId = MutableLiveData<Long>().apply { value=0L }
+    val answerId: LiveData<Long> get() = _answerId
 
     var _content = MutableLiveData<String>("")
     val content: LiveData<String> get()=_content
@@ -41,6 +48,9 @@ class TeacherTalkAnswerViewModel @Inject constructor(
 
     private val _uploadPostAnswerLiveData = MutableLiveData<TeacherAnswerPostResponseEntity>()
     val uploadPostAnswerLiveData: LiveData<TeacherAnswerPostResponseEntity> get()=_uploadPostAnswerLiveData
+
+    private val _modifyAnswerLiveData = MutableLiveData<TeacherAnswerModifyResponseEntity>()
+    val modifyAnswerLiveData: LiveData<TeacherAnswerModifyResponseEntity> get()=_modifyAnswerLiveData
 
     fun uploadPostAnswer() {
         viewModelScope.launch {
@@ -59,6 +69,27 @@ class TeacherTalkAnswerViewModel @Inject constructor(
         }
     }
 
+    fun modifyAnswer() {
+        viewModelScope.launch {
+            try {
+                val teacherTalkModifyAnswerResponseEntity = teacherTalkModifyAnswerUseCase(
+                    teacherTalkRequestEntity = TeacherTalkRequestEntity(
+                        questionId = questionId.value!!
+                    ),
+                    teacherTalkAnswerRequestEntity = TeacherTalkAnswerRequestEntity(
+                        answerId = answerId.value!!
+                    ),
+                    teacherAnswerPostRequestEntity = TeacherAnswerPostRequestEntity(
+                        content = content.value?:"",
+                        imageUrlList = filtered_presignedList.value?: emptyList()
+                    )
+                )
+                _modifyAnswerLiveData.value = teacherTalkModifyAnswerResponseEntity
+            } catch (ex:Exception) {}
+        }
+    }
+
+
 
     fun addImage(imageUri: Uri) {
         imageList.add(imageUri)
@@ -68,6 +99,10 @@ class TeacherTalkAnswerViewModel @Inject constructor(
     }
     fun setQuestionId(questionId: Long) {
         _questionId.value = questionId
+    }
+
+    fun setAnswerId(answerId: Long) {
+        _answerId.value = answerId
     }
 
     fun setBodyLength(length: Int) {

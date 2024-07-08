@@ -14,9 +14,11 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -24,6 +26,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -120,7 +123,7 @@ interface CommunityService {
         @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto
     ): BaseResponse<ResponseTeacherModifyDto>
 
-    @POST("${TEACHER}/questions/{questionId}")
+    @DELETE("${TEACHER}/questions/{questionId}")
     suspend fun deleteTeacherTalkBody(
         @Path("questionId") questionId: Long
     ): BaseResponse<ResponseTeacherDeleteDto>
@@ -135,6 +138,19 @@ interface CommunityService {
         @Path("questionId") questionId: Long,
         @Body requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto
     ): BaseResponse<ResponseTeacherAnswerPostDto>
+
+    @PATCH("${TEACHER}/questions/{questionId}/answers/{answerId}")
+    suspend fun modifyTeacherTalkAnswer(
+        @Path("questionId") questionId: Long,
+        @Path("answerId") answerId: Long,
+        @Body requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto
+    ): BaseResponse<ResponseTeacherAnswerModifyDto>
+
+    @PATCH("${TEACHER}/questions/{questionId}/answers/{answerId}/select")
+    suspend fun selectTeacherTalkAnswer(
+        @Path("questionId") questionId: Long,
+        @Path("answerId") answerId: Long
+    ): BaseResponse<ResponseTeacherSelectDto>
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(

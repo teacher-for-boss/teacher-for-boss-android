@@ -16,9 +16,11 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -123,7 +125,7 @@ interface CommunityService {
         @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto
     ): BaseResponse<ResponseTeacherModifyDto>
 
-    @POST("${TEACHER}/questions/{questionId}")
+    @DELETE("${TEACHER}/questions/{questionId}")
     suspend fun deleteTeacherTalkBody(
         @Path("questionId") questionId: Long
     ): BaseResponse<ResponseTeacherDeleteDto>
@@ -143,6 +145,20 @@ interface CommunityService {
     suspend fun deleteBossTalkPost(
         @Path("postId") postId:Long
     ):BaseResponse<ResponseBossTalkDeletePostDto>
+
+   @PATCH("${TEACHER}/questions/{questionId}/answers/{answerId}")
+    suspend fun modifyTeacherTalkAnswer(
+        @Path("questionId") questionId: Long,
+        @Path("answerId") answerId: Long,
+        @Body requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto
+    ): BaseResponse<ResponseTeacherAnswerModifyDto>
+
+    @PATCH("${TEACHER}/questions/{questionId}/answers/{answerId}/select")
+    suspend fun selectTeacherTalkAnswer(
+        @Path("questionId") questionId: Long,
+        @Path("answerId") answerId: Long
+    ): BaseResponse<ResponseTeacherSelectDto>
+
 
     @POST("${TEACHER}questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(

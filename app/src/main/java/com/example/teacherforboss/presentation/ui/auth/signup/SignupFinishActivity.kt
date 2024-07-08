@@ -15,7 +15,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupFinishBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,7 +41,7 @@ class SignupFinishActivity : AppCompatActivity() {
                 startActivity(intentBoss)
             }
             else if (role == 2){
-                val intentTeacher = Intent(this, TeachertalkBodyActivity::class.java)
+                val intentTeacher = Intent(this, TeacherTalkBodyActivity::class.java)
                 startActivity(intentTeacher)
             }
             finish()

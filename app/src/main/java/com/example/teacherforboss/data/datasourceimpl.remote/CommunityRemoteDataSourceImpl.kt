@@ -9,6 +9,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossU
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
@@ -24,9 +25,11 @@ import com.example.teacherforboss.data.model.response.community.boss.ResponseBos
 import com.example.teacherforboss.data.model.response.community.boss.ResponseTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -113,5 +116,21 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun deleteTeacherTalkAns(requestTeacherTalkAnsDto: RequestTeacherTalkAnsDto): BaseResponse<ResponseTeacherTalkAnsDto>
     =communityService.deleteTeacherTalkAns(questionId = requestTeacherTalkAnsDto.questionId, answerId = requestTeacherTalkAnsDto.answerId)
+
+    override suspend fun modifyTeacherTalkAnswer(
+        requestTeacherTalkDto: RequestTeacherTalkDto,
+        requestTeacherTalkAnswerDto: RequestTeacherTalkAnswerDto,
+        requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto
+    ): BaseResponse<ResponseTeacherAnswerModifyDto>
+    =communityService.modifyTeacherTalkAnswer(
+        questionId = requestTeacherTalkDto.questionId, answerId = requestTeacherTalkAnswerDto.answerId, requestTeacherAnswerPostDto = requestTeacherAnswerPostDto
+    )
+
+    override suspend fun selectTeacherTalkAnswer(
+        requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherTalkAnswerDto: RequestTeacherTalkAnswerDto
+    ): BaseResponse<ResponseTeacherSelectDto>
+    =communityService.selectTeacherTalkAnswer(
+        questionId = requestTeacherTalkDto.questionId, answerId = requestTeacherTalkAnswerDto.answerId
+    )
 
 }

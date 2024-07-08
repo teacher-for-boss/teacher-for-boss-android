@@ -42,7 +42,8 @@
     <!-- teacher talk card view-->
     <string name="teacher_talk_card_view_question"><b>Q. %s</b></string>
     <string name="teacher_talk_card_view_text">%s</string>
-    <string name="card_view_statement">답변 대기중</string>
+    <string name="card_view_statement_solved">채택 완료</string>
+    <string name="card_view_statement_not_solved">답변 대기중</string>
     <string name="teacher_talk_bookmark_count">%s</string>
     <string name="teacher_talk_comment_count">%s</string>
     <string name="teacher_talk_like_count">%s</string>
@@ -67,7 +68,6 @@
         <item>최신순</item>
         <item>조회수순</item>
         <item>좋아요순</item>
-        <item>답변순</item>
     </string-array>
   
     <!--signup  -->

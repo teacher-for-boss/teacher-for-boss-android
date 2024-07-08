@@ -24,8 +24,10 @@ import com.example.teacherforboss.domain.usecase.community.boss.BossUploadPostUs
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyAnswerUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import dagger.Module
 import dagger.Provides
@@ -155,7 +157,17 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+
     fun providesTeacherTalkAnsUseCase(communityRepository: CommunityRepository): TeacherTalkAnsUseCase =
         TeacherTalkAnsUseCase(communityRepository = communityRepository)
+
+    fun providesTeacherTalkModifyAnswerUseCase(communityRepository: CommunityRepository): TeacherTalkModifyAnswerUseCase =
+        TeacherTalkModifyAnswerUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkSelectUseCase(communityRepository: CommunityRepository): TeacherTalkSelectUseCase =
+        TeacherTalkSelectUseCase(communityRepository = communityRepository)
+
 
 }

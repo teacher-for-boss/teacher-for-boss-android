@@ -24,11 +24,14 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPost
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
@@ -202,10 +205,34 @@ class CommunityRepositoryImpl @Inject constructor(
         }.getOrElse { err -> throw err }
     }
 
-    override suspend fun deleteTeacherTalkAns(teacherTalkAnsRequestEntity: TeacherTalkAnsRequestEntity): TeacherTalkAnsResponseEntity {
+   override suspend fun deleteTeacherTalkAns(teacherTalkAnsRequestEntity: TeacherTalkAnsRequestEntity): TeacherTalkAnsResponseEntity {
         return runCatching {
             communityDataSource.deleteTeacherTalkAns(requestTeacherTalkAnsDto=teacherTalkAnsRequestEntity.toRequestTeacherTalkAnsDto())
                 .result.toTeacherTalkAnsResponseEntity()
         }.getOrElse { err->throw err }
     }
+
+  override suspend fun modifyTeacherTalkAnswer(
+        teacherTalkRequestEntity: TeacherTalkRequestEntity,
+        teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity,
+        teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity
+    ): TeacherAnswerModifyResponseEntity {
+        return runCatching {
+            communityDataSource.modifyTeacherTalkAnswer(requestTeacherTalkDto = teacherTalkRequestEntity.toRequestTeacherTalkDto(),
+                requestTeacherTalkAnswerDto = teacherTalkAnswerRequestEntity.toRequestTeacherAnswerDto(),
+                requestTeacherAnswerPostDto = teacherAnswerPostRequestEntity.toRequestTeacherAnswerPostDto())
+                .result.toTeacherAnswerModifyResponseEntity()
+        }.getOrElse { err -> throw err }
+    }
+
+    override suspend fun selectTeacherTalkAnswer(
+        teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity
+    ): TeacherTalkSelectResponseEntity {
+        return runCatching {
+            communityDataSource.selectTeacherTalkAnswer(requestTeacherTalkDto = teacherTalkRequestEntity.toRequestTeacherTalkDto(),
+                requestTeacherTalkAnswerDto = teacherTalkAnswerRequestEntity.toRequestTeacherAnswerDto())
+                .result.toTeacherTalkSelectResponseEntity()
+        }.getOrElse { err -> throw err }
+    }
+
 }

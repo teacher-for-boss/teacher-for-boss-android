@@ -23,13 +23,16 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPost
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
 
 
 interface CommunityRepository {
@@ -77,6 +80,11 @@ interface CommunityRepository {
 
     suspend fun postTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerPostResponseEntity
 
+
     suspend fun deleteTeacherTalkAns(teacherTalkAnsRequestEntity: TeacherTalkAnsRequestEntity): TeacherTalkAnsResponseEntity
+
+    suspend fun modifyTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerModifyResponseEntity
+
+    suspend fun selectTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity): TeacherTalkSelectResponseEntity
 
 }

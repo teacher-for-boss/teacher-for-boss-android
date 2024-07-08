@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkAnswerBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.adapter.rvAdapterImageTeacherAnswer
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.example.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +29,9 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
     private val viewModel: TeacherTalkAnswerViewModel by viewModels()
 
     private var questionId:Long=0
+    private var answerId: Long=0
     private lateinit var adapterImage: rvAdapterImageTeacherAnswer
+    private var purpose = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +39,17 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        //purpose
+        if(intent.getStringExtra("purpose") == "modify") purpose = "modify"
+        else purpose = "write"
+
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
         viewModel.setQuestionId(questionId)
+
+        //answerId
+        answerId=intent.getStringExtra("answerId")?.toLongOrNull() ?: 0
+        viewModel.setAnswerId(answerId)
 
         // 뷰 설정
         setInitView()
@@ -56,6 +66,13 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
         setRecyclerView()
         // 글자수 설정
         setTextLength()
+        // 댓글 내용, 이미지 가져오기
+        if(purpose == "modify") {
+            viewModel._content.value = intent.getStringExtra("answerContent")
+            if(intent.getStringExtra("isImgList").toString()=="true")
+                viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+        }
+
     }
 
     fun getBody() {
@@ -64,13 +81,15 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
         val askBody = intent.getStringExtra("body").toString()
 
         // 질문 미리보기
-        binding.askTitle.text = modifiedAskTitle
+        if(purpose == "modify") binding.askTitle.text = askTitle
+        else binding.askTitle.text = modifiedAskTitle
         binding.askBody.text = askBody
 
         //질문 전체보기
         binding.gotoBody.setOnClickListener {
             val intent = Intent(this, ShowBodyActivity::class.java).apply {
-                putExtra("title", askTitle)
+                if(purpose == "modify") putExtra("title", "Q. ${askTitle}")
+                else putExtra("title", askTitle)
                 putExtra("body", askBody)
             }
             startActivity(intent)
@@ -177,13 +196,15 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
             })
 
             viewModel.filtered_presignedList.observe(this, {
-                viewModel.uploadPostAnswer()
+                if(purpose == "modify") viewModel.modifyAnswer()
+                else viewModel.uploadPostAnswer()
             })
 
         }
         // 이미지 없이 업로드시
         else {
-            viewModel.uploadPostAnswer()
+            if(purpose == "modify") viewModel.modifyAnswer()
+            else viewModel.uploadPostAnswer()
         }
 
         finishUpload()
@@ -193,9 +214,18 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
         viewModel.uploadPostAnswerLiveData.observe(this, Observer {
             Toast.makeText(this, "답변이 등록되었습니다.", Toast.LENGTH_SHORT).show()
 
-            val intent = Intent(this, TeachertalkBodyActivity::class.java).apply {
+            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", viewModel.questionId.value.toString())
                 Log.d("answerId", it.answerId.toString())
+            }
+            startActivity(intent)
+        })
+
+        viewModel.modifyAnswerLiveData.observe(this, Observer {
+            Toast.makeText(this, "답변이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
+                putExtra("questionId", viewModel.questionId.value.toString())
             }
             startActivity(intent)
         })

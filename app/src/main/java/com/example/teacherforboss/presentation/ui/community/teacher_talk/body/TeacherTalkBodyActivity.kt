@@ -8,6 +8,7 @@ import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TeachertalkBodyActivity : AppCompatActivity() {
+class TeacherTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
@@ -237,6 +238,9 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
             setRecyclerView()
             setTextColor()
+
+            viewModel._title.value = it.title
+            viewModel._content.value = it.content
         })
     }
 
@@ -245,6 +249,11 @@ class TeachertalkBodyActivity : AppCompatActivity() {
             if(it.answerList.isNotEmpty()) {
                 viewModel.setAnswerList(it.answerList)
 
+                // 채택된 답변이 있는지
+                if(it.answerList.any {it.selected}) {
+                    viewModel._isSelected.value = true
+                }
+
                 // 답변 개수
                 binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
 
@@ -252,6 +261,13 @@ class TeachertalkBodyActivity : AppCompatActivity() {
                 binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
                 binding.rvComment.layoutManager = LinearLayoutManager(this)
             }
+        })
+
+        viewModel.isSelectClicked.observe(this, Observer {
+            viewModel.getAnswerList()
+            // 답변 rv
+            binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
+            binding.rvComment.layoutManager = LinearLayoutManager(this)
         })
     }
 
@@ -285,13 +301,4 @@ class TeachertalkBodyActivity : AppCompatActivity() {
 
         title.text = spannableString
     }
-
-//    fun gotoAnswer() {
-//        //답변 작성하기
-//        binding.answerBtn.setOnClickListener {
-//            val intent = Intent(this, TeacherTalkAnswerActivity::class.java)
-//            startActivity(intent)
-//            //나중에 질문 제목이랑 내용 연결해주기
-//        }
-//    }
 }

@@ -18,6 +18,8 @@
     <color name="gray_06">#7F7F7F</color>
     <color name="gray_08">#2E2C2C</color>
 
+    <color name="green200">#66BD83</color>
+
 
     <!--재정비 후-->
     <color name="ValidRed">#F54343</color>

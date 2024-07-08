@@ -6,13 +6,15 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
 import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeachertalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class TeacherTalkCardAdapter(context: Context) :
@@ -84,9 +86,17 @@ class TeacherTalkCardAdapter(context: Context) :
             binding.icTeacherTalkLike.isSelected = teacherTalkCard.liked
             binding.tvTeacherTalkLikeCount.isSelected = teacherTalkCard.liked
 
+            if(teacherTalkCard.solved) {
+                binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
+                Glide.with(binding.root.context)
+                    .load(teacherTalkCard.selectedTeacher)
+                    .into(binding.ivSelectedTeacher)
+            }
+            else binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+
             // 상세 글 이동
             binding.root.setOnClickListener {
-                val intent= Intent(context, TeachertalkBodyActivity::class.java).apply{
+                val intent= Intent(context, TeacherTalkBodyActivity::class.java).apply{
                     putExtra("questionId",teacherTalkCard.questionId.toString())
                 }
                 context.startActivity(intent)

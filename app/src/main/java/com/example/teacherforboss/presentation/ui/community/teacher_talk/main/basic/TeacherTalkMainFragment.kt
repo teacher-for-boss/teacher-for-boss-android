@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -8,18 +9,15 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
-import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
-import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdpapter
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.example.teacherforboss.util.base.BindingFragment
@@ -36,16 +34,14 @@ class TeacherTalkMainFragment :
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
         newScrollView.setBinding(binding)
 
-        val teacherTalkCategoryAdapter = TeacherTalkCategoryAdpapter(requireContext())
-        binding.rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
-        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
-
-        teacherTalkCategoryAdapter.setTeacherTalkCategoryList(viewModel.mockTeacherTalkCategoryList)
-
-        binding.viewModel=viewModel
+        binding.viewModel = viewModel
+        binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
+        val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
 
         getQuestions()
         observeSortType()
+        observeCategory()
         addListeners()
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -80,8 +76,7 @@ class TeacherTalkMainFragment :
                     if (presentSortBy != items[p2]) viewModel.setSortBy(items[p2])
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
         //fab
@@ -121,7 +116,7 @@ class TeacherTalkMainFragment :
         viewModel.getTeacherTalkQuestions()
 
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
-            viewModel._teacherTalkQuestions.value=result.questionList
+            viewModel._teacherTalkQuestions.value = result.questionList
             if (!isInitialziedView) {
                 initView()
                 isInitialziedView = !isInitialziedView
@@ -129,11 +124,18 @@ class TeacherTalkMainFragment :
         })
     }
 
-    private fun observeSortType(){
-        viewModel.sortBy.observe(viewLifecycleOwner,{
+    private fun observeSortType() {
+        viewModel.sortBy.observe(viewLifecycleOwner, {
             viewModel.getTeacherTalkQuestions()
         })
     }
+
+    private fun observeCategory() {
+        viewModel.category.observe(viewLifecycleOwner, {
+            viewModel.getTeacherTalkQuestions()
+        })
+    }
+
     private fun updateQuestions() {
         val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
         binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
@@ -147,16 +149,5 @@ class TeacherTalkMainFragment :
         binding.ivSearch.setOnClickListener {
             viewModel._keyword.value = binding.etSearchView.text.toString()
         }
-    }
-
-//    private fun gotoTeacherTalkWrite() {
-//        val intent = Intent(requireContext(), TeacherTalkWriteActivity::class.java)
-//        startActivity(intent)
-//    }
-}
-
-    class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.right = horizontalSpaceWidth
     }
 }

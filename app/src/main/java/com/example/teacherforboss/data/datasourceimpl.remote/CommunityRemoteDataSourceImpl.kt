@@ -30,6 +30,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherUploadPostDto
 import com.example.teacherforboss.data.service.CommunityService
 import com.example.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject

@@ -1,6 +1,9 @@
 package com.example.teacherforboss.domain.repository
 
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
@@ -56,8 +59,6 @@ interface CommunityRepository {
     suspend fun postBossTalkCommentLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity
 
     suspend fun postBossTalkCommentdisLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity):BossTalkCommentLikeResponseEntity
-
-    suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBodyResponseEntity
 
     suspend fun getTeacherTalkLike(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkLikeResponseEntity
 

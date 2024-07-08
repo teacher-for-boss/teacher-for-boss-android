@@ -2,6 +2,9 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
@@ -28,22 +31,6 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQues
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkCommentRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkCommentResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkPostsRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkPostsResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBodyResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkBookmarkResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import javax.inject.Inject
 

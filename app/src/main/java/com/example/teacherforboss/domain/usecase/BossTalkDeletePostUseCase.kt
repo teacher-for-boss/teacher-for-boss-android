@@ -1,7 +1,7 @@
 package com.example.teacherforboss.domain.usecase
 
 import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 
 class BossTalkDeletePostUseCase (

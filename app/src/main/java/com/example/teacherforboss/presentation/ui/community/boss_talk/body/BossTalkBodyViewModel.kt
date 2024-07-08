@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
@@ -15,6 +14,7 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLik
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
+import com.example.teacherforboss.domain.usecase.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
@@ -34,7 +34,6 @@ class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkCommentUseCase: BossTalkCommentUseCase,
     private val bossTalkCommentLikeUseCase: BossTalkCommentLikeUseCase,
     private val bossTalkCommentDisLikeUseCase: BossTalkCommentDisLikeUseCase,
-    private val bossTalkCommentListUseCase: BossTalkCommentListUseCase,
     private val bossTalkCommentListUseCase: BossTalkCommentListUseCase,
     private val bossTalkDeletePostUseCase: BossTalkDeletePostUseCase
 ): ViewModel() {

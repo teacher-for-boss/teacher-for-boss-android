@@ -9,17 +9,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
-import com.example.teacherforboss.databinding.RvItemCategoryBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 
 class TeacherTalkCategoryAdapter(context: Context, private val categoryList:ArrayList<String>,
         private val viewModel: TeacherTalkMainViewModel,
-) :RecyclerView.Adapter<TeacherTalkCategoryViewHolder>() {
+) :RecyclerView.Adapter<TeacherTalkCategoryAdapter.ViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
     var selectedItemPosition= DEFAULT_TAG_POSITION
     var previousItemPosition= RecyclerView.NO_POSITION
 
-    private var teacherTalkCategoryList: List<TeacherTalkCategory> = emptyList()
+//    private var teacherTalkCategoryList: List<TeacherTalkCategory> = emptyList()
     inner class ViewHolder(private val binding: ItemTeacherTalkCategoryBinding):RecyclerView.ViewHolder(binding.root) {
         init {
             binding.teacherTalkCategory.setOnClickListener {
@@ -56,21 +55,21 @@ class TeacherTalkCategoryAdapter(context: Context, private val categoryList:Arra
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TeacherTalkCategoryViewHolder {
+    ): TeacherTalkCategoryAdapter.ViewHolder {
         val binding = ItemTeacherTalkCategoryBinding.inflate(inflater, parent, false)
-        return TeacherTalkCategoryViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TeacherTalkCategoryViewHolder, position: Int) {
-        holder.onBind(teacherTalkCategoryList[position])
+    override fun onBindViewHolder(holder: TeacherTalkCategoryAdapter.ViewHolder, position: Int) {
+        holder.bind(categoryList[position], position)
     }
 
-    override fun getItemCount() = teacherTalkCategoryList.size
+    override fun getItemCount() = categoryList.size
 
-    fun setTeacherTalkCategoryList(teacherTalkCategoryList: List<TeacherTalkCategory>) {
-        this.teacherTalkCategoryList = teacherTalkCategoryList.toList()
-        notifyDataSetChanged()
-    }
+//    fun setTeacherTalkCategoryList(categoryList: ArrayList<String>) {
+//        this.teacherTalkCategoryList = categoryList.toList()
+//        notifyDataSetChanged()
+//    }
 
     companion object{
         const val DEFAULT_TAG_POSITION = 0

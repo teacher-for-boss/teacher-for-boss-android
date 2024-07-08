@@ -39,11 +39,14 @@ class TeacherTalkMainFragment :
         newScrollView.setBinding(binding)
 
         binding.viewModel=viewModel
+        binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
+        val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
+        binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))
 
 
         getQuestions()
         observeSortType()
-        setCategory()
         addListeners()
 
 
@@ -131,9 +134,8 @@ class TeacherTalkMainFragment :
     }
 
     private fun setCategory() {
-        adapterCategory = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
-        binding.rvTeacherTalkCategory.adapter = adapterCategory
-
+//        adapterCategory = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
+        binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
         val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
         binding.rvTeacherTalkCategory.addItemDecoration(HorizontalSpaceItemDecoration(17))

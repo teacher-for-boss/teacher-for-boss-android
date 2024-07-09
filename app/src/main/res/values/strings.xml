@@ -42,7 +42,8 @@
     <!-- teacher talk card view-->
     <string name="teacher_talk_card_view_question"><b>Q. %s</b></string>
     <string name="teacher_talk_card_view_text">%s</string>
-    <string name="card_view_statement">답변 대기중</string>
+    <string name="card_view_statement_solved">채택 완료</string>
+    <string name="card_view_statement_not_solved">답변 대기중</string>
     <string name="teacher_talk_bookmark_count">%s</string>
     <string name="teacher_talk_comment_count">%s</string>
     <string name="teacher_talk_like_count">%s</string>
@@ -52,7 +53,7 @@
     <string name="boss_talk_content">%s</string>
     <string name="boss_talk_date">%s</string>
     <string name="boss_talk_bookmark_count">%s</string>
-    <string name="boss_talk_comment_count">%s</string>
+    <string name="boss_talk_comment_count">답변 %d개</string>
     <string name="boss_talk_like_count">%s</string>
 
 
@@ -67,7 +68,6 @@
         <item>최신순</item>
         <item>조회수순</item>
         <item>좋아요순</item>
-        <item>답변순</item>
     </string-array>
   
     <!--signup  -->
@@ -117,7 +117,10 @@
 
     <!-- 커뮤니티 -->
     <string name="recommed_option">추천해요 %d개</string>
-    <string name="not_recommed_option">추천해요 %d개</string>
+    <string name="not_recommed_option">추천하지 않아요 %d개</string>
+
+    <string name="comment_cnt">댓글 %d개</string>
+    <string name="user_level">Lv.%s 지식의 별</string>
 
     <!-- my page -->
     <string name="my_page_title">마이페이지</string>
@@ -131,7 +134,7 @@
     <string name="my_page_teacher_menu_bar_tp">%s TP</string>
     <string name="my_page_boss_menu_bar_question_ticket">질문권 %s개</string>
     <string name="log_out">로그아웃</string>
-    
+
     <!-- my page menu -->
     <string name="my_page_my_information_title">내 정보</string>
     <string name="my_page_reward_title">리워드 관리</string>

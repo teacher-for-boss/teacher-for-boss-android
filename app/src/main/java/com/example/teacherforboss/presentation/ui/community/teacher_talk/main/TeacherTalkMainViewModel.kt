@@ -1,194 +1,114 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.main
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
+import com.example.teacherforboss.presentation.ui.community.common.TalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategory
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCard
-import java.time.LocalDateTime
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TeacherTalkMainViewModel : ViewModel() {
+@HiltViewModel
+class TeacherTalkMainViewModel @Inject constructor(
+    private val teacherTalkQuestionsUseCase: TeacherTalkQuestionsUseCase,
+) : ViewModel(), TalkMainViewModel {
 
-    val mockCardList = listOf<TeacherTalkCard>(
-        TeacherTalkCard(
-            title = "질문이 있습니다",
-            content = "가나다라마박사 저는 누구누구인데요 이러이런 고민이 있습니당..",
-            statement_answer = "채택 완료",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            bookmark_count = "3",
-            like_count = "2",
-            comment_count = "4",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = false,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "폐업 직전에 마지막 희망이라도..",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            statement_answer = "답변 대기중",
-            created_at = LocalDateTime.of(2024, 6, 22, 0, 0, 0),
-            bookmark_count = "2",
-            like_count = "3",
-            comment_count = "4",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = false,
-        ),
-        TeacherTalkCard(
-            title = "어쩌구저쩌구 저는 할 말이 많습니다 질문 많아요",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            statement_answer = "답변 대기중",
-            created_at = LocalDateTime.of(2024, 6, 15, 0, 0, 0),
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = false,
-            bookmarked = false,
-        ),
-        TeacherTalkCard(
-            title = "네번째 질문입니다 ㅋㅋ",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "다섯번째 질문입니다 ㅋㅋ",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = false,
-        ),
-        TeacherTalkCard(
-            title = "여섯번째 질문입니다 ㅋㅋ",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = false,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "일곱번째 질문입니다 ㅋㅋ",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "여덟번째 질문입니다 ㅋㅋ",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "아홉번째 질문입니다 ㅋㅋ",
-            content = "사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 우리 함께했던 시간들이 자꾸 내마음을 가둬두네 ",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "열번째 질문입니다 ㅋㅋ",
-            content = "죽지않은 연인에게",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "열한번째 질문입니다 ㅋㅋ",
-            content = "사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 우리 함께했던 시간들이 자꾸 내마음을 가둬두네 ",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-        TeacherTalkCard(
-            title = "열두번째 질문입니다 ㅋㅋ",
-            content = "어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라 어쩌구저쩌구 샬라샬라",
-            created_at = LocalDateTime.of(2024, 4, 2, 0, 0, 0),
-            statement_answer = "답변 대기중",
-            bookmark_count = "111",
-            like_count = "43",
-            comment_count = "12",
-            question_id = 10,
-            solved = true,
-            selected_teacher = "n",
-            liked = true,
-            bookmarked = true,
-        ),
-
+    var _lastQuestionId= MutableLiveData<Long>(0L)
+    val lastQuestionId: LiveData<Long>
+        get() = _lastQuestionId
+    val categoryList = arrayListOf(
+        "전체", "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
+    var _size= MutableLiveData<Int>(10)
+    val size: LiveData<Int>
+        get() = _size
+    var _sortBy= MutableLiveData<String>("latest")
+    val sortBy: LiveData<String>
+        get() = _sortBy
+    var _category = MutableLiveData<String>("위생")
+    val category: LiveData<String>
+        get() = _category
 
-     val mockTeacherTalkCategoryList =listOf<TeacherTalkCategory>(
-         TeacherTalkCategory( category_name = "전체" ),
-         TeacherTalkCategory( category_name = "마케팅" ),
-         TeacherTalkCategory( category_name = "위생" ),
-         TeacherTalkCategory( category_name = "상권" ),
-         TeacherTalkCategory( category_name = "운영" ),
-         TeacherTalkCategory( category_name = "직원관리" ),
-         TeacherTalkCategory( category_name = "인테리어" ),
-         TeacherTalkCategory( category_name = "정책" ),
+    var _categoryId = MutableLiveData<Long>(1)
+    val categoryId: LiveData<Long> get()=_categoryId
 
+    private val _solved = MutableLiveData<Boolean>()
+    val solved: LiveData<Boolean> get() = _solved
 
-         )
+    var _keyword= MutableLiveData<String>("")
+    val keyword: LiveData<String>
+        get() = _keyword
+
+    private val _getTeacherTalkQuestionsLiveData= MutableLiveData<TeacherTalkQuestionsResponseEntity>()
+    val getTeacherTalkQuestionLiveData: LiveData<TeacherTalkQuestionsResponseEntity>
+        get() = _getTeacherTalkQuestionsLiveData
+
+    var _teacherTalkQuestions= MutableLiveData<List<QuestionEntity>>()
+    val teacherTalkQuestions: LiveData<List<QuestionEntity>> =_teacherTalkQuestions
+
+    fun getTeacherTalkQuestions(){
+        viewModelScope.launch {
+            try{
+                val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
+                    TeacherTalkQuestionsRequestEntity(
+                        lastQuestionId = lastQuestionId.value?:0L,
+                        size=size.value?:10,
+                        sortBy=sortBy.value?:"latest",
+                        category ="위생"
+                    )
+                )
+                _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
+
+            }catch (ex:Exception){
+            }
+        }
+    }
+
+    fun changeTeacherTalkCategory(changeCategory: String) {
+        viewModelScope.launch {
+            try{
+                val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
+                    TeacherTalkQuestionsRequestEntity(
+                        lastQuestionId = lastQuestionId.value?:0L,
+                        size=size.value?:10,
+                        sortBy=sortBy.value?:"latest",
+                        category =changeCategory
+                    )
+                )
+                _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
+
+            }catch (ex:Exception){
+            }
+        }
+    }
+
+    fun setSolved(isSolved: Boolean) {
+        _solved.value = isSolved
+    }
+
+    fun setCategory(category: String) {
+        _category.value = category
+    }
+
+    override fun setSortBy(sortBy: String) {
+        Log.d("spinner","?2")
+        var sort=""
+        when(sortBy){
+            "최신순"-> sort="latest"
+            "조회수순"->sort="views"
+            "좋아요순"->sort="likes"
+        }
+        _sortBy.value=sort
+    }
+
+    fun selectCategoryId(id: Long) {
+        _categoryId.value = id + 1
+    }
 }

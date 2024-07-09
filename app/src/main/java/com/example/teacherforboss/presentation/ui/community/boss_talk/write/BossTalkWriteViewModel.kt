@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
-import com.example.teacherforboss.domain.model.community.BossTalkModifyPostResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkUploadPostRequestEntity
-import com.example.teacherforboss.domain.model.community.BossTalkUploadPostResponseEntity
-import com.example.teacherforboss.domain.usecase.BossTalkModifyBodyUseCase
-import com.example.teacherforboss.domain.usecase.BossUploadPostUseCase
+import com.example.teacherforboss.domain.model.community.boss.BossTalkModifyPostResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostRequestEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.util.base.FileUtils
 import com.example.teacherforboss.util.base.UploadUtil
@@ -34,7 +34,7 @@ class BossTalkWriteViewModel @Inject constructor(
     var _content=MutableLiveData<String>("")
     val content:LiveData<String> get() = _content
 
-    var hasTagList:ArrayList<String> = arrayListOf()
+    var hashTagList:ArrayList<String> = arrayListOf()
     var imageList: ArrayList<Uri> = arrayListOf()
     var _presignedUrlList = MutableLiveData <List<String>> ()
     val presignedUrlList : LiveData<List<String>> = _presignedUrlList
@@ -61,10 +61,10 @@ class BossTalkWriteViewModel @Inject constructor(
     val modifyPostLiveData : LiveData<BossTalkModifyPostResponseEntity> = _modifyPostLiveData
 
     fun addHashTag(tag: String) {
-        hasTagList.add(tag)
+        hashTagList.add(tag)
     }
     fun deleteHashTag(position: Int) {
-        hasTagList.removeAt(position)
+        hashTagList.removeAt(position)
     }
 
     fun addImage(imageUri: Uri) {
@@ -93,7 +93,7 @@ class BossTalkWriteViewModel @Inject constructor(
                         title=title.value?:"",
                         content=content.value?:"",
                         imageUrlList = filtered_presigendList.value?: emptyList(),
-                        hashtagList = hasTagList
+                        hashtagList = hashTagList
                     )
                 )
                 _uploadPostLiveData.value=bossTalkUploadPostResponseEntity
@@ -134,7 +134,7 @@ class BossTalkWriteViewModel @Inject constructor(
                         title=title.value?:"",
                         content=content.value?:"",
                         imageUrlList = filtered_presigendList.value?: emptyList<String>(),
-                        hashtagList = hasTagList
+                        hashtagList = hashTagList
                     )
                 )
                 _modifyPostLiveData.value=bossTalkModifyPostResponseEntity

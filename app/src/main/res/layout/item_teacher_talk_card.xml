@@ -8,6 +8,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginHorizontal="1dp"
         android:layout_marginBottom="12dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
@@ -30,19 +32,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
+                android:paddingVertical="6dp"
                 android:text="@string/teacher_talk_card_view_question"
-                android:fontFamily="@font/pretendard_bold"
+                android:fontFamily="@font/pretendard_semibold"
                 android:textSize="18sp"
                 android:textColor="@color/Gray700"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_teacher_talk_text"
+                android:id="@+id/tv_teacher_talk_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:maxLines="2"
+                android:paddingTop="5dp"
+                android:paddingBottom="11dp"
                 android:fontFamily="@font/pretendard_regular"
                 android:text="@string/teacher_talk_card_view_text"
                 android:textColor="@color/Gray500"
@@ -55,37 +60,81 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/teacher_talk_card_view_text"
+                android:paddingVertical="4dp"
                 android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/Gray400"
                 android:textSize="9sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_text" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_content" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/widget_card_view_statement"
-                android:background="@drawable/background_radius100_gray200"
+                android:id="@+id/widget_card_view_statement_not_solved"
+                android:background="@drawable/background_not_solved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_date">
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_date"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/tv_teacher_talk_card_view_statement"
+                    android:id="@+id/tv_teacher_talk_card_view_statement_not_solved"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="8dp"
-                    android:text="@string/card_view_statement"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/card_view_statement_not_solved"
                     android:textSize="10sp"
 
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/widget_card_view_statement_solved"
+                android:background="@drawable/background_solved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_date"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/iv_selected_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/circular_background_white"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                <TextView
+                    android:id="@+id/tv_teacher_talk_card_view_statement_solved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingVertical="8dp"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="@string/card_view_statement_solved"
+                    android:textSize="10sp"
+                    android:textColor="@color/green200"
+                    app:layout_constraintStart_toEndOf="@id/iv_selected_teacher"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <ImageView
                 android:id="@+id/ic_teacher_talk_bookmark"
@@ -102,31 +151,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="@string/teacher_talk_bookmark_count"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
                 android:textColor="@drawable/selector_color_purple600_gray300"
                 android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_teacher_talk_comment"
-                app:layout_constraintEnd_toStartOf="@id/ic_teacher_talk_comment"
-                app:layout_constraintTop_toTopOf="@id/ic_teacher_talk_comment" />
+                app:layout_constraintBottom_toBottomOf="@id/ic_teacher_talk_answer"
+                app:layout_constraintEnd_toStartOf="@id/ic_teacher_talk_answer"
+                app:layout_constraintTop_toTopOf="@id/ic_teacher_talk_answer" />
 
 
             <ImageView
-                android:id="@+id/ic_teacher_talk_comment"
+                android:id="@+id/ic_teacher_talk_answer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_comment_24"
-                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_comment_count"
-                app:layout_constraintEnd_toStartOf="@id/tv_teacher_talk_comment_count"
-                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_comment_count" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_teacher_talk_answer_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_teacher_talk_answer_count"
+                app:layout_constraintTop_toTopOf="@id/tv_teacher_talk_answer_count" />
 
             <TextView
-                android:id="@+id/tv_teacher_talk_comment_count"
+                android:id="@+id/tv_teacher_talk_answer_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/teacher_talk_comment_count"
                 android:textColor="@color/Gray300"
-                android:textStyle="bold"
-                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/pretendard_bold"                android:layout_marginEnd="8dp"
                 android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="@id/ic_teacher_talk_like"
                 app:layout_constraintEnd_toStartOf="@id/ic_teacher_talk_like"
@@ -148,8 +196,7 @@
                 android:layout_marginTop="12dp"
                 android:textColor="@drawable/selector_color_purple600_gray300"
                 android:text="@string/teacher_talk_like_count"
-                android:textStyle="bold"
-                android:textSize="9sp"
+                android:fontFamily="@font/pretendard_bold"                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_teacher_talk_date" />

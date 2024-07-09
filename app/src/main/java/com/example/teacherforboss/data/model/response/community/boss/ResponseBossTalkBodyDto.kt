@@ -1,10 +1,9 @@
 package com.example.teacherforboss.data.model.response.community.boss
 
 import com.example.teacherforboss.data.model.response.community.MemberDto
-import com.example.teacherforboss.domain.model.community.BossTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.MemberEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
 import com.google.gson.annotations.SerializedName
-import kotlinx.datetime.LocalDateTime
 
 data class ResponseBossTalkBodyDto(
     @SerializedName("title")

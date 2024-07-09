@@ -2,17 +2,19 @@ package com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.ad
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCategoryBinding
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskViewModel
 
-class rvAdapterCategory(private val categoryList: ArrayList<String>
+class rvAdapterCategory(private val categoryList: ArrayList<String>,
+    private val viewModel: TeacherTalkAskViewModel, private var selectedItemPosition: Int = DEFAULT_TAG_POSITION
 ): RecyclerView.Adapter<rvAdapterCategory.ViewHolder>(){
 
-    var selectedItemPosition= DEFAULT_TAG_POSITION
-    var previousItemPosition= RecyclerView.NO_POSITION
+    var previousItemPosition = RecyclerView.NO_POSITION
 
     inner class ViewHolder(private val binding: RvItemCategoryBinding):RecyclerView.ViewHolder(binding.root) {
 
@@ -20,6 +22,10 @@ class rvAdapterCategory(private val categoryList: ArrayList<String>
             binding.category.setOnClickListener {
                 previousItemPosition = selectedItemPosition
                 selectedItemPosition = adapterPosition
+
+                viewModel.selectCategoryId(selectedItemPosition.toLong())
+
+                Log.d("cagtegory", selectedItemPosition.toString())
 
                 //bind에 보내는 함수
                 notifyItemChanged(previousItemPosition)

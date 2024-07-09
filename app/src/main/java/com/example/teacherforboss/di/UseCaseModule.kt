@@ -3,10 +3,10 @@ package com.example.teacherforboss.di
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
-import com.example.teacherforboss.domain.usecase.BossTalkDeletePostUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkAnsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
@@ -157,10 +157,11 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-
     fun providesTeacherTalkAnsUseCase(communityRepository: CommunityRepository): TeacherTalkAnsUseCase =
         TeacherTalkAnsUseCase(communityRepository = communityRepository)
 
+    @Provides
+    @Singleton
     fun providesTeacherTalkModifyAnswerUseCase(communityRepository: CommunityRepository): TeacherTalkModifyAnswerUseCase =
         TeacherTalkModifyAnswerUseCase(communityRepository = communityRepository)
 

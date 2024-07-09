@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
@@ -21,12 +22,14 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Ca
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.base.LocalDataSource
 
 class TeacherTalkMainFragment :
     BindingFragment<FragmentTeacherTalkMainBinding>(R.layout.fragment_teacher_talk_main) {
 
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
     private var isInitialziedView = false
+    val appContext= GlobalApplication.instance
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,9 +83,13 @@ class TeacherTalkMainFragment :
             }
 
         //fab
-        binding.fabWrite.setOnClickListener {
-            val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
-            startActivity(intent)
+        val role=LocalDataSource.getUserInfo(appContext,"role")
+        if(role=="TEACHER")binding.fabWrite.visibility=View.INVISIBLE
+        else{
+            binding.fabWrite.setOnClickListener {
+                val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         //scrollview

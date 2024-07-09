@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
         //기본 로그인
         val token= TokenManager.getAccessToken(this)//ver1. shared preference
         if(!token.isNullOrBlank()){
-//            gotoMainActivity()
+            gotoMainActivity()
         }
 
         //기본 로그인
@@ -78,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+                    LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
@@ -121,6 +122,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                    LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{

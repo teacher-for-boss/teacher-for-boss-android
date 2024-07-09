@@ -47,7 +47,10 @@
     <!--snack bar-->
     <color name="snackBar_bg">#322F35</color>
 
-    <!-- 브랜딩 이후 컬러-->
+    <!--background-->
+    <color name="back_deemed">#CC171717</color>
+    
+    <!--브랜딩 이후 컬러-->
     <color name="Purple100">#F6F6FF</color>
     <color name="Purple200">#EFEFFF</color>
     <color name="Purple300">#D4D3FF</color>

@@ -9,6 +9,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -246,28 +247,27 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     fun setCommentView() {
         viewModel.teacherAnswerListLiveData.observe(this, Observer {
-            if(it.answerList.isNotEmpty()) {
-                viewModel.setAnswerList(it.answerList)
+            viewModel.setAnswerList(it.answerList)
 
-                // 채택된 답변이 있는지
-                if(it.answerList.any {it.selected}) {
-                    viewModel._isSelected.value = true
-                }
-
-                // 답변 개수
-                binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
-
-                // 답변 rv
-                binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
-                binding.rvComment.layoutManager = LinearLayoutManager(this)
+            // 채택된 답변이 있는지
+            if(it.answerList.any {it.selected}) {
+                viewModel._isSelected.value = true
             }
+
+            // 답변 개수
+            binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
+
+            // 답변 rv
+            binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this,this)
+            binding.rvComment.layoutManager = LinearLayoutManager(this)
         })
 
         viewModel.isSelectClicked.observe(this, Observer {
             viewModel.getAnswerList()
-            // 답변 rv
-            binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
-            binding.rvComment.layoutManager = LinearLayoutManager(this)
+        })
+        viewModel.deleteAnsLiveData.observe(this,Observer {
+            viewModel.getAnswerList()
+            Toast.makeText(this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
         })
     }
 

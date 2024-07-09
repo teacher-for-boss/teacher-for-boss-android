@@ -44,12 +44,10 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
             lifecycleOwner.lifecycleScope.launch {
 
                 if (viewModel is TeacherTalkBodyViewModel) {
-                    viewModel.deletePost(id)
+                    viewModel.deletePost()
                 } else if (viewModel is BossTalkBodyViewModel) {
-                    viewModel.deletePost(id)
+                    viewModel.deletePost()
                 }
-
-                viewModel.deletePost()
 
             }
 

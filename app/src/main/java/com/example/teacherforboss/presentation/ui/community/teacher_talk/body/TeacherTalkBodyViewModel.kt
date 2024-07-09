@@ -10,9 +10,12 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBook
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
@@ -31,8 +34,8 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkDeleteBodyUseCase: TeacherTalkDeleteBodyUseCase,
     private val teacherTalkAnswerListUseCase: TeacherTalkAnswerListUseCase,
     private val teacherTalkSelectUseCase: TeacherTalkSelectUseCase,
-
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
+    private val teacherTalkAnsUseCase: TeacherTalkAnsUseCase
 ): ViewModel() {
 
     var _questionId=MutableLiveData<Long>().apply { value=0L }
@@ -87,6 +90,10 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private var _teacherSelectAnswerLiveData = MutableLiveData<TeacherTalkSelectResponseEntity>()
     val teacherSelectAnswerLiveData: LiveData<TeacherTalkSelectResponseEntity> get() = _teacherSelectAnswerLiveData
 
+    private var _deleteAnsLiveData = MutableLiveData<TeacherTalkAnsResponseEntity>()
+    val deleteAnsLiveData: MutableLiveData<TeacherTalkAnsResponseEntity> get() = _deleteAnsLiveData
+
+
 
     fun getTeacherTalkBody(postId:Long){
         viewModelScope.launch {
@@ -136,6 +143,19 @@ class TeacherTalkBodyViewModel @Inject constructor(
                 )
                 _teacherSelectAnswerLiveData.value = teacherTalkSelectResponseEntity
             } catch (ex: Exception) {}
+        }
+    }
+    fun deleteAnswer() {
+        viewModelScope.launch {
+            try {
+                val teacherTalkAnsResponseEntity = teacherTalkAnsUseCase(
+                    TeacherTalkAnsRequestEntity(
+                        questionId = questionId.value!!,
+                        answerId = answerId.value
+                    )
+                )
+                _deleteAnsLiveData.value = teacherTalkAnsResponseEntity
+            } catch (ex:Exception) {}
         }
     }
 

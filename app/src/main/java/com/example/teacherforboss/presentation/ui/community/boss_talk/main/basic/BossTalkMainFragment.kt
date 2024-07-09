@@ -7,33 +7,37 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import android.widget.AdapterView
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
+import com.example.teacherforboss.domain.model.community.boss.PostEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BossTalkMainFragment :
     BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
-    private val viewModel by activityViewModels<BossTalkMainViewModel>()
-    private var isInitialziedView=false
+    private val viewModel by viewModels<BossTalkMainViewModel>()
+    private lateinit var bossTalkCardAdapter: BossTalkMainCardAdapter
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.clearData()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svBossTalkMain as NewScrollView
         newScrollView.setBinding(binding)
-
-//        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-//        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-////        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
         binding.viewModel=viewModel
 
@@ -45,16 +49,17 @@ class BossTalkMainFragment :
 
     private fun initView(){
 
-        viewModel.getBossTalkPosts()
+        val firstPostList=viewModel.totalBossTalkPosts.get(0)
 
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
 
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        // rv
+        bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
+        bossTalkCardAdapter.setCardList(firstPostList)
 
         binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -91,12 +96,10 @@ class BossTalkMainFragment :
 
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
-            bossTalkCardAdapter.addMoreCards()
+            viewModel.getBossTalkPosts()
         }
 
         binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
-
-
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -108,13 +111,21 @@ class BossTalkMainFragment :
 
 
     private fun getPosts(){
-        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{ result->
-            viewModel._bossTalkPosts.value=result.postList
-            if(!isInitialziedView) {
+        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{result->
+            val postList=result.postList
+            viewModel._bossTalkPosts.value=postList
+            viewModel.totalBossTalkPosts.add(postList) // TODO: 다들고 있을 필요가
+
+            // 더 불러오기
+            viewModel.setLastPostId(postList.get(postList.lastIndex).postId)
+            viewModel._hasNext.value=result.hasNext
+            if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
+
+            if(viewModel.isInitialziedView.value==false) {
                 initView()
-                isInitialziedView=!isInitialziedView
+                viewModel._isInitialziedView.value=true
             }
-            else updatePosts()
+            else updatePosts(postList) // 더보기
         })
 
 
@@ -125,10 +136,8 @@ class BossTalkMainFragment :
         })
     }
 
-    private fun updatePosts(){
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
+    private fun updatePosts(postList:List<PostEntity>){
+        bossTalkCardAdapter.addMoreCards(postList)
     }
 
     private fun addListeners(){

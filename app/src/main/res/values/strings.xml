@@ -166,4 +166,13 @@
     <string name="teacher_level_3_description">답변 채택 개수가 60개 이상~90개 미만일 때입니다.</string>
     <string name="teacher_level_4_description">답변 채택 개수가 90개 이상~120개 미만일 때입니다.</string>
     <string name="teacher_level_5_description">답변 채택 개수가 120개 이상일 때입니다.</string>
+
+    <!-- dialog -->
+    <string name="dialog_logout_title">로그아웃하시겠어요?</string>
+    <string name="dialog_logout_content">언제든지 다시 로그인하실 수 있어요.</string>
+    <string name="dialog_logout_btn">로그아웃</string>
+    <string name="dialog_delete_title">정말 탈퇴하시겠어요?</string>
+    <string name="dialog_delete_content">탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
+    <string name="dialog_delete_btn">탈퇴하기</string>
+    <string name="dialog_exit">취소하기</string>
 </resources>

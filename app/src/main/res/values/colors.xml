@@ -80,4 +80,9 @@
     <color name="error">#FF6565</color>
     <color name="transparent">#00000000</color>
 
+    <!-- teacher level -->
+    <color name="teacher_level2_background">#FFF4EB</color>
+    <color name="teacher_level2_text">#FFA34E</color>
+    <color name="teacher_level3_background">#FFFAEC</color>
+    <color name="teacher_level3_text">#FFB21C</color>
 </resources>

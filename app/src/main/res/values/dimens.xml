@@ -35,4 +35,6 @@
     <!-- dialog -->
     <dimen name="dialog_horizontal_margin">40dp</dimen>
     <dimen name="dialog_content_horizontal_margin">27dp</dimen>
+    <dimen name="dialog_teacher_level_horizontal_margin">42dp</dimen>
+    <dimen name="dialog_teacher_level_content_horizontal_margin">24dp</dimen>
 </resources>

@@ -61,6 +61,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 )
             }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
+            layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
         }
     }
 
@@ -76,12 +77,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         ).show(parentFragmentManager, LOGOUT_DIALOG)
     }
 
+    private fun showTeacherLevelDialogFragment() {
+        DialogTeacherLevelFragment().show(parentFragmentManager, TEACHER_LEVEL_DIALOG)
+    }
+
     companion object {
         private const val INQUIRE_WEB_LINK =
             "https://docs.google.com/forms/d/e/1FAIpQLScvoVxh-1jlqyKhVKiFS4pZDhk-GtYbZOHKh4KJHveutN2TYw/viewform"
         private const val TERMS_WEB_LINK =
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
         private const val LOGOUT_DIALOG = "logoutModal"
+        private const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
     }

@@ -78,8 +78,7 @@
                 app:layout_constraintEnd_toStartOf="@id/btn_dialog_popup_right"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_dialog_popup_content"
-                tools:text="취소하기" />
+                app:layout_constraintTop_toBottomOf="@id/tv_dialog_popup_content" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dialog_popup_right"
@@ -93,8 +92,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/gl_end"
                 app:layout_constraintStart_toEndOf="@id/btn_dialog_popup_left"
-                app:layout_constraintTop_toBottomOf="@id/tv_dialog_popup_content"
-                tools:text="로그아웃" />
+                app:layout_constraintTop_toBottomOf="@id/tv_dialog_popup_content" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

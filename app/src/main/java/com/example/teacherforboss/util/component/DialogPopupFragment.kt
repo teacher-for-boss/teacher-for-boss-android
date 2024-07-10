@@ -7,15 +7,15 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.DialogPopupBinding
 import com.example.teacherforboss.util.base.BindingDialogFragment
 
-class DialogPopupFragment (
+class DialogPopupFragment(
     private val title: String,
     private val content: String,
     private val leftBtnText: String,
     private val rightBtnText: String,
     private val clickLeftBtn: () -> Unit,
     private val clickRightBtn: () -> Unit,
-    private val closeDialog: () -> Unit = {}
-): BindingDialogFragment<DialogPopupBinding>(R.layout.dialog_popup) {
+    private val closeDialog: () -> Unit = {},
+) : BindingDialogFragment<DialogPopupBinding>(R.layout.dialog_popup) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

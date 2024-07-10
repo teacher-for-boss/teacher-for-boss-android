@@ -4,15 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -24,8 +27,8 @@ import com.example.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
-import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupStartFragment
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
@@ -69,7 +72,8 @@ class TeacherProfileFragment : Fragment(){
 
         binding.nicknameVerifyBtn.setOnClickListener(){
             val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
-            if (nicknamePattern.containsMatchIn(binding.nicknameBox.text)){
+            if (TextUtils.isEmpty(binding.nicknameBox.getText().toString()) &&
+                nicknamePattern.containsMatchIn(binding.nicknameBox.text)){
                 nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                 veryInfo.visibility = View.VISIBLE
                 veryInfo.setTextColor(errorcolor)
@@ -275,9 +279,7 @@ class TeacherProfileFragment : Fragment(){
     }
     private fun checkPattern(string: String, regex: Regex){
         if(regex.containsMatchIn(string)){
-
             }
-
     }
 
     private fun checkFilled() {

@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -50,6 +51,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
         purpose = intent.getStringExtra("purpose")?:"write"
 
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
         // 초기 뷰 설정
         initView()
         // 해시태그 입력
@@ -58,6 +61,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         getImage()
 
         addListeners()
+
+
     }
 
     fun initView() {
@@ -350,6 +355,12 @@ class TeacherTalkAskActivity : AppCompatActivity() {
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
             val dialog = WriteExitDialog(this)
+            dialog.show()
+        }
+    }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val dialog = WriteExitDialog(this@TeacherTalkAskActivity)
             dialog.show()
         }
     }

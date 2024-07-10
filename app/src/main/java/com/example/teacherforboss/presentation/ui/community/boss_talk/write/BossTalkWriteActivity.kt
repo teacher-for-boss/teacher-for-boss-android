@@ -3,6 +3,8 @@ package com.example.teacherforboss.presentation.ui.community.boss_talk.write
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.text.Editable
@@ -12,6 +14,7 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -53,6 +56,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
         getImage()
 
         addListenrs()
+        // 백 버튼 콜백 설정
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     fun initView(){
@@ -307,13 +312,20 @@ class BossTalkWriteActivity : AppCompatActivity() {
             }
             startActivity(intent)
         })
-
+        Toast.makeText(this@BossTalkWriteActivity,"질문이 등록되었습니다.",Toast.LENGTH_SHORT).show()
 
     }
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
             val dialog = WriteExitDialog(this)
+            dialog.show()
+        }
+
+    }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val dialog = WriteExitDialog(this@BossTalkWriteActivity)
             dialog.show()
         }
     }

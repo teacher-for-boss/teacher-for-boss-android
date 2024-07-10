@@ -4,14 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -56,8 +53,8 @@ class TeacherProfileFragment : Fragment(){
         val activity=activity as SignupActivity
         val nicknameBox = binding.nicknameBox
         val veryInfo = binding.veryInfo
-        val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
-        val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
+        val successColor = ContextCompat.getColor(requireContext(), R.color.success)
+        val errorColor = ContextCompat.getColor(requireContext(), R.color.error)
 
         getSocialSignupProvidedInfo()
         addListeners()
@@ -70,18 +67,35 @@ class TeacherProfileFragment : Fragment(){
         }
 
 
-        binding.nicknameVerifyBtn.setOnClickListener(){
-            val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
-            if (TextUtils.isEmpty(binding.nicknameBox.getText().toString()) &&
-                nicknamePattern.containsMatchIn(binding.nicknameBox.text)){
-                nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                veryInfo.visibility = View.VISIBLE
-                veryInfo.setTextColor(errorcolor)
-                veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
-                viewModel.nicknameCheck.value = false
-            }
-            else viewModel.nicknameUser()
+        binding.nicknameVerifyBtn.setOnClickListener {
+            val nicknameText = binding.nicknameBox.text.toString()
+            viewModel.validateNickname(nicknameText)
         }
+
+        binding.nicknameVerifyBtn.setOnClickListener {
+            val nicknameText = binding.nicknameBox.text.toString()
+            viewModel.validateNickname(nicknameText)
+        }
+
+        viewModel.nicknameCheck.observe(viewLifecycleOwner, Observer { isValid ->
+            if (isValid == true) {
+                binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
+                binding.veryInfo.visibility = View.VISIBLE
+                binding.veryInfo.setTextColor(successColor)
+                binding.veryInfo.text = "사용 가능한 닉네임입니다."
+                binding.nicknameVerifyBtn.isEnabled = true
+            } else {
+                binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                binding.veryInfo.visibility = View.VISIBLE
+                binding.veryInfo.setTextColor(errorColor)
+                binding.veryInfo.text = if (binding.nicknameBox.text.isEmpty()) {
+                    "닉네임을 입력해주세요."
+                } else {
+                    "특수문자 제외 10자 이내로 작성해주세요."
+                }
+                binding.nicknameVerifyBtn.isEnabled = false
+            }
+        })
 
         viewModel.isUserImgSelectd.observe(viewLifecycleOwner,{bool->
             Log.d("profile","user img selected")
@@ -107,7 +121,7 @@ class TeacherProfileFragment : Fragment(){
                     //viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                     veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(successcolor)
+                    veryInfo.setTextColor(successColor)
                     veryInfo.text = "사용 가능한 닉네임입니다."
                     viewModel.nicknameCheck.value = true
 
@@ -116,7 +130,7 @@ class TeacherProfileFragment : Fragment(){
 
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                     veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(errorcolor)
+                    veryInfo.setTextColor(errorColor)
                     veryInfo.text = "사용할 수 없는 닉네임입니다."
                     viewModel.nicknameCheck.value = false
 
@@ -150,7 +164,6 @@ class TeacherProfileFragment : Fragment(){
             if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
             else signup()
         }
-
     }
 
 

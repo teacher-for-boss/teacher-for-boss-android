@@ -74,6 +74,7 @@ class SignupViewModel @Inject constructor(
     var _nickname=MutableLiveData<String>("")
     val nickname: LiveData<String>
         get()=_nickname
+
     // boss 변수들
     var _isDefaultImgSelected=MutableLiveData<Boolean>(false)
     val isDefaultImgSelected:LiveData<Boolean>
@@ -182,6 +183,7 @@ class SignupViewModel @Inject constructor(
     val length_check= MutableLiveData<Boolean>(false)
     val rePw_check= MutableLiveData<Boolean>(false)
     val all_check= MutableLiveData<Boolean>(false)
+    val nickname_check= MutableLiveData<Boolean>(false)
 
     val email_check=MutableLiveData<Boolean>(false)
     val phone_check=MutableLiveData<Boolean>(false)
@@ -604,6 +606,35 @@ class SignupViewModel @Inject constructor(
                 throw ex
             }
         }
+    }
+    fun setNickname(nickname: String) {
+        _nickname.value = nickname
+    }
+
+    fun nickname_not_blank_validation(){
+        nicknameCheck.value=!_nickname.value.isNullOrEmpty()
+    }
+
+    fun nickname_pattern_validation() {
+        val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
+        nicknameCheck.value = !_nickname.value.isNullOrEmpty() && !nicknamePattern.containsMatchIn(_nickname.value!!)
+    }
+
+    fun checkFilled() {
+        if (nicknameCheck.value == true &&
+            !field.value.isNullOrEmpty() &&
+            !introduction.value.isNullOrEmpty()
+        ) {
+            enableNext.value = true
+        } else {
+            enableNext.value = false
+        }
+    }
+    fun validateNickname(nickname: String) {
+        setNickname(nickname)
+        nickname_not_blank_validation()
+        nickname_pattern_validation()
+        checkFilled()
     }
 
     fun setBossMode(){

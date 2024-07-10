@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -255,6 +255,20 @@ class BossTalkBodyActivity : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+        }
+        // TODO: 얘 별로면 뺄게요
+        val options = ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            android.R.anim.fade_in, // 새 Activity의 애니메이션
+            android.R.anim.fade_out // 현재 Activity의 애니메이션
+        )
+        startActivity(intent, options.toBundle())
+        finish()
+    }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent=Intent(this,MainActivity::class.java).apply {

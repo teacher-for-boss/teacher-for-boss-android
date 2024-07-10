@@ -32,7 +32,7 @@ class TeacherTalkMainViewModel @Inject constructor(
     var _sortBy= MutableLiveData<String>("latest")
     val sortBy: LiveData<String>
         get() = _sortBy
-    var _category = MutableLiveData<String>("위생")
+    var _category = MutableLiveData<String>("전체")
     val category: LiveData<String>
         get() = _category
 
@@ -61,7 +61,7 @@ class TeacherTalkMainViewModel @Inject constructor(
                         lastQuestionId = lastQuestionId.value?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
-                        category ="위생"
+                        category = category.value
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity

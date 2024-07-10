@@ -116,5 +116,12 @@
         <item name="chipCornerRadius">4dp</item>
         <item name="android:textColor">@color/chip_text</item>
     </style>
-    
+
+    <style name="SignupAgreeCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:background">@drawable/checkbox_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+    </style>
+
 </resources>

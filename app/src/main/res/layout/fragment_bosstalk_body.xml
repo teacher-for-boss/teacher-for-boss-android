@@ -38,7 +38,7 @@
             android:layout_marginVertical="12dp"
             android:maxLines="3"
 
-            android:hint="댓글을 입력해주세요"
+            android:hint="댓글을 입력해주세요."
             android:text="@={viewModel._comment}"
             android:textColorHint="@color/Gray400"
             android:textSize="12dp"

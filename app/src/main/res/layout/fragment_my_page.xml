@@ -76,7 +76,7 @@
                         app:layout_constraintBottom_toTopOf="@id/tv_my_page_level"
                         app:layout_constraintStart_toEndOf="@id/view_my_page_profile_background"
                         app:layout_constraintTop_toTopOf="@id/view_my_page_profile_background"
-                        tools:text="티처포보스 티처" />
+                        tools:text="티처포보스 보스" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_my_page_profile_fix"
@@ -121,7 +121,7 @@
                         android:layout_marginStart="9dp"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Level"
                         android:textColor="@color/Purple600"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/view_my_page_profile_background"
                         app:layout_constraintStart_toEndOf="@id/view_my_page_profile_background"
                         app:layout_constraintTop_toBottomOf="@id/tv_my_page_profile_name"
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:background="@drawable/background_radius100_purple100"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/tv_my_page_level"
                         app:layout_constraintStart_toEndOf="@id/tv_my_page_level"
                         app:layout_constraintTop_toTopOf="@id/tv_my_page_level">
@@ -376,7 +376,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="28dp"
-                        android:text="@string/my_page_reward_title"
+                        android:text="@string/my_page_pay_title"
                         android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
                         android:textColor="@color/Gray400"
                         app:layout_constraintStart_toStartOf="@id/gl_start"
@@ -390,8 +390,7 @@
                         android:layout_marginTop="@dimen/spacing12"
                         app:layout_constraintEnd_toEndOf="@id/gl_end"
                         app:layout_constraintStart_toStartOf="@id/gl_start"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_reward"
-                        app:title="@{@string/my_page_menu_account_change}" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_reward" />
 
                     <include
                         android:id="@+id/include_my_page_menu_exchange"
@@ -401,8 +400,7 @@
                         android:layout_marginTop="@dimen/spacing8"
                         app:layout_constraintEnd_toEndOf="@id/gl_end"
                         app:layout_constraintStart_toStartOf="@id/gl_start"
-                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account_change"
-                        app:title="@{@string/my_page_menu_exchange}" />
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account_change" />
 
                     <include
                         android:id="@+id/include_my_page_menu_exchange_details"
@@ -445,8 +443,7 @@
                         android:layout_marginTop="@dimen/spacing8"
                         app:layout_constraintEnd_toEndOf="@id/gl_end"
                         app:layout_constraintStart_toStartOf="@id/gl_start"
-                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_saved_post"
-                        app:title="@{@string/my_page_menu_teacher_talk_question_post}" />
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_saved_post" />
 
                     <include
                         android:id="@+id/include_my_page_menu_boss_talk_written_post"

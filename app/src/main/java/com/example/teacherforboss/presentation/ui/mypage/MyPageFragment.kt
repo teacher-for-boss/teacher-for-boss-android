@@ -12,24 +12,54 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initLayout()
         addListeners()
     }
 
     private fun initLayout() {
-        if (true) { // 보스인 경우 -> 티처를 디폴트로 하고 보스를 뷰 수정하는 것이 좋을듯
+        // TODO LocalDataSource에서 가져오는 걸로 수정
+        val role = "TEACHER"
+        if (role == ROLE_TEACHER) {
             with(binding) {
-                tvMyPageLevel.visibility = View.GONE
-                layoutMyPageLevelInfo.visibility = View.GONE
-                // menu bar setImage
-                // menu bar String 수정
+                tvMyPageLevel.visibility = View.VISIBLE
+                tvMyPageMenuBarThird.text = getString(R.string.my_page_teacher_menu_bar_tp)
+                ivMyPageMenuBarThird.setImageResource(R.drawable.ic_teacher_point_30)
+                layoutMyPageLevelInfo.visibility = View.VISIBLE
+                tvMyPageMenuReward.text = getString(R.string.my_page_reward_title)
+                includeMyPageMenuAccountChange.title =
+                    getString(R.string.my_page_menu_account_change)
+                includeMyPageMenuExchange.title = getString(R.string.my_page_menu_exchange)
+                includeMyPageMenuExchangeDetails.apply {
+                    root.visibility = View.VISIBLE
+                    title = getString(R.string.my_page_menu_exchange_details)
+                }
+                includeMyPageMenuTeacherTalkQuestionPost.title =
+                    getString(R.string.my_page_menu_teacher_talk_answered_post)
+            }
+        } else {
+            with(binding) {
+                includeMyPageMenuAccountChange.title =
+                    getString(R.string.my_page_menu_payment_question_ticket)
+                includeMyPageMenuExchange.title = getString(R.string.my_page_menu_payment_history)
+                includeMyPageMenuExchangeDetails.root.visibility = View.GONE
+                includeMyPageMenuTeacherTalkQuestionPost.title =
+                    getString(R.string.my_page_menu_teacher_talk_question_post)
             }
         }
     }
 
     private fun addListeners() {
         with(binding) {
-            includeMyPageMenuInquire.root.setOnClickListener { requireActivity().startActivity(requireActivity().navigateToWebView(INQUIRE_WEB_LINK)) }
-            includeMyPageMenuTerms.root.setOnClickListener { requireActivity().startActivity(requireActivity().navigateToWebView(TERMS_WEB_LINK)) }
+            includeMyPageMenuInquire.root.setOnClickListener {
+                requireActivity().startActivity(
+                    requireActivity().navigateToWebView(INQUIRE_WEB_LINK),
+                )
+            }
+            includeMyPageMenuTerms.root.setOnClickListener {
+                requireActivity().startActivity(
+                    requireActivity().navigateToWebView(TERMS_WEB_LINK),
+                )
+            }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
         }
     }
@@ -52,5 +82,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val TERMS_WEB_LINK =
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
         private const val LOGOUT_DIALOG = "logoutModal"
+        private const val ROLE_TEACHER = "TEACHER"
+        private const val ROLE_BOSS = "BOSS"
     }
 }

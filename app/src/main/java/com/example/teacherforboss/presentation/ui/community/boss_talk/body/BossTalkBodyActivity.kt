@@ -4,7 +4,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -67,6 +69,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
         // 답글 쓰기
         setRecommentListener()
 
+        binding.root.setOnClickListener {
+            hideOptionMenuIfVisible()
+        }
     }
 
     fun showOptionMenu() {
@@ -85,6 +90,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
                     binding.nonWriterOption.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    private fun hideOptionMenuIfVisible() {
+        if (binding.writerOption.visibility == View.VISIBLE) {
+            binding.writerOption.visibility = View.GONE
+        }
+        if (binding.nonWriterOption.visibility == View.VISIBLE) {
+            binding.nonWriterOption.visibility = View.GONE
         }
     }
 
@@ -253,6 +267,19 @@ class BossTalkBodyActivity : AppCompatActivity() {
             val fragment=supportFragmentManager.findFragmentById(R.id.comment_fragment) as BossTalkBodyFragment
             fragment.focusCommentText()
         })
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v != null) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                v.clearFocus()
+            }
+            hideOptionMenuIfVisible()
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     fun onBackBtnPressed(){

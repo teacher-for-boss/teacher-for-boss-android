@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:background="@drawable/background_radius100_purple100"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/tv_my_page_level"
                         app:layout_constraintStart_toEndOf="@id/tv_my_page_level"
                         app:layout_constraintTop_toTopOf="@id/tv_my_page_level">

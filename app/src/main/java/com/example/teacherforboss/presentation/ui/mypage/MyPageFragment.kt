@@ -55,6 +55,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setTeacherProfileLayout() {
         with(binding) {
             // TODO 사용자이름은 서버통신인지 local 저장인지 모르겠지만 암튼 둘중 하나로~
+            // TODO 사용자 이미지 Glide로 띄우기
             tvMyPageProfileName.text = getString(R.string.my_page_teacher_name, "나는티처다")
             tvMyPageLevel.apply {
                 // TODO Mapper 사용해서 서버로 받아온 레벨 Type값과 매핑
@@ -71,6 +72,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setBossProfileLayout() {
         // TODO 사용자이름
+        // TODO 사용자 이미지
         binding.tvMyPageProfileName.text = getString(R.string.my_page_boss_name, "나는보스다")
     }
 

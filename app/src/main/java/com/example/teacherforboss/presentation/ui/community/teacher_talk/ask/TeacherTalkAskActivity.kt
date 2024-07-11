@@ -24,6 +24,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacherAsk
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -31,7 +32,7 @@ import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAskActivity : AppCompatActivity() {
+class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
 
     private lateinit var binding: ActivityTeachertalkAskBinding
     private val viewModel: TeacherTalkAskViewModel by viewModels()
@@ -349,8 +350,16 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this)
+            val dialog = WriteExitDialog(this,TEACHER_TALK,purpose,this)
             dialog.show()
         }
+    }
+
+    override fun onExitBtnClicked() {
+        onBackPressed()
+    }
+
+    companion object{
+        const val TEACHER_TALK="TEACHER_TALK"
     }
 }

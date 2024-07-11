@@ -184,6 +184,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         //답변 작성하기
         binding.answerBtn.setOnClickListener {
             val intent = Intent(this, TeacherTalkAnswerActivity::class.java).apply {
+                putExtra("purpose","answer")
                 putExtra("title", binding.bodyTitle.text.toString())
                 putExtra("body", binding.bodyBody.text.toString())
                 putExtra("questionId", viewModel.questionId.value.toString())

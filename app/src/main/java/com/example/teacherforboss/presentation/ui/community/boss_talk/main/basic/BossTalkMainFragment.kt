@@ -114,7 +114,7 @@ class BossTalkMainFragment :
         viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{result->
             val postList=result.postList
             viewModel._bossTalkPosts.value=postList
-            viewModel.totalBossTalkPosts.add(postList) // TODO: 다들고 있을 필요가
+            viewModel.totalBossTalkPosts.add(postList)
 
             // 더 불러오기
             viewModel.setLastPostId(postList.get(postList.lastIndex).postId)

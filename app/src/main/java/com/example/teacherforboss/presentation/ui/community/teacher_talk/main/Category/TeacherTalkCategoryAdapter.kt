@@ -28,9 +28,7 @@ class TeacherTalkCategoryAdapter(
                 selectedItemPosition = adapterPosition
 
                 val selectedCategory = categoryList[selectedItemPosition]
-                viewModel.setCategory(selectedCategory)
-
-                Log.d("category", selectedItemPosition.toString())
+                viewModel.setCategory(selectedCategory,0L)
 
                 notifyItemChanged(previousItemPosition)
                 notifyItemChanged(selectedItemPosition)

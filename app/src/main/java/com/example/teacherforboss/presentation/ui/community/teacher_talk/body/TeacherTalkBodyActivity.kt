@@ -57,8 +57,6 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         getTeacherTalkBody()
         // 본문
         setBodyView()
-        // 댓글
-        setCommentView()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //수정,삭제,신고
@@ -67,10 +65,19 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         likeAndBookmark()
         //rv
         setRecyclerView()
+        // 댓글
+        setCommentView()
+        // 댓글 관찰
+        observePostComment()
         //답변 작성
         gotoAnswer()
         //뒤로 가기
         onBackBtnPressed()
+
+        updateLike()
+        binding.root.setOnClickListener {
+            hideOptionMenuIfVisible()
+        }
     }
 
     fun showOptionMenu() {
@@ -244,33 +251,46 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         })
     }
 
-    fun setCommentView() {
-        viewModel.teacherAnswerListLiveData.observe(this, Observer {
+//    private fun setAnswerView() {
+//        viewModel.getAnswerListLiveData.observe(this, Observer {
+//            if(it.answerList.isNotEmpty()) {
+//                viewMoel.setAnswerListValue(it.answerList)
+//
+//                //댓글 개수
+//
+//            }
+//        })
+//
+//    }
+    private fun setCommentView() {
+        viewModel.teacherTalkAnswerListLiveData.observe(this, Observer {
             if(it.answerList.isNotEmpty()) {
                 viewModel.setAnswerList(it.answerList)
-
-                // 채택된 답변이 있는지
-                if(it.answerList.any {it.selected}) {
-                    viewModel._isSelected.value = true
-                }
-
                 // 답변 개수
                 binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
 
                 // 답변 rv
-                binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
+                binding.rvComment.adapter = rvAdapterCommentTeacher(
+                    this,viewModel.getAnswerListValue(), viewModel, this
+                )
                 binding.rvComment.layoutManager = LinearLayoutManager(this)
+
             }
         })
 
         viewModel.isSelectClicked.observe(this, Observer {
             viewModel.getAnswerList()
             // 답변 rv
-            binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
+            binding.rvComment.adapter = rvAdapterCommentTeacher(this,viewModel.getAnswerListValue(), viewModel, this)
             binding.rvComment.layoutManager = LinearLayoutManager(this)
         })
     }
 
+    private fun observePostComment() {
+        viewModel.postAnswerLiveData.observe(this, Observer {
+            viewModel.getAnswerList()
+        })
+    }
     fun updateLike(){
         binding.like.setOnClickListener {
             viewModel.postLike()
@@ -279,7 +299,14 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
             })
         }
     }
-
+    private fun hideOptionMenuIfVisible() {
+        if (binding.writerOption.visibility == View.VISIBLE) {
+            binding.writerOption.visibility = View.GONE
+        }
+        if (binding.nonWriterOption.visibility == View.VISIBLE) {
+            binding.nonWriterOption.visibility = View.GONE
+        }
+    }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent=Intent(this, MainActivity::class.java).apply {

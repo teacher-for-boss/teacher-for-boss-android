@@ -143,7 +143,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
-// rvTag
+        // rvTag
         if (viewModel.getTagList().isNotEmpty()) {
             binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!)
             binding.rvTagArea.layoutManager = layoutManager

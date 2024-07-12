@@ -4,32 +4,30 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentTeacherBinding
-import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
-class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResponseEntity.AnswerEntity>,
-                              private val viewModel: TeacherTalkBodyViewModel,
-                              private val context: Context
+class rvAdapterCommentTeacher(
+    private val lifecycleOwner: LifecycleOwner,
+    private val answerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
+    private val viewModel: TeacherTalkBodyViewModel,
+    private val context: Context
 ): RecyclerView.Adapter<rvAdapterCommentTeacher.ViewHolder>() {
-    class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(answer: TeacherAnswerListResponseEntity.AnswerEntity,
-                 viewModel: TeacherTalkBodyViewModel,
-                 context: Context) {
+    inner class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(answer: TeacherTalkAnswerListResponseEntity.AnswerEntity,
+                 ) {
 
             // 유저 정보
             val member = answer.memberInfo
@@ -61,11 +59,12 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
                 else binding.selectAnswer.visibility = View.GONE
             }
 
-            //사용자의 추천 비추천 여부 -> 이건 추천, 비추천 하면서 수정
-            var isCommentGood = false
-            var isCommentBad = false
-            fun updateComment() {
-                if(isCommentGood) {
+            //사용자의 추천 비추천 여부
+            var isAnswerGood = answer.liked
+            var isAnswerBad = answer.disliked
+
+            fun handleCommentBtnColor() {
+                if(isAnswerGood) {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
                 } else {
@@ -73,7 +72,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good)
                 }
 
-                if(isCommentBad) {
+                if(isAnswerBad) {
                     binding.commentBadTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad_on)
                 } else {
@@ -81,19 +80,32 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad)
                 }
             }
+            handleCommentBtnColor()
+
+            // 좋아요 싫어요 onClick
+            fun updateAnswer() {
+                viewModel.getAnswerLikeLiveData(answer.answerId).observe(lifecycleOwner, Observer {
+                    // 추천,비추천 개수 업데이트
+                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                    handleCommentBtnColor()
+                })
+            }
             binding.commentGood.setOnClickListener {
-                isCommentGood = !isCommentGood
-                if(isCommentGood && isCommentBad) {
-                    isCommentBad = !isCommentBad
+                isAnswerGood = !isAnswerGood
+                if(isAnswerGood && isAnswerBad) {
+                    isAnswerBad = !isAnswerBad
                 }
-                updateComment()
+                viewModel.postAnswerLike(answer.answerId)
+                updateAnswer()
             }
             binding.commentBad.setOnClickListener {
-                isCommentBad = !isCommentBad
-                if(isCommentGood && isCommentBad) {
-                    isCommentGood = !isCommentGood
+                isAnswerBad = !isAnswerBad
+                if(isAnswerGood && isAnswerBad) {
+                    isAnswerGood = !isAnswerGood
                 }
-                updateComment()
+                viewModel.postAnswerDisLike(answer.answerId)
+                updateAnswer()
             }
 
             //더보기 버튼 보여주기
@@ -176,10 +188,10 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
         return ViewHolder(view)
     }
     override fun getItemCount(): Int {
-        return AnswerList.size
+        return answerList.size
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(answer = AnswerList[position], viewModel = viewModel, context = context)
+        holder.bind(answer = answerList[position])
 
     }
 }

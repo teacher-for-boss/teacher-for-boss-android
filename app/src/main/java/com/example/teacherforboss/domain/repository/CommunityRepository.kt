@@ -22,9 +22,11 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEnt
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
@@ -61,13 +63,8 @@ interface CommunityRepository {
     suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity):TeacherTalkBodyResponseEntity
     suspend fun postBossTalkCommentLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity
 
+
     suspend fun postBossTalkCommentdisLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity):BossTalkCommentLikeResponseEntity
-
-    suspend fun getTeacherTalkLike(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkLikeResponseEntity
-
-    suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBookmarkResponseEntity
-
-
 
     //TeacherTalk
     suspend fun uploadTeacherTalkPost(teacherUploadPostRequestEntity: TeacherUploadPostRequestEntity): TeacherUploadPostResponseEntity
@@ -76,15 +73,24 @@ interface CommunityRepository {
 
     suspend fun deleteTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkDeleteResponseEntity
 
-    suspend fun getTeacherTalkAnswerList(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherAnswerListResponseEntity
+    suspend fun getTeacherTalkAnswerList(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkAnswerListResponseEntity
 
     suspend fun postTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerPostResponseEntity
 
+    suspend fun postTeacherTalkAnswerLike(teacherTalkAnswerLikeRequestEntity: TeacherTalkAnswerLikeRequestEntity): TeacherTalkAnswerLikeResponseEntity
+
+    suspend fun postTeacherTalkAnswerDislike(teacherTalkAnswerLikeRequestEntity: TeacherTalkAnswerLikeRequestEntity): TeacherTalkAnswerLikeResponseEntity
 
     suspend fun deleteTeacherTalkAns(teacherTalkAnsRequestEntity: TeacherTalkAnsRequestEntity): TeacherTalkAnsResponseEntity
 
     suspend fun modifyTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerModifyResponseEntity
 
     suspend fun selectTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity): TeacherTalkSelectResponseEntity
+
+    suspend fun getTeacherTalkLike(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkLikeResponseEntity
+
+    suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBookmarkResponseEntity
+
+
 
 }

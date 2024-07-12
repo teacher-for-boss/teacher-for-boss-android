@@ -1,9 +1,8 @@
 package com.example.teacherforboss.domain.model.community.teacher
 
-import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherAnswerListDto
 import com.example.teacherforboss.domain.model.community.MemberEntity
 
-data class TeacherAnswerListResponseEntity(
+data class TeacherTalkAnswerListResponseEntity(
     val hasNext: Boolean,
     val answerList: ArrayList<AnswerEntity>
 ) {

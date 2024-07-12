@@ -24,6 +24,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.Tea
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
@@ -52,6 +53,11 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
         viewModel.setQuestionId(questionId)
+
+        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        if (snackBarMsg!=null){
+            showSnackBar(snackBarMsg)
+        }
 
         // 서버 api 요청
         getTeacherTalkBody()
@@ -300,5 +306,9 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         spannableString.setSpan(ForegroundColorSpan(color), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         title.text = spannableString
+    }
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 }

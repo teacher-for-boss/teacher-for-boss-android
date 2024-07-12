@@ -26,6 +26,7 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossT
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterTagWrite
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -96,7 +97,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
                 if (lastChar == ' ') {
-                    Toast.makeText(this@BossTalkWriteActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@BossTalkWriteActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                    showSnackBar("해시태그는 스페이스바 입력이 불가능합니다.")
                 }
             }
             override fun afterTextChanged(editable: Editable?) {
@@ -137,7 +139,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
                 startActivityForResult(gallery, 100)
             }
             else {
-                Toast.makeText(this, "세장까지만 업로드 가능합니다", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "세장까지만 업로드 가능합니다", Toast.LENGTH_SHORT).show()
+                showSnackBar("세장까지만 업로드 가능합니다")
             }
         }
     }
@@ -152,7 +155,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
-                    Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
                     return
                 }
             }
@@ -255,7 +259,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                showSnackBar("제목과 본문을 작성해야 등록할 수 있습니다.")
             }
             else uploadPost()
         }
@@ -302,6 +307,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
         viewModel.uploadPostLiveData.observe(this, Observer {
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra("postId",it.postId.toString())
+                putExtra("snackBarMsg","질문이 등록되었습니다.")
+
             }
             startActivity(intent)
         })
@@ -309,11 +316,12 @@ class BossTalkWriteActivity : AppCompatActivity() {
         viewModel.modifyPostLiveData.observe(this, Observer {
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra("postId",it.postId.toString())
+                putExtra("snackBarMsg","질문이 수정되었습니다.")
             }
             startActivity(intent)
         })
-        Toast.makeText(this@BossTalkWriteActivity,"질문이 등록되었습니다.",Toast.LENGTH_SHORT).show()
-
+        //Toast.makeText(this@BossTalkWriteActivity,"질문이 등록되었습니다.",Toast.LENGTH_SHORT).show()
+        //showSnackBar("질문이 등록되었습니다.")
     }
 
     fun showExitDialog() {
@@ -328,5 +336,10 @@ class BossTalkWriteActivity : AppCompatActivity() {
             val dialog = WriteExitDialog(this@BossTalkWriteActivity)
             dialog.show()
         }
+    }
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 }

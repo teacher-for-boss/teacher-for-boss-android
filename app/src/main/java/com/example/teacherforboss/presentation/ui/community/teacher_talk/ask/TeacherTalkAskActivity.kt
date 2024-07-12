@@ -324,19 +324,21 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
+                putExtra("snackBarMsg","질문이 등록되었습니다.")
             }
             startActivity(intent)
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
-            Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
+                putExtra("snackBarMsg","질문이 수정되었습니다.")
             }
             startActivity(intent)
         })
@@ -364,4 +366,5 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             dialog.show()
         }
     }
+
 }

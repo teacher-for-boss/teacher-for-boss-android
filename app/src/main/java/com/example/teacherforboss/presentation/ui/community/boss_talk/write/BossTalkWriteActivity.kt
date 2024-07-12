@@ -113,11 +113,17 @@ class BossTalkWriteActivity : AppCompatActivity() {
             if(actionId == EditorInfo.IME_ACTION_DONE) {
                 val inputText = binding.inputHashtag.text.toString()
 
-                viewModel.addHashTag(inputText)
-                adapterTag.notifyDataSetChanged()
+                if(inputText.isNotBlank()) {
+                    if(viewModel.hashTagList.size < 5) {
+                        viewModel.addHashTag(inputText)
+                        adapterTag.notifyDataSetChanged()
 
-                binding.inputHashtag.text.clear()
-
+                        binding.inputHashtag.text.clear()
+                    }
+                    else {
+                        Toast.makeText(this, "해시태그는 5개까지 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
                 return@OnEditorActionListener true
             }
@@ -129,6 +135,7 @@ class BossTalkWriteActivity : AppCompatActivity() {
         binding.inputImage.setOnClickListener {
             if(viewModel.imageList.size < 3) {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                gallery.type = "image/*"
                 startActivityForResult(gallery, 100)
             }
             else {
@@ -295,6 +302,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
 
     fun finishUpload(){
         viewModel.uploadPostLiveData.observe(this, Observer {
+            Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra("postId",it.postId.toString())
             }
@@ -302,6 +311,8 @@ class BossTalkWriteActivity : AppCompatActivity() {
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
+            Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra("postId",it.postId.toString())
             }

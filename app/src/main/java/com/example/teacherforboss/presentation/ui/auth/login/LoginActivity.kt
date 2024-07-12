@@ -64,10 +64,10 @@ class LoginActivity : AppCompatActivity() {
         LocalDataSource.resetSinupType(context)
 
         //기본 로그인
-        val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        if(!token.isNullOrBlank()){
+//        val token= TokenManager.getAccessToken(this)//ver1. shared preference
+//        if(!token.isNullOrBlank()){
 //            gotoMainActivity()
-        }
+//        }
 
         //기본 로그인
         loginViewModel.loginResult.observe(this){

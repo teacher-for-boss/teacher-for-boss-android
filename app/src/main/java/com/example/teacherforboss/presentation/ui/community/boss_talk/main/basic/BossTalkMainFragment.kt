@@ -51,15 +51,15 @@ class BossTalkMainFragment :
 
         val firstPostList=viewModel.totalBossTalkPosts.get(0)
 
-        //dropdown
-        val items = resources.getStringArray(R.array.dropdown_items)
-        val adapter = CustomAdapter(requireContext(), items)
-        binding.spinnerDropdown.adapter = adapter
-
         // rv
         bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(firstPostList)
+
+        //dropdown
+        val items = resources.getStringArray(R.array.dropdown_items)
+        val adapter = CustomAdapter(requireContext(), items)
+        binding.spinnerDropdown.adapter = adapter
 
         binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -70,6 +70,9 @@ class BossTalkMainFragment :
                     "likes"->presentSortBy="좋아요순"
                 }
                 if(presentSortBy!=items[p2]) viewModel.setSortBy(items[p2])
+
+//                val selectedItem=items[p2]
+//                adapter.updateItems(selectedItem) // TODO: 선택 항목 업데이트
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
 

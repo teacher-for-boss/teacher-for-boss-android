@@ -20,6 +20,7 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
@@ -47,6 +48,11 @@ class BossTalkBodyActivity : AppCompatActivity() {
         // post id
         postId=intent.getStringExtra("postId")!!.toLong()
         viewModel.setPostId(postId)
+
+        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        if (snackBarMsg!=null){
+            showSnackBar(snackBarMsg)
+        }
 
         // 서버 api 요청
         getBossTalkBody()
@@ -263,6 +269,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 
 }

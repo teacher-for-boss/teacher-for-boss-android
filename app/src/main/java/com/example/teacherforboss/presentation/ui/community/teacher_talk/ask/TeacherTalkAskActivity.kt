@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -50,6 +51,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
         purpose = intent.getStringExtra("purpose")?:"write"
 
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
         // 초기 뷰 설정
         initView()
         // 해시태그 입력
@@ -58,6 +61,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         getImage()
 
         addListeners()
+
+
     }
 
     fun initView() {
@@ -319,19 +324,21 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
+                putExtra("snackBarMsg","질문이 등록되었습니다.")
             }
             startActivity(intent)
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
-            Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
+                putExtra("snackBarMsg","질문이 수정되었습니다.")
             }
             startActivity(intent)
         })
@@ -353,4 +360,11 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             dialog.show()
         }
     }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val dialog = WriteExitDialog(this@TeacherTalkAskActivity)
+            dialog.show()
+        }
+    }
+
 }

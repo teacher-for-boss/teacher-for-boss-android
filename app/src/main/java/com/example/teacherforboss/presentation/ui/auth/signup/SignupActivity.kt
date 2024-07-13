@@ -14,10 +14,12 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
@@ -100,7 +102,7 @@ class SignupActivity: AppCompatActivity() {
             .add(R.id.fragment_container, SignupStartFragment())
             .commit()
 
-
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun initLayout(){
@@ -242,7 +244,7 @@ class SignupActivity: AppCompatActivity() {
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
 
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
         if (backPressedOnce) {
             finishAffinity()
             return
@@ -254,6 +256,17 @@ class SignupActivity: AppCompatActivity() {
 
         // 2초 내에 다시 뒤로가기 버튼을 누르지 않으면 backPressedOnce 값을 false로 되돌림
         exitHandler.postDelayed(resetBackPressed, 2000)
+    }*/
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (backPressedOnce) {
+                finishAffinity()
+            } else {
+                backPressedOnce = true
+                Toast.makeText(this@SignupActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                exitHandler.postDelayed(resetBackPressed, 2000)
+            }
+        }
     }
 
     companion object{

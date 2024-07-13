@@ -108,6 +108,13 @@ class FindPwViewModel @Inject constructor(
 
 
     //1-1.auth/phone
+    val phoneRegex = Regex("^(01[0|1|6|7|8|9])(\\d{3,4})(\\d{4})$")
+    fun phoneCheck():Boolean {
+        if(phoneRegex.matches(phoneNumber.value.toString())) return true
+        else return false
+    }
+
+
     val phoneResult: MutableLiveData<BaseResponse<PhoneResponse>> = MutableLiveData()
     fun phoneUser(hash:String) {
         phoneResult.value = BaseResponse.Loading()
@@ -123,9 +130,11 @@ class FindPwViewModel @Inject constructor(
 
                 if (response?.body()?.code=="COMMON200") {
                     phoneResult.value = BaseResponse.Success(response.body())
+                    phone_check.value = true
                 } else {
                     val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
                     phoneResult.value = BaseResponse.Error(errorbody.message)
+                    phone_check.value = false
                 }
             } catch (ex: Exception) {
                 phoneResult.value = BaseResponse.Error(ex.message)
@@ -184,6 +193,12 @@ class FindPwViewModel @Inject constructor(
 
 
     //2-1. auth/email
+    val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+    fun emailCheck():Boolean {
+        if(emailRegex.matches(email.value.toString())) return true
+        else return false
+    }
+
     val emailResult: MutableLiveData<BaseResponse<EmailResponse>> = MutableLiveData()
     fun emailUser() {
         emailResult.value = BaseResponse.Loading()

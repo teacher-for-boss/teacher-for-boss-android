@@ -212,20 +212,23 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
 
     fun finishUpload() {
         viewModel.uploadPostAnswerLiveData.observe(this, Observer {
-            Toast.makeText(this, "답변이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "답변이 등록되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra("snackBarMsg","답변이 등록되었습니다.")
                 Log.d("answerId", it.answerId.toString())
             }
             startActivity(intent)
         })
 
         viewModel.modifyAnswerLiveData.observe(this, Observer {
-            Toast.makeText(this, "답변이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "답변이 수정되었습니다.", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra("snackBarMsg","답변이 수정되었습니다.")
+
             }
             startActivity(intent)
         })

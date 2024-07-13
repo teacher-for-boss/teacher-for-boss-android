@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -74,15 +75,17 @@ class findEmailFragment : Fragment() {
             false
         }
 
+        val phoneVerifyBtn = binding.phoneVerifyBtn
+        viewModel.phoneNumber.observe(viewLifecycleOwner){
+            if(viewModel.phoneCheck()) phoneVerifyBtn.isEnabled = true
+            else phoneVerifyBtn.isEnabled = false
+        }
+
+
         //휴대폰 인증하기버튼 눌렀을때
-        binding.phoneVerifyBtn.setOnClickListener {
-            val pattern= Pattern.compile("010\\d{4}\\d{4}")
-            viewModel.phone_check.value=pattern.matcher(viewModel.phoneNumber.value.toString()).matches()
+        /*binding.phoneVerifyBtn.setOnClickListener {
             Log.d("phone",viewModel.phone_check.value.toString())
-
             binding.veryInfo.visibility=View.VISIBLE
-
-
 
             if(viewModel.phone_check.value==true){
                 //binding.phoneVerifyBtn.visibility = View.INVISIBLE
@@ -99,7 +102,12 @@ class findEmailFragment : Fragment() {
             }
 
 
+        }
 
+         */
+        binding.phoneVerifyBtn.setOnClickListener{
+            viewModel.phoneUser(hash.toString())
+            phoneVerifyBtn.isEnabled = false
         }
 
         //휴대폰 인증결과 수신
@@ -107,13 +115,17 @@ class findEmailFragment : Fragment() {
             when(it) {
                 is BaseResponse.Loading->{}
                 is BaseResponse.Success->{
-
                     Log.d("auth",it.data?.result?.phoneAuthId.toString())
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
+
+                    binding.veryInfo.visibility=View.VISIBLE
+                    binding.inputcodeContainer.visibility=View.VISIBLE
+                    viewModel.startEmailTimer()
+                    binding.timeOverText.visibility=View.VISIBLE
                 }
                 is BaseResponse.Error ->{
                     if(it.msg=="이미 가입된 휴대폰 번호 입니다."){
-                        binding.veryInfo.text="이미 가입된 휴대폰 번호 입니다."
+                        binding.veryInfo.visibility=View.VISIBLE
                     }
                     showToast("error"+it?.msg)
                 }
@@ -134,11 +146,7 @@ class findEmailFragment : Fragment() {
                 is BaseResponse.Success->{
 
                     // 버튼 비활성화
-                    binding.phoneConfirmBtn.apply {
-                        isEnabled = false // 버튼 비활성화
-                        setBackgroundColor(resources.getColor(androidx.browser.R.color.browser_actions_bg_grey)) // 배경색 변경
-                        setTextColor(resources.getColor(R.color.black)) // 텍스트 색 변경
-                    }
+                    binding.phoneConfirmBtn.isEnabled = false // 버튼 비활성화
                     binding.timeOverText.visibility = View.INVISIBLE
 
                     // 타이머를 00:00으로 설정

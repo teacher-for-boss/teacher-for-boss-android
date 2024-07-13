@@ -45,11 +45,6 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
-//        transaction.addToBackStack(null)
-//        transaction.commit()
-
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
         viewModel.setQuestionId(questionId)

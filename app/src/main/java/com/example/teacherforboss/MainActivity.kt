@@ -12,6 +12,7 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 import com.example.teacherforboss.presentation.ui.home.HomeFragment
 import com.example.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +32,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
         clickBottomNavigation()
         setFragment()
+
+        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        if (snackBarMsg!=null){
+            showSnackBar(snackBarMsg)
+        }
 
 
         // 백 버튼 콜백 설정
@@ -96,6 +102,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             else -> false
         }
     }
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
+    }
+
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }

@@ -21,6 +21,8 @@ import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBo
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkPostsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerDislikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
@@ -170,5 +172,14 @@ class UseCaseModule {
     fun providesTeacherTalkSelectUseCase(communityRepository: CommunityRepository): TeacherTalkSelectUseCase =
         TeacherTalkSelectUseCase(communityRepository = communityRepository)
 
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnswerLikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerLikeUseCase =
+        TeacherTalkAnswerLikeUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnswerDislikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerDislikeUseCase =
+        TeacherTalkAnswerDislikeUseCase(communityRepository=communityRepository)
 
 }

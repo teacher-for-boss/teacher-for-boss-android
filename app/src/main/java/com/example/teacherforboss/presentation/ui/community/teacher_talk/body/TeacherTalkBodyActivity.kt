@@ -59,8 +59,6 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         getTeacherTalkBody()
         // 본문
         setBodyView()
-        // 댓글
-        setCommentView()
         //더보기 메뉴 보여주기
         showOptionMenu()
         //수정,삭제,신고
@@ -69,10 +67,19 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         likeAndBookmark()
         //rv
         setRecyclerView()
+        // 댓글
+        setCommentView()
+        // 댓글 관찰
+        observePostComment()
         //답변 작성
         gotoAnswer()
         //뒤로 가기
         onBackBtnPressed()
+
+        updateLike()
+        binding.root.setOnClickListener {
+            hideOptionMenuIfVisible()
+        }
     }
 
     fun showOptionMenu() {
@@ -273,6 +280,11 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         })
     }
 
+    private fun observePostComment() {
+        viewModel.postAnswerLiveData.observe(this, Observer {
+            viewModel.getAnswerList()
+        })
+    }
     fun updateLike(){
         binding.like.setOnClickListener {
             viewModel.postLike()
@@ -281,7 +293,14 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
             })
         }
     }
-
+    private fun hideOptionMenuIfVisible() {
+        if (binding.writerOption.visibility == View.VISIBLE) {
+            binding.writerOption.visibility = View.GONE
+        }
+        if (binding.nonWriterOption.visibility == View.VISIBLE) {
+            binding.nonWriterOption.visibility = View.GONE
+        }
+    }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent=Intent(this, MainActivity::class.java).apply {

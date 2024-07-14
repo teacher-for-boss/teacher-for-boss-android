@@ -269,6 +269,13 @@ class SignupActivity: AppCompatActivity() {
         }
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
+    }
+
     companion object{
         private const val DEFAULT_PROGRESSBAR=1f
         private const val FIRST_PROGRESS=0

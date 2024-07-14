@@ -55,6 +55,7 @@ class BossTalkMainFragment :
         // rv
         bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
         bossTalkCardAdapter.setCardList(firstPostList)
 
         //dropdown
@@ -103,13 +104,11 @@ class BossTalkMainFragment :
             viewModel.getBossTalkPosts()
         }
 
-        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigateUp()
-            }
-        })
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                findNavController().navigateUp()
+//            }
+//        })
 
     }
 

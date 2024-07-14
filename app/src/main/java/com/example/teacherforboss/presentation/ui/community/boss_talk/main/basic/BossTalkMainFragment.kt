@@ -49,7 +49,7 @@ class BossTalkMainFragment :
 
     private fun initView(){
 
-        val firstPostList=viewModel.totalBossTalkPosts.get(0)
+        val firstPostList=viewModel.totalBossTalkPosts.get(FIRST_POST_POSITION)
 
         // rv
         bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
@@ -116,19 +116,19 @@ class BossTalkMainFragment :
     private fun getPosts(){
         viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{result->
             val postList=result.postList
-            viewModel._bossTalkPosts.value=postList
-            viewModel.totalBossTalkPosts.add(postList)
+            viewModel.apply {
+                setBossTalkPosts(postList)
+                totalBossTalkPosts.add(postList)
 
-            // 더 불러오기
-            viewModel.setLastPostId(postList.get(postList.lastIndex).postId)
-            viewModel._hasNext.value=result.hasNext
-            if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
+                // 더 불러오기
+                setLastPostId(postList.get(postList.lastIndex).postId)
+                setHasNext(result.hasNext)
+                if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
 
-            if(viewModel.isInitialziedView.value==false) {
-                initView()
-                viewModel._isInitialziedView.value=true
+                if(isInitialziedView.value==false) initView()
+                else updatePosts(postList)
+
             }
-            else updatePosts(postList) // 더보기
         })
 
 
@@ -158,7 +158,9 @@ class BossTalkMainFragment :
         startActivity(intent)
     }
 
-
+    companion object{
+        const val FIRST_POST_POSITION=0
+    }
 }
 
 class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {

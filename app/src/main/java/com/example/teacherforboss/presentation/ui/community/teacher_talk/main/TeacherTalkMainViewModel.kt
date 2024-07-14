@@ -123,6 +123,14 @@ class TeacherTalkMainViewModel @Inject constructor(
 
     fun getLastQuestionId()=lastQuestionIdMap.get(category.value)
 
+    fun setHasNext(hasNext:Boolean){
+        _hasNext.value=hasNext
+    }
+
+    fun setTeacherTalkQuestionList(questionList:List<QuestionEntity>){
+        _teacherTalkQuestions.value=questionList
+    }
+
     fun clearData(){
         _teacherTalkQuestions.value= emptyList()
         _lastQuestionId.value=0L

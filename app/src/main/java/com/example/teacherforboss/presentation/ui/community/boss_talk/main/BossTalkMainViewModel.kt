@@ -102,6 +102,14 @@ class BossTalkMainViewModel @Inject constructor(
     fun setLastPostId(postId:Long){
         _lastPostId.value=postId
     }
+
+    fun setHasNext(hasNext:Boolean){
+        _hasNext.value=hasNext
+    }
+
+    fun setBossTalkPosts(postList:List<PostEntity>){
+        _bossTalkPosts.value=postList
+    }
     fun clearData(){
         _bossTalkPosts.value= emptyList()
         totalBossTalkPosts.clear()

@@ -44,6 +44,10 @@ class TeacherTalkMainFragment :
         val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
 
+        teacherTalkCardAdapter= TeacherTalkCardAdapter(requireContext())
+        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
+
+
         getQuestions()
         observeSortType()
         observeCategory()
@@ -69,19 +73,19 @@ class TeacherTalkMainFragment :
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
 
-        // rv
-        teacherTalkCardAdapter= TeacherTalkCardAdapter(requireContext())
-        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
-        val rvLayoutManager=LinearLayoutManager(requireContext())
-        binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
+        viewModel.teacherTalkQuestions.value?.isNotEmpty().apply {
+            // rv
+            teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
+            teacherTalkCardAdapter.notifyDataSetChanged()
 
-        teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
+            val rvLayoutManager=LinearLayoutManager(requireContext())
+            binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
 
-        // TODO: 작동 x (카테고리 변경시 Rv focus)
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
-        },2000)
-
+            // TODO: 작동 x (카테고리 변경시 Rv focus)
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
+            },2000)
+        }
         binding.spinnerDropdown.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -135,19 +139,20 @@ class TeacherTalkMainFragment :
     private fun getQuestions() {
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
             val questionList=result.questionList
-            viewModel._teacherTalkQuestions.value = questionList
+            viewModel.apply {
+                setTeacherTalkQuestionList(questionList)
 
-            val previousLastPostId=viewModel.getLastQuestionId()
+                val previousLastPostId=getLastQuestionId()
+                val lastQuestionId=questionList.get(questionList.lastIndex).questionId
 
-            val lastQuestionId=questionList.get(questionList.lastIndex).questionId
-            viewModel.updateQuestionIdMap(lastQuestionId)
-            viewModel._hasNext.value=result.hasNext
+                updateQuestionIdMap(lastQuestionId)
+                setHasNext(result.hasNext)
 
-            if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
-            else binding.btnMoreCard.visibility=View.VISIBLE
+                if(previousLastPostId==0L) initView()
+                else updateQuestions(questionList)
+            }
 
-            if(previousLastPostId==0L) initView()
-            else updateQuestions(questionList)
+            binding.btnMoreCard.visibility= if (result.hasNext) View.VISIBLE else View.INVISIBLE
 
         })
     }

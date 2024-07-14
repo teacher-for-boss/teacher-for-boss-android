@@ -19,12 +19,13 @@ import com.example.teacherforboss.databinding.ActivityTeachertalkAnswerBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.adapter.rvAdapterImageTeacherAnswer
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAnswerActivity : AppCompatActivity() {
+class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
     private lateinit var binding: ActivityTeachertalkAnswerBinding
     private val viewModel: TeacherTalkAnswerViewModel by viewModels()
 
@@ -40,8 +41,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         //purpose
-        if(intent.getStringExtra("purpose") == "modify") purpose = "modify"
-        else purpose = "write"
+        purpose=intent.getStringExtra("purpose").toString()
 
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
@@ -170,9 +170,13 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this)
+            val dialog = WriteExitDialog(this,TEACHER_TALK,purpose,this)
             dialog.show()
         }
+    }
+
+    override fun onExitBtnClicked() {
+        onBackPressed()
     }
 
     fun IsValidPost() {
@@ -252,5 +256,10 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()
+    }
+    
+    
+    companion object{
+        const val TEACHER_TALK="TEACHER_TALK"
     }
 }

@@ -7,33 +7,37 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import android.widget.AdapterView
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBossTalkMainBinding
+import com.example.teacherforboss.domain.model.community.boss.PostEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BossTalkMainFragment :
     BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
-    private val viewModel by activityViewModels<BossTalkMainViewModel>()
-    private var isInitialziedView=false
+    private val viewModel by viewModels<BossTalkMainViewModel>()
+    private lateinit var bossTalkCardAdapter: BossTalkMainCardAdapter
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.clearData()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svBossTalkMain as NewScrollView
         newScrollView.setBinding(binding)
-
-//        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-//        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-////        bossTalkCardAdapter.setCardList(viewModel.mockCardList)
 
         binding.viewModel=viewModel
 
@@ -45,16 +49,19 @@ class BossTalkMainFragment :
 
     private fun initView(){
 
-        viewModel.getBossTalkPosts()
+        val firstPostList=viewModel.totalBossTalkPosts.get(FIRST_POST_POSITION)
+        viewModel.setIsInitialized()
+
+        // rv
+        bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
+        bossTalkCardAdapter.setCardList(firstPostList)
 
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
-
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
 
         binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -65,6 +72,9 @@ class BossTalkMainFragment :
                     "likes"->presentSortBy="좋아요순"
                 }
                 if(presentSortBy!=items[p2]) viewModel.setSortBy(items[p2])
+
+//                val selectedItem=items[p2]
+//                adapter.updateItems(selectedItem) // TODO: 선택 항목 업데이트
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
@@ -91,30 +101,34 @@ class BossTalkMainFragment :
 
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
-            bossTalkCardAdapter.addMoreCards()
+            viewModel.getBossTalkPosts()
         }
 
-        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
-
-
-
-        /*requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigateUp()
-            }
-        })*/
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                findNavController().navigateUp()
+//            }
+//        })
 
     }
 
 
     private fun getPosts(){
-        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{ result->
-            viewModel._bossTalkPosts.value=result.postList
-            if(!isInitialziedView) {
-                initView()
-                isInitialziedView=!isInitialziedView
+        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{result->
+            val postList=result.postList
+            viewModel.apply {
+                setBossTalkPosts(postList)
+                totalBossTalkPosts.add(postList)
+
+                // 더 불러오기
+                setLastPostId(postList.get(postList.lastIndex).postId)
+                setHasNext(result.hasNext)
+                if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
+
+                if(getIsInitialized()==false) initView()
+                else updatePosts(postList)
+
             }
-            else updatePosts()
         })
 
 
@@ -125,10 +139,8 @@ class BossTalkMainFragment :
         })
     }
 
-    private fun updatePosts(){
-        val bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        bossTalkCardAdapter.setCardList(viewModel.bossTalkPosts.value!!)
+    private fun updatePosts(postList:List<PostEntity>){
+        bossTalkCardAdapter.addMoreCards(postList)
     }
 
     private fun addListeners(){
@@ -146,7 +158,9 @@ class BossTalkMainFragment :
         startActivity(intent)
     }
 
-
+    companion object{
+        const val FIRST_POST_POSITION=0
+    }
 }
 
 class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {

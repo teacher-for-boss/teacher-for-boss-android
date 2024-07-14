@@ -24,6 +24,9 @@ class BossTalkMainViewModel @Inject constructor(
     private val bossTalkSearchUseCase: BossTalkSearchUseCase,
     private val bossTalkBookmarkUseCase: BossTalkBookmarkUseCase
 ) : ViewModel(),TalkMainViewModel {
+    var _isInitialziedView=MutableLiveData<Boolean>(false)
+    val isInitialziedView:LiveData<Boolean> get() = _isInitialziedView
+
     var _lastPostId=MutableLiveData<Long>(0L)
     val lastPostId:LiveData<Long>
         get() = _lastPostId
@@ -38,12 +41,17 @@ class BossTalkMainViewModel @Inject constructor(
     val keyword:LiveData<String>
         get() = _keyword
 
+    val _hasNext=MutableLiveData<Boolean>().apply { value=true }
+    val hasNext:LiveData<Boolean> get() = _hasNext
+
     private val _getBossTalkPostLiveData=MutableLiveData<BossTalkPostsResponseEntity>()
     val getBossTalkPostLiveData:LiveData<BossTalkPostsResponseEntity>
         get() = _getBossTalkPostLiveData
 
     var _bossTalkPosts=MutableLiveData<List<PostEntity>>()
     val bossTalkPosts:LiveData<List<PostEntity>> =_bossTalkPosts
+
+    val totalBossTalkPosts= mutableListOf<List<PostEntity>>()
 
     fun getBossTalkPosts(){
         viewModelScope.launch {
@@ -91,5 +99,28 @@ class BossTalkMainViewModel @Inject constructor(
         _sortBy.value=sort
     }
 
+    fun setLastPostId(postId:Long){
+        _lastPostId.value=postId
+    }
+
+    fun setHasNext(hasNext:Boolean){
+        _hasNext.value=hasNext
+    }
+    fun setIsInitialized(){
+        _isInitialziedView.value=true
+    }
+    fun getIsInitialized()=isInitialziedView.value
+
+    fun setBossTalkPosts(postList:List<PostEntity>){
+        _bossTalkPosts.value=postList
+    }
+    fun clearData(){
+        _bossTalkPosts.value= emptyList()
+        totalBossTalkPosts.clear()
+        _isInitialziedView.value=false
+        _lastPostId.value=0L
+        _hasNext.value=false
+
+    }
 
 }

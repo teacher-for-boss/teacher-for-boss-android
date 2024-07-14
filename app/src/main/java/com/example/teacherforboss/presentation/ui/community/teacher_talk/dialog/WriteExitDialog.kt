@@ -11,7 +11,11 @@ import android.view.Window
 import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.databinding.DialogWriteExitBinding
 
-class WriteExitDialog(context: Context): Dialog(context) {
+interface WriteExitDialogListener{
+    fun onExitBtnClicked()
+}
+
+class WriteExitDialog(context: Context,val type:String,val purpose:String,val listener: WriteExitDialogListener): Dialog(context) {
     private lateinit var binding: DialogWriteExitBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +31,16 @@ class WriteExitDialog(context: Context): Dialog(context) {
         }
 
         binding.exitBtn.setOnClickListener {
-            val intent=Intent(context,MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION","BOSS_TALK")
+            if(purpose=="write"){
+                val intent=Intent(context,MainActivity::class.java).apply {
+                    putExtra("FRAGMENT_DESTINATION",type.toString())
+                }
+                context.startActivity(intent)
             }
-            context.startActivity(intent)
+            else{
+                listener.onExitBtnClicked()
+
+            }
             dismiss()
         }
     }

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -11,9 +13,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentTeacherTalkMainBinding
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
@@ -21,12 +24,14 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Ca
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.base.LocalDataSource
 
 class TeacherTalkMainFragment :
     BindingFragment<FragmentTeacherTalkMainBinding>(R.layout.fragment_teacher_talk_main) {
 
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
-    private var isInitialziedView = false
+    private lateinit var teacherTalkCardAdapter:TeacherTalkCardAdapter
+    val appContext= GlobalApplication.instance
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +43,10 @@ class TeacherTalkMainFragment :
         binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
         val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
+
+        teacherTalkCardAdapter= TeacherTalkCardAdapter(requireContext())
+        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
+
 
         getQuestions()
         observeSortType()
@@ -53,17 +62,30 @@ class TeacherTalkMainFragment :
             })*/
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.clearData()
+    }
+
     private fun initView() {
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
 
-        // rv
-        val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
-        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
-        teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
+        viewModel.teacherTalkQuestions.value?.isNotEmpty().apply {
+            // rv
+            teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
+            teacherTalkCardAdapter.notifyDataSetChanged()
 
+            val rvLayoutManager=LinearLayoutManager(requireContext())
+            binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
+
+            // TODO: 작동 x (카테고리 변경시 Rv focus)
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
+            },2000)
+        }
         binding.spinnerDropdown.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -80,9 +102,13 @@ class TeacherTalkMainFragment :
             }
 
         //fab
-        binding.fabWrite.setOnClickListener {
-            val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
-            startActivity(intent)
+        val role=LocalDataSource.getUserInfo(appContext,"role")
+        if(role=="TEACHER")binding.fabWrite.visibility=View.INVISIBLE
+        else{
+            binding.fabWrite.setOnClickListener {
+                val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         //scrollview
@@ -98,10 +124,16 @@ class TeacherTalkMainFragment :
 
         //btnMoreCard
         binding.btnMoreCard.setOnClickListener {
-            (binding.rvTeacherTalkCard.adapter as? TeacherTalkCardAdapter)?.addMoreCards()
+            viewModel.getTeacherTalkQuestions()
         }
 
-        binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(requireContext())
+//        requireActivity().onBackPressedDispatcher.addCallback(
+//            viewLifecycleOwner,
+//            object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    findNavController().navigateUp()
+//                }
+//            })
 
         /*requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -113,14 +145,23 @@ class TeacherTalkMainFragment :
     }
 
     private fun getQuestions() {
-        viewModel.getTeacherTalkQuestions()
-
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
-            viewModel._teacherTalkQuestions.value = result.questionList
-            if (!isInitialziedView) {
-                initView()
-                isInitialziedView = !isInitialziedView
-            } else updateQuestions()
+            val questionList=result.questionList
+            viewModel.apply {
+                setTeacherTalkQuestionList(questionList)
+
+                val previousLastPostId=getLastQuestionId()
+                val lastQuestionId=questionList.get(questionList.lastIndex).questionId
+
+                updateQuestionIdMap(lastQuestionId)
+                setHasNext(result.hasNext)
+
+                if(previousLastPostId==FIRST_QUESTION_POSITION) initView()
+                else updateQuestions(questionList)
+            }
+
+            binding.btnMoreCard.visibility= if (result.hasNext) View.VISIBLE else View.INVISIBLE
+
         })
     }
 
@@ -132,14 +173,13 @@ class TeacherTalkMainFragment :
 
     private fun observeCategory() {
         viewModel.category.observe(viewLifecycleOwner, {
+            viewModel.updateQuestionIdMap(FIRST_QUESTION_POSITION)
             viewModel.getTeacherTalkQuestions()
         })
     }
 
-    private fun updateQuestions() {
-        val teacherTalkCardAdapter = TeacherTalkCardAdapter(requireContext())
-        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
-        teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
+    private fun updateQuestions(questionList:List<QuestionEntity>) {
+        teacherTalkCardAdapter.addMoreCards(questionList)
     }
 
     private fun addListeners() {
@@ -149,5 +189,9 @@ class TeacherTalkMainFragment :
         binding.ivSearch.setOnClickListener {
             viewModel._keyword.value = binding.etSearchView.text.toString()
         }
+    }
+
+    companion object{
+        const val FIRST_QUESTION_POSITION=0L
     }
 }

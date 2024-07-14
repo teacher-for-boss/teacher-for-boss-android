@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.example.teacherforboss.databinding.ItemSpinnerDropdownBinding
-import android.widget.TextView
 import com.example.teacherforboss.R
+import com.example.teacherforboss.databinding.ItemSpinnerBinding
 
 class CustomAdapter(
     private val context: Context,
-    private val items: Array<String>
+    private var items: Array<String>
 ) : BaseAdapter() {
+    private var selectedItem: String? = null
 
     override fun getCount(): Int {
         return items.size
@@ -26,16 +27,17 @@ class CustomAdapter(
         return position.toLong()
     }
 
+    // spinner 닫혔을때 선택된 옵션
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding: ItemSpinnerDropdownBinding
+        val binding: ItemSpinnerBinding
         if (convertView == null) {
-            binding = ItemSpinnerDropdownBinding.inflate(LayoutInflater.from(context), parent, false)
+            binding = ItemSpinnerBinding.inflate(LayoutInflater.from(context), parent, false)
             binding.root.tag = binding
         } else {
-            binding = convertView.tag as ItemSpinnerDropdownBinding
+            binding = convertView.tag as ItemSpinnerBinding
         }
 
-        binding.tvDropdown.text = items[position]
+        binding.tvSpinnerTitle.text = selectedItem ?: items[position]
         binding.ivDropdown.setImageResource(R.drawable.ic_dropdown)
 
         return binding.root
@@ -50,10 +52,15 @@ class CustomAdapter(
             binding = convertView.tag as ItemSpinnerDropdownBinding
         }
 
-        binding.tvDropdown.text = items[position]
-        binding.tvDropdown.gravity = android.view.Gravity.CENTER
-        binding.ivDropdown.visibility = View.GONE
+        binding.tvSpinnerTitle.text = items[position]
 
         return binding.root
     }
+
+    // TODO: 선택된 아이템 제거 후 드롭다운
+//    fun updateItems(selected:String){
+//        selectedItem=selected
+//        items= items.filter { it!=selectedItem }.toTypedArray()
+//        notifyDataSetChanged()
+//    }
 }

@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityBosstalkBodyBinding
-import com.example.teacherforboss.databinding.FragmentBosstalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
+import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
@@ -31,12 +31,13 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 
 @AndroidEntryPoint
 class BossTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBosstalkBodyBinding
-    private val viewModel: BossTalkBodyViewModel by viewModels()
+    private val viewModel by viewModels<BossTalkBodyViewModel>()
     private var postId: Long = 0
 
     private var currentOptionButton: View? = null

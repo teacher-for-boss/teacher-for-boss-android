@@ -5,28 +5,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerDislikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerLikeUseCase
-import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
-import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
-import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -42,7 +40,6 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkSelectUseCase: TeacherTalkSelectUseCase,
     private val teacherTalkAnswerLikeUseCase: TeacherTalkAnswerLikeUseCase,
     private val teacherTalkAnswerDislikeUseCase: TeacherTalkAnswerDislikeUseCase,
-
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
     private val teacherTalkAnsUseCase: TeacherTalkAnsUseCase
 ): ViewModel() {

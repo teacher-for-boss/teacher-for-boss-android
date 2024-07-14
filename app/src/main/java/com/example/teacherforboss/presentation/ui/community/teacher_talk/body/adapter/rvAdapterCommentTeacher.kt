@@ -12,20 +12,20 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentTeacherBinding
-import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
-class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResponseEntity.AnswerEntity>,
+class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
                               private val viewModel: TeacherTalkBodyViewModel,
                               private val context: Context,
                               private val lifecycleOwner: LifecycleOwner
 ): RecyclerView.Adapter<rvAdapterCommentTeacher.ViewHolder>() {
     class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(answer: TeacherAnswerListResponseEntity.AnswerEntity,
+        fun bind(answer: TeacherTalkAnswerListResponseEntity.AnswerEntity,
                  viewModel: TeacherTalkBodyViewModel,
                  context: Context,
                  lifecycleOwner:LifecycleOwner) {

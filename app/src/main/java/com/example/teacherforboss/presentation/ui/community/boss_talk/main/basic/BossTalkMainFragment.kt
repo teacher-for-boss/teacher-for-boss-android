@@ -41,6 +41,7 @@ class BossTalkMainFragment :
 
         binding.viewModel=viewModel
 
+        initView()
         getPosts()
         observeSortType()
         addListeners()
@@ -48,15 +49,6 @@ class BossTalkMainFragment :
     }
 
     private fun initView(){
-
-        val firstPostList=viewModel.totalBossTalkPosts.get(FIRST_POST_POSITION)
-        viewModel.setIsInitialized()
-
-        // rv
-        bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
-        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
-        bossTalkCardAdapter.setCardList(firstPostList)
 
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
@@ -66,6 +58,7 @@ class BossTalkMainFragment :
         binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 var presentSortBy=viewModel.sortBy.value
+                viewModel.resetLastPostIdMap(presentSortBy!!, DEFAULT_LAST_QUESTIOIN_ID)
                 when(presentSortBy){
                     "latest"-> presentSortBy="최신순"
                     "views"->presentSortBy="조회수순"
@@ -112,6 +105,15 @@ class BossTalkMainFragment :
 
     }
 
+    private fun initPostView(postList: List<PostEntity>){
+        // rv
+        bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
+        binding.rvBossTalkCard.adapter = bossTalkCardAdapter
+        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
+        bossTalkCardAdapter.setCardList(postList)
+
+    }
+
 
     private fun getPosts(){
         viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{result->
@@ -120,12 +122,15 @@ class BossTalkMainFragment :
                 setBossTalkPosts(postList)
                 totalBossTalkPosts.add(postList)
 
+                val previoustLastPostId=getLastPostId()
+                val lastPostId=postList.get(postList.lastIndex).postId
+
+                updateLastPostIdMap(lastPostId)
                 // 더 불러오기
-                setLastPostId(postList.get(postList.lastIndex).postId)
                 setHasNext(result.hasNext)
                 if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
 
-                if(getIsInitialized()==false) initView()
+                if(previoustLastPostId== DEFAULT_LAST_QUESTIOIN_ID) initPostView(postList)
                 else updatePosts(postList)
 
             }
@@ -159,7 +164,7 @@ class BossTalkMainFragment :
     }
 
     companion object{
-        const val FIRST_POST_POSITION=0
+        const val DEFAULT_LAST_QUESTIOIN_ID=0L
     }
 }
 

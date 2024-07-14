@@ -47,7 +47,7 @@ class TeacherTalkMainFragment :
         teacherTalkCardAdapter= TeacherTalkCardAdapter(requireContext())
         binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
 
-
+        initView()
         getQuestions()
         observeSortType()
         observeCategory()
@@ -73,23 +73,11 @@ class TeacherTalkMainFragment :
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
 
-        viewModel.teacherTalkQuestions.value?.isNotEmpty().apply {
-            // rv
-            teacherTalkCardAdapter.setCardList(viewModel.teacherTalkQuestions.value!!)
-            teacherTalkCardAdapter.notifyDataSetChanged()
-
-            val rvLayoutManager=LinearLayoutManager(requireContext())
-            binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
-
-            // TODO: 작동 x (카테고리 변경시 Rv focus)
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
-            },2000)
-        }
         binding.spinnerDropdown.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     var presentSortBy = viewModel.sortBy.value
+                    viewModel.resetLastPostIdMap(DEFAULT_LAST_QUESTIOIN_ID)
                     when (presentSortBy) {
                         "latest" -> presentSortBy = "최신순"
                         "views" -> presentSortBy = "조회수순"
@@ -127,14 +115,6 @@ class TeacherTalkMainFragment :
             viewModel.getTeacherTalkQuestions()
         }
 
-//        requireActivity().onBackPressedDispatcher.addCallback(
-//            viewLifecycleOwner,
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    findNavController().navigateUp()
-//                }
-//            })
-
         /*requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -143,6 +123,22 @@ class TeacherTalkMainFragment :
                 }
             })*/
     }
+
+    private fun initQuestionListView(questionList: List<QuestionEntity>){
+        Log.d("test","init")
+        // rv
+        teacherTalkCardAdapter.setCardList(questionList)
+        teacherTalkCardAdapter.notifyDataSetChanged()
+
+        val rvLayoutManager=LinearLayoutManager(requireContext())
+        binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
+
+        // TODO: 작동 x (카테고리 변경시 Rv focus)
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
+        },2000)
+    }
+
 
     private fun getQuestions() {
         viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
@@ -156,7 +152,7 @@ class TeacherTalkMainFragment :
                 updateQuestionIdMap(lastQuestionId)
                 setHasNext(result.hasNext)
 
-                if(previousLastPostId==FIRST_QUESTION_POSITION) initView()
+                if(previousLastPostId==DEFAULT_LAST_QUESTIOIN_ID) initQuestionListView(questionList)
                 else updateQuestions(questionList)
             }
 
@@ -173,12 +169,13 @@ class TeacherTalkMainFragment :
 
     private fun observeCategory() {
         viewModel.category.observe(viewLifecycleOwner, {
-            viewModel.updateQuestionIdMap(FIRST_QUESTION_POSITION)
+            viewModel.updateQuestionIdMap(DEFAULT_LAST_QUESTIOIN_ID)
             viewModel.getTeacherTalkQuestions()
         })
     }
 
     private fun updateQuestions(questionList:List<QuestionEntity>) {
+        Log.d("test","update")
         teacherTalkCardAdapter.addMoreCards(questionList)
     }
 
@@ -192,6 +189,6 @@ class TeacherTalkMainFragment :
     }
 
     companion object{
-        const val FIRST_QUESTION_POSITION=0L
+        const val DEFAULT_LAST_QUESTIOIN_ID=0L
     }
 }

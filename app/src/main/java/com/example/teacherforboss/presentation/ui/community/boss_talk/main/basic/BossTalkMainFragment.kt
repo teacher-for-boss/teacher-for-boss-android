@@ -50,6 +50,7 @@ class BossTalkMainFragment :
     private fun initView(){
 
         val firstPostList=viewModel.totalBossTalkPosts.get(FIRST_POST_POSITION)
+        viewModel.setIsInitialized()
 
         // rv
         bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
@@ -125,7 +126,7 @@ class BossTalkMainFragment :
                 setHasNext(result.hasNext)
                 if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
 
-                if(isInitialziedView.value==false) initView()
+                if(getIsInitialized()==false) initView()
                 else updatePosts(postList)
 
             }

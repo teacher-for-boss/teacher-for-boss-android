@@ -106,6 +106,10 @@ class BossTalkMainViewModel @Inject constructor(
     fun setHasNext(hasNext:Boolean){
         _hasNext.value=hasNext
     }
+    fun setIsInitialized(){
+        _isInitialziedView.value=true
+    }
+    fun getIsInitialized()=isInitialziedView.value
 
     fun setBossTalkPosts(postList:List<PostEntity>){
         _bossTalkPosts.value=postList

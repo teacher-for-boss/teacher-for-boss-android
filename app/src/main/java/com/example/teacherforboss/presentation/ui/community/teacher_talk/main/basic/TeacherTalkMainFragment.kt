@@ -148,7 +148,7 @@ class TeacherTalkMainFragment :
                 updateQuestionIdMap(lastQuestionId)
                 setHasNext(result.hasNext)
 
-                if(previousLastPostId==0L) initView()
+                if(previousLastPostId==FIRST_QUESTION_POSITION) initView()
                 else updateQuestions(questionList)
             }
 
@@ -165,7 +165,7 @@ class TeacherTalkMainFragment :
 
     private fun observeCategory() {
         viewModel.category.observe(viewLifecycleOwner, {
-            viewModel.updateQuestionIdMap(0L)
+            viewModel.updateQuestionIdMap(FIRST_QUESTION_POSITION)
             viewModel.getTeacherTalkQuestions()
         })
     }
@@ -181,5 +181,9 @@ class TeacherTalkMainFragment :
         binding.ivSearch.setOnClickListener {
             viewModel._keyword.value = binding.etSearchView.text.toString()
         }
+    }
+
+    companion object{
+        const val FIRST_QUESTION_POSITION=0L
     }
 }

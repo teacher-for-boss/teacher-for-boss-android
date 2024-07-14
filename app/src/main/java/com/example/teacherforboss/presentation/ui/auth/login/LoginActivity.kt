@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -8,14 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.MainActivity
+import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityLoginBinding
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.data.model.response.login.LoginResponseInterface
@@ -26,6 +30,8 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginV
 
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.example.teacherforboss.util.CustomSnackBar
+import com.example.teacherforboss.util.CustomToast
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -78,10 +84,11 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+                    LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
-                    processError("사용자가 없습니다.")
+                    processError("아이디 또는 비밀번호가 맞지 않습니다.")
                 }
                 else->{
                     //loading 종료시
@@ -104,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                             getKakaoUserInfo()
                         }
                         SocialLoginUiState.LoginFail->{
-                            showToast("social Login Fail")
+                            showSnackBar("social Login Fail")
                         }
                         else->{
                         }
@@ -121,6 +128,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Success ->{
                     saveToken(it.data)//respponse.result
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                    LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
@@ -408,10 +416,11 @@ class LoginActivity : AppCompatActivity() {
 
 
     fun processError(msg:String){
-        showToast(msg)
+        showSnackBar(msg)
     }
-    fun showToast(msg:String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 
     //사용하지 않는 함수들 (나중에 사용할수도..?)

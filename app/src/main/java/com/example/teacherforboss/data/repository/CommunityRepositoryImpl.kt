@@ -2,9 +2,9 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity

@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,11 +19,13 @@ import com.example.teacherforboss.databinding.ActivityTeachertalkAnswerBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.adapter.rvAdapterImageTeacherAnswer
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAnswerActivity : AppCompatActivity() {
+class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
     private lateinit var binding: ActivityTeachertalkAnswerBinding
     private val viewModel: TeacherTalkAnswerViewModel by viewModels()
 
@@ -40,8 +41,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         //purpose
-        if(intent.getStringExtra("purpose") == "modify") purpose = "modify"
-        else purpose = "write"
+        purpose=intent.getStringExtra("purpose").toString()
 
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
@@ -118,7 +118,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
                 startActivityForResult(gallery, 100)
             }
             else {
-                Toast.makeText(this, "세장까지만 업로드 가능합니다", Toast.LENGTH_SHORT).show()
+                showSnackBar("세장까지만 업로드 가능합니다.")
             }
         }
     }
@@ -133,7 +133,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
-                    Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
                     return
                 }
             }
@@ -170,16 +170,21 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this)
+            val dialog = WriteExitDialog(this,TEACHER_TALK,purpose,this)
             dialog.show()
         }
+    }
+
+    override fun onExitBtnClicked() {
+        onBackPressed()
     }
 
     fun IsValidPost() {
         binding.postBtn.setOnClickListener {
             val body = binding.inputAnswer.text.toString()
 
-            if(body.length < 100) Toast.makeText(this, "100자 이상 작성해주세요.", Toast.LENGTH_SHORT).show()
+            if(body.length < 100)
+                showSnackBar("100자 이상 작성해주세요.")
             else uploadPostAnswer()
         }
     }
@@ -212,20 +217,19 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
 
     fun finishUpload() {
         viewModel.uploadPostAnswerLiveData.observe(this, Observer {
-            Toast.makeText(this, "답변이 등록되었습니다.", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra("snackBarMsg","답변이 등록되었습니다.")
                 Log.d("answerId", it.answerId.toString())
             }
             startActivity(intent)
         })
 
         viewModel.modifyAnswerLiveData.observe(this, Observer {
-            Toast.makeText(this, "답변이 수정되었습니다.", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra("snackBarMsg","답변이 수정되었습니다.")
+
             }
             startActivity(intent)
         })
@@ -247,5 +251,15 @@ class TeacherTalkAnswerActivity : AppCompatActivity() {
 
         //최대글자수 지정
         binding.inputAnswer.filters = arrayOf(InputFilter.LengthFilter(5000))
+    }
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
+    }
+    
+    
+    companion object{
+        const val TEACHER_TALK="TEACHER_TALK"
     }
 }

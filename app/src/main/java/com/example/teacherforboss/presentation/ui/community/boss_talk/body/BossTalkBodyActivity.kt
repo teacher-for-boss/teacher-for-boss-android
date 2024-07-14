@@ -9,8 +9,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +23,7 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
@@ -52,6 +53,11 @@ class BossTalkBodyActivity : AppCompatActivity() {
         // post id
         postId = intent.getStringExtra("postId")!!.toLong()
         viewModel.setPostId(postId)
+
+        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        if (snackBarMsg!=null){
+            showSnackBar(snackBarMsg)
+        }
 
         // 서버 api 요청
         getBossTalkBody()
@@ -293,7 +299,22 @@ class BossTalkBodyActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    private fun onBackBtnPressed() {
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+        }
+        // TODO: 얘 별로면 뺄게요
+        val options = ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            android.R.anim.fade_in, // 새 Activity의 애니메이션
+            android.R.anim.fade_out // 현재 Activity의 애니메이션
+        )
+        startActivity(intent, options.toBundle())
+        finish()
+    }
+
+    fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
                 putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
@@ -301,4 +322,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
+    }
+
 }

@@ -1,7 +1,7 @@
-package com.example.teacherforboss.domain.usecase
+package com.example.teacherforboss.domain.usecase.community.teacher
 
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.repository.CommunityRepository
 
 class TeacherTalkAnsUseCase (

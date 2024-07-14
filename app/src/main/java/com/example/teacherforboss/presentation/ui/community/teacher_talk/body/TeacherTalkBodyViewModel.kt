@@ -12,12 +12,16 @@ import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequ
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerDislikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerLikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
@@ -40,6 +44,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkAnswerDislikeUseCase: TeacherTalkAnswerDislikeUseCase,
 
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
+    private val teacherTalkAnsUseCase: TeacherTalkAnsUseCase
 ): ViewModel() {
 
     private var _postAnswerLiveData=MutableLiveData<TeacherTalkAnswerResponseEntity>()
@@ -101,6 +106,10 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private var _getAnswerListLiveData=MutableLiveData<TeacherTalkAnswerListResponseEntity>()
     val getAnswerListLiveData:LiveData<TeacherTalkAnswerListResponseEntity> get() = _getAnswerListLiveData
 
+    private var _deleteAnsLiveData = MutableLiveData<TeacherTalkAnsResponseEntity>()
+    val deleteAnsLiveData: MutableLiveData<TeacherTalkAnsResponseEntity> get() = _deleteAnsLiveData
+
+
 
     fun getTeacherTalkBody(postId:Long){
         viewModelScope.launch {
@@ -152,6 +161,19 @@ class TeacherTalkBodyViewModel @Inject constructor(
             } catch (ex: Exception) {}
         }
     }
+    fun deleteAnswer() {
+        viewModelScope.launch {
+            try {
+                val teacherTalkAnsResponseEntity = teacherTalkAnsUseCase(
+                    TeacherTalkAnsRequestEntity(
+                        questionId = questionId.value!!,
+                        answerId = answerId.value
+                    )
+                )
+                _deleteAnsLiveData.value = teacherTalkAnsResponseEntity
+            } catch (ex:Exception) {}
+        }
+    }
 
     fun clickLikeBtn() {
         _isLike.value = _isLike.value?.not()
@@ -180,35 +202,6 @@ class TeacherTalkBodyViewModel @Inject constructor(
                     TeacherTalkRequestEntity(questionId=questionId.value!!)
                 )
                 _isLike.value=teacherTalkLikeResponseEntity.liked
-            }catch (ex:Exception){}
-        }
-    }
-
-
-    fun postAnswerLike(answerId:Long){
-        viewModelScope.launch {
-            try{
-                val teacherTalkAnswerLikeResponseEntity=teacherTalkAnswerLikeUseCase(
-                    TeacherTalkAnswerLikeRequestEntity(
-                        questionId = questionId.value!!,
-                        answerId = answerId
-                    )
-                )
-                _answerLikeLiveDataMap[answerId]?.value=teacherTalkAnswerLikeResponseEntity
-            }catch (ex:Exception){}
-        }
-    }
-
-    fun postAnswerDisLike(answerId:Long){
-        viewModelScope.launch {
-            try{
-                val teacherTalkAnswerDislikeResponseEntity=teacherTalkAnswerDislikeUseCase(
-                    TeacherTalkAnswerLikeRequestEntity(
-                        questionId = questionId.value!!,
-                        answerId = answerId
-                    )
-                )
-                _answerLikeLiveDataMap[answerId]?.value=teacherTalkAnswerDislikeResponseEntity
             }catch (ex:Exception){}
         }
     }

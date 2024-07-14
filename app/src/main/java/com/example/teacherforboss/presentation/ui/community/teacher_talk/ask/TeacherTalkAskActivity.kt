@@ -11,7 +11,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +25,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -132,9 +132,8 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
-                if (lastChar == ' ') {
-                    Toast.makeText(this@TeacherTalkAskActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
-                }
+                if (lastChar == ' ')
+                    showSnackBar("해시태그는 스페이스바 입력이 불가능합니다.")
             }
             override fun afterTextChanged(editable: Editable?) {
                 editable?.let {
@@ -163,7 +162,7 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
                         binding.inputHashtag.text.clear()
                     }
                     else {
-                        Toast.makeText(this, "해시태그는 5개까지 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+                        showSnackBar("해시태그는 5개까지 입력 가능합니다.")
                     }
                 }
 
@@ -181,7 +180,7 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
                 startActivityForResult(gallery, 100)
             }
             else {
-                Toast.makeText(this, "세장까지만 업로드 가능합니다", Toast.LENGTH_SHORT).show()
+                showSnackBar("세장까지만 업로드 가능합니다.")
             }
         }
     }
@@ -196,7 +195,7 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
-                    Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
                     return
                 }
             }
@@ -292,7 +291,7 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                showSnackBar("제목과 본문을 작성해야 등록할 수 있습니다.")
             }
             else uploadPost()
         }
@@ -325,8 +324,6 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            //Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
                 putExtra("snackBarMsg","질문이 등록되었습니다.")
@@ -335,8 +332,6 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
-            //Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
                 putExtra("snackBarMsg","질문이 수정되었습니다.")
@@ -364,6 +359,10 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
 
     override fun onExitBtnClicked() {
         onBackPressed()
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {

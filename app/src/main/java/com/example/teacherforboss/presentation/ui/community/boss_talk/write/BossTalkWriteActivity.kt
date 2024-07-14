@@ -333,7 +333,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
     }
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            val dialog = WriteExitDialog(this@BossTalkWriteActivity)
+            val dialog = WriteExitDialog(this@BossTalkWriteActivity, BOSS_TALK,purpose,this@BossTalkWriteActivity)
             dialog.show()
         }
     }

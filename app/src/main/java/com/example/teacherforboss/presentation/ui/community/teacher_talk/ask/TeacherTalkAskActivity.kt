@@ -33,7 +33,7 @@ import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
+class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
     private lateinit var binding: ActivityTeachertalkAskBinding
     private val viewModel: TeacherTalkAskViewModel by viewModels()
@@ -352,13 +352,10 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this,TEACHER_TALK,purpose,this)
+            val dialog = WriteExitDialog(this, TEACHER_TALK,purpose,this)
             dialog.show()
         }
     }
-
-    override fun onExitBtnClicked() {
-        onBackPressed()
 
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
@@ -367,12 +364,16 @@ class TeacherTalkAskActivity : AppCompatActivity(), WriteExitDialogListener {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            val dialog = WriteExitDialog(this@TeacherTalkAskActivity)
+            val dialog = WriteExitDialog(this@TeacherTalkAskActivity, TEACHER_TALK,purpose,this@TeacherTalkAskActivity)
             dialog.show()
         }
     }
-    
-     companion object{
+
+    override fun onExitBtnClicked() {
+        onBackPressed()
+    }
+
+    companion object{
         const val TEACHER_TALK="TEACHER_TALK"
     }
 

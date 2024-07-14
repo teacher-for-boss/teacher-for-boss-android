@@ -1,4 +1,4 @@
-package com.example.teacherforboss.domain.model.community
+package com.example.teacherforboss.domain.model.community.boss
 
 data class BossTalkDeletePostResponseEntity(
     val postId:Long,

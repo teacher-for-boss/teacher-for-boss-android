@@ -46,7 +46,7 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
                 if (viewModel is TeacherTalkBodyViewModel) {
                     viewModel.deletePost()
                 } else if (viewModel is BossTalkBodyViewModel) {
-                    viewModel.deletePost(id)
+                    viewModel.deletePost()
                 }
 
             }

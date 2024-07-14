@@ -4,13 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
@@ -24,12 +21,14 @@ import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResponseEntity.AnswerEntity>,
                               private val viewModel: TeacherTalkBodyViewModel,
-                              private val context: Context
+                              private val context: Context,
+                              private val lifecycleOwner: LifecycleOwner
 ): RecyclerView.Adapter<rvAdapterCommentTeacher.ViewHolder>() {
     class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(answer: TeacherAnswerListResponseEntity.AnswerEntity,
                  viewModel: TeacherTalkBodyViewModel,
-                 context: Context) {
+                 context: Context,
+                 lifecycleOwner:LifecycleOwner) {
 
             // 유저 정보
             val member = answer.memberInfo
@@ -135,7 +134,8 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
 
             //삭제하기
             binding.deleteBtn.setOnClickListener {
-                val dialog = DeleteCommentDialog(binding.root.context)
+                viewModel.setAnswerId(answer.answerId)
+                val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner)
                 dialog.show()
             }
 
@@ -179,7 +179,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherAnswerListResp
         return AnswerList.size
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(answer = AnswerList[position], viewModel = viewModel, context = context)
+        holder.bind(answer = AnswerList[position], viewModel = viewModel, context = context, lifecycleOwner = lifecycleOwner)
 
     }
 }

@@ -178,7 +178,7 @@ interface CommunityService {
     @DELETE("${TEACHER}/questions/{questionId}/answers/{answerId}")
     suspend fun deleteTeacherTalkAns(
         @Path("questionId") questionId:Long,
-        @Path("answerId") answerId:Long
+        @Path("answerId") answerId:Long?
     ):BaseResponse<ResponseTeacherTalkAnsDto>
 
     companion object {

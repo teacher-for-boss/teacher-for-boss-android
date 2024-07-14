@@ -53,13 +53,13 @@ class TeacherTalkMainFragment :
         observeCategory()
         addListeners()
 
-        requireActivity().onBackPressedDispatcher.addCallback(
+        /*requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     findNavController().navigateUp()
                 }
-            })
+            })*/
     }
 
     override fun onDestroyView() {
@@ -134,6 +134,14 @@ class TeacherTalkMainFragment :
 //                    findNavController().navigateUp()
 //                }
 //            })
+
+        /*requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp()
+                }
+            })*/
     }
 
     private fun getQuestions() {

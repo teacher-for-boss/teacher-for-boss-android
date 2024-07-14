@@ -1,7 +1,10 @@
 package com.example.teacherforboss
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.teacherforboss.databinding.ActivityMainBinding
@@ -26,21 +29,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 replaceFragment(HomeFragment())
             }
         }
-
-        // 백 버튼 콜백 설정
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Back button behavior. For example, go back to previous fragment if any.
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                } else {
-                    finish()
-                }
-            }
-        })
-
         clickBottomNavigation()
         setFragment()
+
+
+        // 백 버튼 콜백 설정
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun clickBottomNavigation() {
@@ -100,6 +94,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 true
             }
             else -> false
+        }
+    }
+    private var backPressedOnce = false
+    private val exitHandler = Handler(Looper.getMainLooper())
+    private val resetBackPressed = Runnable { backPressedOnce = false }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (backPressedOnce) {
+                finishAffinity()
+            } else {
+                backPressedOnce = true
+                Toast.makeText(this@MainActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                exitHandler.postDelayed(resetBackPressed, 2000)
+            }
         }
     }
     companion object{

@@ -121,6 +121,10 @@ class TeacherTalkMainViewModel @Inject constructor(
         lastQuestionIdMap.replace(category.value?:"전체",questionId)
     }
 
+    fun resetLastPostIdMap(postId:Long){
+        lastQuestionIdMap.replace(category.value!!,postId)
+    }
+
     fun getLastQuestionId()=lastQuestionIdMap.get(category.value)
 
     fun setHasNext(hasNext:Boolean){

@@ -31,6 +31,11 @@ class BossTalkMainViewModel @Inject constructor(
     val lastPostId:LiveData<Long>
         get() = _lastPostId
 
+    val sortByItems= listOf<String>("latest","views","likes")
+
+    var lastPostIdMap= mutableMapOf<String,Long>().apply {
+        sortByItems.forEach { put(it,0L) }
+    }
     var _size=MutableLiveData<Int>(10)
     val size:LiveData<Int>
         get() = _size
@@ -58,7 +63,7 @@ class BossTalkMainViewModel @Inject constructor(
             try{
                 val bossTalkPostsResponseEntity=bossTalkPostsUseCase(
                     BossTalkPostsRequestEntity(
-                    lastPostId = lastPostId.value?:0L,
+                    lastPostId = getLastPostId()?:0L,
                     size=size.value?:10,
                     sortBy=sortBy.value?:"latest",
                     keyword =null
@@ -75,7 +80,7 @@ class BossTalkMainViewModel @Inject constructor(
             try{
                 val bossTalkPostsResponseEntity=bossTalkSearchUseCase(
                     BossTalkPostsRequestEntity(
-                        lastPostId = lastPostId.value?:0L,
+                        lastPostId = getLastPostId()?:0L,
                         size=size.value?:10,
                         sortBy=null,
                         keyword =keyword.value
@@ -99,18 +104,17 @@ class BossTalkMainViewModel @Inject constructor(
         _sortBy.value=sort
     }
 
-    fun setLastPostId(postId:Long){
-        _lastPostId.value=postId
+    fun updateLastPostIdMap(postId:Long){
+        lastPostIdMap.replace(sortBy.value!!,postId)
     }
 
+    fun resetLastPostIdMap(sortBy:String,postId:Long){
+        lastPostIdMap.replace(sortBy,postId)
+    }
+    fun getLastPostId()=lastPostIdMap.get(sortBy.value)
     fun setHasNext(hasNext:Boolean){
         _hasNext.value=hasNext
     }
-    fun setIsInitialized(){
-        _isInitialziedView.value=true
-    }
-    fun getIsInitialized()=isInitialziedView.value
-
     fun setBossTalkPosts(postList:List<PostEntity>){
         _bossTalkPosts.value=postList
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentExchange2Binding
 import com.example.teacherforboss.databinding.FragmentExchangeBinding
@@ -16,12 +17,16 @@ class ExchangeFragment2 : Fragment() {
 
     private var _binding: FragmentExchange2Binding? = null
     private val binding get() = _binding!!
+    private val viewModel: ExchangeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentExchange2Binding.inflate(inflater, container, false)
+        _binding = FragmentExchange2Binding.inflate(inflater, container, false).apply {
+            exchangeViewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
         return binding.root
     }
 

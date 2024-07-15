@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.databinding.ActivityExchangeCompleteBinding
 
 class ExchangeCompleteActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class ExchangeCompleteActivity : AppCompatActivity() {
 
     fun onCheckBtnPressed(){
         binding.btnCheck.setOnClickListener {
-            val intent= Intent(this, ExchangeActivity::class.java).apply {
+            val intent= Intent(this, MainActivity::class.java).apply {
                 putExtra("FRAGMENT_DESTINATION","EXCHANGE")
             }
             startActivity(intent)

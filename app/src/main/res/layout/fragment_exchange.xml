@@ -51,7 +51,7 @@
                 android:textColor="@color/Purple600"
                 android:lineSpacingExtra="6sp"
                 android:fontFamily="@font/pretendard_semibold"
-                android:text="850 TP"
+                android:text="[]TP"
                 android:textSize="28sp"
                 android:paddingBottom="20dp"
 

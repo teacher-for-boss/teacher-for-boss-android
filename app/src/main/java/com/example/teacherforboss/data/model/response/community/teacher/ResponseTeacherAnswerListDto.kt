@@ -1,16 +1,16 @@
 package com.example.teacherforboss.data.model.response.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.MemberDto
-import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseTeacherAnswerListDto (
     @SerializedName("hasNext") val hasNext: Boolean,
     @SerializedName("answerList") val answerList: ArrayList<AnswerDto>
 ) {
-    fun toTeacherAnswerListResponseEntity() = TeacherAnswerListResponseEntity(
+    fun toTeacherAnswerListResponseEntity() = TeacherTalkAnswerListResponseEntity(
         hasNext = hasNext,
-        answerList = answerList.map { it.toAnswerEntity() } as ArrayList<TeacherAnswerListResponseEntity.AnswerEntity>
+        answerList = answerList.map { it.toAnswerEntity() } as ArrayList<TeacherTalkAnswerListResponseEntity.AnswerEntity>
     )
     data class AnswerDto(
         @SerializedName("answerId") val answerId: Long,
@@ -23,7 +23,7 @@ data class ResponseTeacherAnswerListDto (
         @SerializedName("createdAt") val createdAt: String,
         @SerializedName("memberInfo") val memberInfo: MemberDto
     ) {
-        fun toAnswerEntity() = TeacherAnswerListResponseEntity.AnswerEntity(
+        fun toAnswerEntity() = TeacherTalkAnswerListResponseEntity.AnswerEntity(
             answerId = answerId,
             content = content,
             likeCount = likeCount,

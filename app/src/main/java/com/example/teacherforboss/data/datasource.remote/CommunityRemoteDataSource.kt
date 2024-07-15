@@ -10,6 +10,7 @@ import com.example.teacherforboss.data.model.request.community.teacher.RequestTe
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnsDto
 
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
@@ -30,6 +31,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseTeacherTalkAnsDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -86,4 +88,9 @@ interface CommunityRemoteDataSource {
     suspend fun modifyTeacherTalkAnswer(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherTalkAnswerDto: RequestTeacherTalkAnswerDto, requestTeacherAnswerPostDto: RequestTeacherAnswerPostDto): BaseResponse<ResponseTeacherAnswerModifyDto>
 
     suspend fun selectTeacherTalkAnswer(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherTalkAnswerDto: RequestTeacherTalkAnswerDto): BaseResponse<ResponseTeacherSelectDto>
+
+    suspend fun postTeacherTalkAnswerLike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
+
+    suspend fun postTeacherTalkAnswerDislike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
+
 }

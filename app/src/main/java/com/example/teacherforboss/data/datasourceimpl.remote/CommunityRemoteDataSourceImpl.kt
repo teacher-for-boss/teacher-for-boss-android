@@ -10,6 +10,7 @@ import com.example.teacherforboss.data.model.request.community.teacher.RequestTe
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkQuestionsDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerDto
+import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
@@ -30,6 +31,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -132,5 +134,9 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     =communityService.selectTeacherTalkAnswer(
         questionId = requestTeacherTalkDto.questionId, answerId = requestTeacherTalkAnswerDto.answerId
     )
+    override suspend fun postTeacherTalkAnswerLike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto): BaseResponse<ResponseTeacherTalkAnswerLikeDto>
+            =communityService.likeTeacherTalkAnswer(questionId = requestTeacherTalkAnswerLikeDto.questionId, answerId = requestTeacherTalkAnswerLikeDto.answerId)
 
+    override suspend fun postTeacherTalkAnswerDislike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto): BaseResponse<ResponseTeacherTalkAnswerLikeDto>
+            =communityService.dislikeTeacherTalkAnswer(questionId = requestTeacherTalkAnswerLikeDto.questionId, answerId = requestTeacherTalkAnswerLikeDto.answerId)
 }

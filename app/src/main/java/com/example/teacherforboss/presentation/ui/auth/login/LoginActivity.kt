@@ -31,7 +31,6 @@ import com.example.teacherforboss.presentation.ui.auth.login.social.SocialLoginV
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.util.CustomSnackBar
-import com.example.teacherforboss.util.CustomToast
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken

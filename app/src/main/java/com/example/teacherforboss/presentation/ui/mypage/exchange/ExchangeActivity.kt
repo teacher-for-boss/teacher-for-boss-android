@@ -1,7 +1,10 @@
 package com.example.teacherforboss.presentation.ui.mypage.exchange
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.teacherforboss.MainActivity
@@ -22,7 +25,13 @@ class ExchangeActivity : AppCompatActivity() {
 
         onBackBtnPressed()
     }
-
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
             val intent= Intent(this, ExchangeActivity::class.java).apply {

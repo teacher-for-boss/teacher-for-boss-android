@@ -6,7 +6,6 @@
         <variable
             name="accountViewModel"
             type="com.example.teacherforboss.presentation.ui.mypage.account.AccountViewModel" />
-
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

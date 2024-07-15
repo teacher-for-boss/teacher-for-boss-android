@@ -7,7 +7,9 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.example.teacherforboss.MainActivity
+import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityExchangeBinding
 
 class ExchangeActivity : AppCompatActivity() {
@@ -19,10 +21,18 @@ class ExchangeActivity : AppCompatActivity() {
         binding = ActivityExchangeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, ExchangeFragment())
-            .commit()
-
+        if (savedInstanceState == null) {
+            // Get the intent and check if it should start with ExchangeFragment2
+            if (intent.getBooleanExtra("startWithFragment2", false)) {
+                supportFragmentManager.commit {
+                    replace(R.id.fragment_container, ExchangeFragment2())
+                }
+            } else {
+                supportFragmentManager.commit {
+                    replace(R.id.fragment_container, ExchangeFragment())
+                }
+            }
+        }
         onBackBtnPressed()
     }
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

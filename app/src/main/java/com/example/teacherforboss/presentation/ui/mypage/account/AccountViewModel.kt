@@ -21,7 +21,13 @@ class AccountViewModel @Inject constructor() : ViewModel() {
 
     var enableNext = MutableLiveData<Boolean>(false)
 
-    fun validateFields() {
+    init {
+        _chosenBank.observeForever { validateFields() }
+        _etInputAccount.observeForever { validateFields() }
+        _etInputName.observeForever { validateFields() }
+    }
+
+    private fun validateFields() {
         enableNext.value = !(_chosenBank.value.isNullOrEmpty() ||
                 _etInputAccount.value.isNullOrEmpty() ||
                 _etInputName.value.isNullOrEmpty())
@@ -29,16 +35,13 @@ class AccountViewModel @Inject constructor() : ViewModel() {
 
     fun setChosenBank(bank: String) {
         _chosenBank.value = bank
-        validateFields()
     }
 
     fun setInputAccount(account: String) {
         _etInputAccount.value = account
-        validateFields()
     }
 
     fun setInputName(name: String) {
         _etInputName.value = name
-        validateFields()
     }
 }

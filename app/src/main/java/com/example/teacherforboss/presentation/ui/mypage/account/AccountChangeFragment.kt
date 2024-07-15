@@ -1,19 +1,20 @@
 package com.example.teacherforboss.presentation.ui.mypage.exchange
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentAccountChangeBinding
-import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BankFragment
 import com.example.teacherforboss.presentation.ui.mypage.account.AccountViewModel
 import com.example.teacherforboss.presentation.ui.mypage.account.BankAccountFragment
 
 class AccountChangeFragment : Fragment() {
+
     private var _binding: FragmentAccountChangeBinding? = null
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<AccountViewModel>()
@@ -23,9 +24,8 @@ class AccountChangeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAccountChangeBinding.inflate(inflater, container, false)
-
-        addListeners()
-        setObserver()
+        binding.accountViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -39,32 +39,15 @@ class AccountChangeFragment : Fragment() {
                 .commit()
         }
 
-
-    }
-
-    private fun addListeners(){
-
-        binding.chosenBank.setOnClickListener {
-            val transaction=parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, BankFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
+        binding.btnComplete.setOnClickListener {
+            val intent = Intent(requireActivity(), ExchangeActivity::class.java).apply {
+                putExtra("startWithFragment2", true)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
         }
+    }
 
-    }
-    private fun checkFilled() {
-        if (!viewModel._chosenBank.value.isNullOrEmpty() &&
-            !viewModel._etInputAccount.value.isNullOrEmpty() &&
-            !viewModel._etInputName.value.isNullOrEmpty())
-            viewModel.enableNext.value = true
-        else viewModel.enableNext.value = false
-    }
-    private fun setObserver(){
-        val dataObserver = Observer<String>{ _ -> checkFilled() }
-        viewModel._chosenBank.observe(viewLifecycleOwner,dataObserver)
-        viewModel._etInputAccount.observe(viewLifecycleOwner,dataObserver)
-        viewModel._etInputName.observe(viewLifecycleOwner,dataObserver)
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -31,7 +31,7 @@ class rvAdapterBankAccount(
         holder.bankName.text = bank.name
 
         holder.itemView.setOnClickListener {
-            accountViewModel._chosenBank.value = bank.name
+            accountViewModel.setChosenBank(bank.name)
             parentFragmentManager.popBackStack()
         }
     }

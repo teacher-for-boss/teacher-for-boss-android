@@ -29,7 +29,6 @@ class findEmailFragment2 : Fragment() {
 
     lateinit var navController: NavController
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,29 +49,8 @@ class findEmailFragment2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController= Navigation.findNavController(view)
 
-        //postfindEmail 결과 수신
-//        viewLifecycleOwner.lifecycleScope.launch {
-//                viewModel.findEmailResultState.collect { uiState ->
-//                    when (uiState) {
-//                        is UiState.Loading -> {
-//                            showToast("로딩중")
-//                        }
-//
-//                        is UiState.Success -> {
-//                            viewModel.matchedEmail.value = uiState.data?.result?.email
-//                            viewModel.matchedcreatedAt.value = uiState.data?.result?.createdAt
-//                        }
-//
-//                        is UiState.Error -> showToast(uiState.message!!)
-//                        else -> showToast("empty")
-//                    }
-//
-//                }
-//
-//        }
-
         binding.loginBtn.setOnClickListener {
-            navController.navigate(R.id.action_findPwFragment2_to_finishFindPwActivity)
+            navController.navigate(R.id.action_findEmailFragment2_to_loginActivity)
         }
     }
 

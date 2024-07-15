@@ -44,12 +44,12 @@ class BossTalkMainCardAdapter(context: Context) :
         notifyDataSetChanged()
     }
 
-    fun addMoreCards() {
+    fun addMoreCards(newPostList:List<PostEntity>) {
         val currentSize = bossTalkCardList.size
-        val nextSize = minOf(currentSize + 10, allBossTalkMainCard.size)
-        if (currentSize < nextSize) {
-            bossTalkCardList.addAll(allBossTalkMainCard.subList(currentSize, nextSize))
-            notifyItemRangeInserted(currentSize, nextSize - currentSize)
+        val newItemSize=newPostList.size
+        if(newItemSize>0){
+            bossTalkCardList.addAll(newPostList)
+            notifyItemRangeInserted(currentSize,newItemSize)
         }
     }
 

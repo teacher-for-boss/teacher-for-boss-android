@@ -9,6 +9,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.Tea
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
@@ -44,14 +46,14 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
-//        transaction.addToBackStack(null)
-//        transaction.commit()
-
         //questionId
         questionId=intent.getStringExtra("questionId")!!.toLong()
         viewModel.setQuestionId(questionId)
+
+        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        if (snackBarMsg!=null){
+            showSnackBar(snackBarMsg)
+        }
 
         // 서버 api 요청
         getTeacherTalkBody()
@@ -184,6 +186,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         //답변 작성하기
         binding.answerBtn.setOnClickListener {
             val intent = Intent(this, TeacherTalkAnswerActivity::class.java).apply {
+                putExtra("purpose","answer")
                 putExtra("title", binding.bodyTitle.text.toString())
                 putExtra("body", binding.bodyBody.text.toString())
                 putExtra("questionId", viewModel.questionId.value.toString())
@@ -246,28 +249,27 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     fun setCommentView() {
         viewModel.teacherAnswerListLiveData.observe(this, Observer {
-            if(it.answerList.isNotEmpty()) {
-                viewModel.setAnswerList(it.answerList)
+            viewModel.setAnswerList(it.answerList)
 
-                // 채택된 답변이 있는지
-                if(it.answerList.any {it.selected}) {
-                    viewModel._isSelected.value = true
-                }
-
-                // 답변 개수
-                binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
-
-                // 답변 rv
-                binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
-                binding.rvComment.layoutManager = LinearLayoutManager(this)
+            // 채택된 답변이 있는지
+            if(it.answerList.any {it.selected}) {
+                viewModel._isSelected.value = true
             }
+
+            // 답변 개수
+            binding.commentNumber.text = getString(R.string.boss_talk_comment_count, it.answerList.size)
+
+            // 답변 rv
+            binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this,this)
+            binding.rvComment.layoutManager = LinearLayoutManager(this)
         })
 
         viewModel.isSelectClicked.observe(this, Observer {
             viewModel.getAnswerList()
-            // 답변 rv
-            binding.rvComment.adapter = rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this)
-            binding.rvComment.layoutManager = LinearLayoutManager(this)
+        })
+        viewModel.deleteAnsLiveData.observe(this,Observer {
+            viewModel.getAnswerList()
+            Toast.makeText(this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -300,5 +302,9 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         spannableString.setSpan(ForegroundColorSpan(color), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         title.text = spannableString
+    }
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 }

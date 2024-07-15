@@ -3,12 +3,19 @@ package com.example.teacherforboss.presentation.ui.mypage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMyPageBinding
-import com.example.teacherforboss.presentation.type.TeacherLevelType
+import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.component.DialogPopupFragment
 import com.example.teacherforboss.util.context.navigateToWebView
+import com.example.teacherforboss.util.view.UiState
+import com.example.teacherforboss.util.view.loadCircularImage
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel: MyPageViewModel by activityViewModels()
@@ -20,18 +27,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         initLayout()
         addListeners()
+        collectData()
     }
 
     private fun initLayout() {
-        // TODO role은 viewModel 통해서 LocalDataSource에서 가져오는 걸로 수정
-        val role = "TEACHER"
+        // TODO role은 LocalDataSource에서 가져오는 걸로 수정
+        val role = "BOSS"
         if (role == ROLE_TEACHER) {
             setTeacherProfileLayout()
             setTeacherMenuBarLayout()
             setTeacherMenuLayout()
+            // TODO 삭제
+            setTeacherProfileLayoutByAPI(viewModel.mockTeacher)
+            binding.ivMyPageProfile.loadCircularImage(viewModel.mockTeacher.profileImgUrl)
         } else {
-            setBossProfileLayout()
             setBossMenuLayout()
+            // TODO 삭제
+            setBossProfileLayoutByAPI(viewModel.mockBoss)
+            binding.ivMyPageProfile.loadCircularImage(viewModel.mockBoss.profileImgUrl)
         }
     }
 
@@ -52,28 +65,58 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun collectData() {
+        viewModel.userProfileInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { userProfileInfoState ->
+                when (userProfileInfoState) {
+                    is UiState.Success -> {
+                        val data = userProfileInfoState.data
+                        with(binding) {
+                            BindingImgAdapter.bindImage(ivMyPageProfile, data.profileImgUrl)
+                            if (data.role == ROLE_TEACHER) {
+                                setTeacherProfileLayoutByAPI(data = data)
+                            } else {
+                                setBossProfileLayoutByAPI(data = data)
+                            }
+                        }
+                    }
+
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
     private fun setTeacherProfileLayout() {
         with(binding) {
-            // TODO 사용자이름은 서버통신인지 local 저장인지 모르겠지만 암튼 둘중 하나로~
-            // TODO 사용자 이미지 Glide로 띄우기
-            tvMyPageProfileName.text = getString(R.string.my_page_teacher_name, "나는티처다")
-            tvMyPageLevel.apply {
-                // TODO Mapper 사용해서 서버로 받아온 레벨 Type값과 매핑
-                text = getString(TeacherLevelType.LEVEL5.levelName)
-                visibility = View.VISIBLE
-            }
+            tvMyPageLevel.visibility = View.VISIBLE
             layoutMyPageLevelInfo.visibility = View.VISIBLE
-            tvMyPageLevelInfo.apply {
-                // TODO 서버에서 받아온 남은 횟수 값 집어넣기
-                text = getString(R.string.my_page_level_next_info, "13")
-            }
         }
     }
 
-    private fun setBossProfileLayout() {
-        // TODO 사용자이름
-        // TODO 사용자 이미지
-        binding.tvMyPageProfileName.text = getString(R.string.my_page_boss_name, "나는보스다")
+    private fun setTeacherProfileLayoutByAPI(data: MyPageProfileEntity) {
+        binding.apply {
+            tvMyPageProfileName.text = getString(
+                R.string.my_page_teacher_name,
+                data.nickname,
+            )
+            tvMyPageLevel.text = data.teacherInfo!!.level
+            tvMyPageLevelInfo.text =
+                if (data.teacherInfo!!.leftAnswerCount == 0) {
+                    getString(R.string.my_page_level_next_info_null)
+                } else {
+                    getString(
+                        R.string.my_page_level_next_info,
+                        data.teacherInfo!!.leftAnswerCount.toString(),
+                    )
+                }
+        }
+    }
+
+    private fun setBossProfileLayoutByAPI(data: MyPageProfileEntity) {
+        binding.tvMyPageProfileName.text = getString(
+            R.string.my_page_boss_name,
+            data.nickname,
+        )
     }
 
     private fun setTeacherMenuBarLayout() {

@@ -1,60 +1,181 @@
 package com.example.teacherforboss.presentation.ui.mypage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
+import com.example.teacherforboss.databinding.FragmentMyPageBinding
+import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
+import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.component.DialogPopupFragment
+import com.example.teacherforboss.util.context.navigateToWebView
+import com.example.teacherforboss.util.view.UiState
+import com.example.teacherforboss.util.view.loadCircularImage
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
+    private val viewModel: MyPageViewModel by activityViewModels()
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MyPageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MyPageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        binding.myPageViewModel = viewModel
+
+        initLayout()
+        addListeners()
+        collectData()
+    }
+
+    private fun initLayout() {
+        // TODO role은 LocalDataSource에서 가져오는 걸로 수정
+        val role = "BOSS"
+        if (role == ROLE_TEACHER) {
+            setTeacherProfileLayout()
+            setTeacherMenuBarLayout()
+            setTeacherMenuLayout()
+            // TODO 삭제
+            setTeacherProfileLayoutByAPI(viewModel.mockTeacher)
+            binding.ivMyPageProfile.loadCircularImage(viewModel.mockTeacher.profileImgUrl)
+        } else {
+            setBossMenuLayout()
+            // TODO 삭제
+            setBossProfileLayoutByAPI(viewModel.mockBoss)
+            binding.ivMyPageProfile.loadCircularImage(viewModel.mockBoss.profileImgUrl)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_page, container, false)
+    private fun addListeners() {
+        with(binding) {
+            includeMyPageMenuInquire.root.setOnClickListener {
+                requireActivity().startActivity(
+                    requireActivity().navigateToWebView(INQUIRE_WEB_LINK),
+                )
+            }
+            includeMyPageMenuTerms.root.setOnClickListener {
+                requireActivity().startActivity(
+                    requireActivity().navigateToWebView(TERMS_WEB_LINK),
+                )
+            }
+            tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
+            layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
+        }
+    }
+
+    private fun collectData() {
+        viewModel.userProfileInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { userProfileInfoState ->
+                when (userProfileInfoState) {
+                    is UiState.Success -> {
+                        val data = userProfileInfoState.data
+                        with(binding) {
+                            BindingImgAdapter.bindImage(ivMyPageProfile, data.profileImgUrl)
+                            if (data.role == ROLE_TEACHER) {
+                                setTeacherProfileLayoutByAPI(data = data)
+                            } else {
+                                setBossProfileLayoutByAPI(data = data)
+                            }
+                        }
+                    }
+
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun setTeacherProfileLayout() {
+        with(binding) {
+            tvMyPageLevel.visibility = View.VISIBLE
+            layoutMyPageLevelInfo.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setTeacherProfileLayoutByAPI(data: MyPageProfileEntity) {
+        binding.apply {
+            tvMyPageProfileName.text = getString(
+                R.string.my_page_teacher_name,
+                data.nickname,
+            )
+            tvMyPageLevel.text = data.teacherInfo!!.level
+            tvMyPageLevelInfo.text =
+                if (data.teacherInfo!!.leftAnswerCount == 0) {
+                    getString(R.string.my_page_level_next_info_null)
+                } else {
+                    getString(
+                        R.string.my_page_level_next_info,
+                        data.teacherInfo!!.leftAnswerCount.toString(),
+                    )
+                }
+        }
+    }
+
+    private fun setBossProfileLayoutByAPI(data: MyPageProfileEntity) {
+        binding.tvMyPageProfileName.text = getString(
+            R.string.my_page_boss_name,
+            data.nickname,
+        )
+    }
+
+    private fun setTeacherMenuBarLayout() {
+        with(binding) {
+            tvMyPageMenuBarThird.text = getString(R.string.my_page_teacher_menu_bar_tp)
+            ivMyPageMenuBarThird.setImageResource(R.drawable.ic_teacher_point_30)
+        }
+    }
+
+    private fun setTeacherMenuLayout() {
+        with(binding) {
+            tvMyPageMenuReward.text = getString(R.string.my_page_reward_title)
+            includeMyPageMenuAccountChange.title =
+                getString(R.string.my_page_menu_account_change)
+            includeMyPageMenuExchange.title = getString(R.string.my_page_menu_exchange)
+            includeMyPageMenuExchangeDetails.apply {
+                root.visibility = View.VISIBLE
+                title = getString(R.string.my_page_menu_exchange_details)
+            }
+            includeMyPageMenuTeacherTalkQuestionPost.title =
+                getString(R.string.my_page_menu_teacher_talk_answered_post)
+        }
+    }
+
+    private fun setBossMenuLayout() {
+        with(binding) {
+            includeMyPageMenuAccountChange.title =
+                getString(R.string.my_page_menu_payment_question_ticket)
+            includeMyPageMenuExchange.title = getString(R.string.my_page_menu_payment_history)
+            includeMyPageMenuExchangeDetails.root.visibility = View.GONE
+            includeMyPageMenuTeacherTalkQuestionPost.title =
+                getString(R.string.my_page_menu_teacher_talk_question_post)
+        }
+    }
+
+    private fun showLogoutDialogFragment() {
+        // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가
+        DialogPopupFragment(
+            title = getString(R.string.dialog_logout_title),
+            content = getString(R.string.dialog_logout_content),
+            leftBtnText = getString(R.string.dialog_exit),
+            rightBtnText = getString(R.string.dialog_logout_btn),
+            clickLeftBtn = {},
+            clickRightBtn = {},
+        ).show(parentFragmentManager, LOGOUT_DIALOG)
+    }
+
+    private fun showTeacherLevelDialogFragment() {
+        DialogTeacherLevelFragment().show(parentFragmentManager, TEACHER_LEVEL_DIALOG)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyPageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyPageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        private const val INQUIRE_WEB_LINK =
+            "https://docs.google.com/forms/d/e/1FAIpQLScvoVxh-1jlqyKhVKiFS4pZDhk-GtYbZOHKh4KJHveutN2TYw/viewform"
+        private const val TERMS_WEB_LINK =
+            "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
+        private const val LOGOUT_DIALOG = "logoutModal"
+        private const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
+        private const val ROLE_TEACHER = "TEACHER"
+        private const val ROLE_BOSS = "BOSS"
     }
 }

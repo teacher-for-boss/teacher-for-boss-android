@@ -4,27 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.example.teacherforboss.MainActivity
-import com.example.teacherforboss.databinding.ActivityExchangeBinding
+import com.example.teacherforboss.databinding.ActivityExchangeCompleteBinding
 
-class ExchangeActivity : AppCompatActivity() {
+class ExchangeCompleteActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityExchangeBinding
+    private lateinit var binding: ActivityExchangeCompleteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityExchangeBinding.inflate(layoutInflater)
+        binding = ActivityExchangeCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, ExchangeFragment())
-            .commit()
-
-        onBackBtnPressed()
+        onCheckBtnPressed()
     }
 
-    fun onBackBtnPressed(){
-        binding.backBtn.setOnClickListener {
+    fun onCheckBtnPressed(){
+        binding.btnCheck.setOnClickListener {
             val intent= Intent(this, ExchangeActivity::class.java).apply {
                 putExtra("FRAGMENT_DESTINATION","EXCHANGE")
             }

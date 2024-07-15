@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.mypage.exchange.account_change_fragment">
+        tools:context=".presentation.ui.mypage.exchange.ExchangeCompleteActivity">
 
         <ImageView
             android:id="@+id/iv_coin"
@@ -70,6 +70,7 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:textAlignment="center"
+            android:layout_marginHorizontal="16dp"
             android:text="@string/exchange_check"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"

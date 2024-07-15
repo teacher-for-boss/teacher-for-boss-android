@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.mypage.exchange
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentExchange2Binding
 import com.example.teacherforboss.databinding.FragmentExchangeBinding
+import com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity
+import com.example.teacherforboss.presentation.ui.auth.signup.teacher.AccountFragment
 
 class ExchangeFragment2 : Fragment() {
 
@@ -25,10 +28,13 @@ class ExchangeFragment2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnExchangeApply.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ExchangeFragment3())
-                .addToBackStack(null)
-                .commit()
+            val intent = Intent(requireContext(), ExchangeCompleteActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.tvChangeInfo.setOnClickListener {
+            val intent = Intent(requireContext(), AccountChangeActivity::class.java)
+            startActivity(intent)
         }
     }
 

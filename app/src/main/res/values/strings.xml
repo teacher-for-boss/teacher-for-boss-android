@@ -179,4 +179,16 @@
     <string name="dialog_delete_content">탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
     <string name="dialog_delete_btn">탈퇴하기</string>
     <string name="dialog_exit">취소하기</string>
+
+    <!-- teacher profile -->
+    <string name="teacher_profile_report">신고하기</string>
+    <string name="teacher_profile_fix">수정하기</string>
+    <string name="teacher_profile_teacher_name">%s 티처</string>
+    <string name="teacher_profile_boss_name">%s 보스</string>
+    <string name="teacher_profile_tab_info">티처 정보</string>
+    <string name="teacher_profile_tab_recent_answer">티처 최근 답변</string>
+    <string name="teacher_profile_tab_info_specialty">분야</string>
+    <string name="teacher_profile_tab_info_career">경력</string>
+    <string name="teacher_profile_tab_info_career_detail">%s년차</string>
+    <string name="teacher_profile_tab_info_keyword">티처 키워드</string>
 </resources>

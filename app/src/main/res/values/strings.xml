@@ -122,6 +122,7 @@
     <string name="comment_cnt">댓글 %d개</string>
     <string name="user_level">Lv.%s 지식의 별</string>
 
+
     <!-- my page -->
     <string name="my_page_title">마이페이지</string>
     <string name="my_page_teacher_name">%s 티처</string>
@@ -179,4 +180,14 @@
     <string name="dialog_delete_content">탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
     <string name="dialog_delete_btn">탈퇴하기</string>
     <string name="dialog_exit">취소하기</string>
+
+    <!-- manage account -->
+    <string name="account_info">계정 정보</string>
+    <string name="account_email">이메일</string>
+    <string name="account_phone">휴대폰</string>
+    <string name="account_email_naver">네이버</string>
+    <string name="account_email_kakao">카카오</string>
+    <string name="account_management">계정 관리</string>
+    <string name="account_logout">로그아웃</string>
+    <string name="account_delete">탈퇴하기</string>
 </resources>

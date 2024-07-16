@@ -186,8 +186,8 @@
     <string name="manage_account_info">계정 정보</string>
     <string name="manage_account_email">이메일</string>
     <string name="manage_account_phone">휴대폰</string>
-    <string name="manage_account_email_naver">네이버</string>
-    <string name="manage_account_email_kakao">카카오</string>
+    <string name="manage_account_email_naver">네이버 로그인</string>
+    <string name="manage_account_email_kakao">카카오 로그인</string>
     <string name="manage_account_management">계정 관리</string>
     <string name="manage_account_logout">로그아웃</string>
     <string name="manage_account_delete">탈퇴하기</string>

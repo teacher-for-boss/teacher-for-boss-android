@@ -14,13 +14,13 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragment()
+        onBackBtnPressed()
 
 
     }
     fun initView(fragment:Fragment){
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_manage_account, fragment)
-            .addToBackStack(null)
             .commit()
     }
     fun setFragment(){
@@ -28,6 +28,8 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
         if (signupType != SIGNUP_DEFAULT) initView(ManageSocialAccountFragment())
         else initView(ManageAccountFragment())
     }
+    fun onBackBtnPressed(){binding.includeAccountTopAppBar.backBtn.setOnClickListener {finish()}}
+
     companion object{
         const val SIGNUP_TYPE="SIGNUP_TYPE"
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"

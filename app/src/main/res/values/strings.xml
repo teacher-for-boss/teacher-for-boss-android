@@ -57,8 +57,6 @@
     <string name="boss_talk_like_count">%s</string>
 
 
-
-
     <!-- filter chip-->
     <string name="filter_name">%s</string>
 
@@ -69,7 +67,7 @@
         <item>조회수순</item>
         <item>좋아요순</item>
     </string-array>
-  
+
     <!--signup  -->
     <string name="sinup_next_btn">다음 단계</string>
     <string name="signup_re_verify">다시 인증하기</string>
@@ -184,7 +182,6 @@
     <string name="teacher_profile_report">신고하기</string>
     <string name="teacher_profile_fix">수정하기</string>
     <string name="teacher_profile_teacher_name">%s 티처</string>
-    <string name="teacher_profile_boss_name">%s 보스</string>
     <string name="teacher_profile_tab_info">티처 정보</string>
     <string name="teacher_profile_tab_recent_answer">티처 최근 답변</string>
     <string name="teacher_profile_tab_info_specialty">분야</string>

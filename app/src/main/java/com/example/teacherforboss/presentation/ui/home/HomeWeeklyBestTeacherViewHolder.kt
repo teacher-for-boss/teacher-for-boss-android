@@ -2,8 +2,6 @@ package com.example.teacherforboss.presentation.ui.home
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.teacherforboss.databinding.ItemHomeWeeklyBestTeacherBinding
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
 import com.example.teacherforboss.util.view.loadCircularImage

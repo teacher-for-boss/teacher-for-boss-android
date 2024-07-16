@@ -295,4 +295,11 @@
         <item name="android:letterSpacing">-0.02</item>
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
+
+    <style name="TextAppearance.TeacherForBoss.Regular.11" parent="TextAppearance.TeacherForBoss">
+        <item name="android:textSize">11dp</item>
+        <item name="lineHeight">16.5dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
 </resources>

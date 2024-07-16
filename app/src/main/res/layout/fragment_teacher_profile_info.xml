@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="teacherProfileDetailEntity"
+            type="com.example.teacherforboss.domain.model.common.TeacherProfileDetailEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,11 +55,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:maxLines="2"
+                android:text="@{teacherProfileDetailEntity.specialty}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
                 android:textColor="@color/Gray600"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_info_specialty"
-                tools:text="00전문가, 00전문가" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_info_specialty" />
 
             <TextView
                 android:id="@+id/tv_teacher_profile_info_career"
@@ -75,11 +78,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:maxLines="2"
+                android:text="@{@string/teacher_profile_tab_info_career_detail(teacherProfileDetailEntity.career)}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
                 android:textColor="@color/Gray600"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_info_career"
-                tools:text="00년" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_info_career" />
 
             <TextView
                 android:id="@+id/tv_teacher_profile_info_keyword"
@@ -97,10 +100,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/gl_end"
-                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="14dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_info_keyword"
                 tools:listitem="@layout/item_teacher_profile_keyword" />
 

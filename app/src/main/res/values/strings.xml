@@ -188,4 +188,6 @@
     <string name="teacher_profile_tab_info_career">경력</string>
     <string name="teacher_profile_tab_info_career_detail">%s년차</string>
     <string name="teacher_profile_tab_info_keyword">티처 키워드</string>
+    <string name="teacher_profile_tab_recent_answer_question">Q. %s</string>
+    <string name="teacher_profile_tab_recent_answer_answer">A. %s</string>
 </resources>

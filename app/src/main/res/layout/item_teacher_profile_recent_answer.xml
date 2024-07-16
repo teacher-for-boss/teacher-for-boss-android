@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="teacherRecentAnswer"
+            type="com.example.teacherforboss.domain.model.common.TeacherRecentAnswerListEntity.TeacherRecentAnswer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,12 +46,12 @@
                 android:layout_marginTop="12dp"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:text="@{@string/teacher_profile_tab_recent_answer_question(teacherRecentAnswer.questionTitle)}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body3"
                 android:textColor="@color/Gray700"
                 app:layout_constraintEnd_toEndOf="@id/gl_end"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Q. 오늘도 열심히 공부하고 디자인에 노력해봐야겠어요. 두줄" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_teacher_profile_recent_answer_answer"
@@ -57,12 +60,12 @@
                 android:layout_marginTop="6dp"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:text="@{@string/teacher_profile_tab_recent_answer_answer(teacherRecentAnswer.answer)}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body4"
                 android:textColor="@color/Gray500"
                 app:layout_constraintEnd_toEndOf="@id/gl_end"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_recent_answer_question"
-                tools:text="A. 여행은 새로운 경험과 추억을 선사하지만, 올바른 준비가 필수입니다. 이번 블로그 포스트에서는 여행자가 가져가야 할 10가지 10가지 10가지 어쩌고 저쩌고 이런" />
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_recent_answer_question" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_teacher_profile_recent_answer_comment_good"
@@ -77,8 +80,8 @@
 
                 <ImageView
                     android:id="@+id/iv_teacher_profile_recent_answer_comment_good"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginVertical="4dp"
                     android:layout_marginStart="8dp"
                     android:src="@drawable/comment_good_on"
@@ -92,25 +95,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="9dp"
+                    android:text="@{teacherRecentAnswer.answerLikeCount}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
                     android:textColor="@color/Purple600"
                     app:layout_constraintBottom_toBottomOf="@id/iv_teacher_profile_recent_answer_comment_good"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_teacher_profile_recent_answer_comment_good"
-                    app:layout_constraintTop_toTopOf="@id/iv_teacher_profile_recent_answer_comment_good"
-                    tools:text="54" />
+                    app:layout_constraintTop_toTopOf="@id/iv_teacher_profile_recent_answer_comment_good" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/tv_teacher_profile_recent_answer_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@{teacherRecentAnswer.answeredAt}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Label3."
                 android:textColor="@color/Gray400"
                 app:layout_constraintBottom_toBottomOf="@id/layout_teacher_profile_recent_answer_comment_good"
                 app:layout_constraintStart_toEndOf="@id/layout_teacher_profile_recent_answer_comment_good"
-                app:layout_constraintTop_toTopOf="@id/layout_teacher_profile_recent_answer_comment_good"
-                tools:text="2024.05.19" />
+                app:layout_constraintTop_toTopOf="@id/layout_teacher_profile_recent_answer_comment_good" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,7 +60,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 else binding.selectAnswer.visibility = View.GONE
             }
 
-            //사용자의 추천 비추천 여부 -> 이건 추천, 비추천 하면서 수정
+            //사용자의 추천 비추천 여부
             var isCommentGood = answer.liked
             var isCommentBad = answer.disliked
 
@@ -113,21 +113,21 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             //더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
-                //작성자인 경우
-                if(binding.writerOption.visibility == View.GONE) {
-                    binding.writerOption.visibility = View.VISIBLE
+                if(answer.isMine) {  // 댓글 작성자인 경우
+                    if(binding.writerOption.visibility == View.GONE) {
+                        binding.writerOption.visibility = View.VISIBLE
+                    }
+                    else {
+                        binding.writerOption.visibility = View.GONE
+                    }
+                } else {  // 댓글 작성자가 아닌 경우
+                    if(binding.nonWriterOption.visibility == View.GONE) {
+                        binding.nonWriterOption.visibility = View.VISIBLE
+                    }
+                    else {
+                    binding.nonWriterOption.visibility = View.GONE
+                    }
                 }
-                else {
-                    binding.writerOption.visibility = View.GONE
-                }
-                //작성자가 아닌 경우
-//                if(binding.nonWriterOption.visibility == View.GONE) {
-//                    binding.nonWriterOption.visibility = View.VISIBLE
-//                }
-//                else {
-//                    binding.nonWriterOption.visibility = View.GONE
-//                }
-
             }
 
             //채택하기

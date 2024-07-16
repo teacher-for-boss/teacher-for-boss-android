@@ -37,7 +37,9 @@ data class CommentDto(
     @SerializedName("memberInfo")
     val memberInfo:MemberDto,
     @SerializedName("children")
-    val children:ArrayList<CommentDto>
+    val children:ArrayList<CommentDto>,
+    @SerializedName("isMine")
+    val isMine: Boolean
 ){
     fun toCommentEntity(): CommentEntity {
         val memberEntities = memberInfo.toMemberEntity()
@@ -51,7 +53,8 @@ data class CommentDto(
             disliked=disliked,
             createdAt=createdAt,
             memberInfo=memberEntities,
-            children=children
+            children=children,
+            isMine = isMine
         )
     }
 

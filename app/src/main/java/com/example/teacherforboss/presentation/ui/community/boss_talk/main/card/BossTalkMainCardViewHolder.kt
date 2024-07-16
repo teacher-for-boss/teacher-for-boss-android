@@ -34,8 +34,8 @@ class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :
             tvBossTalkLikeCount.text = cardData.likeCount.toString()
             tvBossTalkCommentCount.text = cardData.commentCount.toString()
         }
-        if(cardData.like) binding.icBossTalkLike.setImageResource(R.drawable.ic_like_on)
-        if(cardData.bookmark) binding.icBossTalkBookmark.setImageResource(R.drawable.ic_bookmark_on)
+        if(cardData.liked) binding.icBossTalkLike.setImageResource(R.drawable.ic_like_on)
+        if(cardData.bookmarked) binding.icBossTalkBookmark.setImageResource(R.drawable.ic_bookmark_on)
     }
 
     fun extractDate(text:String):String{

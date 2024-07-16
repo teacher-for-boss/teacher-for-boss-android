@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,15 +53,28 @@ class rvAdapterCommentBoss(
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
-            //신고하기
+            //더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
                 optionClickListener(binding.btnOption)
-                if (binding.reportBtn.visibility == View.GONE) {
-                    binding.reportBtn.visibility = View.VISIBLE
-                } else {
-                    binding.reportBtn.visibility = View.GONE
+                if (comment.isMine) {  // 댓글 작성자인 경우
+                    if(binding.deleteBtn.visibility == View.GONE) binding.deleteBtn.visibility = View.VISIBLE
+                    else binding.deleteBtn.visibility = View.GONE
+                }
+                else {  // 댓글 작성자 아닌 경우
+                    if (binding.reportBtn.visibility == View.GONE) {
+                        binding.reportBtn.visibility = View.VISIBLE
+                    } else {
+                        binding.reportBtn.visibility = View.GONE
+                    }
                 }
             }
+
+            //삭제하기
+            binding.deleteBtn.setOnClickListener {
+                Log.d("commentBoss", "보스톡 댓글 삭제하기")
+            }
+
+            //신고하기
             binding.reportBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
                 binding.root.context.startActivity(intent)

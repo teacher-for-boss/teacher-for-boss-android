@@ -15,7 +15,7 @@ class TeacherProfileRecentAnswerFragment :
     BindingFragment<FragmentTeacherProfileRecentAnswerBinding>(R.layout.fragment_teacher_profile_recent_answer) {
 
     private val viewModel: TeacherProfileViewModel by activityViewModels()
-    private val teacherProfileRecentAnswerAdapter: TeacherProfileRecentAnswerAdapter by lazy { TeacherProfileRecentAnswerAdapter() }
+    private val teacherProfileRecentAnswerAdapter: TeacherProfileRecentAnswerAdapter by lazy { TeacherProfileRecentAnswerAdapter(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

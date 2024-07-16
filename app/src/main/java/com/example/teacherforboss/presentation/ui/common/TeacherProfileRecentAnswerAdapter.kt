@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.common
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -7,7 +8,9 @@ import com.example.teacherforboss.databinding.ItemTeacherProfileRecentAnswerBind
 import com.example.teacherforboss.domain.model.common.TeacherRecentAnswerListEntity.TeacherRecentAnswer
 import com.example.teacherforboss.util.view.ItemDiffCallback
 
-class TeacherProfileRecentAnswerAdapter :
+class TeacherProfileRecentAnswerAdapter(
+    private val context: Context,
+) :
     ListAdapter<TeacherRecentAnswer, TeacherProfileRecentAnswerViewHolder>(
         ItemDiffCallback<TeacherRecentAnswer>(
             onItemsTheSame = { old, new -> old.questionId == new.questionId },
@@ -23,6 +26,7 @@ class TeacherProfileRecentAnswerAdapter :
             parent,
             false,
         ),
+        context,
     )
 
     override fun onBindViewHolder(

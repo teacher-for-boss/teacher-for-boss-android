@@ -370,6 +370,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
     }
 
     override fun onExitBtnClicked() {
+        onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
 

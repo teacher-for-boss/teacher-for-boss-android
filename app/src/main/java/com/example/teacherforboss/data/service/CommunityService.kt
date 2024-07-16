@@ -162,12 +162,12 @@ interface CommunityService {
     ): BaseResponse<ResponseTeacherSelectDto>
 
 
-    @POST("${TEACHER}questions/{questionId}/likes")
+    @POST("${TEACHER}/questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(
         @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkLikeDto>
 
-    @POST("${TEACHER}questions/{questionId}/bookmark")
+    @POST("${TEACHER}/questions/{questionId}/bookmark")
     suspend fun getTeacherTalkBookmark(
         @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkBookmarkDto>

@@ -61,9 +61,10 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
             }
 
             //사용자의 추천 비추천 여부 -> 이건 추천, 비추천 하면서 수정
-            var isCommentGood = false
-            var isCommentBad = false
-            fun updateComment() {
+            var isCommentGood = answer.liked
+            var isCommentBad = answer.disliked
+
+            fun handleCommentBtnColor(){
                 if(isCommentGood) {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
@@ -79,12 +80,26 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                     binding.commentBadTv.setTextColor(Color.parseColor("#8490A0"))
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad)
                 }
+
+            }
+
+            handleCommentBtnColor()
+
+            // 추천, 비추천 onclick
+            fun updateComment() {
+                viewModel.getAnswerLikeLiveData(answer.answerId).observe(lifecycleOwner, Observer {
+                    // 추천,비추천 개수 업데이트
+                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                    handleCommentBtnColor()
+                })
             }
             binding.commentGood.setOnClickListener {
                 isCommentGood = !isCommentGood
                 if(isCommentGood && isCommentBad) {
                     isCommentBad = !isCommentBad
                 }
+                viewModel.postAnswerLike(answer.answerId)
                 updateComment()
             }
             binding.commentBad.setOnClickListener {
@@ -92,6 +107,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 if(isCommentGood && isCommentBad) {
                     isCommentGood = !isCommentGood
                 }
+                viewModel.postAnswerDisLike(answer.answerId)
                 updateComment()
             }
 

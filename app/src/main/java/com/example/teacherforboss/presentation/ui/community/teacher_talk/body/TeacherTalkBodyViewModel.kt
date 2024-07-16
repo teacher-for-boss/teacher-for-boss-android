@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
@@ -106,7 +107,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private var _deleteAnsLiveData = MutableLiveData<TeacherTalkAnsResponseEntity>()
     val deleteAnsLiveData: MutableLiveData<TeacherTalkAnsResponseEntity> get() = _deleteAnsLiveData
 
-
+    private val commentLikeLiveDataMap = mutableMapOf<Long, MutableLiveData<TeacherTalkAnswerLikeResponseEntity>>()
 
     fun getTeacherTalkBody(postId:Long){
         viewModelScope.launch {
@@ -202,6 +203,37 @@ class TeacherTalkBodyViewModel @Inject constructor(
             }catch (ex:Exception){}
         }
     }
+
+    fun postAnswerLike(answerId:Long){
+        viewModelScope.launch {
+            try{
+                val teacherTalkLikeResponseEntity=teacherTalkAnswerLikeUseCase(
+                    TeacherTalkAnswerLikeRequestEntity(
+                        questionId = questionId.value!!,
+                        answerId = answerId
+                    )
+                )
+                _answerLikeLiveDataMap[answerId]?.value=teacherTalkLikeResponseEntity
+
+            }catch (ex:Exception){}
+        }
+    }
+
+    fun postAnswerDisLike(answerId:Long){
+        viewModelScope.launch {
+            try{
+                val teacherTalkDisLikeResponseEntity=teacherTalkAnswerDislikeUseCase(
+                    TeacherTalkAnswerLikeRequestEntity(
+                        questionId = questionId.value!!,
+                        answerId = answerId
+                    )
+                )
+                _answerLikeLiveDataMap[answerId]?.value=teacherTalkDisLikeResponseEntity
+
+            }catch (ex:Exception){}
+        }
+    }
+
 
     fun setTagList(tagList:ArrayList<String>){
         _tagList.value=tagList

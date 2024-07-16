@@ -19,8 +19,8 @@ data class PostEntity(
     val bookmarkCount: Int,
     val commentCount: Int,
     val likeCount: Int,
-    val like: Boolean,
-    val bookmark: Boolean,
+    val liked: Boolean,
+    val bookmarked: Boolean,
     val createdAt: String, //LocalDate인데가 string으로 해야 에러가 안뜸,,
 ){
     fun toPostDto()=PostDto(
@@ -30,8 +30,8 @@ data class PostEntity(
         bookmarkCount=bookmarkCount,
         commentCount=commentCount,
         likeCount=likeCount,
-        like=like,
-        bookmark=bookmark,
+        liked=liked,
+        bookmarked=bookmarked,
         createdAt = createdAt
     )
 }

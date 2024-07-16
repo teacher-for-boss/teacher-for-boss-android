@@ -344,6 +344,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
     }
 
     override fun onExitBtnClicked() {
+        onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
 

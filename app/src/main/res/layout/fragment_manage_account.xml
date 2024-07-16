@@ -7,8 +7,8 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel" />
+            name="myPageViewModel"
+            type="com.example.teacherforboss.presentation.ui.mypage.MyPageViewModel" />
 
     </data>
 
@@ -24,8 +24,7 @@
             android:orientation="vertical"
             android:layout_margin="20dp"
             android:padding="20dp"
-            android:elevation="3dp"
-            android:background="@drawable/background_radius8_white_with_stroke"
+            android:background="@drawable/background_radius12_gray200"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,57 +35,25 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
                 android:textColor="@color/Gray400"
-                android:text="@string/account_info"
+                android:text="@string/manage_account_info"
                 android:paddingBottom="6dp"/>
 
-            <LinearLayout
+            <include
+                android:id="@+id/include_email"
+                layout="@layout/view_account_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
-                    android:textColor="@color/Gray600"
-                    android:layout_weight="1"
-                    android:text="@string/account_email" />
-
-                <TextView
-                    android:id="@+id/account_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="aaa@naver.com"
-                    android:gravity="end"/>
-            </LinearLayout>
-            <LinearLayout
+                android:layout_marginTop="@dimen/spacing12"
+                app:title="@{@string/manage_account_email}"
+                />
+            <include
+                android:id="@+id/include_phone"
+                layout="@layout/view_account_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
-                    android:textColor="@color/Gray600"
-                    android:text="@string/account_phone" />
-
-                <TextView
-                    android:id="@+id/account_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="010-0000-0000"
-                    android:gravity="end"/>
-            </LinearLayout>
+                android:layout_marginTop="@dimen/spacing12"
+                app:title="@{@string/manage_account_phone}"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -97,52 +64,24 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
                 android:textColor="@color/Gray400"
-                android:text="@string/account_management"
+                android:text="@string/manage_account_management"
                 android:paddingBottom="6dp"/>
 
-            <LinearLayout
+            <include
+            android:id="@+id/include_logout"
+            layout="@layout/view_my_page_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing12"
+            app:title="@{@string/manage_account_logout}" />
+
+            <include
+                android:id="@+id/include_delete"
+                layout="@layout/view_my_page_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
-                    android:textColor="@color/Gray600"
-                    android:text="@string/account_logout" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/more_arrow" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.16"
-                    android:textColor="@color/Gray600"
-                    android:text="@string/account_delete" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/more_arrow" />
-            </LinearLayout>
+                android:layout_marginTop="@dimen/spacing12"
+                app:title="@{@string/manage_account_delete}"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

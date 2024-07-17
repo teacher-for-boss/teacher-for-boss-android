@@ -17,7 +17,7 @@ data class ResponseBossTalkPopularPostDto(
         val title: String
     ) {
         fun toBossTalkPopularPostEntity() = BossTalkPopularPostEntity(
-            number = postId,
+            id = postId,
             title = title
         )
     }

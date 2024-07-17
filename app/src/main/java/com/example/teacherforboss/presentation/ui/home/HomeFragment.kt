@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentHomeBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.util.view.UiState
@@ -27,12 +28,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
     private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
-    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy {
-        HomeTeacherTalkPopularPostAdapter(
-            ::navigateToTeacherTalkPost,
-        )
-    }
-    private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter() }
+    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter(::navigateToTeacherTalkPost) }
+    private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter(::navigateToBossTalkPost) }
     private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter() }
 
     private val handler = Handler(Looper.getMainLooper())
@@ -187,7 +184,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun navigateToTeacherTalkPost(postId: Long) {
         Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply {
-            putExtra(QUESTION_ID, postId.toString())
+            putExtra(TEACHER_TALK_QUESTION_ID, postId.toString())
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToBossTalkPost(postId: Long) {
+        Intent(requireContext(), BossTalkBodyActivity::class.java).apply {
+            putExtra(BOSS_TALK_POST_ID, postId.toString())
             startActivity(this)
         }
     }
@@ -198,6 +202,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         private const val END_SPAN_INDEX = 2
         private const val INC_POSITION = 1
         private const val AUTO_SCROLL_INTERVAL = 2500L
-        private const val QUESTION_ID = "questionId"
+        private const val TEACHER_TALK_QUESTION_ID = "questionId"
+        private const val BOSS_TALK_POST_ID = "postId"
     }
 }

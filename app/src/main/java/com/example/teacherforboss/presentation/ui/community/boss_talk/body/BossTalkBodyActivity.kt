@@ -301,27 +301,18 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
-        }
-        // TODO: 얘 별로면 뺄게요
-        val options = ActivityOptionsCompat.makeCustomAnimation(
+        finish()
+        // TODO: 얘는 여기 말고 나중에 Activity 새로 부르는 코드에 추가해주세요 여기서는 finish()만 하는게 로직상 맞아서요!
+        /*val options = ActivityOptionsCompat.makeCustomAnimation(
             this,
             android.R.anim.fade_in, // 새 Activity의 애니메이션
             android.R.anim.fade_out // 현재 Activity의 애니메이션
         )
-        startActivity(intent, options.toBundle())
-        finish()
+        startActivity(intent, options.toBundle())*/
     }
 
-    fun onBackBtnPressed(){
-        binding.backBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
-            }
-            startActivity(intent)
-        }
+    fun onBackBtnPressed() {
+        binding.backBtn.setOnClickListener {finish() }
     }
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)

@@ -120,6 +120,7 @@
     <string name="comment_cnt">댓글 %d개</string>
     <string name="user_level">Lv.%s 지식의 별</string>
 
+    <string name="modify_teacher_profile_title">프로필 수정</string>
     <!-- 환전 -->
     <string name="exchange_title">티포 환전하기</string>
     <string name="exchange">환전하기</string>

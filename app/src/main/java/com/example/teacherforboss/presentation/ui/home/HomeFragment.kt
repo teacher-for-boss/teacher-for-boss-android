@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentHomeBinding
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +27,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
     private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
-    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter() }
+    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy {
+        HomeTeacherTalkPopularPostAdapter(
+            ::navigateToTeacherTalkPost,
+        )
+    }
     private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter() }
     private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter() }
 
@@ -129,30 +135,33 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
         viewModel.bossTalkPopularPostListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { bossTalkPopularPostListState ->
-                when(bossTalkPopularPostListState) {
+                when (bossTalkPopularPostListState) {
                     is UiState.Success -> {
                         bossTalkPopularPostAdapter.submitList(bossTalkPopularPostListState.data)
                     }
+
                     else -> Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.teacherTalkPopularPostListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { teacherTalkPopularPostListState ->
-                when(teacherTalkPopularPostListState) {
+                when (teacherTalkPopularPostListState) {
                     is UiState.Success -> {
                         teacherTalkPopularPostAdapter.submitList(teacherTalkPopularPostListState.data)
                     }
+
                     else -> Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.weeklyBestTeacherListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { weeklyBestTeacherListState ->
-                when(weeklyBestTeacherListState) {
+                when (weeklyBestTeacherListState) {
                     is UiState.Success -> {
                         weeklyBestTeacherAdapter.submitList(weeklyBestTeacherListState.data)
                     }
+
                     else -> Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
@@ -176,11 +185,19 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
+    private fun navigateToTeacherTalkPost(postId: Long) {
+        Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply {
+            putExtra(QUESTION_ID, postId.toString())
+            startActivity(this)
+        }
+    }
+
     companion object {
         private const val ZERO = 0
         private const val START_SPAN_INDEX = 0
         private const val END_SPAN_INDEX = 2
         private const val INC_POSITION = 1
         private const val AUTO_SCROLL_INTERVAL = 2500L
+        private const val QUESTION_ID = "questionId"
     }
 }

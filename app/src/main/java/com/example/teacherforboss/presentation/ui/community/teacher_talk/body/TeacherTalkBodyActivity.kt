@@ -16,7 +16,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
@@ -331,13 +330,8 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         }
     }
 
-    fun onBackBtnPressed() {
-        binding.backBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
-            }
-            startActivity(intent)
-        }
+    private fun onBackBtnPressed() {
+        binding.backBtn.setOnClickListener { finish() }
     }
 
     fun setTextColor() {

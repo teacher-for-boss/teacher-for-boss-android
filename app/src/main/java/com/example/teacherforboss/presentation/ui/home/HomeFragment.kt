@@ -6,7 +6,6 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -67,17 +66,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         viewModel.apply {
             setBannerItems()
             setTeacherTalkShortcutItems()
-
             getTeacherTalkPopularPost()
             getBossTalkPopularPost()
-
-            setWeeklyBestTeacher()
+            getWeeklyBestTeacher()
         }
         teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
-
-        // TODO 서버통신하고 삭제
-        weeklyBestTeacherAdapter.submitList(viewModel.weeklyBestTeacherList.value)
-
         startAutoScroll()
     }
 
@@ -149,6 +142,16 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 when(teacherTalkPopularPostListState) {
                     is UiState.Success -> {
                         teacherTalkPopularPostAdapter.submitList(teacherTalkPopularPostListState.data)
+                    }
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.weeklyBestTeacherListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { weeklyBestTeacherListState ->
+                when(weeklyBestTeacherListState) {
+                    is UiState.Success -> {
+                        weeklyBestTeacherAdapter.submitList(weeklyBestTeacherListState.data)
                     }
                     else -> Unit
                 }

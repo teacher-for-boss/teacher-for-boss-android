@@ -8,9 +8,9 @@ import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
 import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.example.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel
-import com.example.teacherforboss.presentation.type.KeywordType
 import com.example.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +22,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getTeacherTalkPopularPostUseCase: GetTeacherTalkPopularPostUseCase,
     private val getBossTalkPopularPostUseCase: GetBossTalkPopularPostUseCase,
+    private val getWeeklyBestTeacherUseCase: GetWeeklyBestTeacherUseCase,
 ) : ViewModel() {
     private val _bannerItemList: MutableStateFlow<List<BannerModel>> = MutableStateFlow(emptyList())
     val bannerItemList get() = _bannerItemList
@@ -43,9 +44,9 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(UiState.Empty)
     val bossTalkPopularPostListState get() = _bossTalkPopularPostListState.asStateFlow()
 
-    private val _weeklyBestTeacherList: MutableStateFlow<List<WeeklyBestTeacherEntity>> =
-        MutableStateFlow(emptyList())
-    val weeklyBestTeacherList get() = _weeklyBestTeacherList.asStateFlow()
+    private val _weeklyBestTeacherListState: MutableStateFlow<UiState<List<WeeklyBestTeacherEntity>>> =
+        MutableStateFlow(UiState.Empty)
+    val weeklyBestTeacherListState get() = _weeklyBestTeacherListState.asStateFlow()
 
     fun setBannerItems() {
         _bannerItemList.value = listOf(
@@ -114,54 +115,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun setWeeklyBestTeacher() {
-        _weeklyBestTeacherList.value = listOf(
-            WeeklyBestTeacherEntity(
-                profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
-                nickName = "티쳐입니달라",
-                specialty = "경영컨설턴트",
-                career = "23",
-                keyword = listOf(KeywordType.PASSIONATE),
-            ),
-            WeeklyBestTeacherEntity(
-                profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
-                nickName = "티쳐입니달라",
-                specialty = "경영컨설턴트",
-                career = "23",
-                keyword = listOf(
-                    KeywordType.PASSIONATE,
-                    KeywordType.CAREFUL,
-                    KeywordType.PRACTICAL,
-                ),
-            ),
-            WeeklyBestTeacherEntity(
-                profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
-                nickName = "티쳐입니달라",
-                specialty = "경영컨설턴트",
-                career = "23",
-                keyword = listOf(
-                    KeywordType.PASSIONATE,
-                    KeywordType.CAREFUL,
-                    KeywordType.ANALYTICAL,
-                    KeywordType.DEPENDABLE,
-                    KeywordType.COMMUNICATE,
-                ),
-            ),
-            WeeklyBestTeacherEntity(
-                profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
-                nickName = "티쳐입니달라",
-                specialty = "경영컨설턴트",
-                career = "23",
-                keyword = listOf(KeywordType.CAREFUL, KeywordType.ACTIVE),
-            ),
-            WeeklyBestTeacherEntity(
-                profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",
-                nickName = "티쳐입니달라",
-                specialty = "경영컨설턴트",
-                career = "23",
-                keyword = listOf(KeywordType.PASSIONATE, KeywordType.CAREFUL),
-            ),
-        )
+    fun getWeeklyBestTeacher() {
+        viewModelScope.launch {
+            getWeeklyBestTeacherUseCase().onSuccess { weeklyBestTeacherEntity ->
+                _weeklyBestTeacherListState.value = UiState.Success(weeklyBestTeacherEntity)
+            }.onFailure { exception: Throwable ->
+                _weeklyBestTeacherListState.value = UiState.Error(exception.message)
+            }
+        }
     }
 
     companion object {

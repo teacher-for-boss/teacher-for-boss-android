@@ -3,6 +3,7 @@ package com.example.teacherforboss.data.service
 import com.example.teacherforboss.data.model.response.home.ResponseBossTalkPopularPostDto
 import com.example.teacherforboss.data.model.response.home.ResponseBossTalkPopularPostDto.HotPostList
 import com.example.teacherforboss.data.model.response.home.ResponseTeacherTalkPopularPostDto
+import com.example.teacherforboss.data.model.response.home.ResponseWeeklyBestTeacherDto
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
 
@@ -14,5 +15,5 @@ interface HomeService {
     suspend fun getTeacherTalkPopularPost(): BaseResponse<ResponseTeacherTalkPopularPostDto>
 
     @GET("home/hot-teachers")
-    suspend fun getWeeklyBestTeacher()
+    suspend fun getWeeklyBestTeacher(): BaseResponse<ResponseWeeklyBestTeacherDto>
 }

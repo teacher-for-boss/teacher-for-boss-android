@@ -78,7 +78,6 @@ class rvAdapterRecommentBoss(
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad)
                 }
             }
-
             handleCommentBtnColor()
 
             // 추천 비추천 onclick

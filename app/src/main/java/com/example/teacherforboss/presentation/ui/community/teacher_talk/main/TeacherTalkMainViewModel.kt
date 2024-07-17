@@ -19,6 +19,8 @@ import javax.inject.Inject
 class TeacherTalkMainViewModel @Inject constructor(
     private val teacherTalkQuestionsUseCase: TeacherTalkQuestionsUseCase,
 ) : ViewModel(), TalkMainViewModel {
+    val _hasNext=MutableLiveData<Boolean>().apply { value=true }
+    val hasNext:LiveData<Boolean> get() = _hasNext
 
     var _lastQuestionId= MutableLiveData<Long>(0L)
     val lastQuestionId: LiveData<Long>
@@ -26,6 +28,9 @@ class TeacherTalkMainViewModel @Inject constructor(
     val categoryList = arrayListOf(
         "전체", "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
+    var lastQuestionIdMap= mutableMapOf<String,Long>().apply {
+        categoryList.forEach { put(it,0) }
+    }
     var _size= MutableLiveData<Int>(10)
     val size: LiveData<Int>
         get() = _size
@@ -50,7 +55,7 @@ class TeacherTalkMainViewModel @Inject constructor(
     val getTeacherTalkQuestionLiveData: LiveData<TeacherTalkQuestionsResponseEntity>
         get() = _getTeacherTalkQuestionsLiveData
 
-    var _teacherTalkQuestions= MutableLiveData<List<QuestionEntity>>()
+    var _teacherTalkQuestions= MutableLiveData<List<QuestionEntity>>(emptyList())
     val teacherTalkQuestions: LiveData<List<QuestionEntity>> =_teacherTalkQuestions
 
     fun getTeacherTalkQuestions(){
@@ -58,10 +63,10 @@ class TeacherTalkMainViewModel @Inject constructor(
             try{
                 val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId = lastQuestionId.value?:0L,
+                        lastQuestionId=getLastQuestionId()?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
-                        category ="위생"
+                        category = category.value
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
@@ -76,7 +81,7 @@ class TeacherTalkMainViewModel @Inject constructor(
             try{
                 val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId = lastQuestionId.value?:0L,
+                        lastQuestionId=getLastQuestionId()?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
                         category =changeCategory
@@ -93,8 +98,9 @@ class TeacherTalkMainViewModel @Inject constructor(
         _solved.value = isSolved
     }
 
-    fun setCategory(category: String) {
+    fun setCategory(category: String,questionId: Long) {
         _category.value = category
+        updateQuestionIdMap(questionId)
     }
 
     override fun setSortBy(sortBy: String) {
@@ -110,5 +116,28 @@ class TeacherTalkMainViewModel @Inject constructor(
 
     fun selectCategoryId(id: Long) {
         _categoryId.value = id + 1
+    }
+    fun updateQuestionIdMap(questionId:Long){
+        lastQuestionIdMap.replace(category.value?:"전체",questionId)
+    }
+
+    fun resetLastPostIdMap(postId:Long){
+        lastQuestionIdMap.replace(category.value!!,postId)
+    }
+
+    fun getLastQuestionId()=lastQuestionIdMap.get(category.value)
+
+    fun setHasNext(hasNext:Boolean){
+        _hasNext.value=hasNext
+    }
+
+    fun setTeacherTalkQuestionList(questionList:List<QuestionEntity>){
+        _teacherTalkQuestions.value=questionList
+    }
+
+    fun clearData(){
+        _teacherTalkQuestions.value= emptyList()
+        _lastQuestionId.value=0L
+        _hasNext.value=false
     }
 }

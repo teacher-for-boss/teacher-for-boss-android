@@ -44,12 +44,12 @@ class BossTalkMainCardAdapter(context: Context) :
         notifyDataSetChanged()
     }
 
-    fun addMoreCards() {
+    fun addMoreCards(newPostList:List<PostEntity>) {
         val currentSize = bossTalkCardList.size
-        val nextSize = minOf(currentSize + 10, allBossTalkMainCard.size)
-        if (currentSize < nextSize) {
-            bossTalkCardList.addAll(allBossTalkMainCard.subList(currentSize, nextSize))
-            notifyItemRangeInserted(currentSize, nextSize - currentSize)
+        val newItemSize=newPostList.size
+        if(newItemSize>0){
+            bossTalkCardList.addAll(newPostList)
+            notifyItemRangeInserted(currentSize,newItemSize)
         }
     }
 
@@ -77,11 +77,11 @@ class BossTalkMainCardAdapter(context: Context) :
             binding.tvBossTalkCommentCount.text = bossTalkCard.commentCount.toString()
             binding.tvBossTalkDate.text = LocalDateFormatter.extractDate(bossTalkCard.createdAt)
 
-            binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmark
-            binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmark
+            binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmarked
+            binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmarked
 
-            binding.icBossTalkLike.isSelected = bossTalkCard.like
-            binding.tvBossTalkLikeCount.isSelected = bossTalkCard.like
+            binding.icBossTalkLike.isSelected = bossTalkCard.liked
+            binding.tvBossTalkLikeCount.isSelected = bossTalkCard.liked
 
             // 상세 글 이동
             binding.root.setOnClickListener {

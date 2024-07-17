@@ -1,7 +1,10 @@
 package com.example.teacherforboss
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.teacherforboss.databinding.ActivityMainBinding
@@ -9,6 +12,7 @@ import com.example.teacherforboss.presentation.ui.community.boss_talk.main.basic
 import com.example.teacherforboss.presentation.ui.home.HomeFragment
 import com.example.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,21 +30,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 replaceFragment(HomeFragment())
             }
         }
-
-        // 백 버튼 콜백 설정
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Back button behavior. For example, go back to previous fragment if any.
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                } else {
-                    finish()
-                }
-            }
-        })
-
         clickBottomNavigation()
         setFragment()
+
+        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        if (snackBarMsg!=null){
+            showSnackBar(snackBarMsg)
+        }
+
+
+        // 백 버튼 콜백 설정
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun clickBottomNavigation() {
@@ -100,6 +100,26 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 true
             }
             else -> false
+        }
+    }
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
+    }
+
+    private var backPressedOnce = false
+    private val exitHandler = Handler(Looper.getMainLooper())
+    private val resetBackPressed = Runnable { backPressedOnce = false }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (backPressedOnce) {
+                finishAffinity()
+            } else {
+                backPressedOnce = true
+                Toast.makeText(this@MainActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                exitHandler.postDelayed(resetBackPressed, 2000)
+            }
         }
     }
     companion object{

@@ -12,7 +12,6 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBankBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-
 class BankFragment : Fragment() {
     private val viewModel by activityViewModels<SignupViewModel>()
     lateinit var binding: FragmentBankBinding
@@ -25,7 +24,6 @@ class BankFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bank, container, false)
-
         val bankList = listOf(
             Bank(R.drawable.bank_toss, "토스뱅크"),
             Bank(R.drawable.bank_kakao, "카카오뱅크"),

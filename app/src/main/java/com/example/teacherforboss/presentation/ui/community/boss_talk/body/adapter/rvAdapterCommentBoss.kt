@@ -22,37 +22,39 @@ class rvAdapterCommentBoss(
     private val lifecycleOwner: LifecycleOwner,
     private val context: Context,
     private val commentList: List<CommentEntity>,
-    private val viewModel: BossTalkBodyViewModel
-    ): RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
+    private val viewModel: BossTalkBodyViewModel,
+    private val optionClickListener: (View) -> Unit
+) : RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: RvItemCommentBossBinding):RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: RvItemCommentBossBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
 
             // 유저 정보
-            val member=comment.memberInfo
+            val member = comment.memberInfo
             binding.userName.text = member.name
             member.profileImg?.let {
-                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
+                if (it != "") BindingImgAdapter.bindImage(binding.userImage, it)
             }
 
             // 날짜
-            binding.createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
+            binding.createdAt.text = LocalDateFormatter.extractDate(comment.createdAt)
 
             // 댓글 본문
-            binding.commentBody.text=comment.content
+            binding.commentBody.text = comment.content
 
             // 추천, 비추천 갯수
-            binding.commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
-            binding.commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
+            binding.commentGoodTv.text = context.getString(R.string.recommed_option, comment.likeCount)
+            binding.commentBadTv.text = context.getString(R.string.not_recommed_option, comment.dislikeCount)
 
             // 대댓글 리스트
-            val reCommentList=comment.children
-            binding.rvRecomment.adapter = rvAdapterRecommentBoss(lifecycleOwner,context,reCommentList,viewModel)
+            val reCommentList = comment.children
+            binding.rvRecomment.adapter = rvAdapterRecommentBoss(lifecycleOwner, context, reCommentList, viewModel)
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
             //신고하기
             binding.btnOption.setOnClickListener {
+                optionClickListener(binding.btnOption)
                 if (binding.reportBtn.visibility == View.GONE) {
                     binding.reportBtn.visibility = View.VISIBLE
                 } else {
@@ -68,8 +70,8 @@ class rvAdapterCommentBoss(
             var isCommentGood = comment.liked
             var isCommentBad = comment.disliked
 
-            fun handleCommentBtnColor(){
-                if(isCommentGood) {
+            fun handleCommentBtnColor() {
+                if (isCommentGood) {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
                 } else {
@@ -77,7 +79,7 @@ class rvAdapterCommentBoss(
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good)
                 }
 
-                if(isCommentBad) {
+                if (isCommentBad) {
                     binding.commentBadTv.setTextColor(Color.parseColor("#5F5CE8"))
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad_on)
                 } else {
@@ -100,7 +102,7 @@ class rvAdapterCommentBoss(
 
             binding.commentGood.setOnClickListener {
                 isCommentGood = !isCommentGood
-                if(isCommentGood && isCommentBad) {
+                if (isCommentGood && isCommentBad) {
                     isCommentBad = !isCommentBad
                 }
                 viewModel.postCommentLike(comment.commentId)
@@ -108,7 +110,7 @@ class rvAdapterCommentBoss(
             }
             binding.commentBad.setOnClickListener {
                 isCommentBad = !isCommentBad
-                if(isCommentGood && isCommentBad) {
+                if (isCommentGood && isCommentBad) {
                     isCommentGood = !isCommentGood
                 }
                 viewModel.postCommentDisLike(comment.commentId)
@@ -117,11 +119,12 @@ class rvAdapterCommentBoss(
 
             // 답글쓰기
             binding.writeRecommentBtn.setOnClickListener {
-                viewModel.isRecommentClicked.value=Unit
+                viewModel.isRecommentClicked.value = Unit
                 viewModel.setParentId(comment.commentId)
             }
         }
     }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

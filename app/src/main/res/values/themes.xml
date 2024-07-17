@@ -77,8 +77,9 @@
     </style>
 
     <!-- 그림자 없는 드롭다운 -->
-    <style name="NoShadowSpinnerStyle" parent="@android:style/Widget.PopupWindow">
-        <item name="android:popupBackground">@android:color/white</item>
+    <style name="NoShadowSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:popupBackground">@android:color/transparent</item>
+        <item name="android:background">@color/transparent</item>
         <item name="android:popupElevation">0dp</item>
         <item name="android:dropDownVerticalOffset">0dp</item>
     </style>
@@ -128,4 +129,11 @@
         <item name="android:textColor">@color/chip_text</item>
     </style>
     
+    <style name="SignupAgreeCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:background">@drawable/checkbox_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+    </style>
+
 </resources>

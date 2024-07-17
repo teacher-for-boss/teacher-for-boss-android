@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentBosstalkBodyBinding
@@ -34,11 +35,17 @@ class BossTalkBodyFragment : BindingFragment<FragmentBosstalkBodyBinding>(R.layo
 
     fun postComment(){
         binding.commentUploadBtn.setOnClickListener {
-            viewModel.postComment()
+            val commentText = binding.commentInput.text.toString().trim()
 
-            binding.recommentIv.visibility=View.INVISIBLE
-            hideCommentKeyboard()
-            binding.commentInput.text.clear()
+            if (commentText.isNotEmpty()) {
+                viewModel.postComment()
+
+                binding.recommentIv.visibility = View.INVISIBLE
+                hideCommentKeyboard()
+                binding.commentInput.text.clear()
+            } else {
+                Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

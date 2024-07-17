@@ -24,10 +24,18 @@ class BossTalkMainViewModel @Inject constructor(
     private val bossTalkSearchUseCase: BossTalkSearchUseCase,
     private val bossTalkBookmarkUseCase: BossTalkBookmarkUseCase
 ) : ViewModel(),TalkMainViewModel {
+    var _isInitialziedView=MutableLiveData<Boolean>(false)
+    val isInitialziedView:LiveData<Boolean> get() = _isInitialziedView
+
     var _lastPostId=MutableLiveData<Long>(0L)
     val lastPostId:LiveData<Long>
         get() = _lastPostId
 
+    val sortByItems= listOf<String>("latest","views","likes")
+
+    var lastPostIdMap= mutableMapOf<String,Long>().apply {
+        sortByItems.forEach { put(it,0L) }
+    }
     var _size=MutableLiveData<Int>(10)
     val size:LiveData<Int>
         get() = _size
@@ -38,6 +46,9 @@ class BossTalkMainViewModel @Inject constructor(
     val keyword:LiveData<String>
         get() = _keyword
 
+    val _hasNext=MutableLiveData<Boolean>().apply { value=true }
+    val hasNext:LiveData<Boolean> get() = _hasNext
+
     private val _getBossTalkPostLiveData=MutableLiveData<BossTalkPostsResponseEntity>()
     val getBossTalkPostLiveData:LiveData<BossTalkPostsResponseEntity>
         get() = _getBossTalkPostLiveData
@@ -45,16 +56,18 @@ class BossTalkMainViewModel @Inject constructor(
     var _bossTalkPosts=MutableLiveData<List<PostEntity>>()
     val bossTalkPosts:LiveData<List<PostEntity>> =_bossTalkPosts
 
+    val totalBossTalkPosts= mutableListOf<List<PostEntity>>()
+
     fun getBossTalkPosts(){
         viewModelScope.launch {
             try{
                 val bossTalkPostsResponseEntity=bossTalkPostsUseCase(
                     BossTalkPostsRequestEntity(
-                    lastPostId = lastPostId.value?:0L,
-                    size=size.value?:10,
-                    sortBy=sortBy.value?:"latest",
-                    keyword =null
-                )
+                        lastPostId = getLastPostId()?:0L,
+                        size=size.value?:10,
+                        sortBy=sortBy.value?:"latest",
+                        keyword =null
+                    )
                 )
                 _getBossTalkPostLiveData.value=bossTalkPostsResponseEntity
 
@@ -67,7 +80,7 @@ class BossTalkMainViewModel @Inject constructor(
             try{
                 val bossTalkPostsResponseEntity=bossTalkSearchUseCase(
                     BossTalkPostsRequestEntity(
-                        lastPostId = lastPostId.value?:0L,
+                        lastPostId = getLastPostId()?:0L,
                         size=size.value?:10,
                         sortBy=null,
                         keyword =keyword.value
@@ -91,5 +104,27 @@ class BossTalkMainViewModel @Inject constructor(
         _sortBy.value=sort
     }
 
+    fun updateLastPostIdMap(postId:Long){
+        lastPostIdMap.replace(sortBy.value!!,postId)
+    }
+
+    fun resetLastPostIdMap(sortBy:String,postId:Long){
+        lastPostIdMap.replace(sortBy,postId)
+    }
+    fun getLastPostId()=lastPostIdMap.get(sortBy.value)
+    fun setHasNext(hasNext:Boolean){
+        _hasNext.value=hasNext
+    }
+    fun setBossTalkPosts(postList:List<PostEntity>){
+        _bossTalkPosts.value=postList
+    }
+    fun clearData(){
+        _bossTalkPosts.value= emptyList()
+        totalBossTalkPosts.clear()
+        _isInitialziedView.value=false
+        _lastPostId.value=0L
+        _hasNext.value=false
+
+    }
 
 }

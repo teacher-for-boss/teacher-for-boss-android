@@ -1,15 +1,12 @@
 package com.example.teacherforboss.presentation.ui.home
 
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.teacherforboss.databinding.ItemHomeWeeklyBestTeacherBinding
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
+import com.example.teacherforboss.util.view.loadCircularImage
 
 class HomeWeeklyBestTeacherViewHolder(
     private val binding: ItemHomeWeeklyBestTeacherBinding,
-    private val context: Context,
 ) : RecyclerView.ViewHolder(binding.root) {
     private val keywordAdapter: HomeWeeklyBestTeacherKeywordAdapter by lazy { HomeWeeklyBestTeacherKeywordAdapter() }
 
@@ -20,11 +17,7 @@ class HomeWeeklyBestTeacherViewHolder(
     fun onBind(item: WeeklyBestTeacherEntity) {
         with(binding) {
             weeklyBestTeacherItem = item
-            Glide.with(context)
-                .load(item.profileImg)
-                .centerCrop()
-                .circleCrop()
-                .into(ivWeeklyBestTeacherProfile)
+            ivWeeklyBestTeacherProfile.loadCircularImage(item.profileImg)
         }
         keywordAdapter.submitList(item.keyword)
     }

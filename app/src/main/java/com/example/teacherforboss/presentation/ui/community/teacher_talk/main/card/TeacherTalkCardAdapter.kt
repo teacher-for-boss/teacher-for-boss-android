@@ -47,12 +47,12 @@ class TeacherTalkCardAdapter(context: Context) :
         notifyDataSetChanged()
     }
 
-    fun addMoreCards() {
+    fun addMoreCards(newQuestionList:List<QuestionEntity>) {
         val currentSize = teacherTalkCardList.size
-        val nextSize = minOf(currentSize + 10, allTeacherTalkCard.size)
-        if (currentSize < nextSize) {
-            teacherTalkCardList.addAll(allTeacherTalkCard.subList(currentSize, nextSize))
-            notifyItemRangeInserted(currentSize, nextSize - currentSize)
+        val newItemSize=newQuestionList.size
+        if(newItemSize>0){
+            teacherTalkCardList.addAll(newQuestionList)
+            notifyItemRangeInserted(currentSize,newItemSize)
         }
     }
 

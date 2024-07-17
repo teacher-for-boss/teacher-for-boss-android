@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="teacherLevelType"
+            type="com.example.teacherforboss.presentation.type.TeacherLevelType" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_dialog_teacher_level_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/back_deemed">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dialog_teacher_level_horizontal_margin"
+            android:background="@drawable/background_radius12_white"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/dialog_teacher_level_content_horizontal_margin" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/dialog_teacher_level_content_horizontal_margin" />
+
+            <TextView
+                android:id="@+id/tv_teacher_level_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/teacher_level_title"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label3"
+                android:textColor="@color/Gray800"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_teacher_level_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                android:text="@string/teacher_level_description"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body9"
+                android:textColor="@color/Gray500"
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_level_title"
+                android:layout_marginTop="8dp"/>
+
+            <include
+                android:id="@+id/include_teacher_level1_type"
+                layout="@layout/view_teacher_level_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_teacher_level_description"
+                android:layout_marginTop="20dp"
+                app:teacherLevelType="@{teacherLevelType.LEVEL1}"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+            <include
+                android:id="@+id/include_teacher_level2_type"
+                layout="@layout/view_teacher_level_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/include_teacher_level1_type"
+                android:layout_marginTop="20dp"
+                app:teacherLevelType="@{teacherLevelType.LEVEL2}"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+            <include
+                android:id="@+id/include_teacher_level3_type"
+                layout="@layout/view_teacher_level_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/include_teacher_level2_type"
+                android:layout_marginTop="20dp"
+                app:teacherLevelType="@{teacherLevelType.LEVEL3}"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+            <include
+                android:id="@+id/include_teacher_level4_type"
+                layout="@layout/view_teacher_level_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/include_teacher_level3_type"
+                android:layout_marginTop="20dp"
+                app:teacherLevelType="@{teacherLevelType.LEVEL4}"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+            <include
+                android:id="@+id/include_teacher_level5_type"
+                layout="@layout/view_teacher_level_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/include_teacher_level4_type"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:teacherLevelType="@{teacherLevelType.LEVEL5}"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

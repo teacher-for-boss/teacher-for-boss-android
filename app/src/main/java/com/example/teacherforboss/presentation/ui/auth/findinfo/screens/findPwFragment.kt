@@ -49,24 +49,17 @@ class findPwFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController=Navigation.findNavController(view)
 
+        val emailVerifyBtn = binding.emailVerifyBtn
+        viewModel.email.observe(viewLifecycleOwner){
+            if(viewModel.emailCheck()) emailVerifyBtn.isEnabled = true
+            else emailVerifyBtn.isEnabled = false
+        }
+
 
         //이메일 인증하기 버튼 클릭시
         binding.emailVerifyBtn.setOnClickListener {
-            val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
-
-            binding.veryInfo.visibility=View.VISIBLE
-            binding.timeOverText.visibility=View.VISIBLE
-
-            if(viewModel.email_check.value==true){
-                //binding.emailVerifyBtn.visibility=View.INVISIBLE
-                binding.emailCodeBox.visibility=View.VISIBLE
-                binding.inputcodeContainer.visibility=View.VISIBLE
-                binding.emailConfirmBtn.visibility=View.VISIBLE
-                binding.emailVerifyBtn.isEnabled=false
-                viewModel.startPwTimer()
-                viewModel.emailUser()
-            }
+            viewModel.emailUser()
+            emailVerifyBtn.isEnabled = false
 
         }
 
@@ -77,10 +70,15 @@ class findPwFragment : Fragment() {
                 is BaseResponse.Success->{
                     Log.d("auth",it.data?.result?.emailAuthId.toString())
                     viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!
+
+                    binding.veryInfo.visibility=View.VISIBLE
+                    binding.timeOverText.visibility=View.VISIBLE
+                    binding.inputcodeContainer.visibility=View.VISIBLE
+                    viewModel.startPwTimer()
                 }
                 is BaseResponse.Error->{
                     if(it.msg=="이미 가입된 이메일입니다."){
-                        binding.veryInfo.text="이미 가입된 이메일입니다."
+                        binding.veryInfo.visibility=View.VISIBLE
                     }
                     showToast("error"+it?.msg)
 

@@ -4,9 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import com.example.teacherforboss.R
@@ -47,6 +51,7 @@ class FindPwActivity : AppCompatActivity() {
             }
             false
         }*/
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
     }
 
@@ -101,5 +106,20 @@ class FindPwActivity : AppCompatActivity() {
     fun changeTab(index:Int){
         val viewPager=binding.viewPager
         viewPager.setCurrentItem(index,false)
+    }
+    private var backPressedOnce = false
+    private val exitHandler = Handler(Looper.getMainLooper())
+    private val resetBackPressed = Runnable { backPressedOnce = false }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (backPressedOnce) {
+                finishAffinity()
+            } else {
+                backPressedOnce = true
+                Toast.makeText(this@FindPwActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                exitHandler.postDelayed(resetBackPressed, 2000)
+            }
+        }
     }
 }

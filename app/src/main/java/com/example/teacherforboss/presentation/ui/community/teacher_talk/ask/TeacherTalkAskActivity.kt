@@ -11,7 +11,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -24,6 +24,8 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacherAsk
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -31,7 +33,7 @@ import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAskActivity : AppCompatActivity() {
+class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
     private lateinit var binding: ActivityTeachertalkAskBinding
     private val viewModel: TeacherTalkAskViewModel by viewModels()
@@ -50,6 +52,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
         purpose = intent.getStringExtra("purpose")?:"write"
 
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
         // 초기 뷰 설정
         initView()
         // 해시태그 입력
@@ -58,6 +62,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
         getImage()
 
         addListeners()
+
+
     }
 
     fun initView() {
@@ -126,9 +132,8 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
-                if (lastChar == ' ') {
-                    Toast.makeText(this@TeacherTalkAskActivity, "해시태그는 스페이스바 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
-                }
+                if (lastChar == ' ')
+                    showSnackBar("해시태그는 스페이스바 입력이 불가능합니다.")
             }
             override fun afterTextChanged(editable: Editable?) {
                 editable?.let {
@@ -157,7 +162,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
                         binding.inputHashtag.text.clear()
                     }
                     else {
-                        Toast.makeText(this, "해시태그는 5개까지 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+                        showSnackBar("해시태그는 5개까지 입력 가능합니다.")
                     }
                 }
 
@@ -175,7 +180,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
                 startActivityForResult(gallery, 100)
             }
             else {
-                Toast.makeText(this, "세장까지만 업로드 가능합니다", Toast.LENGTH_SHORT).show()
+                showSnackBar("세장까지만 업로드 가능합니다.")
             }
         }
     }
@@ -190,7 +195,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
                 if(fileSizeInMB > 10) {
-                    Toast.makeText(this, "10MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
                     return
                 }
             }
@@ -286,7 +291,7 @@ class TeacherTalkAskActivity : AppCompatActivity() {
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                Toast.makeText(this, "제목과 본문을 작성해야 등록할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                showSnackBar("제목과 본문을 작성해야 등록할 수 있습니다.")
             }
             else uploadPost()
         }
@@ -319,19 +324,17 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            Toast.makeText(this, "질문이 등록되었습니다.", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
+                putExtra("snackBarMsg","질문이 등록되었습니다.")
             }
             startActivity(intent)
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
-            Toast.makeText(this, "질문이 수정되었습니다.", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra("questionId", it.questionId.toString())
+                putExtra("snackBarMsg","질문이 수정되었습니다.")
             }
             startActivity(intent)
         })
@@ -349,8 +352,30 @@ class TeacherTalkAskActivity : AppCompatActivity() {
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this)
+            val dialog = WriteExitDialog(this, TEACHER_TALK,purpose,this)
             dialog.show()
         }
     }
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val dialog = WriteExitDialog(this@TeacherTalkAskActivity, TEACHER_TALK,purpose,this@TeacherTalkAskActivity)
+            dialog.show()
+        }
+    }
+
+    override fun onExitBtnClicked() {
+        onBackPressedCallback.isEnabled = false
+        onBackPressed()
+    }
+
+    companion object{
+        const val TEACHER_TALK="TEACHER_TALK"
+    }
+
 }

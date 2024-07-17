@@ -57,8 +57,6 @@
     <string name="boss_talk_like_count">%s</string>
 
 
-
-
     <!-- filter chip-->
     <string name="filter_name">%s</string>
 
@@ -69,7 +67,7 @@
         <item>조회수순</item>
         <item>좋아요순</item>
     </string-array>
-  
+
     <!--signup  -->
     <string name="sinup_next_btn">다음 단계</string>
     <string name="signup_re_verify">다시 인증하기</string>
@@ -155,4 +153,75 @@
     <string name="hint_input_name">예금주명을 입력해주세요</string>
 
     <string name="account_complete">완료</string>
+
+  <!-- my page -->
+    <string name="my_page_title">마이페이지</string>
+    <string name="my_page_teacher_name">%s 티처</string>
+    <string name="my_page_boss_name">%s 보스</string>
+    <string name="my_page_profile_change">프로필 수정</string>
+    <string name="my_page_level_next_info">다음 레벨까지 답변 %s회 남았어요!</string>
+    <string name="my_page_level_next_info_null">최고 레벨을 달성했어요!</string>
+    <string name="my_page_teacher_menu_bar_answer">남긴 답변</string>
+    <string name="my_page_boss_menu_bar_question">올린 질문</string>
+    <string name="my_page_menu_bar_save">저장한 글</string>
+    <string name="my_page_teacher_menu_bar_tp">%s TP</string>
+    <string name="my_page_boss_menu_bar_question_ticket">질문권 %s개</string>
+    <string name="log_out">로그아웃</string>
+
+    <!-- my page menu -->
+    <string name="my_page_my_information_title">내 정보</string>
+    <string name="my_page_reward_title">리워드 관리</string>
+    <string name="my_page_pay_title">결제 관리</string>
+    <string name="my_page_community_title">커뮤니티</string>
+    <string name="my_page_app_information_title">이용 안내</string>
+
+    <string name="my_page_menu_account">계정 관리</string>
+    <string name="my_page_menu_account_change">계좌 확인 및 변경</string>
+    <string name="my_page_menu_exchange">티포 환전하기</string>
+    <string name="my_page_menu_exchange_details">환전 내역</string>
+    <string name="my_page_menu_payment_question_ticket">질문권 결제</string>
+    <string name="my_page_menu_payment_history">결제 내역</string>
+    <string name="my_page_menu_saved_post">저장한 글</string>
+    <string name="my_page_menu_teacher_talk_answered_post">티처톡 - 답변한 질문글</string>
+    <string name="my_page_menu_teacher_talk_question_post">티처톡 - 나의 질문</string>
+    <string name="my_page_menu_boss_talk_written_post">보스톡 - 작성한 게시글</string>
+    <string name="my_page_menu_boss_talk_comment_post">보스톡 - 댓글 단 게시글</string>
+    <string name="my_page_menu_inquire">문의하기</string>
+    <string name="my_page_menu_terms">이용약관</string>
+
+    <!-- teacher level -->
+    <string name="teacher_level_title">티처 레벨 안내</string>
+    <string name="teacher_level_description">티처 레벨은 채택 수를 기준으로 정해집니다.\n사장님들의 궁금증에 답해주고 레벨을 올려보세요!</string>
+    <string name="teacher_level_1">Lv.1 행운의 별</string>
+    <string name="teacher_level_2">Lv.2 열정의 별</string>
+    <string name="teacher_level_3">Lv.3 신뢰의 별</string>
+    <string name="teacher_level_4">Lv.4 지식의 별</string>
+    <string name="teacher_level_5">Lv.5 성공의 별</string>
+    <string name="teacher_level_1_description">답변 채택 개수가 0~30개 미만일 때입니다.</string>
+    <string name="teacher_level_2_description">답변 채택 개수가 30개 이상~60개 미만일 때입니다.</string>
+    <string name="teacher_level_3_description">답변 채택 개수가 60개 이상~90개 미만일 때입니다.</string>
+    <string name="teacher_level_4_description">답변 채택 개수가 90개 이상~120개 미만일 때입니다.</string>
+    <string name="teacher_level_5_description">답변 채택 개수가 120개 이상일 때입니다.</string>
+
+    <!-- dialog -->
+    <string name="dialog_logout_title">로그아웃하시겠어요?</string>
+    <string name="dialog_logout_content">언제든지 다시 로그인하실 수 있어요.</string>
+    <string name="dialog_logout_btn">로그아웃</string>
+    <string name="dialog_delete_title">정말 탈퇴하시겠어요?</string>
+    <string name="dialog_delete_content">탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
+    <string name="dialog_delete_btn">탈퇴하기</string>
+    <string name="dialog_exit">취소하기</string>
+
+    <!-- teacher profile -->
+    <string name="teacher_profile_report">신고하기</string>
+    <string name="teacher_profile_fix">수정하기</string>
+    <string name="teacher_profile_teacher_name">%s 티처</string>
+    <string name="teacher_profile_tab_info">티처 정보</string>
+    <string name="teacher_profile_tab_recent_answer">티처 최근 답변</string>
+    <string name="teacher_profile_tab_info_specialty">분야</string>
+    <string name="teacher_profile_tab_info_career">경력</string>
+    <string name="teacher_profile_tab_info_career_detail">%s년차</string>
+    <string name="teacher_profile_tab_info_keyword">티처 키워드</string>
+    <string name="teacher_profile_tab_recent_answer_question">Q. %s</string>
+    <string name="teacher_profile_tab_recent_answer_answer">A. %s</string>
 </resources>

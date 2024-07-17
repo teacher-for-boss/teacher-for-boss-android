@@ -1,5 +1,6 @@
 package com.example.teacherforboss.data.service
 
+import androidx.compose.ui.text.TextRange
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossTalkCommentDto
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
@@ -21,6 +22,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherDeleteDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherModifyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherSelectDto
+import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkBookmarkDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
@@ -160,12 +162,12 @@ interface CommunityService {
     ): BaseResponse<ResponseTeacherSelectDto>
 
 
-    @POST("${TEACHER}questions/{questionId}/likes")
+    @POST("${TEACHER}/questions/{questionId}/likes")
     suspend fun getTeacherTalkLike(
         @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkLikeDto>
 
-    @POST("${TEACHER}questions/{questionId}/bookmark")
+    @POST("${TEACHER}/questions/{questionId}/bookmark")
     suspend fun getTeacherTalkBookmark(
         @Path("questionId") questionId:Long
     ):BaseResponse<ResponseTeacherTalkBookmarkDto>
@@ -178,8 +180,20 @@ interface CommunityService {
     @DELETE("${TEACHER}/questions/{questionId}/answers/{answerId}")
     suspend fun deleteTeacherTalkAns(
         @Path("questionId") questionId:Long,
-        @Path("answerId") answerId:Long
+        @Path("answerId") answerId:Long?
     ):BaseResponse<ResponseTeacherTalkAnsDto>
+
+    @POST("${TEACHER}/questions/{questionId}/answers/{answerId}/likes")
+    suspend fun likeTeacherTalkAnswer(
+        @Path("questionId") questionId:Long,
+        @Path("answerId") answerId:Long,
+    ):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
+
+    @POST("${TEACHER}/questions/{questionId}/answers/{answerId}/dislikes")
+    suspend fun dislikeTeacherTalkAnswer(
+        @Path("questionId") questionId:Long,
+        @Path("answerId") answerId:Long,
+    ):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
 
     companion object {
         const val BOSS = "board/boss"

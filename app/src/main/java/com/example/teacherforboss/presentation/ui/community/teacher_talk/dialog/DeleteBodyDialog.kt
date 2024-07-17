@@ -46,7 +46,7 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
                 if (viewModel is TeacherTalkBodyViewModel) {
                     viewModel.deletePost()
                 } else if (viewModel is BossTalkBodyViewModel) {
-                    viewModel.deletePost(id)
+                    viewModel.deletePost()
                 }
 
             }
@@ -56,6 +56,7 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
                     dismiss()
                     val intent = Intent(context, MainActivity::class.java).apply {
                         putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
+                        putExtra("snackBarMsg", "질문이 삭제되었습니다.")
                     }
                     context.startActivity(intent)
                 })
@@ -63,6 +64,7 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
             viewModel.deleteLiveData.observe(lifecycleOwner, Observer {
                 val intent = Intent(context, MainActivity::class.java).apply {
                     putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+                    putExtra("snackBarMsg", "게시글이 삭제되었습니다.")
                 }
                 context.startActivity(intent)
                 dismiss()

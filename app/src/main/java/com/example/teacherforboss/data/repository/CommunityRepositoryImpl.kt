@@ -2,9 +2,9 @@ package com.example.teacherforboss.data.repository
 
 import com.example.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsRequestEntity
-import com.example.teacherforboss.domain.model.community.TeacherTalkAnsResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
@@ -23,9 +23,11 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEnt
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
-import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerListResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
@@ -187,7 +189,7 @@ class CommunityRepositoryImpl @Inject constructor(
         }.getOrElse { err -> throw err }
     }
 
-    override suspend fun getTeacherTalkAnswerList(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherAnswerListResponseEntity {
+    override suspend fun getTeacherTalkAnswerList(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkAnswerListResponseEntity {
         return runCatching {
             communityDataSource.getTeacherTalkAnswerList(requestTeacherTalkDto = teacherTalkRequestEntity.toRequestTeacherTalkDto())
                 .result.toTeacherAnswerListResponseEntity()
@@ -234,5 +236,20 @@ class CommunityRepositoryImpl @Inject constructor(
                 .result.toTeacherTalkSelectResponseEntity()
         }.getOrElse { err -> throw err }
     }
+
+    override suspend fun postTeacherTalkAnswerLike(teacherTalkAnswerLikeRequestEntity: TeacherTalkAnswerLikeRequestEntity): TeacherTalkAnswerLikeResponseEntity {
+        return runCatching {
+            communityDataSource.postTeacherTalkAnswerLike(requestTeacherTalkAnswerLikeDto = teacherTalkAnswerLikeRequestEntity.toTeacherTalkAnswerLikeDto())
+                .result.toResponseTeacherTalkAnswerLikeResponseEntity()
+        }.getOrElse { err->throw err }
+    }
+
+    override suspend fun postTeacherTalkAnswerDislike(teacherTalkAnswerLikeRequestEntity: TeacherTalkAnswerLikeRequestEntity): TeacherTalkAnswerLikeResponseEntity {
+        return runCatching {
+            communityDataSource.postTeacherTalkAnswerDislike(requestTeacherTalkAnswerLikeDto = teacherTalkAnswerLikeRequestEntity.toTeacherTalkAnswerLikeDto())
+                .result.toResponseTeacherTalkAnswerLikeResponseEntity()
+        }.getOrElse { err -> throw err }
+    }
+
 
 }

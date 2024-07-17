@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="teacherLevelType"
+            type="com.example.teacherforboss.presentation.type.TeacherLevelType" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_teacher_level_type"
+            image="@{teacherLevelType.levelIcon}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_teacher_level_type_name"
+            backgroundTint="@{teacherLevelType.levelChipBackgroundColor}"
+            textColor="@{teacherLevelType.levelTextColor}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/background_radius100"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="@{teacherLevelType.levelName}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Level"
+            app:layout_constraintBottom_toTopOf="@id/tv_teacher_level_type_description"
+            app:layout_constraintStart_toEndOf="@id/iv_teacher_level_type"
+            app:layout_constraintTop_toTopOf="@id/iv_teacher_level_type"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/tv_teacher_level_type_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@{teacherLevelType.levelDescription}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
+            app:layout_constraintBottom_toBottomOf="@id/iv_teacher_level_type"
+            app:layout_constraintStart_toEndOf="@id/iv_teacher_level_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_teacher_level_type_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

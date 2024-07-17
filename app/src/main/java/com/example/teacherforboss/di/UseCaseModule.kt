@@ -3,10 +3,10 @@ package com.example.teacherforboss.di
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
-import com.example.teacherforboss.domain.usecase.BossTalkDeletePostUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
-import com.example.teacherforboss.domain.usecase.TeacherTalkAnsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
@@ -21,6 +21,8 @@ import com.example.teacherforboss.domain.usecase.community.boss.BossTalkModifyBo
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkPostsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerDislikeUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
@@ -157,10 +159,8 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-
     fun providesTeacherTalkAnsUseCase(communityRepository: CommunityRepository): TeacherTalkAnsUseCase =
         TeacherTalkAnsUseCase(communityRepository = communityRepository)
-
 
     @Provides
     @Singleton
@@ -172,5 +172,14 @@ class UseCaseModule {
     fun providesTeacherTalkSelectUseCase(communityRepository: CommunityRepository): TeacherTalkSelectUseCase =
         TeacherTalkSelectUseCase(communityRepository = communityRepository)
 
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnswerLikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerLikeUseCase =
+        TeacherTalkAnswerLikeUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkAnswerDislikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerDislikeUseCase =
+        TeacherTalkAnswerDislikeUseCase(communityRepository=communityRepository)
 
 }

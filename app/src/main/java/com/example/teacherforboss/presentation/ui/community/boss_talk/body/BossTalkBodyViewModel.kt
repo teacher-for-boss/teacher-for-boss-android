@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.example.teacherforboss.domain.model.community.BossTalkDeletePostResponseEntity
+import com.example.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
@@ -14,7 +14,7 @@ import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentLik
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkCommentResponseEntity
 import com.example.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
-import com.example.teacherforboss.domain.usecase.BossTalkDeletePostUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
@@ -151,11 +151,13 @@ class BossTalkBodyViewModel @Inject constructor(
             }
         }
     }
-    fun deletePost(postId: Long){
+    fun deletePost(){
         viewModelScope.launch {
             try{
                 val bossTalkDeletePostResponseEntity=bossTalkDeletePostUseCase(
-                    BossTalkRequestEntity(postId=postId)
+                    bossTalkRequestEntity = BossTalkRequestEntity(
+                        postId=postId.value!!
+                    )
                 )
                 _deleteLiveData.value=bossTalkDeletePostResponseEntity
 

@@ -22,6 +22,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
+import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileViewModel
@@ -54,9 +55,9 @@ class ModifyTeacherProfileFragment : Fragment() {
         observeProfile()
         setObserver()
 
-//        binding.profileImage.setOnClickListener {
-//            showProfileImageDialog()
-//        }
+        binding.profileImage.setOnClickListener {
+            showProfileImageDialog()
+        }
 
         binding.nicknameVerifyBtn.setOnClickListener {
             val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
@@ -83,6 +84,22 @@ class ModifyTeacherProfileFragment : Fragment() {
                     }
                     viewModel.setPhone(filtered)
                 }
+            }
+        })
+
+        viewModel.isUserImgSelected.observe(viewLifecycleOwner,{bool->
+            Log.d("profile","user img selected")
+            if (bool==true){
+                // TODO: url 변경 반영
+//                lifecycleScope.launch {
+//                viewModel.getPresignedUrlList(type="profile",id=1L, imgCnt = 1)
+//                }
+
+                Glide.with(this)
+                    .load(viewModel.profileImgUri.value)
+                    .fitCenter()
+                    .apply(RequestOptions().override(80,80))
+                    .into(binding.profileImage)
             }
         })
 
@@ -212,11 +229,11 @@ class ModifyTeacherProfileFragment : Fragment() {
             }
         }
     }
-//
-//    private fun showProfileImageDialog() {
-//        val dialog = ProfileImageDialog(requireActivity() as SignupActivity, signupViewModel)
-//        dialog.show()
-//    }
+
+    private fun showProfileImageDialog() {
+        val dialog = ProfileImageDialogModify(requireActivity() as ModifyTeacherProfileActivity, viewModel)
+        dialog.show()
+    }
 
     private fun checkFilled() {
         if (viewModel.nicknameCheck.value == true &&

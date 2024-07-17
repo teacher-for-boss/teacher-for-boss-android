@@ -33,6 +33,7 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQu
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -188,4 +189,9 @@ class UseCaseModule {
     @Singleton
     fun providesGetBossTalkPopularPostUseCase(homeRepository: HomeRepository): GetBossTalkPopularPostUseCase =
         GetBossTalkPopularPostUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetTeacherTalkPopularPostUseCase(homeRepository: HomeRepository): GetTeacherTalkPopularPostUseCase =
+        GetTeacherTalkPopularPostUseCase(homeRepository = homeRepository)
 }

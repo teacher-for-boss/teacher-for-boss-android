@@ -1,14 +1,13 @@
 package com.example.teacherforboss.presentation.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.teacherforboss.R
 import com.example.teacherforboss.domain.model.home.BossTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
 import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel
 import com.example.teacherforboss.presentation.type.KeywordType
@@ -21,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val getTeacherTalkPopularPostUseCase: GetTeacherTalkPopularPostUseCase,
     private val getBossTalkPopularPostUseCase: GetBossTalkPopularPostUseCase,
 ) : ViewModel() {
     private val _bannerItemList: MutableStateFlow<List<BannerModel>> = MutableStateFlow(emptyList())
@@ -35,9 +35,9 @@ class HomeViewModel @Inject constructor(
         )
     val teacherTalkShortCutList get() = _teacherTalkShortcutList.asStateFlow()
 
-    private val _teacherTalkPopularPostList: MutableStateFlow<List<TeacherTalkPopularPostEntity>> =
-        MutableStateFlow(emptyList())
-    val teacherTalkPopularPostList get() = _teacherTalkPopularPostList.asStateFlow()
+    private val _teacherTalkPopularPostListState: MutableStateFlow<UiState<List<TeacherTalkPopularPostEntity>>> =
+        MutableStateFlow(UiState.Empty)
+    val teacherTalkPopularPostListState get() = _teacherTalkPopularPostListState.asStateFlow()
 
     private val _bossTalkPopularPostListState: MutableStateFlow<UiState<List<BossTalkPopularPostEntity>>> =
         MutableStateFlow(UiState.Empty)
@@ -93,49 +93,23 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun setTeacherTalkPopularPost() {
-        _teacherTalkPopularPostList.value = listOf(
-            TeacherTalkPopularPostEntity(
-                category = "운영",
-                title = "고민이 있다네요",
-                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요?",
-                comment = "16",
-            ),
-            TeacherTalkPopularPostEntity(
-                category = "마케팅",
-                title = "고민이 있다네요",
-                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? 이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? 혹시 제발요!!",
-                comment = "87",
-            ),
-            TeacherTalkPopularPostEntity(
-                category = "직원관리",
-                title = "최대한 길게 한번 타이틀 만들어볼게요 어떻게 되려나 함 봅시다 질문 늘리기 쭈우우욱 길어져라 길어져라",
-                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요?",
-                comment = "0",
-            ),
-            TeacherTalkPopularPostEntity(
-                category = "상권",
-                title = "상권이 다 죽은 동네에서 장사하고 있습니다. 도와주세요. 이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요?",
-                content = "힝",
-                comment = "3",
-            ),
-            TeacherTalkPopularPostEntity(
-                category = "위생",
-                title = "매일 물청소하는데 바퀴벌레가 나와요",
-                content = "이런 저런 고민이 있습니다. 혹시 저를 도와주실 분이 있나요? ",
-                comment = "03",
-            ),
-        )
+    fun getTeacherTalkPopularPost() {
+        viewModelScope.launch {
+            getTeacherTalkPopularPostUseCase().onSuccess { teacherTalkPopularPostEntity ->
+                _teacherTalkPopularPostListState.value =
+                    UiState.Success(teacherTalkPopularPostEntity)
+            }.onFailure { exception: Throwable ->
+                _teacherTalkPopularPostListState.value = UiState.Error(exception.message)
+            }
+        }
     }
 
     fun getBossTalkPopularPost() {
         viewModelScope.launch {
             getBossTalkPopularPostUseCase().onSuccess { bossTalkPopularPostEntity ->
                 _bossTalkPopularPostListState.value = UiState.Success(bossTalkPopularPostEntity)
-                Log.d("[홈] -> ", bossTalkPopularPostListState.value.toString())
             }.onFailure { exception: Throwable ->
                 _bossTalkPopularPostListState.value = UiState.Error(exception.message)
-                Log.d("[홈] -> ", bossTalkPopularPostListState.value.toString())
             }
         }
     }
@@ -154,7 +128,11 @@ class HomeViewModel @Inject constructor(
                 nickName = "티쳐입니달라",
                 specialty = "경영컨설턴트",
                 career = "23",
-                keyword = listOf(KeywordType.PASSIONATE, KeywordType.CAREFUL, KeywordType.PRACTICAL),
+                keyword = listOf(
+                    KeywordType.PASSIONATE,
+                    KeywordType.CAREFUL,
+                    KeywordType.PRACTICAL,
+                ),
             ),
             WeeklyBestTeacherEntity(
                 profileImg = "https://img-cdn.theqoo.net/bJgQuT.jpg",

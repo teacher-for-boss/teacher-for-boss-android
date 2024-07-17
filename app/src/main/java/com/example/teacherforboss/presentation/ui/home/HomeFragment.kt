@@ -68,15 +68,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             setBannerItems()
             setTeacherTalkShortcutItems()
 
+            getTeacherTalkPopularPost()
             getBossTalkPopularPost()
 
-            setTeacherTalkPopularPost()
             setWeeklyBestTeacher()
         }
         teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
 
         // TODO 서버통신하고 삭제
-        teacherTalkPopularPostAdapter.submitList(viewModel.teacherTalkPopularPostList.value)
         weeklyBestTeacherAdapter.submitList(viewModel.weeklyBestTeacherList.value)
 
         startAutoScroll()
@@ -139,8 +138,17 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             .onEach { bossTalkPopularPostListState ->
                 when(bossTalkPopularPostListState) {
                     is UiState.Success -> {
-                        Log.d("[홈] -> ", bossTalkPopularPostListState.data.toString())
                         bossTalkPopularPostAdapter.submitList(bossTalkPopularPostListState.data)
+                    }
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.teacherTalkPopularPostListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { teacherTalkPopularPostListState ->
+                when(teacherTalkPopularPostListState) {
+                    is UiState.Success -> {
+                        teacherTalkPopularPostAdapter.submitList(teacherTalkPopularPostListState.data)
                     }
                     else -> Unit
                 }

@@ -18,7 +18,7 @@ class AskPaymentFragment : BindingFragment<FragmentAskPaymentBinding>(R.layout.f
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val items = listOf(
-            AskPaymentItemData("질문권 1개", "1원","10,000원"),
+            AskPaymentItemData("질문권 1개", "","10,000원"),
             AskPaymentItemData("질문권 5개", "50,000원","47,500원"),
             AskPaymentItemData("질문권 10개", "100,000원","90,000원"),
             AskPaymentItemData("질문권 20개", "200,000원","174,500원"),
@@ -26,8 +26,15 @@ class AskPaymentFragment : BindingFragment<FragmentAskPaymentBinding>(R.layout.f
 
         val adapter = AskPaymentAdapter(items)
         recyclerView.adapter = adapter
-
+        onBackBtnPressed()
     }
+    fun onBackBtnPressed(){
+        binding.includeAskPaymentTopAppBar.backBtn.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+
+        }}
+
+
 
 }
 

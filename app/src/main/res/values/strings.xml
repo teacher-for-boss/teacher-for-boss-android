@@ -227,7 +227,7 @@
     <!-- ask payment -->
     <string name="ask_payment_title">질문권 결제</string>
     <string name="ask_payment_head">질문권 구매하고\n마음껏 질문하세요.</string>
-    <string name="ask_payment_check">✔️질문권 1개로 전문가에게 빠르게 답변 받기\n✔️여러명의 전문가에게 답변을 받아요\n✔️24시간 365일 답변받을 수 있어요</string>
+    <string name="ask_payment_check">✔️ 질문권 1개로 전문가에게 빠르게 답변 받기\n✔️ 여러명의 전문가에게 답변을 받아요\n✔️ 24시간 365일 답변받을 수 있어요</string>
     <string name="ask_payment_buy">구매하기</string>
 
 

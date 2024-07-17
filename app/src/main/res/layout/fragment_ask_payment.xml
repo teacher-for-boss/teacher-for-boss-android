@@ -15,12 +15,12 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/include_my_page_top_app_bar"
+            android:id="@+id/include_ask_payment_top_app_bar"
             layout="@layout/view_top_app_bar_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/ask_payment_title"/>
+            app:title="@{@string/ask_payment_title}"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include_my_page_top_app_bar">
+            app:layout_constraintTop_toBottomOf="@+id/include_ask_payment_top_app_bar">
 
 
             <TextView
@@ -45,23 +45,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/ask_payment_check" />
+                android:text="@string/ask_payment_check"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body4"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_ask_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"/>
+                android:layout_marginTop="30dp"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_buy"
                 style="@style/Theme.TeacherForBoss.Button.Exam.NEXT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/ask_payment_buy"
                 android:backgroundTint="@color/Purple600"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:text="이용 방법 : 질문권은 ‘티쳐톡’에서 사용할 수 있습니다. \n게시글당 1개의 질문권을 사용해 티쳐(전문가)에게 답변을 받을 수 있습니다.\n이용 기간: 질문권은 결제일로부터 30일 동안 이용할 수 있습니다.\n환불 방법: 결제 후 7일 이내에 문의하기(링크)를 통해 취소 가능합니다.\n환불 금액: 할인 질문권을 구매하고 일부 환불하는 경우,\n사용한 질문권은 개당 정상 가격(10,000원)으로 차감되어 환불됩니다. \n수수료 별도, 결제 대행사/은행 수수료를 따름)"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body7"
+                android:textColor="@color/Gray400" />
+
         </LinearLayout>
 
 

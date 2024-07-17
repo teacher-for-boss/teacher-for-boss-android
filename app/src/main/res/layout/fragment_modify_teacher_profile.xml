@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="signupViewModel"
-            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+            name="modifyTeacherProfileViewModel"
+            type="com.example.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileViewModel" />
 
     </data>
 
@@ -72,26 +72,30 @@
                     android:id="@+id/nicknameBox"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_signup"
                     android:hint="닉네임을 입력해주세요"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginEnd="5dp"
+                    android:imeOptions="actionDone"
+                    android:maxLength="10"
                     android:padding="12dp"
-                    android:text="@={signupViewModel._nickname}"
+                    android:text="@={modifyTeacherProfileViewModel._nickname}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
-                    android:maxLength="10"
-                    android:imeOptions="actionDone"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/nicknameVerifyBtn"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textNickname" />
+
                 <TextView
                     android:id="@+id/tv_nickname_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/10"
                     android:layout_marginEnd="10dp"
+                    android:text="@={modifyTeacherProfileViewModel._nicknameCount}"
                     app:layout_constraintTop_toTopOf="@id/nicknameVerifyBtn"
                     app:layout_constraintBottom_toBottomOf="@id/nicknameVerifyBtn"
                     app:layout_constraintEnd_toStartOf="@id/nicknameVerifyBtn"/>
@@ -102,7 +106,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/radius_purple_button"
                     android:backgroundTint="@color/selector_all_btn_background"
-                    android:enabled="@{signupViewModel.nicknameCheck}"
+                    android:enabled="@{modifyTeacherProfileViewModel.nicknameCheck}"
                     android:text="중복 확인"
                     android:layout_margin="10dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
@@ -158,16 +162,20 @@
                     android:id="@+id/et_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_signup"
                     android:layout_margin="10dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/selector_signup"
+                    android:gravity="top"
                     android:hint="번호를 입력해주세요"
+                    android:inputType="number"
+                    android:maxLength="11"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="14dp"
-                    android:gravity="top"
-                    android:text="@={signupViewModel._field}"
+                    android:text="@={modifyTeacherProfileViewModel._phone}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.473"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
@@ -216,7 +224,7 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="14dp"
                     android:gravity="top"
-                    android:text="@={signupViewModel._field}"
+                    android:text="@={modifyTeacherProfileViewModel._email}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -245,7 +253,7 @@
                     android:hint="전문 분야를 입력해주세요 (최대 20자)"
                     android:padding="12dp"
                     android:gravity="top"
-                    android:text="@={signupViewModel._field}"
+                    android:text="@={modifyTeacherProfileViewModel._field}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                     android:textColorHint="@color/Gray400"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -271,7 +279,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/selector_signup"
                     android:gravity="center"
-                    android:text="@={signupViewModel._carrer_str}"
+                    android:text="@={modifyTeacherProfileViewModel._carrer_str}"
                     android:hint="00"
                     android:inputType="number"
                     android:padding="12dp"
@@ -311,7 +319,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/selector_signup"
                     android:gravity="top"
-                    android:text="@={signupViewModel._introduction}"
+                    android:text="@={modifyTeacherProfileViewModel._introduction}"
                     android:hint="한 줄 소개를 입력해주세요(최대 40자)"
                     android:padding="12dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
@@ -335,7 +343,7 @@
 
                 <TextView
                     android:id="@+id/keywordsDescription"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="티쳐를 가장 잘 나타낼 수 있는 키워드를 선택해주세요(최대 5개)"
@@ -348,85 +356,68 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/keywordChipGroup"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/keywordsDescription"
                     app:singleSelection="false">
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="친절한">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="친절한"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="솔직한">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="솔직한"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="현실">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="현실"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="논리적">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="논리적"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="전문성">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="전문성"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="방향제시">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="방향제시"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="준비성">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="준비성"/>
 
                     <com.google.android.material.chip.Chip
-                        style="@style/SignupKeywordUnSelected"
+                        style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="꿀팁">
-
-                    </com.google.android.material.chip.Chip>
+                        android:text="꿀팁"/>
 
 
                 </com.google.android.material.chip.ChipGroup>
@@ -448,11 +439,12 @@
             android:background="@drawable/radius_purple_button"
             android:text="완료"
             android:backgroundTint="@color/selector_all_btn_background"
-            android:enabled="@{signupViewModel.enableNext}"
+            android:enabled="@{modifyTeacherProfileViewModel.enableNext}"
             android:textColor="@color/white"
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </LinearLayout>
 

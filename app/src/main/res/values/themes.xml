@@ -116,5 +116,16 @@
         <item name="chipCornerRadius">4dp</item>
         <item name="android:textColor">@color/chip_text</item>
     </style>
+
+    <style name="TeacherProfileKeywordUnSelected" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:shape">rectangle</item>
+        <item name="android:paddingVertical">4dp</item>
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:textColor">@color/chip_text</item>
+    </style>
     
 </resources>

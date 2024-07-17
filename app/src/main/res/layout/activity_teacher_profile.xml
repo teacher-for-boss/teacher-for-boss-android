@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="teacherProfileDetailEntity"
+            type="com.example.teacherforboss.domain.model.common.TeacherProfileDetailEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.common.TeacherProfileActivity">
+
+        <ImageView
+            android:id="@+id/iv_teacher_profile_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_teacher_profile_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="11dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_menu_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_teacher_profile_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            android:layout_marginEnd="11dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_teacher_profile_menu">
+
+            <TextView
+                android:id="@+id/tv_teacher_profile_menu_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/background_radius8_stroke_gray200"
+                android:elevation="3dp"
+                android:paddingHorizontal="@dimen/spacing20"
+                android:paddingVertical="@dimen/spacing8"
+                android:text="@string/teacher_profile_report"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Regular.11"
+                android:textColor="@color/Gray400"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_teacher_profile_menu_fix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/background_radius8_stroke_gray200"
+                android:elevation="3dp"
+                android:paddingHorizontal="@dimen/spacing20"
+                android:paddingVertical="@dimen/spacing8"
+                android:text="@string/teacher_profile_fix"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Regular.11"
+                android:textColor="@color/Gray400"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/spacing20" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/spacing20" />
+
+        <View
+            android:id="@+id/view_teacher_profile_background"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/background_oval_white"
+            android:backgroundTint="@color/Gray200"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/iv_teacher_profile_back_btn"
+            app:layout_goneMarginTop="33dp" />
+
+        <ImageView
+            android:id="@+id/iv_teacher_profile_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="@id/view_teacher_profile_background"
+            app:layout_constraintEnd_toEndOf="@id/view_teacher_profile_background"
+            app:layout_constraintStart_toStartOf="@id/view_teacher_profile_background"
+            app:layout_constraintTop_toTopOf="@id/view_teacher_profile_background" />
+
+        <TextView
+            android:id="@+id/tv_teacher_profile_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:maxLines="1"
+            android:text="@{@string/teacher_profile_teacher_name(teacherProfileDetailEntity.nickname)}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title3"
+            android:textColor="@color/Gray700"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/view_teacher_profile_background" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_teacher_profile_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/background_radius100_purple100"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_nickname">
+
+            <ImageView
+                android:id="@+id/iv_teacher_profile_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_star_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/iv_teacher_profile_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:text="@{teacherProfileDetailEntity.level}"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Level"
+                android:textColor="@color/Purple600"
+                app:layout_constraintBottom_toBottomOf="@id/iv_teacher_profile_star"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_teacher_profile_star"
+                app:layout_constraintTop_toTopOf="@id/iv_teacher_profile_star" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_teacher_profile_introduce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:maxLines="2"
+            android:text="@{teacherProfileDetailEntity.information}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
+            android:textColor="@color/Gray500"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/layout_teacher_profile_level" />
+
+        <TextView
+            android:id="@+id/tv_teacher_profile_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{teacherProfileDetailEntity.phoneNum != null ? teacherProfileDetailEntity.phoneNum: @string/teacher_profile_tab_info}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
+            android:textColor="@color/Gray500"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_introduce" />
+
+        <TextView
+            android:id="@+id/tv_teacher_profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{teacherProfileDetailEntity.email != null ? teacherProfileDetailEntity.email: @string/teacher_profile_tab_info}"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
+            android:textColor="@color/Gray500"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_phone"
+            tools:text="abcd@gmail.com" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_teacher_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_teacher_profile_email"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/Purple600"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/Purple600"
+            app:tabTextAppearance="@style/TextAppearance.TeacherForBoss.Label5"
+            app:tabTextColor="@color/Gray400">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tl_teacher_profile_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tl_teacher_profile_recent_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_teacher_profile"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tl_teacher_profile" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

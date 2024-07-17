@@ -120,7 +120,41 @@
     <string name="comment_cnt">댓글 %d개</string>
     <string name="user_level">Lv.%s 지식의 별</string>
 
-    <!-- my page -->
+    <!-- 환전 -->
+    <string name="exchange_title">티포 환전하기</string>
+    <string name="exchange">환전하기</string>
+    <string name="exchange_apply">환전 신청하기</string>
+    <string name="exchange_check">확인했어요</string>
+    <string name="current_point_explain">[] 티쳐의\n 현재 보유 티포</string>
+    <string name="use_point1">TP(티처 포인트) 이용 안내</string>
+    <string name="use_point2">티처톡에서 답변하고 티포(티처 포인트)를 얻어요\n채택 1번당 100TP의 리워드를 얻어요\n24시간 365일 답변하고 채택받을 수 있어요</string>
+    <string name="point_info1">이용 방법 : 질문권은 ‘티쳐톡’에서 얻을 수 있습니다.  질문글에 답변을 한 후 채택되면 100TP를 얻습니다. 질문글에 달린 답변이 일주일동안 채택되지 않으면 답변자 모두 (100/답변자 수)TP를 얻습니다.</string>
+    <string name="point_info2">출금 방법 : 모은 질문권은 550TP 이상부터 100TP 단위로 출금할 수 있습니다.</string>
+    <string name="point_info3">출금 금액 : 1TP는 100원으로 환산됩니다. (환전 수수료 10% 별도)</string>
+    <string name="exchange_tp">환전할 TP</string>
+    <string name="tp">TP</string>
+    <string name="livedata_won">-----원* (수수료 10% 별도)</string>
+    <string name="my_account">내 계좌</string>
+    <string name="change_info"><u>변경하기</u></string>
+    <string name="my_account_name">홍길동</string>
+    <string name="my_account_number">카카오뱅크 3333-18-3814305</string>
+    <string name="exchange_complete1">환전 신청이 완료되었습니다!</string>
+    <string name="exchange_complete2">✔️ 영업일 기준 3일 내로 입금됩니다.</string>
+    <string name="exchange_complete3">✔️ 환전 신청한 내역은 마이페이지에서 확인 가능합니다.</string>
+
+    <string name="account_change_title">계좌 확인 몇 변경</string>
+    <string name="check_account1">계좌정보를 확인해주세요</string>
+    <string name="check_account2">변경된 정보를 수정할 수 있습니다.</string>
+    <string name="choose_bank">은행 선택</string>
+    <string name="input_account">계좌번호 입력</string>
+    <string name="input_name">예금주명 입력</string>
+    <string name="hint_choose_bank">클릭하여 은행을 선택해주세요</string>
+    <string name="hint_input_account">계좌번호를 입력해주세요</string>
+    <string name="hint_input_name">예금주명을 입력해주세요</string>
+
+    <string name="account_complete">완료</string>
+
+  <!-- my page -->
     <string name="my_page_title">마이페이지</string>
     <string name="my_page_teacher_name">%s 티처</string>
     <string name="my_page_boss_name">%s 보스</string>

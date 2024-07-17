@@ -160,7 +160,7 @@
             android:backgroundTint="@color/selector_all_btn_background"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
             android:textColor="@color/white"
-            android:text="@string/sinup_next_btn"
+            android:text="@string/account_complete"
             android:enabled="@{signupViewModel.enableNext}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

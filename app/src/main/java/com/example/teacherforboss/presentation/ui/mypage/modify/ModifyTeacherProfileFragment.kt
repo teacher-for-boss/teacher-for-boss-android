@@ -17,10 +17,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
+import com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.example.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.example.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileViewModel
 import com.example.teacherforboss.util.base.BindingImgAdapter
@@ -67,18 +69,55 @@ class ModifyTeacherProfileFragment : Fragment() {
             } else viewModel.nicknameUser()
         }
 
-        binding.nicknameBox.addTextChangedListener(object : TextWatcher {
+        binding.etPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                nicknameBox.setBackgroundResource(R.drawable.selector_signup)
-                veryInfo.visibility = View.INVISIBLE
-                binding.nicknameVerifyBtn.isEnabled = true
-                binding.nextBtn.isEnabled = false
-                viewModel.setNickname(s.toString())
+                s?.let {
+                    val filtered = it.toString().filter { char ->
+                        char.isDigit() || char == '-' || char == ')' || char == '+'
+                    }
+                    if (filtered != it.toString()) {
+                        binding.etPhone.setText(filtered)
+                        binding.etPhone.setSelection(filtered.length) // 커서를 마지막에 위치시키기
+                    }
+                    viewModel.setPhone(filtered)
+                }
             }
         })
 
+        binding.nicknameBox.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    nicknameBox.setBackgroundResource(R.drawable.selector_signup)
+                    val filtered = it.toString().filter { char ->
+                        char.isLetterOrDigit() || char in "가-힣ㄱ-ㅎㅏ-ㅣ"
+                    }
+
+                    if (filtered != it.toString()) {
+                        nicknameBox.removeTextChangedListener(this)
+                        nicknameBox.setText(filtered)
+                        nicknameBox.setSelection(filtered.length)
+                        nicknameBox.addTextChangedListener(this)
+                    }
+
+                    veryInfo.visibility = View.INVISIBLE
+                    binding.nicknameVerifyBtn.isEnabled = true
+                    binding.nextBtn.isEnabled = false
+                    viewModel.setNickname(filtered)
+                }
+            }
+        })
+
+
+        binding.nextBtn.setOnClickListener {
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            startActivity(intent)
+        }
         viewModel.isUserImgSelected.observe(viewLifecycleOwner, { bool ->
             Log.d("profile", "user img selected")
             if (bool == true) {

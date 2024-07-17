@@ -1,7 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".signup.fragment.SignUpFragment">
+    tools:context=".signup.fragment.ModifyTeacherProfile">
 
     <data>
         <variable
@@ -142,8 +142,8 @@
                     android:layout_height="wrap_content"
                     android:text="공개"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                    android:textColor="@color/Gray700"
-                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/Gray400"
+                    android:layout_marginEnd="-5dp"
                     app:layout_constraintEnd_toStartOf="@id/switch_phone"
                     app:layout_constraintTop_toTopOf="@id/tv_phone"
                     app:layout_constraintBottom_toBottomOf="@id/tv_phone"/>
@@ -151,6 +151,8 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_phone"
+                    android:thumb="@drawable/selector_thumb"
+                    app:track="@drawable/selector_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -167,8 +169,7 @@
                     android:background="@drawable/selector_signup"
                     android:gravity="top"
                     android:hint="번호를 입력해주세요"
-                    android:inputType="number"
-                    android:maxLength="11"
+                    android:maxLength="12"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="14dp"
                     android:text="@={modifyTeacherProfileViewModel._phone}"
@@ -197,8 +198,8 @@
                     android:layout_height="wrap_content"
                     android:text="공개"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                    android:textColor="@color/Gray700"
-                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/Gray400"
+                    android:layout_marginEnd="-5dp"
                     app:layout_constraintEnd_toStartOf="@id/switch_email"
                     app:layout_constraintTop_toTopOf="@id/tv_email"
                     app:layout_constraintBottom_toBottomOf="@id/tv_email"/>
@@ -206,6 +207,8 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_email"
+                    android:thumb="@drawable/selector_thumb"
+                    app:track="@drawable/selector_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"

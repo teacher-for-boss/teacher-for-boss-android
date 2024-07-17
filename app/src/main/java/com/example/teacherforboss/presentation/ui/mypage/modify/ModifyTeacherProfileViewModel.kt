@@ -155,18 +155,18 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
     fun setNickname(nickname: String) {
         _nickname.value = nickname
     }
-    fun setPhone(field: String) {
-        _field.value = field
+    fun setPhone(phone: String) {
+        _phone.value = phone
     }
-    fun setEmail(field: String) {
-        _field.value = field
+    fun setEmail(email: String) {
+        _email.value = email
     }
     fun setField(field: String) {
         _field.value = field
     }
 
-    fun setCarrerStr(carrerStr: String) {
-        _carrer_str.value = carrerStr
+    fun setCareerStr(careerStr: String) {
+        _carrer_str.value = careerStr
     }
 
     fun setIntroduction(introduction: String) {

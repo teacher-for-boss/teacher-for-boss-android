@@ -38,11 +38,28 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".presentation.ui.mypage.modify.ModifyTeacherProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TeacherForBoss">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="false"            
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
         <activity
             android:name=".presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".presentation.ui.mypage.exchange.ExchangeCompleteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".presentation.ui.mypage.exchange.AccountChangeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".presentation.ui.mypage.exchange.ExchangeActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
@@ -56,16 +73,24 @@
         <activity
             android:name=".presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.ShowBodyActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".presentation.ui.community.boss_talk.body.BossTalkBodyActivity"
             android:exported="true"

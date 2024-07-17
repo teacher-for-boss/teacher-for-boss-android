@@ -111,6 +111,7 @@ class TeacherProfileActivity :
             }
 
             root.setOnClickListener { layoutTeacherProfileMenu.visibility = View.GONE }
+            ivTeacherProfileBackBtn.setOnClickListener { finish() }
         }
     }
 

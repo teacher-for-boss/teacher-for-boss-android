@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.teacherforboss.GlobalApplication
 import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
@@ -26,6 +27,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.ad
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingImgAdapter
+import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -40,6 +42,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
     private var questionId: Long = 0
     private var categoryName: String = ""
+    val appContext= GlobalApplication.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -260,6 +263,11 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
                 viewModel._title.value = it.title
                 viewModel._content.value = it.content
+
+                // 보스인 경우 답변작성하기 버튼 invisible
+                val role= LocalDataSource.getUserInfo(appContext,"role")
+                if(role=="BOSS")binding.answerBtn.visibility=View.GONE
+
             },
         )
     }

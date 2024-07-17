@@ -45,6 +45,15 @@ class ModifyTeacherProfileFragment : Fragment() {
         binding.modifyTeacherProfileViewModel = viewModel
         binding.lifecycleOwner = this
 
+        // SwitchCompat 리스너 설정
+        binding.switchPhone.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setPhoneReveal(isChecked)
+        }
+
+        binding.switchEmail.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setEmailReveal(isChecked)
+        }
+
         val nicknameBox = binding.nicknameBox
         val veryInfo = binding.veryInfo
         val successColor = ContextCompat.getColor(requireContext(), R.color.success)

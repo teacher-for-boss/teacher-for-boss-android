@@ -79,6 +79,14 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
     val career:LiveData<Int>
         get() = _career
 
+    var _phoneReveal=MutableLiveData<Boolean>(false)
+    val phoneReveal:LiveData<Boolean>
+        get() = _phoneReveal
+
+    var _emailReveal=MutableLiveData<Boolean>(false)
+    val emailReveal:LiveData<Boolean>
+        get() = _emailReveal
+
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
     var nicknameCheck = MutableLiveData<Boolean>(false)
     val userRepo= UserRepositoryImpl()
@@ -103,6 +111,13 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
         _introduction.observeForever {
             validateFields()
         }
+    }
+    fun setPhoneReveal(reveal: Boolean) {
+        _phoneReveal.value = reveal
+    }
+
+    fun setEmailReveal(reveal: Boolean) {
+        _emailReveal.value = reveal
     }
 
 

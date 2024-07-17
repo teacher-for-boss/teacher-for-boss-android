@@ -12,10 +12,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupFinishBinding
-import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,14 +35,10 @@ class SignupFinishActivity : AppCompatActivity() {
 
         initView(role)
         Handler(Looper.getMainLooper()).postDelayed({
-            if(role == 1){
-                val intentBoss = Intent(this, BossTalkBodyActivity::class.java)
-                startActivity(intentBoss)
+            val intent=Intent(this,MainActivity::class.java).apply {
+                putExtra(FRAGMENT_DESTINATION, HOME)
             }
-            else if (role == 2){
-                val intentTeacher = Intent(this, TeacherTalkBodyActivity::class.java)
-                startActivity(intentTeacher)
-            }
+            startActivity(intent)
             finish()
         }, 2000)
 
@@ -69,6 +64,11 @@ class SignupFinishActivity : AppCompatActivity() {
         val colorSpan = ForegroundColorSpan(ContextCompat.getColor(this, R.color.Purple500)) // 원하는 색상으로 변경
         spannable.setSpan(colorSpan, 0, nickname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.titleText.text = spannable
+    }
+
+    companion object{
+        const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
+        const val HOME="HOME"
     }
 
 }

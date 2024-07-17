@@ -2,6 +2,7 @@ package com.example.teacherforboss.di
 
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
+import com.example.teacherforboss.domain.repository.HomeRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
@@ -31,6 +32,7 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkMo
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -182,4 +184,8 @@ class UseCaseModule {
     fun providesTeacherTalkAnswerDislikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerDislikeUseCase =
         TeacherTalkAnswerDislikeUseCase(communityRepository=communityRepository)
 
+    @Provides
+    @Singleton
+    fun providesGetBossTalkPopularPostUseCase(homeRepository: HomeRepository): GetBossTalkPopularPostUseCase =
+        GetBossTalkPopularPostUseCase(homeRepository = homeRepository)
 }

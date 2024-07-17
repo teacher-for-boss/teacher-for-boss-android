@@ -2,10 +2,12 @@ package com.example.teacherforboss.di
 
 import com.example.teacherforboss.data.repository.AwsRepositoryImpl
 import com.example.teacherforboss.data.repository.CommunityRepositoryImpl
+import com.example.teacherforboss.data.repository.HomeRepositoryImpl
 import com.example.teacherforboss.data.repository.SignupRepositoryImpl
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
+import com.example.teacherforboss.domain.repository.HomeRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.repository.UserRepository
 import dagger.Binds
@@ -34,4 +36,7 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindsCommunityRepository(communityRepositoryImpl: CommunityRepositoryImpl):CommunityRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindsHomeRepository(homeRepositoryImpl: HomeRepositoryImpl): HomeRepository
 }

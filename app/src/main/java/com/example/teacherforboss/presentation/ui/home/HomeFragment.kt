@@ -6,6 +6,7 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -15,9 +16,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentHomeBinding
 import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.view.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
@@ -64,16 +68,15 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             setBannerItems()
             setTeacherTalkShortcutItems()
 
-            // TODO 옮기기
+            getBossTalkPopularPost()
+
             setTeacherTalkPopularPost()
-            setBossTalkPopularPost()
             setWeeklyBestTeacher()
         }
         teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
 
-        // TODO 서버통신 후 collectData에서 서버통신 결과값 불러오기
+        // TODO 서버통신하고 삭제
         teacherTalkPopularPostAdapter.submitList(viewModel.teacherTalkPopularPostList.value)
-        bossTalkPopularPostAdapter.submitList(viewModel.bossTalkPopularPostList.value)
         weeklyBestTeacherAdapter.submitList(viewModel.weeklyBestTeacherList.value)
 
         startAutoScroll()
@@ -129,6 +132,17 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         END_SPAN_INDEX,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.bossTalkPopularPostListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { bossTalkPopularPostListState ->
+                when(bossTalkPopularPostListState) {
+                    is UiState.Success -> {
+                        Log.d("[홈] -> ", bossTalkPopularPostListState.data.toString())
+                        bossTalkPopularPostAdapter.submitList(bossTalkPopularPostListState.data)
+                    }
+                    else -> Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

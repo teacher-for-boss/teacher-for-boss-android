@@ -5,9 +5,12 @@ import com.example.teacherforboss.databinding.ItemHomeBossTalkPopularPostBinding
 import com.example.teacherforboss.domain.model.home.BossTalkPopularPostEntity
 
 class HomeBossTalkPopularPostViewHolder(
-    private val binding: ItemHomeBossTalkPopularPostBinding
+    private val binding: ItemHomeBossTalkPopularPostBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: BossTalkPopularPostEntity) {
-        binding.bossTalkPopularPostEntity = item
+        with(binding) {
+            bossTalkPopularPostEntity = item
+            tvBossTalkPopularPostNumber.text = adapterPosition.inc().toString()
+        }
     }
 }

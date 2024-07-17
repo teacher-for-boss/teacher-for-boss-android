@@ -1,17 +1,28 @@
 package com.example.teacherforboss.presentation.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.teacherforboss.R
 import com.example.teacherforboss.domain.model.home.BossTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
+import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.example.teacherforboss.presentation.model.BannerModel
 import com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel
 import com.example.teacherforboss.presentation.type.KeywordType
+import com.example.teacherforboss.util.view.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getBossTalkPopularPostUseCase: GetBossTalkPopularPostUseCase,
+) : ViewModel() {
     private val _bannerItemList: MutableStateFlow<List<BannerModel>> = MutableStateFlow(emptyList())
     val bannerItemList get() = _bannerItemList
 
@@ -28,9 +39,9 @@ class HomeViewModel : ViewModel() {
         MutableStateFlow(emptyList())
     val teacherTalkPopularPostList get() = _teacherTalkPopularPostList.asStateFlow()
 
-    private val _bossTalkPopularPostList: MutableStateFlow<List<BossTalkPopularPostEntity>> =
-        MutableStateFlow(emptyList())
-    val bossTalkPopularPostList get() = _bossTalkPopularPostList.asStateFlow()
+    private val _bossTalkPopularPostListState: MutableStateFlow<UiState<List<BossTalkPopularPostEntity>>> =
+        MutableStateFlow(UiState.Empty)
+    val bossTalkPopularPostListState get() = _bossTalkPopularPostListState.asStateFlow()
 
     private val _weeklyBestTeacherList: MutableStateFlow<List<WeeklyBestTeacherEntity>> =
         MutableStateFlow(emptyList())
@@ -117,29 +128,16 @@ class HomeViewModel : ViewModel() {
         )
     }
 
-    fun setBossTalkPopularPost() {
-        _bossTalkPopularPostList.value = listOf(
-            BossTalkPopularPostEntity(
-                number = "1",
-                title = "제목 이러합니다. 어쩌구 저쩌구 이게 1등인 제목임용 얼마나 더 길어야 되지?",
-            ),
-            BossTalkPopularPostEntity(
-                number = "2",
-                title = "제목 이러합니다.",
-            ),
-            BossTalkPopularPostEntity(
-                number = "3",
-                title = "어쩌구 저쩌구",
-            ),
-            BossTalkPopularPostEntity(
-                number = "4",
-                title = "고민이 있다네요",
-            ),
-            BossTalkPopularPostEntity(
-                number = "5",
-                title = "우와앙! 우와앙!",
-            ),
-        )
+    fun getBossTalkPopularPost() {
+        viewModelScope.launch {
+            getBossTalkPopularPostUseCase().onSuccess { bossTalkPopularPostEntity ->
+                _bossTalkPopularPostListState.value = UiState.Success(bossTalkPopularPostEntity)
+                Log.d("[홈] -> ", bossTalkPopularPostListState.value.toString())
+            }.onFailure { exception: Throwable ->
+                _bossTalkPopularPostListState.value = UiState.Error(exception.message)
+                Log.d("[홈] -> ", bossTalkPopularPostListState.value.toString())
+            }
+        }
     }
 
     fun setWeeklyBestTeacher() {

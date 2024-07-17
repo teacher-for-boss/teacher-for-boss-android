@@ -179,7 +179,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val TERMS_WEB_LINK =
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
         private const val LOGOUT_DIALOG = "logoutModal"
-        private const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
+        const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
     }

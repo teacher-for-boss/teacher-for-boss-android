@@ -5,23 +5,26 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/begin_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TeacherForBoss"
-        android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
         <activity
             android:name=".presentation.ui.mypage.ManageAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.ui.common.TeacherProfileActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.auth.login.LoginActivity"
@@ -33,15 +36,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-
-        </activity>
+            android:exported="false"            
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
         <activity
             android:name=".presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
             android:exported="false"
@@ -57,31 +56,24 @@
         <activity
             android:name=".presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.ShowBodyActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".presentation.ui.community.boss_talk.body.BossTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-          
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".presentation.ui.community.boss_talk.write.BossTalkWriteActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".presentation.ui.auth.signup.SignupFinishActivity"
             android:exported="false"
@@ -89,7 +81,7 @@
         <activity
             android:name=".presentation.common.WebViewActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true"

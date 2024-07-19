@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemCommentTeacherBinding
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
+import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
@@ -109,6 +110,12 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 }
                 viewModel.postAnswerDisLike(answer.answerId)
                 updateComment()
+            }
+
+            // image vp
+            if (answer.imageUrlList.isNotEmpty()) {
+                binding.vpImgSlider.visibility = View.VISIBLE
+                binding.vpImgSlider.adapter = ImgSliderAdapter(answer.imageUrlList)
             }
 
             //더보기 버튼 보여주기

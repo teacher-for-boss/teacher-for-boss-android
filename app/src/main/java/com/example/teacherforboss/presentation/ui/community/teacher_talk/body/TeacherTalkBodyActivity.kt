@@ -311,7 +311,6 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
             this,
             Observer {
                 viewModel.getAnswerList()
-                Toast.makeText(this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
             },
         )
     }

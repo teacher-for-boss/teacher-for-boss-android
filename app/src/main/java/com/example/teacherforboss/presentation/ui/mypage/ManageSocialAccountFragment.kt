@@ -34,11 +34,10 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
     }
     private fun initView(){
         val socialType = LocalDataSource.getSignupType(appContext,SIGNUP_TYPE)
-        var socialEmailTitle = binding.includeEmail.title
-        when (socialType){
-            "SIGNUP_SOCIAL_KAKAO" -> {socialEmailTitle = getString(R.string.manage_account_email_kakao)}
-            "SIGNUP_SOCIAL_KAKAO" -> {socialEmailTitle = getString(R.string.manage_account_email_naver)}
 
+        when (socialType){
+            SIGNUP_SOCIAL_KAKAO -> {binding.includeEmail.title = getString(R.string.manage_account_email_kakao)}
+            SIGNUP_SOCIAL_NAVER -> {binding.includeEmail.title = getString(R.string.manage_account_email_naver)}
         }
     }
     private fun addListeners() {
@@ -59,6 +58,17 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
                     else->Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.withdrawState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { withdrawState->
+                when(withdrawState){
+                    is UiState.Success->{
+                        viewModel.withdraw()
+                        gotoLoginActivity()
+                    }
+                    else->Unit
+                }
+            }
     }
     private fun showDialogFragment(index: String) {
         // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가
@@ -80,7 +90,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
                     leftBtnText = getString(R.string.dialog_exit),
                     rightBtnText = getString(R.string.dialog_delete_btn),
                     clickLeftBtn = {},
-                    clickRightBtn = {},
+                    clickRightBtn = {viewModel.withdraw()},
                 ).show(parentFragmentManager, ManageSocialAccountFragment.DELETE_DIALOG)
             }
         }
@@ -101,5 +111,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
         private const val DELETE_DIALOG = "deleteModal"
         private const val SIGNUP_TYPE="SIGNUP_TYPE"
         private const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
+        private const val SIGNUP_SOCIAL_NAVER="NAVER"
+        private const val SIGNUP_SOCIAL_KAKAO="KAKAO"
     }
 }

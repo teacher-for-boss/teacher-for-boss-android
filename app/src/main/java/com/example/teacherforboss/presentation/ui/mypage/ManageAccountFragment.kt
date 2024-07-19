@@ -51,6 +51,17 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
                     else->Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.withdrawState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { withdrawState->
+                when(withdrawState){
+                    is UiState.Success->{
+                        viewModel.withdraw()
+                        gotoLoginActivity()
+                    }
+                    else->Unit
+                }
+            }
     }
     private fun showDialogFragment(index: String) {
         // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가
@@ -73,7 +84,7 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
                     leftBtnText = getString(R.string.dialog_exit),
                     rightBtnText = getString(R.string.dialog_delete_btn),
                     clickLeftBtn = {},
-                    clickRightBtn = {},
+                    clickRightBtn = {viewModel.withdraw()},
                 ).show(parentFragmentManager, ManageAccountFragment.DELETE_DIALOG)
             }
         }

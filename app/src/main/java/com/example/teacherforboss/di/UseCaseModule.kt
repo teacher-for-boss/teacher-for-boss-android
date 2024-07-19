@@ -7,7 +7,9 @@ import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.auth.AccountUsecase
 import com.example.teacherforboss.domain.usecase.auth.LogoutUsecase
+import com.example.teacherforboss.domain.usecase.auth.WithdrawUsecase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
@@ -189,5 +191,13 @@ class UseCaseModule {
     fun providesLogoutUseCase(authRepository: AuthRepository): LogoutUsecase =
         LogoutUsecase(authRepository=authRepository)
 
+    @Provides
+    @Singleton
+    fun providesWithdrawUsecase(authRepository: AuthRepository):WithdrawUsecase=
+        WithdrawUsecase(authRepository=authRepository)
 
+    @Provides
+    @Singleton
+    fun providesAccountUsecase(authRepository: AuthRepository):AccountUsecase=
+        AccountUsecase(authRepository)
 }

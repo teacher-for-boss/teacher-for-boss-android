@@ -13,6 +13,7 @@ import com.example.teacherforboss.data.model.request.community.teacher.RequestTe
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossCommentDeleteDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -69,10 +70,11 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     override suspend fun postBossTalkCommentLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto): BaseResponse<ResponseBossTalkCommentLikeDto>
     =communityService.likeBossTalkComment(postId = requestBossTalkCommentLikeDto.postId, commentId = requestBossTalkCommentLikeDto.commentId)
 
-
     override suspend fun postBossTalkCommentdisLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto): BaseResponse<ResponseBossTalkCommentLikeDto>
     =communityService.dislikeBossTalkComment(postId = requestBossTalkCommentLikeDto.postId, commentId = requestBossTalkCommentLikeDto.commentId)
 
+    override suspend fun deleteBossTalkComment(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto): BaseResponse<ResponseBossCommentDeleteDto>
+    = communityService.deleteBossTalkComment(postId = requestBossTalkCommentLikeDto.postId, commentId = requestBossTalkCommentLikeDto.commentId)
 
     override suspend fun getBossTalkCommentList(requestBossTalkDto: RequestBossTalkDto): BaseResponse<ResponseBossTalkCommentListDto>
     = communityService.getBossTalkCommentList(postId = requestBossTalkDto.postId)
@@ -85,18 +87,18 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     override suspend fun deleteBossTalkPost(requestBossTalkDto: RequestBossTalkDto): BaseResponse<ResponseBossTalkDeletePostDto>
     =communityService.deleteBossTalkPost(postId = requestBossTalkDto.postId)
 
-    override suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBodyDto>
-    =communityService.getTeacherTalkBody(questionId = requestTeacherTalkDto.questionId)
-
-    override suspend fun getTeacherTalkLike(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkLikeDto>
-    =communityService.getTeacherTalkLike(questionId = requestTeacherTalkDto.questionId)
-
-    override suspend fun getTeacherTalkBookmark(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBookmarkDto>
-    =communityService.getTeacherTalkBookmark(questionId = requestTeacherTalkDto.questionId)
-
     //TeacherTalk
     override suspend fun uploadTeacherTalkPost(requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherUploadPostDto>
     =communityService.uploadPostTeacher(requestTeacherUploadPostDto)
+
+    override suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBodyDto>
+            =communityService.getTeacherTalkBody(questionId = requestTeacherTalkDto.questionId)
+
+    override suspend fun getTeacherTalkLike(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkLikeDto>
+            =communityService.getTeacherTalkLike(questionId = requestTeacherTalkDto.questionId)
+
+    override suspend fun getTeacherTalkBookmark(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherTalkBookmarkDto>
+            =communityService.getTeacherTalkBookmark(questionId = requestTeacherTalkDto.questionId)
 
     override suspend fun modifyTeacherTalkBody(
         requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherUploadPostDto: RequestTeacherUploadPostDto

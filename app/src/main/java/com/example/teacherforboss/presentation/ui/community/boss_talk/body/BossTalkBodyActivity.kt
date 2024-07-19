@@ -264,6 +264,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             }
         })
+
+        viewModel.deleteCommentLiveData.observe(this, Observer {
+            viewModel.getCommentList()
+        })
     }
 
     private fun observePostComment() {
@@ -287,18 +291,18 @@ class BossTalkBodyActivity : AppCompatActivity() {
             binding.nonWriterOption.visibility = View.GONE
         }
     }
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (ev.action == MotionEvent.ACTION_DOWN) {
-            val v = currentFocus
-            if (v != null) {
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(v.windowToken, 0)
-                v.clearFocus()
-            }
-            hideOptionMenuIfVisible()
-        }
-        return super.dispatchTouchEvent(ev)
-    }
+//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+//        if (ev.action == MotionEvent.ACTION_DOWN) {
+//            val v = currentFocus
+//            if (v != null) {
+//                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.hideSoftInputFromWindow(v.windowToken, 0)
+//                v.clearFocus()
+//            }
+//            hideOptionMenuIfVisible()
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
 
     override fun onBackPressed() {
         super.onBackPressed()

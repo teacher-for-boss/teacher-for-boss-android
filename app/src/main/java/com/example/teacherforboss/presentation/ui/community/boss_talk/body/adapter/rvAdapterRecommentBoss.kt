@@ -15,6 +15,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemRecommentBossBinding
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
@@ -61,7 +62,9 @@ class rvAdapterRecommentBoss(
 
             // 삭제하기
             binding.deleteBtn.setOnClickListener {
-                Log.d("recommnetBoss", "보스톡 대댓글 삭제하기")
+                viewModel.setCommentId(comment.commentId)
+                val dialog = DeleteCommentDialog(binding.root.context, viewModel, lifecycleOwner)
+                dialog.show()
             }
 
             // 신고하기

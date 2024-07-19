@@ -62,8 +62,6 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
     fun setInitView() {
         // 질문 미리보기, 전체보기
         getBody()
-        // rv 설정
-        setRecyclerView()
         // 글자수 설정
         setTextLength()
         // 댓글 내용, 이미지 가져오기
@@ -72,6 +70,8 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
             if(intent.getStringExtra("isImgList").toString()=="true")
                 viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
         }
+        // rv 설정
+        setRecyclerView()
 
     }
 

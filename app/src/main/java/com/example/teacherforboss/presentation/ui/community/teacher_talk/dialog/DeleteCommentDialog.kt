@@ -10,12 +10,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.teacherforboss.databinding.DialogDeleteCommentBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
+import kotlinx.coroutines.launch
 
-class DeleteCommentDialog(
+class DeleteCommentDialog<T: ViewModel>(
     context: Context,
-    private val viewModel: TeacherTalkBodyViewModel,
+    private val viewModel: T,
     private val lifecycleOwner: LifecycleOwner
     ): Dialog(context) {
     private lateinit var binding: DialogDeleteCommentBinding
@@ -32,10 +37,25 @@ class DeleteCommentDialog(
         }
 
         binding.deleteBtn.setOnClickListener {
-            viewModel.deleteAnswer()
+            lifecycleOwner.lifecycleScope.launch {
+                if(viewModel is TeacherTalkBodyViewModel) {
+                    viewModel.deleteAnswer()
+                }
+                else if (viewModel is BossTalkBodyViewModel) {
+                    viewModel.deleteComment()
+                }
+            }
+
+            if(viewModel is TeacherTalkBodyViewModel) {
+                viewModel.deleteAnsLiveData.observe(lifecycleOwner, Observer {
+                    dismiss()
+                })
+            }
+            else if(viewModel is BossTalkBodyViewModel) {
+                viewModel.deleteCommentLiveData.observe(lifecycleOwner, Observer {
+                    dismiss()
+                })
+            }
         }
-        viewModel.deleteAnsLiveData.observe(lifecycleOwner, Observer {
-            dismiss()
-        })
     }
 }

@@ -92,12 +92,6 @@ class TeacherTalkMainFragment :
         //fab
         val role=LocalDataSource.getUserInfo(appContext,"role")
         if(role=="TEACHER")binding.fabWrite.visibility=View.INVISIBLE
-        else{
-            binding.fabWrite.setOnClickListener {
-                val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
-                startActivity(intent)
-            }
-        }
 
         //scrollview
         binding.svTeacherTalkMain.run {
@@ -181,11 +175,17 @@ class TeacherTalkMainFragment :
 
     private fun addListeners() {
         binding.fabWrite.setOnClickListener {
-//            gotoTeacherTalkWrite()
+            gotoTeacherTalkWrite()
         }
         binding.ivSearch.setOnClickListener {
             viewModel._keyword.value = binding.etSearchView.text.toString()
         }
+    }
+
+    fun gotoTeacherTalkWrite(){
+        val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
+        startActivity(intent)
+
     }
 
     companion object{

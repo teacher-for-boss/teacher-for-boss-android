@@ -20,6 +20,7 @@ import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
 import com.example.teacherforboss.data.model.request.signup.SocialSignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherRequest
+import com.example.teacherforboss.data.model.response.auth.LogoutResponse
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.util.base.BaseResponse
@@ -112,4 +113,8 @@ interface AuthService {
     suspend fun businessNumCheck(
         @Body businessNumberCheckRequest: BusinessNumberCheckRequest
     ):BaseResponse<BusinessNumberCheckResponse>
+
+    @POST("auth/logout")
+    suspend fun logout(
+    ):BaseResponse<LogoutResponse>
 }

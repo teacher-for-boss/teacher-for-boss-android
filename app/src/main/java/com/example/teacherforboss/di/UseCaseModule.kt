@@ -1,11 +1,13 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.domain.repository.AuthRepository
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.auth.LogoutUsecase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
@@ -181,5 +183,11 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherTalkAnswerDislikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerDislikeUseCase =
         TeacherTalkAnswerDislikeUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesLogoutUseCase(authRepository: AuthRepository): LogoutUsecase =
+        LogoutUsecase(authRepository=authRepository)
+
 
 }

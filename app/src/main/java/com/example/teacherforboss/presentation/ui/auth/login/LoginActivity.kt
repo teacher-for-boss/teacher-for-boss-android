@@ -60,7 +60,6 @@ class LoginActivity : AppCompatActivity() {
     val appContext=GlobalApplication.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("test","T")
         super.onCreate(savedInstanceState)
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -69,10 +68,8 @@ class LoginActivity : AppCompatActivity() {
         LocalDataSource.resetSinupType(context)
 
         //기본 로그인
-        val token= TokenManager.getAccessToken(this)//ver1. shared preference
-        if(!token.isNullOrBlank()){
-            gotoMainActivity()
-        }
+        val token=loginViewModel.getAcessToken()
+        if (!token.isNullOrBlank()) { gotoMainActivity() }
 
         //기본 로그인
         loginViewModel.loginResult.observe(this){
@@ -81,9 +78,10 @@ class LoginActivity : AppCompatActivity() {
                     // 로딩창
                 }
                 is BaseResponse.Success ->{
-                    saveToken(it.data)//respponse.result
+                    loginViewModel.saveToken(it.data)
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
                     LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
+                    LocalDataSource.saveUserInfo(appContext,"email",it.data?.result?.email!!)
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
@@ -125,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
             when(it){
                 is BaseResponse.Loading ->{}
                 is BaseResponse.Success ->{
-                    saveToken(it.data)//respponse.result
+                    loginViewModel.saveToken(it.data)
                     LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
                     LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     gotoMainActivity()
@@ -182,32 +180,6 @@ class LoginActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
-    }
-
-
-    //access, refresh token 저장
-    fun <T: LoginResponseInterface>saveToken(data: T?){
-        if(!data?.result?.accessToken.isNullOrEmpty()){
-            data?.result?.accessToken.let{
-                TokenManager.saveAccessToken(appContext, it!!)
-            }
-
-        }
-        if(!data?.result?.refreshToken.isNullOrEmpty()){
-            data?.result?.refreshToken.let{
-                TokenManager.saveRefreshToken(appContext, it!!)
-            }
-        }
-
-    }
-    //user name 저장
-    fun saveUserName(context: Context, name:String){
-        val prefs: SharedPreferences =
-            context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString(USER_NAME, name)
-        editor.apply()
-
     }
     //naver
     private fun handleNaverLogin(){

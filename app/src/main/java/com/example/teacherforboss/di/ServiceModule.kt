@@ -1,5 +1,6 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.data.service.AuthService
 import com.example.teacherforboss.data.service.CommunityService
 import com.example.teacherforboss.data.service.SignupService
 import com.example.teacherforboss.data.service.awsService
@@ -31,4 +32,9 @@ object ServiceModule {
     @Singleton
     fun providesCommunitySerivce(@Auth retrofit: Retrofit):CommunityService=
         retrofit.create(CommunityService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesAuthSerivce(@Auth retrofit: Retrofit):AuthService=
+        retrofit.create(AuthService::class.java)
 }

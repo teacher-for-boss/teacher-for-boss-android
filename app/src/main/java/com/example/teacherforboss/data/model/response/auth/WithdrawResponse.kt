@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WithdrawResponse(
-    @SerializedName("email")
-    val email:String,
-    @SerializedName("withdrawnAt")
-    val withdrawnAt:String,
+    @SerializedName("memberId")
+    val memberId:Long,
+    @SerializedName("inactiveDate")
+    val inactiveDate:String,
     ){
     fun toWithdrawEntity()=WithdrawResponseEntity(
-        email=email,
-        withdrawnAt=withdrawnAt
+        memberId=memberId,
+        inactiveDate=inactiveDate
     )
 }

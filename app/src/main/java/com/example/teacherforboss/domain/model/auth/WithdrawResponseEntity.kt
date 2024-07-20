@@ -1,6 +1,6 @@
 package com.example.teacherforboss.domain.model.auth
 
 data class WithdrawResponseEntity(
-    val email:String,
-    val withdrawnAt:String
+    val memberId:Long,
+    val inactiveDate:String
 )

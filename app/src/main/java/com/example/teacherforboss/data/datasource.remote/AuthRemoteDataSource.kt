@@ -7,7 +7,6 @@ import com.example.teacherforboss.util.base.BaseResponse
 
 interface AuthRemoteDataSource {
 
-    suspend fun getAccount():BaseResponse<AccountResponseDto>
     suspend fun logout():BaseResponse<LogoutResponse>
 
     suspend fun withdraw():BaseResponse<WithdrawResponse>

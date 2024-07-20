@@ -119,15 +119,11 @@ interface AuthService {
         @Body businessNumberCheckRequest: BusinessNumberCheckRequest
     ):BaseResponse<BusinessNumberCheckResponse>
 
-    @GET("${MEMBER}/accounts")
-    suspend fun getAccounts()
-            :BaseResponse<AccountResponseDto>
-
     @POST("auth/logout")
     suspend fun logout(
     ):BaseResponse<LogoutResponse>
 
-    @DELETE("${MEMBER}/withdraw")
+    @DELETE("auth/withdraw")
     suspend fun withdraw(
     ):BaseResponse<WithdrawResponse>
 

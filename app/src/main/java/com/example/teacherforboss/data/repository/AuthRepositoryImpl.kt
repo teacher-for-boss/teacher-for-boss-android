@@ -10,9 +10,6 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ):AuthRepository {
-    override suspend fun getAccount(): Result<AccountEntity> =
-        runCatching { authRemoteDataSource.getAccount().result.toAccountEntity() }
-
     override suspend fun logout(): Result<LogoutResponseEntity> =
         runCatching { authRemoteDataSource.logout().result.toLogoutResponseEntity() }
 

@@ -11,7 +11,6 @@ import javax.inject.Inject
 class AuthRemoteDataSourceImpl @Inject constructor(
     private val authService: AuthService
 ) :AuthRemoteDataSource{
-    override suspend fun getAccount(): BaseResponse<AccountResponseDto> =authService.getAccounts()
     override suspend fun logout(): BaseResponse<LogoutResponse> = authService.logout()
     override suspend fun withdraw(): BaseResponse<WithdrawResponse> = authService.withdraw()
 

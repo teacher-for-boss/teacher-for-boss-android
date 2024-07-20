@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.data.tokenmanager.TokenManager
 import com.example.teacherforboss.domain.model.auth.AccountEntity
 import com.example.teacherforboss.domain.model.auth.LogoutResponseEntity
-import com.example.teacherforboss.domain.usecase.auth.AccountUsecase
+import com.example.teacherforboss.domain.usecase.Member.AccountUsecase
 import com.example.teacherforboss.domain.usecase.auth.LogoutUsecase
 import com.example.teacherforboss.domain.usecase.auth.WithdrawUsecase
 import com.example.teacherforboss.domain.model.auth.WithdrawResponseEntity

@@ -56,12 +56,12 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
             .onEach { withdrawState->
                 when(withdrawState){
                     is UiState.Success->{
-                        viewModel.withdraw()
+                        viewModel.clearTokens()
                         gotoLoginActivity()
                     }
                     else->Unit
                 }
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
     private fun showDialogFragment(index: String) {
         // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가

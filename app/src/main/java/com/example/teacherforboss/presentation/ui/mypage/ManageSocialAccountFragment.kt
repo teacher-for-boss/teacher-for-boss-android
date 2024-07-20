@@ -63,7 +63,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
             .onEach { withdrawState->
                 when(withdrawState){
                     is UiState.Success->{
-                        viewModel.withdraw()
+                        viewModel.clearTokens()
                         gotoLoginActivity()
                     }
                     else->Unit

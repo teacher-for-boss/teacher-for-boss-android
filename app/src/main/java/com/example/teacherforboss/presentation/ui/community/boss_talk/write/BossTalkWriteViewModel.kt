@@ -41,6 +41,10 @@ class BossTalkWriteViewModel @Inject constructor(
 
     var filtered_presigendList=MutableLiveData<List<String>> ()
 
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
+
+
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
 
@@ -112,7 +116,8 @@ class BossTalkWriteViewModel @Inject constructor(
                         uuid = null,
                         lastIndex=0,
                         imageCount = imageList.size,
-                        origin="posts"
+                        origin="posts",
+                        fileType = getFileType()
                     )
                 )
                 _presignedUrlListLiveData.value=presignedUrlListEntity
@@ -149,5 +154,9 @@ class BossTalkWriteViewModel @Inject constructor(
            it.map { it.substringBefore("?") }
        }
     }
+    fun setFileType(fileType:String){
+        _fileType.value=fileType
+    }
+    fun getFileType()=fileType.value?:"jpg"
 
 }

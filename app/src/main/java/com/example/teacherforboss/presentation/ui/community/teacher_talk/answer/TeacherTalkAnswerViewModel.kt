@@ -31,6 +31,10 @@ class TeacherTalkAnswerViewModel @Inject constructor(
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList
     var filtered_presignedList = MutableLiveData<List<String>>()
 
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
+
+
     var _questionId=MutableLiveData<Long>().apply { value=0L }
     val questionId:LiveData<Long> get()=_questionId
 
@@ -111,13 +115,15 @@ class TeacherTalkAnswerViewModel @Inject constructor(
 
     fun getPresignedUrlList() {
         viewModelScope.launch {
+            Log.d("test","imagefile/"+fileType.value!!)
             try {
                 val presignedUrlListEntity=presignedUrlUseCase(
                     getPresingedUrlEntity(
                         uuid = null,
                         lastIndex = 0,
                         imageCount = imageList.size,
-                        origin = "posts"
+                        origin = "posts",
+                        fileType = getFileType()
                     )
                 )
                 _presignedUrlListLiveData.value = presignedUrlListEntity
@@ -132,5 +138,11 @@ class TeacherTalkAnswerViewModel @Inject constructor(
         }
         Log.d("filteredImageList", filtered_presignedList.toString())
     }
+
+    fun setFileType(fileType:String){
+        _fileType.value=fileType
+    }
+
+    fun getFileType()=fileType.value?:"jpg"
 
 }

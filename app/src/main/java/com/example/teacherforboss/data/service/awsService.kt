@@ -17,6 +17,7 @@ interface awsService {
         @Query("lastIndex") lastIndex:Int,
         @Query("imageCount") imageCount:Int,
         @Query("origin") origin:String,
+        @Query("fileType") fileType:String
     ):BaseResponse<ResponsePresignedUrlDto>
 
     @PUT

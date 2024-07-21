@@ -34,6 +34,9 @@ class TeacherTalkAskViewModel @Inject constructor(
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList
     var filtered_presignedList = MutableLiveData<List<String>>()
 
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
+
     var questionId:Long = 0L
 
     var categoryName: String =""
@@ -111,7 +114,8 @@ class TeacherTalkAskViewModel @Inject constructor(
                         uuid = null,
                         lastIndex = 0,
                         imageCount = imageList.size,
-                        origin = "posts"
+                        origin = "posts",
+                        fileType = getFileType()
                     )
                 )
                 _presignedUrlListLiveData.value = presignedUrlListEntity
@@ -154,4 +158,8 @@ class TeacherTalkAskViewModel @Inject constructor(
     fun selectCategoryId(id: Long) {
         _categoryId.value = id + 1
     }
+    fun setFileType(fileType:String){
+        _fileType.value=fileType
+    }
+    fun getFileType()=fileType.value?:"jpg"
 }

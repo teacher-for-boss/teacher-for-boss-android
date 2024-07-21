@@ -7,11 +7,13 @@ data class getPresingedUrlEntity(
     val lastIndex:Int,
     val imageCount:Int,
     val origin:String,
+    val fileType:String
 ){
     fun toGetPresignedUrlDto()= RequestPresignedUrlDto(
         uuid=uuid?:null,
         lastIndex=lastIndex,
         imageCount=imageCount,
-        origin=origin
+        origin=origin,
+        fileType=fileType
     )
 }

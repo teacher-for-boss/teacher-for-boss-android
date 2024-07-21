@@ -75,6 +75,9 @@ class SignupViewModel @Inject constructor(
     val nickname: LiveData<String>
         get()=_nickname
 
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
+
     // boss 변수들
     var _isDefaultImgSelected=MutableLiveData<Boolean>(false)
     val isDefaultImgSelected:LiveData<Boolean>
@@ -598,7 +601,8 @@ class SignupViewModel @Inject constructor(
                         uuid = uuid,
                         lastIndex=lastIndex,
                         imageCount = imgCnt,
-                        origin=origin
+                        origin=origin,
+                        fileType = getFileType()
                     )
                 )
                 _presignedUrlListLiveData.value=presignedUrlListEntity
@@ -660,6 +664,12 @@ class SignupViewModel @Inject constructor(
     fun minusCurrentPage(){
         _currentPage.value=_currentPage.value!!-1f
     }
+
+    fun setFileType(fileType:String){
+        _fileType.value=fileType
+    }
+
+    fun getFileType()=fileType.value?:"jpg"
 
     //timer
     private val _timerText=MutableLiveData<String>()

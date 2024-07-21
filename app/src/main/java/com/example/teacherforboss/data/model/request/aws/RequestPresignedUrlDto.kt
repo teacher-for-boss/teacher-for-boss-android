@@ -13,4 +13,6 @@ data class RequestPresignedUrlDto(
     val imageCount:Int,
     @SerializedName("origin")
     val origin:String,
+    @SerializedName("fileType")
+    val fileType:String
 )

@@ -7,7 +7,9 @@ import com.example.teacherforboss.databinding.ItemHomeWeeklyBestTeacherBinding
 import com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity
 import com.example.teacherforboss.util.view.ItemDiffCallback
 
-class HomeWeeklyBestTeacherAdapter :
+class HomeWeeklyBestTeacherAdapter(
+    private val clickItem: (Long) -> Unit,
+) :
     ListAdapter<WeeklyBestTeacherEntity, HomeWeeklyBestTeacherViewHolder>(
         ItemDiffCallback<WeeklyBestTeacherEntity>(
             onItemsTheSame = { old, new -> old.nickName == new.nickName },
@@ -22,7 +24,8 @@ class HomeWeeklyBestTeacherAdapter :
             LayoutInflater.from(parent.context),
             parent,
             false,
-        )
+        ),
+        clickItem
     )
 
     override fun onBindViewHolder(holder: HomeWeeklyBestTeacherViewHolder, position: Int) {

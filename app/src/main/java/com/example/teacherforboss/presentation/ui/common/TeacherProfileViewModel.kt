@@ -1,6 +1,5 @@
 package com.example.teacherforboss.presentation.ui.common
 
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModel
 import com.example.teacherforboss.domain.model.common.TeacherProfileDetailEntity
 import com.example.teacherforboss.domain.model.common.TeacherRecentAnswerListEntity.TeacherRecentAnswer
@@ -18,6 +17,7 @@ class TeacherProfileViewModel : ViewModel() {
 
     fun setTeacherProfileDetail() {
         _teacherProfileDetail.value = TeacherProfileDetailEntity(
+            memberId = 23,
             nickname = "하지은이지롱",
             profileImgUrl = "https://img-cdn.theqoo.net/bJgQuT.jpg",
             information = "저는 엄청난 자영업 컨설턴트입니다. 믿고 맡겨주시라!",
@@ -27,8 +27,7 @@ class TeacherProfileViewModel : ViewModel() {
             career = 16,
             keyword = listOf("혁신적인", "전문적인", "섬세한"),
             level = "Lv.1 지식의 별",
-            isMine = true,
-            isSelected = ObservableBoolean(false),
+            isMine = true
         )
     }
 

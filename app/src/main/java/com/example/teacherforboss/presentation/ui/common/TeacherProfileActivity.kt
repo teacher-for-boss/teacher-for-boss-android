@@ -3,16 +3,15 @@ package com.example.teacherforboss.presentation.ui.common
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.flowWithLifecycle
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeacherProfileBinding
+import com.example.teacherforboss.presentation.ui.home.HomeFragment.Companion.TEACHER_PROFILE_ID
 import com.example.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.example.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.example.teacherforboss.util.base.BindingActivity
 import com.example.teacherforboss.util.context.navigateToWebView
 import com.example.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.flow.onEach
 
 class TeacherProfileActivity :
     BindingActivity<ActivityTeacherProfileBinding>(R.layout.activity_teacher_profile) {
@@ -24,6 +23,7 @@ class TeacherProfileActivity :
 
         initLayout()
         addListeners()
+        collectData()
     }
 
     override fun onDestroy() {
@@ -46,6 +46,10 @@ class TeacherProfileActivity :
                             getString(R.string.teacher_profile_tab_recent_answer)
                 }
             }.attach()
+
+            // TODO 아래 코드로 가져온 profileId 통해서 서버통신
+            // intent.getStringExtra(TEACHER_PROFILE_ID)
+
 
             // TODO 서버통신 완료했을 때 실행되는 코드로 이동
             viewModel.setTeacherProfileDetail()

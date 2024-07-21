@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="keywordType"
-            type="com.example.teacherforboss.presentation.type.KeywordType" />
+            name="keyword"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             android:maxLines="1"
             android:paddingHorizontal="4dp"
             android:paddingVertical="2dp"
-            android:text="@{keywordType.keyword}"
+            android:text="@{keyword}"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption3"
             android:textColor="@color/Purple500"
             app:layout_constraintBottom_toBottomOf="parent"

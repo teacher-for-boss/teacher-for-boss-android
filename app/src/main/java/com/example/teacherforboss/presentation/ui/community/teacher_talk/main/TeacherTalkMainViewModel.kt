@@ -9,6 +9,7 @@ import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSearchUseCase
 import com.example.teacherforboss.presentation.ui.community.common.TalkMainViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TeacherTalkMainViewModel @Inject constructor(
     private val teacherTalkQuestionsUseCase: TeacherTalkQuestionsUseCase,
+    private val teacherTalkSearchUseCase: TeacherTalkSearchUseCase
 ) : ViewModel(), TalkMainViewModel {
     val _hasNext=MutableLiveData<Boolean>().apply { value=true }
     val hasNext:LiveData<Boolean> get() = _hasNext
@@ -58,6 +60,9 @@ class TeacherTalkMainViewModel @Inject constructor(
     var _teacherTalkQuestions= MutableLiveData<List<QuestionEntity>>(emptyList())
     val teacherTalkQuestions: LiveData<List<QuestionEntity>> =_teacherTalkQuestions
 
+    private val _searchTeacherTalkLiveData = MutableLiveData<TeacherTalkQuestionsResponseEntity>()
+    val searchTeacherTalkLiveData: LiveData<TeacherTalkQuestionsResponseEntity> get()=_searchTeacherTalkLiveData
+
     fun getTeacherTalkQuestions(){
         viewModelScope.launch {
             try{
@@ -66,7 +71,8 @@ class TeacherTalkMainViewModel @Inject constructor(
                         lastQuestionId=getLastQuestionId()?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
-                        category = category.value
+                        category = category.value,
+                        keyword = null
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
@@ -84,13 +90,31 @@ class TeacherTalkMainViewModel @Inject constructor(
                         lastQuestionId=getLastQuestionId()?:0L,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
-                        category =changeCategory
+                        category =changeCategory,
+                        keyword = null
                     )
                 )
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
 
             }catch (ex:Exception){
             }
+        }
+    }
+
+    fun searchKeywordTeacherTalk() {
+        viewModelScope.launch {
+            try {
+                val teacherTalkQuestionsResponseEntity = teacherTalkSearchUseCase(
+                    TeacherTalkQuestionsRequestEntity(
+                        lastQuestionId = getLastQuestionId()?: 0L,
+                        size = size.value?: 10,
+                        sortBy = null,
+                        category = null,
+                        keyword = keyword.value
+                    )
+                )
+                _searchTeacherTalkLiveData.value = teacherTalkQuestionsResponseEntity
+            } catch (ex:Exception) {}
         }
     }
 

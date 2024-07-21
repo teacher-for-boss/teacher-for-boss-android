@@ -94,4 +94,5 @@ interface CommunityRepository {
 
     suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBookmarkResponseEntity
 
+    suspend fun searchKeywordTeacherTalk(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity
 }

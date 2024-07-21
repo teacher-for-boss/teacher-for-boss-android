@@ -1,15 +1,72 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.search
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.format.DateUtils.formatDateTime
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemTeacherSearchCardBinding
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import kotlinx.datetime.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class rvAdapterCardTeacher(private val CardList: List<String>
+class rvAdapterCardTeacher(private val context: Context, private val questionList: List<QuestionEntity>
 ): RecyclerView.Adapter<rvAdapterCardTeacher.ViewHolder>() {
     class ViewHolder(private val binding: RvItemTeacherSearchCardBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(card: String) {
+        fun bind(context: Context, question: QuestionEntity) {
 
+            // init View
+            binding.title.text = setTextColor(context.getString(R.string.teacher_talk_card_view_question, question.title))
+            binding.content.text = question.content
+            binding.date.text = question.createdAt  // 변경 필요
+//            binding.categoryName.text = question. 카테고리
+
+            binding.answerCount.text = question.answerCount.toString()
+            binding.likeCount.text = question.likeCount.toString()
+            binding.bookmarkCount.text = question.bookmarkCount.toString()
+
+            if(question.liked) binding.likeIv.isSelected = true
+            if(question.bookmarked) binding.bookmarkIv.isSelected = true
+
+            // 질문 상세보기
+            binding.root.setOnClickListener {
+                val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                    putExtra("questionId", question.questionId.toString())
+                }
+                context.startActivity(intent)
+            }
+
+        }
+
+//        fun formatDateTime(localDateTime: String): String {
+//            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+//            val dateTime = LocalDateTime.parse(localDateTime, inputFormatter)
+//
+//            val outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+//            return dateTime.format(outputFormatter)
+//        }
+
+        @SuppressLint("ResourceAsColor")
+        fun setTextColor(text: String): SpannableString {
+            // 텍스트에 색상입히기
+            val spannableString = SpannableString(text)
+
+            spannableString.setSpan(
+                ForegroundColorSpan(Color.parseColor("#8D37EF")),
+                0,
+                2,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+            )
+            return spannableString
         }
     }
 
@@ -19,10 +76,10 @@ class rvAdapterCardTeacher(private val CardList: List<String>
     }
 
     override fun getItemCount(): Int {
-        return CardList.size
+        return questionList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(card = CardList[position])
+        holder.bind(context = context, question = questionList[position])
     }
 }

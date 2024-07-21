@@ -29,6 +29,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
+import com.example.teacherforboss.data.service.CommunityService.Companion.TEACHER
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -59,10 +60,18 @@ interface CommunityService {
     @GET("${BOSS}/search?")
     suspend fun searchKeywordBossTalk(
         @Query("keyword") keyword:String,
+        @Query("sortBy") sortBy: String,
         @Query("lastPostId") lastPostId:Long,
-        @Query("size") size:Int
+        @Query("size") size:Int,
 
     ):BaseResponse<ResponseBossTalkPostsDto>
+
+    @GET("${TEACHER}/questions/search?")
+    suspend fun searchKeywordTeacherTalk(
+        @Query("keyword") keyword: String,
+        @Query("lastQuestionId") lastQuestionId: Long,
+        @Query("size") size: Int
+    ): BaseResponse<ResponseTeacherTalkQuestionsDto>
 
     @POST("${BOSS}/posts")
     suspend fun uploadPost(

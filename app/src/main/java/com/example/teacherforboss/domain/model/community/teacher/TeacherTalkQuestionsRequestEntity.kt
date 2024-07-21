@@ -7,11 +7,13 @@ data class TeacherTalkQuestionsRequestEntity (
     val size:Int,
     val sortBy:String?,
     val category:String?,
+    val keyword: String?
 ){
     fun toRequestTeacherTalkQuestionsDto()= RequestTeacherTalkQuestionsDto(
         lastQuestionId=lastQuestionId,
         size=size,
         sortBy=sortBy,
         category=category,
+        keyword = keyword
     )
 }

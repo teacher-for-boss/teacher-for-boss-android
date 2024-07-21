@@ -1,6 +1,8 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.search
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.LinearEasing
@@ -10,20 +12,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeacherTalkSearchBinding
+import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
 
 class TeacherTalkSearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTeacherTalkSearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teacher_talk_search)
 
-        val cardList = listOf(
-            "오늘도 열심히 공부하고 디자인에 노력해봐야겠어요. 두줄까지 입력가능합니다.",
-            "제목1", "제목2", "제목3"
-        )
+        val hasNext = intent.getBooleanExtra("hasNext", false)
+        val questionList = intent.getSerializableExtra("questionList") as ArrayList<QuestionEntity>
 
-        binding.rvTeacherTalkCard.adapter = rvAdapterCardTeacher(cardList)
-        binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(this)
+        if(questionList.isEmpty()) binding.emptyView.visibility = View.VISIBLE
+        else {
+            binding.rvTeacherTalkCard.adapter = rvAdapterCardTeacher(this, questionList)
+            binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(this)
+        }
     }
 }

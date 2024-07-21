@@ -82,7 +82,7 @@ class BossTalkMainViewModel @Inject constructor(
                     BossTalkPostsRequestEntity(
                         lastPostId = getLastPostId()?:0L,
                         size=size.value?:10,
-                        sortBy=null,
+                        sortBy=sortBy.value?:"latest",
                         keyword =keyword.value
                     )
                 )

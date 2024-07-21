@@ -1,13 +1,17 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.data.repository.AuthRepositoryImpl
 import com.example.teacherforboss.data.repository.AwsRepositoryImpl
 import com.example.teacherforboss.data.repository.CommunityRepositoryImpl
 import com.example.teacherforboss.data.repository.HomeRepositoryImpl
+import com.example.teacherforboss.data.repository.MemberRepositoryImpl
 import com.example.teacherforboss.data.repository.SignupRepositoryImpl
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
+import com.example.teacherforboss.domain.repository.AuthRepository
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.HomeRepository
+import com.example.teacherforboss.domain.repository.MemberRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.repository.UserRepository
 import dagger.Binds
@@ -39,4 +43,14 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsHomeRepository(homeRepositoryImpl: HomeRepositoryImpl): HomeRepository
+  
+    @Binds
+    @Singleton
+    abstract fun bindsAuthRepository(authRepositoryImpl: AuthRepositoryImpl):AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl):MemberRepository
+
+
 }

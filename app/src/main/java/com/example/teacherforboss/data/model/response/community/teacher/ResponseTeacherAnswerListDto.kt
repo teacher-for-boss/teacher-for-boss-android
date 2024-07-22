@@ -21,8 +21,10 @@ data class ResponseTeacherAnswerListDto (
         @SerializedName("disliked") val disliked: Boolean,
         @SerializedName("selected") val selected: Boolean,
         @SerializedName("createdAt") val createdAt: String,
-        @SerializedName("memberInfo") val memberInfo: MemberDto
-    ) {
+        @SerializedName("memberInfo") val memberInfo: MemberDto,
+        @SerializedName("imageUrlList") val imageUrlList: List<String>,
+
+        ) {
         fun toAnswerEntity() = TeacherTalkAnswerListResponseEntity.AnswerEntity(
             answerId = answerId,
             content = content,
@@ -32,7 +34,8 @@ data class ResponseTeacherAnswerListDto (
             disliked = disliked,
             selected = selected,
             createdAt = createdAt,
-            memberInfo = memberInfo.toMemberEntity()
+            memberInfo = memberInfo.toMemberEntity(),
+            imageUrlList=imageUrlList
         )
     }
 }

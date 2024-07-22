@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkBodyBinding
+import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
@@ -191,6 +192,12 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         val tagList = viewModel.tagList.value ?: emptyList()
         binding.rvTagArea.adapter = rvAdapterTag(tagList)
         binding.rvTagArea.layoutManager = layoutManager
+
+        // image vp
+        if (viewModel.imageUrlList.isNotEmpty()) {
+            binding.vpImgSlider.visibility = View.VISIBLE
+            binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imageUrlList)
+        }
     }
 
     fun gotoAnswer() {

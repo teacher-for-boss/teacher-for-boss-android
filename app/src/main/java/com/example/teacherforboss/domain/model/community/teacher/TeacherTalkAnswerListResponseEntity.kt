@@ -15,6 +15,7 @@ data class TeacherTalkAnswerListResponseEntity(
         val disliked: Boolean,
         val selected: Boolean,
         val createdAt: String,
-        val memberInfo: MemberEntity
+        val memberInfo: MemberEntity,
+        val imageUrlList:List<String>
     )
 }

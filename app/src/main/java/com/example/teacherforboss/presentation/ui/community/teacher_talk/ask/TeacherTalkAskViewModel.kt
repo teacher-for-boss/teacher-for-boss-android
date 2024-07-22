@@ -114,8 +114,7 @@ class TeacherTalkAskViewModel @Inject constructor(
                         uuid = null,
                         lastIndex = 0,
                         imageCount = imageList.size,
-                        origin = "posts",
-                        fileType = getFileType()
+                        origin = "questions"
                     )
                 )
                 _presignedUrlListLiveData.value = presignedUrlListEntity
@@ -159,7 +158,12 @@ class TeacherTalkAskViewModel @Inject constructor(
         _categoryId.value = id + 1
     }
     fun setFileType(fileType:String){
-        _fileType.value=fileType
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
     }
-    fun getFileType()=fileType.value?:"jpg"
+    fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
+
+    companion object{
+        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
+    }
 }

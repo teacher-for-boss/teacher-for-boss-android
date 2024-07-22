@@ -115,15 +115,13 @@ class TeacherTalkAnswerViewModel @Inject constructor(
 
     fun getPresignedUrlList() {
         viewModelScope.launch {
-            Log.d("test","imagefile/"+fileType.value!!)
             try {
                 val presignedUrlListEntity=presignedUrlUseCase(
                     getPresingedUrlEntity(
                         uuid = null,
                         lastIndex = 0,
                         imageCount = imageList.size,
-                        origin = "posts",
-                        fileType = getFileType()
+                        origin = "answers"
                     )
                 )
                 _presignedUrlListLiveData.value = presignedUrlListEntity
@@ -140,9 +138,13 @@ class TeacherTalkAnswerViewModel @Inject constructor(
     }
 
     fun setFileType(fileType:String){
-        _fileType.value=fileType
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
     }
+    fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
 
-    fun getFileType()=fileType.value?:"jpg"
+    companion object{
+        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
+    }
 
 }

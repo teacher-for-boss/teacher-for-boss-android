@@ -116,8 +116,7 @@ class BossTalkWriteViewModel @Inject constructor(
                         uuid = null,
                         lastIndex=0,
                         imageCount = imageList.size,
-                        origin="posts",
-                        fileType = getFileType()
+                        origin="posts"
                     )
                 )
                 _presignedUrlListLiveData.value=presignedUrlListEntity
@@ -143,7 +142,6 @@ class BossTalkWriteViewModel @Inject constructor(
                     )
                 )
                 _modifyPostLiveData.value=bossTalkModifyPostResponseEntity
-                Log.d("test","m2")
             }catch (ex:Exception){
                 Log.e("ModifyPostError", "Error modifying post", ex)
             }
@@ -155,8 +153,12 @@ class BossTalkWriteViewModel @Inject constructor(
        }
     }
     fun setFileType(fileType:String){
-        _fileType.value=fileType
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
     }
-    fun getFileType()=fileType.value?:"jpg"
+    fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
 
+    companion object{
+        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
+    }
 }

@@ -12,6 +12,7 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.webkit.MimeTypeMap
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -158,6 +159,9 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
                 val fileSizeInBytes = getImageSize(it)
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
+                val extension=getImageExtension(it)
+                viewModel.setFileType(extension?:"jpeg")
+
                 if(fileSizeInMB > 10) {
                     showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
                     return
@@ -182,6 +186,10 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
         }
 
         return size
+    }
+    private fun getImageExtension(uri: Uri): String? {
+        val mimeType: String? = contentResolver.getType(uri)
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
     }
 
     fun setTextLength() {
@@ -302,7 +310,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
         val uploadUtil=UploadUtil(applicationContext)
         val requestBodyList=uploadUtil.convert_UritoImg(uriList)
 
-        uploadUtil.uploadPostImage(urlList,requestBodyList)
+        uploadUtil.uploadPostImage(urlList,requestBodyList,viewModel.getFileType())
     }
 
     fun finishUpload(){

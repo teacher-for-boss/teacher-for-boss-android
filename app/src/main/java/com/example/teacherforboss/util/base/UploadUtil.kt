@@ -13,11 +13,11 @@ import retrofit2.Response
 class UploadUtil(private val context: Context) {
     private val s3Service=ApiClient.getAwsService()
 
-    fun uploadProfileImage(url:String,imgUri: Uri){
+    fun uploadProfileImage(url:String,imgUri: Uri,fileType:String){
         val imgFile=FileUtils.getFileFromUri(context,imgUri)
         val requestBody=RequestBody.create("image/*".toMediaTypeOrNull(),imgFile)
 
-        val call=s3Service.uploadImg(url,requestBody)
+        val call=s3Service.uploadImg(url,requestBody,fileType)
         call.enqueue(object :Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if(response.isSuccessful) Log.d("upload","success")
@@ -29,10 +29,9 @@ class UploadUtil(private val context: Context) {
             }
         })
     }
-    fun uploadPostImage(urlList:List<String>,requestBodyList:List<RequestBody>){
-
+    fun uploadPostImage(urlList:List<String>,requestBodyList:List<RequestBody>,fileType:String){
         requestBodyList.forEachIndexed { index,requestBody->
-            val call=s3Service.uploadImg(urlList[index],requestBody)
+            val call=s3Service.uploadImg(urlList[index],requestBody,fileType)
             call.enqueue(object :Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful) Log.d("upload","success")

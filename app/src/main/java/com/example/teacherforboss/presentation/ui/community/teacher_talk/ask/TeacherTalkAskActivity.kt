@@ -196,7 +196,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
                 val extension=getImageExtension(it)
-                viewModel.setFileType(extension?:"jpg")
+                viewModel.setFileType(extension?:"jpeg")
                 Log.d("image extension",extension.toString())
                 if(fileSizeInMB > 10) {
                     showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
@@ -356,7 +356,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
         val uploadutil = UploadUtil(applicationContext)
         val requestBodyList = uploadutil.convert_UritoImg(uriList)
 
-        uploadutil.uploadPostImage(urlList, requestBodyList)
+        uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
     }
 
     fun showExitDialog() {

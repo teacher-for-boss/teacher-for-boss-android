@@ -1,6 +1,6 @@
 package com.example.teacherforboss.domain.model.home
 
 data class BossTalkPopularPostEntity(
-    val number: String,
+    val id: Long,
     val title: String
 )

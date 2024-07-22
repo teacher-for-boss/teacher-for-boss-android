@@ -28,12 +28,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
-    @OptIn(ExperimentalSerializationApi::class)
-    @Provides
-    @Singleton
-    fun provideTokenManager(): TokenManager {
-        return TokenManager
-    }
 
     @Provides
     @Singleton

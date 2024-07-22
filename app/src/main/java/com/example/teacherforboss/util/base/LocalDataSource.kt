@@ -42,12 +42,17 @@ object LocalDataSource {
     fun resetSinupType(context: Context){
         val prefs: SharedPreferences =
             context.getSharedPreferences(SIGNUP_TYPE, Context.MODE_PRIVATE)
-        prefs.edit().clear()
+        val editor= prefs.edit()
+        editor.clear()
+        editor.apply()
 
     }
     fun deleteUserInfo(context: Context){
         val prefs=context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
-        prefs.edit().clear()
+        val editor= prefs.edit()
+        editor.clear()
+        editor.apply()
+
     }
     const val USER_NAME="USER_NAME"
     const val USER_INFO="USER_INFO"

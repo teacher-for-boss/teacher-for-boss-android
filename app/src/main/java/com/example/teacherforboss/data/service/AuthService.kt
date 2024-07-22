@@ -20,11 +20,16 @@ import com.example.teacherforboss.data.model.request.signup.SignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SignupTeacherRequest
 import com.example.teacherforboss.data.model.request.signup.SocialSignupBossRequest
 import com.example.teacherforboss.data.model.request.signup.SocialSignupTeacherRequest
+import com.example.teacherforboss.data.model.response.auth.AccountResponseDto
+import com.example.teacherforboss.data.model.response.auth.LogoutResponse
+import com.example.teacherforboss.data.model.response.auth.WithdrawResponse
 import com.example.teacherforboss.data.model.response.signup.BusinessNumberCheckResponse
 import com.example.teacherforboss.data.model.response.signup.PhoneResponse
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -34,6 +39,7 @@ interface AuthService {
         fun getApi(): AuthService?{
             return ApiClient.client?.create(AuthService::class.java)
         }
+        const val MEMBER="members"
     }
     @POST("auth/login")
     suspend fun loginUser(
@@ -112,4 +118,13 @@ interface AuthService {
     suspend fun businessNumCheck(
         @Body businessNumberCheckRequest: BusinessNumberCheckRequest
     ):BaseResponse<BusinessNumberCheckResponse>
+
+    @POST("auth/logout")
+    suspend fun logout(
+    ):BaseResponse<LogoutResponse>
+
+    @DELETE("auth/withdraw")
+    suspend fun withdraw(
+    ):BaseResponse<WithdrawResponse>
+
 }

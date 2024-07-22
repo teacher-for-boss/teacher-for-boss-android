@@ -345,13 +345,8 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         }
     }
 
-    fun onBackBtnPressed() {
-        binding.backBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
-            }
-            startActivity(intent)
-        }
+    private fun onBackBtnPressed() {
+        binding.backBtn.setOnClickListener { finish() }
     }
 
     fun setTextColor() {

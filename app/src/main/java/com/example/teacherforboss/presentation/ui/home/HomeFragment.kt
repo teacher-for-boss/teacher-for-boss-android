@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,17 +15,23 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentHomeBinding
+import com.example.teacherforboss.presentation.ui.common.TeacherProfileActivity
+import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.util.base.BindingFragment
+import com.example.teacherforboss.util.view.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
     private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
-    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter() }
-    private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter() }
-    private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter(requireContext()) }
+    private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter(::navigateToTeacherTalkPost) }
+    private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter(::navigateToBossTalkPost) }
+    private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter(::navigateToTeacherProfile) }
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
@@ -63,19 +70,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         viewModel.apply {
             setBannerItems()
             setTeacherTalkShortcutItems()
-
-            // TODO 옮기기
-            setTeacherTalkPopularPost()
-            setBossTalkPopularPost()
-            setWeeklyBestTeacher()
+            getTeacherTalkPopularPost()
+            getBossTalkPopularPost()
+            getWeeklyBestTeacher()
         }
         teacherTalkShortcutAdapter.submitList(viewModel.teacherTalkShortCutList.value)
-
-        // TODO 서버통신 후 collectData에서 서버통신 결과값 불러오기
-        teacherTalkPopularPostAdapter.submitList(viewModel.teacherTalkPopularPostList.value)
-        bossTalkPopularPostAdapter.submitList(viewModel.bossTalkPopularPostList.value)
-        weeklyBestTeacherAdapter.submitList(viewModel.weeklyBestTeacherList.value)
-
         startAutoScroll()
     }
 
@@ -131,6 +130,39 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     )
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.bossTalkPopularPostListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { bossTalkPopularPostListState ->
+                when (bossTalkPopularPostListState) {
+                    is UiState.Success -> {
+                        bossTalkPopularPostAdapter.submitList(bossTalkPopularPostListState.data)
+                    }
+
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.teacherTalkPopularPostListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { teacherTalkPopularPostListState ->
+                when (teacherTalkPopularPostListState) {
+                    is UiState.Success -> {
+                        teacherTalkPopularPostAdapter.submitList(teacherTalkPopularPostListState.data)
+                    }
+
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.weeklyBestTeacherListState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { weeklyBestTeacherListState ->
+                when (weeklyBestTeacherListState) {
+                    is UiState.Success -> {
+                        weeklyBestTeacherAdapter.submitList(weeklyBestTeacherListState.data)
+                    }
+
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun startAutoScroll() {
@@ -151,11 +183,35 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
+    private fun navigateToTeacherTalkPost(questionId: Long) {
+        Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply {
+            putExtra(TEACHER_TALK_QUESTION_ID, questionId.toString())
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToBossTalkPost(postId: Long) {
+        Intent(requireContext(), BossTalkBodyActivity::class.java).apply {
+            putExtra(BOSS_TALK_POST_ID, postId.toString())
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToTeacherProfile(profileId: Long) {
+        Intent(requireContext(), TeacherProfileActivity::class.java).apply {
+            putExtra(TEACHER_PROFILE_ID, profileId.toString())
+            startActivity(this)
+        }
+    }
+
     companion object {
         private const val ZERO = 0
         private const val START_SPAN_INDEX = 0
         private const val END_SPAN_INDEX = 2
         private const val INC_POSITION = 1
         private const val AUTO_SCROLL_INTERVAL = 2500L
+        private const val TEACHER_TALK_QUESTION_ID = "questionId"
+        private const val BOSS_TALK_POST_ID = "postId"
+        const val TEACHER_PROFILE_ID = "profileId"
     }
 }

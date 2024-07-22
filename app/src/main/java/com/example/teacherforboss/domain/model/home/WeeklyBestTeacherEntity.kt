@@ -1,11 +1,10 @@
 package com.example.teacherforboss.domain.model.home
 
-import com.example.teacherforboss.presentation.type.KeywordType
-
 data class WeeklyBestTeacherEntity(
+    val id: Long,
     val profileImg: String,
     val nickName: String,
     val specialty: String,
     val career: String,
-    val keyword: List<KeywordType>,
+    val keyword: List<String>,
 )

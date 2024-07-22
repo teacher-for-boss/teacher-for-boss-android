@@ -601,8 +601,7 @@ class SignupViewModel @Inject constructor(
                         uuid = uuid,
                         lastIndex=lastIndex,
                         imageCount = imgCnt,
-                        origin=origin,
-                        fileType = getFileType()
+                        origin=origin
                     )
                 )
                 _presignedUrlListLiveData.value=presignedUrlListEntity
@@ -666,10 +665,15 @@ class SignupViewModel @Inject constructor(
     }
 
     fun setFileType(fileType:String){
-        _fileType.value=fileType
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
     }
+    fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
 
-    fun getFileType()=fileType.value?:"jpg"
+
+    fun setProfileUserImg(){
+        _profileImg.value=profilePresignedUrl.value?.substringBefore("?")
+    }
 
     //timer
     private val _timerText=MutableLiveData<String>()
@@ -698,6 +702,7 @@ class SignupViewModel @Inject constructor(
         private const val DEFAULT_PROGRESSBAR=1f
         const val BOSS_FRAGMENT_SIZE=8f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
         const val TEACHER_FRAGMENT_SZIE=14f
+        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
     }
 
 }

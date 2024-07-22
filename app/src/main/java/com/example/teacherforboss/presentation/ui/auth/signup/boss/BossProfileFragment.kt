@@ -111,13 +111,21 @@ class BossProfileFragment : Fragment() {
         }
 
         binding.nextBtn.setOnClickListener {
-            getPresignedUrl()
+            viewModel.getPresignedUrlList(null,0,1,"profiles")
 
-            val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
-            if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
-            else signup()
+            viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                viewModel.setProfileUserImg()
+                uploadImgtoS3()
+            })
+
+            viewModel.profileImg.observe(viewLifecycleOwner,{
+                val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+                if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                else signup()
+            })
+
         }
-
     }
 
     private fun observeProfile(){
@@ -172,22 +180,13 @@ class BossProfileFragment : Fragment() {
 
     }
 
-    private fun getPresignedUrl(){
-        viewModel.getPresignedUrlList(null,0,1,"profiles")
-
-        viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
-            viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
-            Log.d("url",it.presignedUrlList[0].toString())
-            uploadImgtoS3()
-        })
-    }
 
     private fun uploadImgtoS3(){
         val url=viewModel.profilePresignedUrl.value?:return
         val imgUri=viewModel.profileImgUri.value?:return
         val uploadUtil=UploadUtil(requireActivity())
 
-        uploadUtil.uploadProfileImage(url,imgUri)
+        uploadUtil.uploadProfileImage(url,imgUri,viewModel.getFileType())
     }
 
     private fun showSplash(){

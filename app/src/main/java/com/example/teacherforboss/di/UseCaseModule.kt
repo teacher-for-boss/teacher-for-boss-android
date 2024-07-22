@@ -20,6 +20,7 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBo
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDeleteUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentListUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkLikeUseCase
@@ -120,6 +121,11 @@ class UseCaseModule {
     @Singleton
     fun providesBossTalkCommentdisLikeUseCase(communityRepository: CommunityRepository): BossTalkCommentDisLikeUseCase =
         BossTalkCommentDisLikeUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesBossTalkCommentDelete(communityRepository: CommunityRepository): BossTalkCommentDeleteUseCase =
+        BossTalkCommentDeleteUseCase(communityRepository = communityRepository)
 
     @Provides
     @Singleton

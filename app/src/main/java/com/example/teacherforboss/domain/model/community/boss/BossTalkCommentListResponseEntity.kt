@@ -13,5 +13,6 @@ data class CommentEntity(
     val disliked:Boolean,
     val createdAt:String,
     val memberInfo:MemberEntity,
-    val children:ArrayList<CommentEntity>
+    val children:ArrayList<CommentEntity>,
+    val isMine: Boolean
 )

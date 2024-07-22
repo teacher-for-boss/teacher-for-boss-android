@@ -5,6 +5,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossCommentDeleteDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -116,6 +117,13 @@ interface CommunityService {
         @Path("postId") postId:Long,
         @Path("commentId") commentId:Long,
     ):BaseResponse<ResponseBossTalkCommentLikeDto>
+
+    @DELETE("${BOSS}/posts/{postId}/comments/{commentId}")
+    suspend fun deleteBossTalkComment(
+        @Path("postId") postId: Long,
+        @Path("commentId") commentId: Long
+    ): BaseResponse<ResponseBossCommentDeleteDto>
+
     @POST("${TEACHER}/questions")
     suspend fun uploadPostTeacher(
         @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto

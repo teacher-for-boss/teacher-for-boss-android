@@ -33,9 +33,9 @@ data class PostDto(
     val commentCount: Int,
     @SerializedName("likeCount")
     val likeCount: Int,
-    @SerializedName("like")
+    @SerializedName("liked")
     val liked: Boolean,
-    @SerializedName("bookmark")
+    @SerializedName("bookmarked")
     val bookmarked: Boolean,
     @SerializedName("createdAt")
     val createdAt: String, //LocalDate인데가 string으로 해야 에러가 안뜸,,

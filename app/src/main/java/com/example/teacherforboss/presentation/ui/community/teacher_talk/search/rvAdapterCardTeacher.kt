@@ -16,6 +16,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemTeacherSearchCardBinding
 import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.example.teacherforboss.util.base.LocalDateFormatter
 import kotlinx.datetime.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,8 +28,8 @@ class rvAdapterCardTeacher(private val context: Context, private val questionLis
             // init View
             binding.title.text = setTextColor(context.getString(R.string.teacher_talk_card_view_question, question.title))
             binding.content.text = question.content
-            binding.date.text = question.createdAt  // 변경 필요
-//            binding.categoryName.text = question. 카테고리
+            binding.date.text = LocalDateFormatter.extractDate2(question.createdAt)
+            binding.categoryName.text = question.category
 
             binding.answerCount.text = question.answerCount.toString()
             binding.likeCount.text = question.likeCount.toString()
@@ -40,20 +41,12 @@ class rvAdapterCardTeacher(private val context: Context, private val questionLis
             // 질문 상세보기
             binding.root.setOnClickListener {
                 val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                    putExtra("PREVIOUS_ACTIVITY", "TeacherTalkSearchActivity")
                     putExtra("questionId", question.questionId.toString())
                 }
                 context.startActivity(intent)
             }
-
         }
-
-//        fun formatDateTime(localDateTime: String): String {
-//            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-//            val dateTime = LocalDateTime.parse(localDateTime, inputFormatter)
-//
-//            val outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-//            return dateTime.format(outputFormatter)
-//        }
 
         @SuppressLint("ResourceAsColor")
         fun setTextColor(text: String): SpannableString {

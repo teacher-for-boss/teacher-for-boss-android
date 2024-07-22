@@ -16,6 +16,7 @@ data class TeacherTalkQuestionsResponseEntity (
 
 data class QuestionEntity(
     val questionId: Long,
+    val category: String,
     val title: String,
     val content: String,
     val solved: Boolean,
@@ -29,6 +30,7 @@ data class QuestionEntity(
 ): Serializable {
     fun toQuestionDto()=QuestionDto(
         questionId=questionId,
+        category = category,
         title=title,
         content=content,
         solved=solved,

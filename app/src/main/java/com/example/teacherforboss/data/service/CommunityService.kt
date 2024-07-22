@@ -57,7 +57,7 @@ interface CommunityService {
 
     ):BaseResponse<ResponseTeacherTalkQuestionsDto>
 
-    @GET("${BOSS}/search?")
+    @GET("${BOSS}/posts/search?")
     suspend fun searchKeywordBossTalk(
         @Query("keyword") keyword:String,
         @Query("sortBy") sortBy: String,

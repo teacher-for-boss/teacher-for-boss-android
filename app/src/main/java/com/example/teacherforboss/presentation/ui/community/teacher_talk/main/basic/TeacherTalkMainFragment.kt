@@ -187,7 +187,7 @@ class TeacherTalkMainFragment :
 //            gotoTeacherTalkWrite()
         }
         binding.ivSearch.setOnClickListener {
-            viewModel._keyword.value = binding.etSearchView.text.toString()
+            viewModel.setKeyword(binding.etSearchView.text.toString())
             viewModel.searchKeywordTeacherTalk()
         }
     }
@@ -197,6 +197,8 @@ class TeacherTalkMainFragment :
             Intent(requireContext(), TeacherTalkSearchActivity::class.java).apply {
                 putExtra("hasNext", it.hasNext)
                 putExtra("questionList", it.questionList)
+                putExtra("lastQuestionId", viewModel.getLastQuestionId())
+                putExtra("keyword", binding.etSearchView.text.toString())
             }.also {
                 startActivity(it)
             }

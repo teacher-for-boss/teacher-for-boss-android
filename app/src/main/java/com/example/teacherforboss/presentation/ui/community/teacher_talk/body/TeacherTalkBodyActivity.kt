@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.body
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -347,10 +348,13 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
+            if(intent.getStringExtra("PREVIOUS_ACTIVITY") == "TeacherTalkSearchActivity") {
+                finish()
+            } else {
+                startActivity(Intent(this, MainActivity::class.java).apply {
+                    putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
+                })
             }
-            startActivity(intent)
         }
     }
 

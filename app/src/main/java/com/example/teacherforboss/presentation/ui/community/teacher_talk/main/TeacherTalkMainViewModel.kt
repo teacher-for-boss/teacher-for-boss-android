@@ -68,7 +68,7 @@ class TeacherTalkMainViewModel @Inject constructor(
             try{
                 val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId=getLastQuestionId()?:0L,
+                        lastQuestionId=getLastQuestionId()?:lastQuestionId.value!!,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
                         category = category.value,
@@ -163,5 +163,9 @@ class TeacherTalkMainViewModel @Inject constructor(
         _teacherTalkQuestions.value= emptyList()
         _lastQuestionId.value=0L
         _hasNext.value=false
+    }
+
+    fun setKeyword(keyword: String) {
+        _keyword.value = keyword
     }
 }

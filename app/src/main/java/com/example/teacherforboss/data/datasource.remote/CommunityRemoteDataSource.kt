@@ -95,4 +95,6 @@ interface CommunityRemoteDataSource {
 
     suspend fun postTeacherTalkAnswerDislike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
 
+    suspend fun searchKeywordTeacherTalk(requestTeacherTalkQuestionsDto: RequestTeacherTalkQuestionsDto): BaseResponse<ResponseTeacherTalkQuestionsDto>
+
 }

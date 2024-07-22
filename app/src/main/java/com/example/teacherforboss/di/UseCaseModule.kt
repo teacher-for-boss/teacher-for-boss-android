@@ -36,6 +36,7 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDe
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyAnswerUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
 import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
@@ -196,6 +197,11 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherTalkAnswerDislikeUseCase(communityRepository: CommunityRepository): TeacherTalkAnswerDislikeUseCase =
         TeacherTalkAnswerDislikeUseCase(communityRepository=communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherTalkSearchUseCase(communityRepository: CommunityRepository): TeacherTalkSearchUseCase =
+        TeacherTalkSearchUseCase(communityRepository = communityRepository)
 
     @Provides
     @Singleton

@@ -51,7 +51,7 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
     =communityService.getTeacherTalkQuestions(lastQuestionId = requestTeacherTalkQuestionsDto.lastQuestionId, size = requestTeacherTalkQuestionsDto.size, sortBy = requestTeacherTalkQuestionsDto.sortBy?:"latest", category = requestTeacherTalkQuestionsDto.category?:"")
 
     override suspend fun searchKeywordBossTalk(requestBossTalkPostsDto: RequestBossTalkPostsDto): BaseResponse<ResponseBossTalkPostsDto>
-    =communityService.searchKeywordBossTalk(lastPostId = requestBossTalkPostsDto.lastPostId,size=requestBossTalkPostsDto.size, keyword = requestBossTalkPostsDto.keyword?:"")
+    =communityService.searchKeywordBossTalk(lastPostId = requestBossTalkPostsDto.lastPostId,size=requestBossTalkPostsDto.size, keyword = requestBossTalkPostsDto.keyword?:"", sortBy = requestBossTalkPostsDto.sortBy?:"latest")
 
     override suspend fun uploadBossTalkPost(requesetBossUploadPostDto: RequestBossUploadPostDto): BaseResponse<ResponseBossUploadPostDto>
     =communityService.uploadPost(requesetBossUploadPostDto)
@@ -141,4 +141,8 @@ class CommunityRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun postTeacherTalkAnswerDislike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto): BaseResponse<ResponseTeacherTalkAnswerLikeDto>
             =communityService.dislikeTeacherTalkAnswer(questionId = requestTeacherTalkAnswerLikeDto.questionId, answerId = requestTeacherTalkAnswerLikeDto.answerId)
+
+    override suspend fun searchKeywordTeacherTalk(requestTeacherTalkQuestionsDto: RequestTeacherTalkQuestionsDto): BaseResponse<ResponseTeacherTalkQuestionsDto>
+    =communityService.searchKeywordTeacherTalk(keyword = requestTeacherTalkQuestionsDto.keyword?:"", lastQuestionId = requestTeacherTalkQuestionsDto.lastQuestionId, size = requestTeacherTalkQuestionsDto.size)
+
 }

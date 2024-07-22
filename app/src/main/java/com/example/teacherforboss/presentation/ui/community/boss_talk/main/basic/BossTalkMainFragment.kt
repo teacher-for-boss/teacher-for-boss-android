@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.example.teacherforboss.domain.model.community.boss.PostEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
 import com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
+import com.example.teacherforboss.presentation.ui.community.boss_talk.search.BossTalkSearchActivity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.example.teacherforboss.util.base.BindingFragment
@@ -155,9 +157,23 @@ class BossTalkMainFragment :
         binding.ivSearch.setOnClickListener {
             viewModel._keyword.value=binding.etSearchView.text.toString()
             viewModel.searchKeywordBossTalk()
+
+            finishSearch()
         }
     }
 
+    private fun finishSearch() {
+        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner, Observer {
+            Intent(requireContext(), BossTalkSearchActivity::class.java).apply {
+                putExtra("hasNext", it.hasNext)
+                putExtra("postList", it.postList)
+                putExtra("lastPostId", viewModel.getLastPostId())
+                putExtra("keyword", binding.etSearchView.text.toString())
+            }.also {
+                startActivity(it)
+            }
+        })
+    }
     private fun gotoBossTalkWrite(){
         val intent=Intent(requireContext(),BossTalkWriteActivity::class.java)
         startActivity(intent)

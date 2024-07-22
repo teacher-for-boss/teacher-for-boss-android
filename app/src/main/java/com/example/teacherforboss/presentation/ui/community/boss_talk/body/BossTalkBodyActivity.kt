@@ -79,9 +79,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
         // 답글 쓰기
         setRecommentListener()
 
-        binding.root.setOnClickListener {
-            hideOptionMenuIfVisible()
-        }
+//        binding.root.setOnClickListener {
+//            hideOptionMenuIfVisible()
+//        }
     }
 
     private fun showOptionMenu() {
@@ -112,6 +112,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
         // 수정하기
         binding.modifyBtn.setOnClickListener {
+            hideOptionMenuIfVisible()
             val intent = Intent(this, BossTalkWriteActivity::class.java).apply {
                 putExtra("purpose", "modify")
                 putExtra("title", binding.bodyTitle.text.toString())
@@ -134,11 +135,11 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 }
             }
             startActivity(intent)
-            // 본문 데이터 같이 넘겨주기
         }
 
         // 신고하기
         binding.reportBtn.setOnClickListener {
+            hideOptionMenuIfVisible()
             val intent =
                 Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
             startActivity(intent)
@@ -315,9 +316,18 @@ class BossTalkBodyActivity : AppCompatActivity() {
         startActivity(intent, options.toBundle())*/
     }
 
-    fun onBackBtnPressed() {
-        binding.backBtn.setOnClickListener {finish() }
-    }
+
+    fun onBackBtnPressed(){
+        binding.backBtn.setOnClickListener {
+            if(intent.getStringExtra("PREVIOUS_ACTIVITY") == "BossTalkSearchActivity") {
+                finish()
+            } else {
+                startActivity(Intent(this, MainActivity::class.java).apply {
+                    putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+                })
+            }
+        }
+
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()

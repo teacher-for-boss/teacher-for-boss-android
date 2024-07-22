@@ -2,6 +2,7 @@ package com.example.teacherforboss.domain.model.community.teacher
 
 import com.example.teacherforboss.data.model.response.community.teacher.QuestionDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
+import java.io.Serializable
 
 data class TeacherTalkQuestionsResponseEntity (
     val hasNext: Boolean,
@@ -15,6 +16,7 @@ data class TeacherTalkQuestionsResponseEntity (
 
 data class QuestionEntity(
     val questionId: Long,
+    val category: String,
     val title: String,
     val content: String,
     val solved: Boolean,
@@ -25,9 +27,10 @@ data class QuestionEntity(
     val liked: Boolean,
     val bookmarked: Boolean,
     val createdAt: String,
-){
+): Serializable {
     fun toQuestionDto()=QuestionDto(
         questionId=questionId,
+        category = category,
         title=title,
         content=content,
         solved=solved,

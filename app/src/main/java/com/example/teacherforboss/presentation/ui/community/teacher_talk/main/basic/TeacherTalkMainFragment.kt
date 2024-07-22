@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.GlobalApplication
@@ -23,6 +24,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Te
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
 import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.util.base.LocalDataSource
 
@@ -52,6 +54,7 @@ class TeacherTalkMainFragment :
         observeSortType()
         observeCategory()
         addListeners()
+        finishSearch()
 
         /*requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -178,14 +181,26 @@ class TeacherTalkMainFragment :
             gotoTeacherTalkWrite()
         }
         binding.ivSearch.setOnClickListener {
-            viewModel._keyword.value = binding.etSearchView.text.toString()
+            viewModel.setKeyword(binding.etSearchView.text.toString())
+            viewModel.searchKeywordTeacherTalk()
         }
     }
+
+    private fun finishSearch() {
+        viewModel.searchTeacherTalkLiveData.observe(viewLifecycleOwner, Observer {
+            Intent(requireContext(), TeacherTalkSearchActivity::class.java).apply {
+                putExtra("hasNext", it.hasNext)
+                putExtra("questionList", it.questionList)
+                putExtra("lastQuestionId", viewModel.getLastQuestionId())
+                putExtra("keyword", binding.etSearchView.text.toString())
+            }.also {
+                startActivity(it)
+            }
+        })
 
     fun gotoTeacherTalkWrite(){
         val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
         startActivity(intent)
-
     }
 
     companion object{

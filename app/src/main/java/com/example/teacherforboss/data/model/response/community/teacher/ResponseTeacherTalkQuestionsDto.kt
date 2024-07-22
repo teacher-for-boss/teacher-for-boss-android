@@ -22,6 +22,8 @@ data class ResponseTeacherTalkQuestionsDto (
 data class QuestionDto(
     @SerializedName("questionId")
     val questionId: Long,
+    @SerializedName("category")
+    val category: String,
     @SerializedName("title")
     val title: String,
     @SerializedName("content")
@@ -45,6 +47,7 @@ data class QuestionDto(
 ){
     fun toQuestionEntity()= QuestionEntity(
         questionId=questionId,
+        category = category,
         title=title,
         content=content,
         solved=solved,

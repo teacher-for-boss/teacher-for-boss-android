@@ -258,5 +258,11 @@ class CommunityRepositoryImpl @Inject constructor(
         }.getOrElse { err -> throw err }
     }
 
+    override suspend fun searchKeywordTeacherTalk(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity {
+        return runCatching {
+            communityDataSource.searchKeywordTeacherTalk(requestTeacherTalkQuestionsDto = teacherTalkQuestionsRequestEntity.toRequestTeacherTalkQuestionsDto())
+                .result.toTeacherTalkQuestionsEntity()
+        }.getOrElse { err -> throw err }
+    }
 
 }

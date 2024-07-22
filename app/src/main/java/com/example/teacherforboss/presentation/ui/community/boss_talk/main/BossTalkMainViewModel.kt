@@ -80,7 +80,7 @@ class BossTalkMainViewModel @Inject constructor(
             try{
                 val bossTalkPostsResponseEntity=bossTalkSearchUseCase(
                     BossTalkPostsRequestEntity(
-                        lastPostId = getLastPostId()?:0L,
+                        lastPostId = getLastPostId()?:lastPostId.value!!,
                         size=size.value?:10,
                         sortBy=sortBy.value?:"latest",
                         keyword =keyword.value
@@ -125,6 +125,10 @@ class BossTalkMainViewModel @Inject constructor(
         _lastPostId.value=0L
         _hasNext.value=false
 
+    }
+
+    fun setKeyword(keyword: String) {
+        _keyword.value = keyword
     }
 
 }

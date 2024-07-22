@@ -2,6 +2,7 @@ package com.example.teacherforboss.domain.model.community.boss
 
 import com.example.teacherforboss.data.model.response.community.boss.PostDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkPostsDto
+import java.io.Serializable
 
 data class BossTalkPostsResponseEntity(
     val hasNext:Boolean,
@@ -22,7 +23,7 @@ data class PostEntity(
     val liked: Boolean,
     val bookmarked: Boolean,
     val createdAt: String, //LocalDate인데가 string으로 해야 에러가 안뜸,,
-){
+): Serializable {
     fun toPostDto()=PostDto(
         postId =postId,
         title=title,

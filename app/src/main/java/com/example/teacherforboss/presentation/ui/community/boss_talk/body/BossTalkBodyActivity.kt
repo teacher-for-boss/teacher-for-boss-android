@@ -322,10 +322,13 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+            if(intent.getStringExtra("PREVIOUS_ACTIVITY") == "BossTalkSearchActivity") {
+                finish()
+            } else {
+                startActivity(Intent(this, MainActivity::class.java).apply {
+                    putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+                })
             }
-            startActivity(intent)
         }
     }
     fun showSnackBar(msg:String){

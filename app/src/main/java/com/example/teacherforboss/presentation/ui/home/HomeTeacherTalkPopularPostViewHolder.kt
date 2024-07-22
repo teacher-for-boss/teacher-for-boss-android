@@ -6,8 +6,12 @@ import com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity
 
 class HomeTeacherTalkPopularPostViewHolder(
     private val binding: ItemHomeTeacherTalkPopularPostBinding,
+    private val clickItem: (Long) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: TeacherTalkPopularPostEntity) {
-        binding.teacherTalkPopularPostItem = item
+        with(binding) {
+            teacherTalkPopularPostItem = item
+            layoutTeacherTalkPopularPost.setOnClickListener { clickItem(item.id) }
+        }
     }
 }

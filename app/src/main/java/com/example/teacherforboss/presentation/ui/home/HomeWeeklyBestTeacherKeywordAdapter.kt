@@ -4,12 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.teacherforboss.databinding.ItemTeacherKeywordBinding
-import com.example.teacherforboss.presentation.type.KeywordType
 import com.example.teacherforboss.util.view.ItemDiffCallback
 
 class HomeWeeklyBestTeacherKeywordAdapter() :
-    ListAdapter<KeywordType, HomeWeeklyBestTeacherKeywordViewHolder>(
-        ItemDiffCallback<KeywordType>(
+    ListAdapter<String, HomeWeeklyBestTeacherKeywordViewHolder>(
+        ItemDiffCallback<String>(
             onItemsTheSame = { old, new -> old == new },
             onContentsTheSame = { old, new -> old == new },
         ),

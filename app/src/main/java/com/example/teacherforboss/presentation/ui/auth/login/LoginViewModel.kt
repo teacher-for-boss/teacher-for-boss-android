@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.auth.login
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,12 +10,20 @@ import com.example.teacherforboss.data.model.request.login.LoginRequest
 import com.example.teacherforboss.data.model.request.login.SocialLoginRequest
 import com.example.teacherforboss.data.model.response.login.LoginResponse
 import com.example.teacherforboss.data.model.response.BaseResponse
+import com.example.teacherforboss.data.model.response.login.LoginResponseInterface
 import com.example.teacherforboss.data.repository.UserRepositoryImpl
 import com.example.teacherforboss.data.model.response.login.socialLoginResponse
+import com.example.teacherforboss.data.tokenmanager.TokenManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val tokenManager:TokenManager,
+    @ApplicationContext private val context: Context
 ): ViewModel(){
     val loginResult: MutableLiveData<BaseResponse<LoginResponse>> = MutableLiveData()
     val socialLoginResult: MutableLiveData<BaseResponse<socialLoginResponse>> = MutableLiveData()
@@ -81,6 +90,23 @@ class LoginViewModel(
             }
         }
 
+    }
+
+    fun getAcessToken()=tokenManager.getAccessToken(context)
+
+
+    fun <T: LoginResponseInterface>saveToken(data: T?){
+        if(!data?.result?.accessToken.isNullOrEmpty()){
+            data?.result?.accessToken.let{
+                tokenManager.saveAccessToken(context, it!!)
+            }
+
+        }
+        if(!data?.result?.refreshToken.isNullOrEmpty()){
+            data?.result?.refreshToken.let{
+                TokenManager.saveRefreshToken(context, it!!)
+            }
+        }
     }
 
 

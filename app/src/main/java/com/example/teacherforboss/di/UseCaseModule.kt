@@ -1,11 +1,17 @@
 package com.example.teacherforboss.di
 
+import com.example.teacherforboss.domain.repository.AuthRepository
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
+import com.example.teacherforboss.domain.repository.HomeRepository
+import com.example.teacherforboss.domain.repository.MemberRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
+import com.example.teacherforboss.domain.usecase.Member.AccountUsecase
+import com.example.teacherforboss.domain.usecase.auth.LogoutUsecase
+import com.example.teacherforboss.domain.usecase.auth.WithdrawUsecase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
@@ -33,6 +39,9 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQu
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -193,5 +202,35 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherTalkSearchUseCase(communityRepository: CommunityRepository): TeacherTalkSearchUseCase =
         TeacherTalkSearchUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetBossTalkPopularPostUseCase(homeRepository: HomeRepository): GetBossTalkPopularPostUseCase =
+        GetBossTalkPopularPostUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetTeacherTalkPopularPostUseCase(homeRepository: HomeRepository): GetTeacherTalkPopularPostUseCase =
+        GetTeacherTalkPopularPostUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetWeeklyBestTeacherUseCase(homeRepository: HomeRepository): GetWeeklyBestTeacherUseCase =
+        GetWeeklyBestTeacherUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
+    fun providesLogoutUseCase(authRepository: AuthRepository): LogoutUsecase =
+        LogoutUsecase(authRepository=authRepository)
+
+    @Provides
+    @Singleton
+    fun providesWithdrawUsecase(authRepository: AuthRepository):WithdrawUsecase=
+        WithdrawUsecase(authRepository=authRepository)
+
+    @Provides
+    @Singleton
+    fun providesAccountUsecase(memberRepository: MemberRepository): AccountUsecase =
+        AccountUsecase(memberRepository)
 
 }

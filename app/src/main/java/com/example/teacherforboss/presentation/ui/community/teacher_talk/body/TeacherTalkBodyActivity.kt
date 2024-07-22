@@ -356,7 +356,6 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 })
             }
         }
-    }
 
     fun setTextColor() {
         // 텍스트에 색상입히기

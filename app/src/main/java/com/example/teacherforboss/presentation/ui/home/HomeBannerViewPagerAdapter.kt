@@ -39,8 +39,10 @@ class HomeBannerViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: BannerModel) {
-            binding.ivHomeBannerImage.setImageResource(item.bannerImage)
-            binding.root.setOnClickListener { context.startActivity(context.navigateToWebView(item.bannerLink)) }
+            binding.apply {
+                ivHomeBannerImage.setImageResource(item.bannerImage)
+                root.setOnClickListener { context.startActivity(context.navigateToWebView(item.bannerLink)) }
+            }
         }
     }
 }

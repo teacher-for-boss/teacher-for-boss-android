@@ -1,5 +1,6 @@
 package com.example.teacherforboss.presentation.ui.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -59,6 +60,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 requireActivity().startActivity(
                     requireActivity().navigateToWebView(TERMS_WEB_LINK),
                 )
+            }
+            includeMyPageMenuAccount.root.setOnClickListener{
+                val intent = Intent(context,ManageAccountActivity::class.java)
+                startActivity(intent)
             }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
             layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
@@ -174,7 +179,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val TERMS_WEB_LINK =
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
         private const val LOGOUT_DIALOG = "logoutModal"
-        private const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
+        const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
     }

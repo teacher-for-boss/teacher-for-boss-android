@@ -29,6 +29,7 @@ import com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDataSource
 import com.example.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.example.teacherforboss.util.base.UploadUtil
 import com.google.android.material.chip.Chip
 
 
@@ -159,10 +160,21 @@ class TeacherProfileFragment : Fragment(){
 
     private fun addListeners(){
         binding.nextBtn.setOnClickListener {
-            viewModel._keywords.value=selectedChipList
-            val signupType=LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
-            if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
-            else signup()
+
+            viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                viewModel.setProfileUserImg()
+                uploadImgtoS3()
+            })
+
+            viewModel.profileImg.observe(viewLifecycleOwner,{
+                viewModel._keywords.value=selectedChipList
+                val signupType=LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+                if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                else signup()
+            })
+
+
         }
     }
 
@@ -274,6 +286,14 @@ class TeacherProfileFragment : Fragment(){
             Log.d("s-test",viewModel.name.value.toString())
         }
 
+    }
+
+    private fun uploadImgtoS3(){
+        val url=viewModel.profilePresignedUrl.value?:return
+        val imgUri=viewModel.profileImgUri.value?:return
+        val uploadUtil=UploadUtil(requireActivity())
+
+        uploadUtil.uploadProfileImage(url,imgUri,viewModel.getFileType())
     }
 
     private fun showSplash(){

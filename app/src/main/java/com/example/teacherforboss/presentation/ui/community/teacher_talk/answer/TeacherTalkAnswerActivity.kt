@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.webkit.MimeTypeMap
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -132,6 +133,9 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
                 val fileSizeInBytes = getImageSize(it)
                 val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
                 Log.d("imageSize", fileSizeInMB.toString())
+                val extension=getImageExtension(it)
+                viewModel.setFileType(extension?:"jpeg")
+
                 if(fileSizeInMB > 10) {
                     showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
                     return
@@ -158,6 +162,11 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         return size
     }
 
+    private fun getImageExtension(uri: Uri): String? {
+        val mimeType: String? = contentResolver.getType(uri)
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+    }
+
     fun uploadImgtoS3() {
         val urlList = viewModel.presignedUrlList.value?:return
         val uriList = viewModel.imageList
@@ -165,7 +174,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         val uploadutil = UploadUtil(applicationContext)
         val requestBodyList = uploadutil.convert_UritoImg(uriList)
 
-        uploadutil.uploadPostImage(urlList, requestBodyList)
+        uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
     }
 
     fun showExitDialog() {

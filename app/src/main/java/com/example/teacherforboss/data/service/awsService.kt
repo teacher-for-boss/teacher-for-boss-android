@@ -6,6 +6,7 @@ import retrofit2.Call
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PUT
 import retrofit2.http.Query
 import retrofit2.http.Url
@@ -16,10 +17,11 @@ interface awsService {
         @Query("uuid") uuid:String?,
         @Query("lastIndex") lastIndex:Int,
         @Query("imageCount") imageCount:Int,
-        @Query("origin") origin:String,
+        @Query("origin") origin:String
     ):BaseResponse<ResponsePresignedUrlDto>
 
     @PUT
-    fun uploadImg(@Url url:String,@Body file:RequestBody):Call<Void>
+    fun uploadImg(@Url url:String,@Body file:RequestBody,
+                  @Header("Content-Type") fileType:String):Call<Void>
 
 }

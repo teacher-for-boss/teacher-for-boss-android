@@ -75,6 +75,9 @@ class SignupViewModel @Inject constructor(
     val nickname: LiveData<String>
         get()=_nickname
 
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
+
     // boss 변수들
     var _isDefaultImgSelected=MutableLiveData<Boolean>(false)
     val isDefaultImgSelected:LiveData<Boolean>
@@ -661,6 +664,17 @@ class SignupViewModel @Inject constructor(
         _currentPage.value=_currentPage.value!!-1f
     }
 
+    fun setFileType(fileType:String){
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
+    }
+    fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
+
+
+    fun setProfileUserImg(){
+        _profileImg.value=profilePresignedUrl.value?.substringBefore("?")
+    }
+
     //timer
     private val _timerText=MutableLiveData<String>()
     val timerText:LiveData<String>
@@ -688,6 +702,7 @@ class SignupViewModel @Inject constructor(
         private const val DEFAULT_PROGRESSBAR=1f
         const val BOSS_FRAGMENT_SIZE=8f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
         const val TEACHER_FRAGMENT_SZIE=14f
+        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
     }
 
 }

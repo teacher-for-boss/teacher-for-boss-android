@@ -12,5 +12,5 @@ data class RequestPresignedUrlDto(
     @SerializedName("int")
     val imageCount:Int,
     @SerializedName("origin")
-    val origin:String,
+    val origin:String
 )

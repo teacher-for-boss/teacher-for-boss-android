@@ -41,6 +41,10 @@ class BossTalkWriteViewModel @Inject constructor(
 
     var filtered_presigendList=MutableLiveData<List<String>> ()
 
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
+
+
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
 
@@ -138,7 +142,6 @@ class BossTalkWriteViewModel @Inject constructor(
                     )
                 )
                 _modifyPostLiveData.value=bossTalkModifyPostResponseEntity
-                Log.d("test","m2")
             }catch (ex:Exception){
                 Log.e("ModifyPostError", "Error modifying post", ex)
             }
@@ -149,5 +152,13 @@ class BossTalkWriteViewModel @Inject constructor(
            it.map { it.substringBefore("?") }
        }
     }
+    fun setFileType(fileType:String){
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
+    }
+    fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
 
+    companion object{
+        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
+    }
 }

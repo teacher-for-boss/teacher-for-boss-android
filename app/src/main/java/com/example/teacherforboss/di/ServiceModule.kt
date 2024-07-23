@@ -27,7 +27,7 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun providesAwsService(@Auth retrofit: Retrofit):awsService=
+    fun providesAwsService(@Anonymous retrofit: Retrofit):awsService=
         retrofit.create(awsService::class.java)
 
     @Provides

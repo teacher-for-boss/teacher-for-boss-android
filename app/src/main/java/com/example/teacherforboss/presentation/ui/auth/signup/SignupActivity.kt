@@ -13,6 +13,7 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -59,6 +60,9 @@ class SignupActivity: AppCompatActivity() {
                     val fileSizeInBytes = getImageSize(it)
                     val fileSizeInMB = fileSizeInBytes / (512.0 * 512.0)
                     Log.d("imageSize", fileSizeInMB.toString())
+                    val extension=getImageExtension(it)
+                    viewModel.setFileType(extension?:"jpeg")
+
                     if(fileSizeInMB > 10) {
                         Toast.makeText(this, "5MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
                     }
@@ -70,6 +74,11 @@ class SignupActivity: AppCompatActivity() {
                 }
             }
         }
+
+    private fun getImageExtension(uri: Uri): String? {
+        val mimeType: String? = contentResolver.getType(uri)
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

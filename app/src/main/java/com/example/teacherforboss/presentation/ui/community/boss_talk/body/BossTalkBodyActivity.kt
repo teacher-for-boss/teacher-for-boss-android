@@ -317,9 +317,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
 
-    fun onBackBtnPressed(){
+    fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            if(intent.getStringExtra("PREVIOUS_ACTIVITY") == "BossTalkSearchActivity") {
+            if (intent.getStringExtra("PREVIOUS_ACTIVITY") == "BossTalkSearchActivity") {
                 finish()
             } else {
                 startActivity(Intent(this, MainActivity::class.java).apply {
@@ -327,7 +327,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 })
             }
         }
-
+    }
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()

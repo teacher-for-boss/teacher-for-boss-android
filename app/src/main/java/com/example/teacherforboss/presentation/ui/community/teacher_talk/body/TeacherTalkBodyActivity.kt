@@ -348,7 +348,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            if(intent.getStringExtra("PREVIOUS_ACTIVITY") == "TeacherTalkSearchActivity") {
+            if (intent.getStringExtra("PREVIOUS_ACTIVITY") == "TeacherTalkSearchActivity") {
                 finish()
             } else {
                 startActivity(Intent(this, MainActivity::class.java).apply {
@@ -356,6 +356,8 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 })
             }
         }
+
+    }
 
     fun setTextColor() {
         // 텍스트에 색상입히기

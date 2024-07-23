@@ -197,6 +197,7 @@ class TeacherTalkMainFragment :
                 startActivity(it)
             }
         })
+    }
 
     fun gotoTeacherTalkWrite(){
         val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)

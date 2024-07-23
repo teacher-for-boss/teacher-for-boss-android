@@ -88,7 +88,7 @@ class SignupViewModel @Inject constructor(
     val isUserImgSelectd:LiveData<Boolean>
         get() = _isUserImgSelected
 
-    var _profileImg=MutableLiveData<String>("https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png")
+    var _profileImg=MutableLiveData<String>(DEFAULT_PROFILE_IMG_URL)
     val profileImg: LiveData<String>
         get() = _profileImg
 
@@ -177,8 +177,8 @@ class SignupViewModel @Inject constructor(
     val birthDate:LiveData<String>
         get() = _birthDate
 
-    var emailAuthId=MutableLiveData<Long>(1) //test용 원래는 0으로 설정
-    var phoneAuthId=MutableLiveData<Long>(1)
+    var emailAuthId=MutableLiveData<Long>(0) //test용 원래는 0으로 설정
+    var phoneAuthId=MutableLiveData<Long>(0)
 
     val num_check= MutableLiveData<Boolean>(false)
     val eng_check= MutableLiveData<Boolean>(false)
@@ -202,12 +202,12 @@ class SignupViewModel @Inject constructor(
     val userRepo= UserRepositoryImpl()
 
     //이메일인증 여부 str->api
-    var _isEmailVerified_str= MutableLiveData<String>("T") // api 테스트 완료 추후 false로 수정
+    var _isEmailVerified_str= MutableLiveData<String>("F") // api 테스트 완료 추후 false로 수정
     val isEmailVerified_str: LiveData<String>
         get() = _isEmailVerified_str
 
     //이메일인증 여부 boolean ->data binding
-    var _isEmailVerified= MutableLiveData<Boolean>(true) //TODO
+    var _isEmailVerified= MutableLiveData<Boolean>(false) //TODO
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
@@ -220,7 +220,7 @@ class SignupViewModel @Inject constructor(
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(true) //TODO
+    var _isPhoneVerified=MutableLiveData<Boolean>(false) //TODO
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
@@ -703,6 +703,7 @@ class SignupViewModel @Inject constructor(
         const val BOSS_FRAGMENT_SIZE=8f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
         const val TEACHER_FRAGMENT_SZIE=14f
         const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
+        const val DEFAULT_PROFILE_IMG_URL="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png"
     }
 
 }

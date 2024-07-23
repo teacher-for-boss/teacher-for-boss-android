@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.teacherforboss.MainActivity
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivitySignupFinishBinding
+import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,8 +36,8 @@ class SignupFinishActivity : AppCompatActivity() {
 
         initView(role)
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent=Intent(this,MainActivity::class.java).apply {
-                putExtra(FRAGMENT_DESTINATION, HOME)
+            val intent=Intent(this,LoginActivity::class.java).apply {
+//                putExtra(FRAGMENT_DESTINATION, HOME)
             }
             startActivity(intent)
             finish()

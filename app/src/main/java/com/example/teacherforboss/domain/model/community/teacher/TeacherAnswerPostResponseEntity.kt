@@ -1,4 +1,4 @@
-package com.example.teacherforboss.domain.model.community.boss
+package com.example.teacherforboss.domain.model.community.teacher
 
 data class TeacherAnswerPostResponseEntity (
     val answerId: Long,

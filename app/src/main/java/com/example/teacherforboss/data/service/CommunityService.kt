@@ -5,6 +5,7 @@ import com.example.teacherforboss.data.model.request.community.boss.RequestBossT
 import com.example.teacherforboss.data.model.request.community.boss.RequestBossUploadPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherAnswerPostDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossCommentDeleteDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -28,6 +29,7 @@ import com.example.teacherforboss.data.model.response.community.teacher.Response
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkLikeDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherUploadPostDto
 import com.example.teacherforboss.data.model.response.community.teacher.ResponseTeacherTalkQuestionsDto
+import com.example.teacherforboss.data.service.CommunityService.Companion.TEACHER
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -55,13 +57,21 @@ interface CommunityService {
 
     ):BaseResponse<ResponseTeacherTalkQuestionsDto>
 
-    @GET("${BOSS}/search?")
+    @GET("${BOSS}/posts/search?")
     suspend fun searchKeywordBossTalk(
         @Query("keyword") keyword:String,
+        @Query("sortBy") sortBy: String,
         @Query("lastPostId") lastPostId:Long,
-        @Query("size") size:Int
+        @Query("size") size:Int,
 
     ):BaseResponse<ResponseBossTalkPostsDto>
+
+    @GET("${TEACHER}/questions/search?")
+    suspend fun searchKeywordTeacherTalk(
+        @Query("keyword") keyword: String,
+        @Query("lastQuestionId") lastQuestionId: Long,
+        @Query("size") size: Int
+    ): BaseResponse<ResponseTeacherTalkQuestionsDto>
 
     @POST("${BOSS}/posts")
     suspend fun uploadPost(
@@ -116,6 +126,13 @@ interface CommunityService {
         @Path("postId") postId:Long,
         @Path("commentId") commentId:Long,
     ):BaseResponse<ResponseBossTalkCommentLikeDto>
+
+    @DELETE("${BOSS}/posts/{postId}/comments/{commentId}")
+    suspend fun deleteBossTalkComment(
+        @Path("postId") postId: Long,
+        @Path("commentId") commentId: Long
+    ): BaseResponse<ResponseBossCommentDeleteDto>
+
     @POST("${TEACHER}/questions")
     suspend fun uploadPostTeacher(
         @Body requestTeacherUploadPostDto: RequestTeacherUploadPostDto

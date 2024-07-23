@@ -11,12 +11,7 @@ data class RequestTeacherTalkQuestionsDto (
     @SerializedName("sortBy")
     val sortBy:String?,
     @SerializedName("category")
-    val category:String?
-){
-    fun toRequestTeacherTalkQuestionsEntity()= TeacherTalkQuestionsRequestEntity(
-        lastQuestionId = lastQuestionId,
-        size=size,
-        sortBy=sortBy,
-        category=category
-    )
-}
+    val category:String?,
+    @SerializedName("keyword")
+    val keyword: String?
+)

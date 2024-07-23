@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_boss_talk_popular_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="4dp">
@@ -27,7 +28,6 @@
             android:id="@+id/tv_boss_talk_popular_post_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{bossTalkPopularPostEntity.number}"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
             android:textColor="@color/Purple600"
             app:layout_constraintBottom_toBottomOf="@id/view_boss_talk_popular_post_number"

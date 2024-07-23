@@ -70,7 +70,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_teacher_for_boss, fragment)
-            .addToBackStack(null)  // 프래그먼트 전환을 백스택에 추가
+            //.addToBackStack(null)  // 프래그먼트 전환을 백스택에 추가
             .commit()
         Log.d("MainActivity", "Fragment replaced with: ${fragment::class.java.simpleName}")
 
@@ -113,7 +113,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val resetBackPressed = Runnable { backPressedOnce = false }
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (backPressedOnce) {
+            val fragmentManager = supportFragmentManager
+            if (fragmentManager.backStackEntryCount > 0) {
+                fragmentManager.popBackStack()
+            }
+            else if (backPressedOnce) {
                 finishAffinity()
             } else {
                 backPressedOnce = true

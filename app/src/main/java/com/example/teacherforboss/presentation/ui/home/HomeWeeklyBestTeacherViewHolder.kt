@@ -7,6 +7,7 @@ import com.example.teacherforboss.util.view.loadCircularImage
 
 class HomeWeeklyBestTeacherViewHolder(
     private val binding: ItemHomeWeeklyBestTeacherBinding,
+    private val clickItem: (Long) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     private val keywordAdapter: HomeWeeklyBestTeacherKeywordAdapter by lazy { HomeWeeklyBestTeacherKeywordAdapter() }
 
@@ -18,6 +19,7 @@ class HomeWeeklyBestTeacherViewHolder(
         with(binding) {
             weeklyBestTeacherItem = item
             ivWeeklyBestTeacherProfile.loadCircularImage(item.profileImg)
+            layoutWeeklyBestTeacher.setOnClickListener { clickItem(item.id) }
         }
         keywordAdapter.submitList(item.keyword)
     }

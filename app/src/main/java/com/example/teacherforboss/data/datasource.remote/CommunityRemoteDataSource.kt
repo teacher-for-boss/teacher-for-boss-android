@@ -13,6 +13,7 @@ import com.example.teacherforboss.data.model.request.community.teacher.RequestTe
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkAnswerLikeDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherTalkDto
 import com.example.teacherforboss.data.model.request.community.teacher.RequestTeacherUploadPostDto
+import com.example.teacherforboss.data.model.response.community.boss.ResponseBossCommentDeleteDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossModifyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBodyDto
 import com.example.teacherforboss.data.model.response.community.boss.ResponseBossTalkBookmarkDto
@@ -61,6 +62,17 @@ interface CommunityRemoteDataSource {
 
     suspend fun deleteBossTalkPost(requestBossTalkDto: RequestBossTalkDto):BaseResponse<ResponseBossTalkDeletePostDto>
 
+    suspend fun postBossTalkCommentLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto):BaseResponse<ResponseBossTalkCommentLikeDto>
+
+    suspend fun postBossTalkCommentdisLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto):BaseResponse<ResponseBossTalkCommentLikeDto>
+
+    suspend fun deleteBossTalkComment(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto): BaseResponse<ResponseBossCommentDeleteDto>
+
+    //TeacherTalk
+    suspend fun uploadTeacherTalkPost(requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherUploadPostDto>
+
+    suspend fun modifyTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherModifyDto>
+
     suspend fun getTeacherTalkBookmark(requestTeacherTalkDto: RequestTeacherTalkDto):BaseResponse<ResponseTeacherTalkBookmarkDto>
 
     suspend fun getTeacherTalkLike(requestTeacherTalkDto: RequestTeacherTalkDto):BaseResponse<ResponseTeacherTalkLikeDto>
@@ -68,16 +80,6 @@ interface CommunityRemoteDataSource {
     suspend fun getTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto):BaseResponse<ResponseTeacherTalkBodyDto>
 
     suspend fun deleteTeacherTalkAns(requestTeacherTalkAnsDto: RequestTeacherTalkAnsDto):BaseResponse<ResponseTeacherTalkAnsDto>
-
-    suspend fun postBossTalkCommentLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto):BaseResponse<ResponseBossTalkCommentLikeDto>
-
-    suspend fun postBossTalkCommentdisLike(requestBossTalkCommentLikeDto: RequestBossTalkCommentLikeDto):BaseResponse<ResponseBossTalkCommentLikeDto>
-
-
-    //TeacherTalk
-    suspend fun uploadTeacherTalkPost(requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherUploadPostDto>
-
-    suspend fun modifyTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto, requestTeacherUploadPostDto: RequestTeacherUploadPostDto): BaseResponse<ResponseTeacherModifyDto>
 
     suspend fun deleteTeacherTalkBody(requestTeacherTalkDto: RequestTeacherTalkDto): BaseResponse<ResponseTeacherDeleteDto>
 
@@ -92,5 +94,7 @@ interface CommunityRemoteDataSource {
     suspend fun postTeacherTalkAnswerLike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
 
     suspend fun postTeacherTalkAnswerDislike(requestTeacherTalkAnswerLikeDto: RequestTeacherTalkAnswerLikeDto):BaseResponse<ResponseTeacherTalkAnswerLikeDto>
+
+    suspend fun searchKeywordTeacherTalk(requestTeacherTalkQuestionsDto: RequestTeacherTalkQuestionsDto): BaseResponse<ResponseTeacherTalkQuestionsDto>
 
 }

@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.example.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
-import com.example.teacherforboss.domain.model.community.boss.TeacherAnswerPostResponseEntity
+import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
 import com.example.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity

@@ -65,6 +65,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,ManageAccountActivity::class.java)
                 startActivity(intent)
             }
+            includeMyPageMenuAccountChange.root.setOnClickListener{
+                val transaction=parentFragmentManager.beginTransaction()
+                transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
             layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
         }

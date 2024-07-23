@@ -17,6 +17,7 @@ import com.example.teacherforboss.presentation.ui.community.common.ImgSliderAdap
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
+import com.example.teacherforboss.util.CustomSnackBar
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
@@ -61,7 +62,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 else binding.selectAnswer.visibility = View.GONE
             }
 
-            //사용자의 추천 비추천 여부 -> 이건 추천, 비추천 하면서 수정
+            //사용자의 추천 비추천 여부
             var isCommentGood = answer.liked
             var isCommentBad = answer.disliked
 
@@ -120,21 +121,21 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             //더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
-                //작성자인 경우
-                if(binding.writerOption.visibility == View.GONE) {
-                    binding.writerOption.visibility = View.VISIBLE
+                if(answer.isMine) {  // 댓글 작성자인 경우
+                    if(binding.writerOption.visibility == View.GONE) {
+                        binding.writerOption.visibility = View.VISIBLE
+                    }
+                    else {
+                        binding.writerOption.visibility = View.GONE
+                    }
+                } else {  // 댓글 작성자가 아닌 경우
+                    if(binding.nonWriterOption.visibility == View.GONE) {
+                        binding.nonWriterOption.visibility = View.VISIBLE
+                    }
+                    else {
+                    binding.nonWriterOption.visibility = View.GONE
+                    }
                 }
-                else {
-                    binding.writerOption.visibility = View.GONE
-                }
-                //작성자가 아닌 경우
-//                if(binding.nonWriterOption.visibility == View.GONE) {
-//                    binding.nonWriterOption.visibility = View.VISIBLE
-//                }
-//                else {
-//                    binding.nonWriterOption.visibility = View.GONE
-//                }
-
             }
 
             //채택하기
@@ -157,40 +158,65 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             //삭제하기
             binding.deleteBtn.setOnClickListener {
-                viewModel.setAnswerId(answer.answerId)
-                val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner)
-                dialog.show()
+                if(!viewModel.isSelected.value!!) {
+                    viewModel.setAnswerId(answer.answerId)
+                    val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner)
+                    dialog.show()
+                } else {
+                    showSnackBar("채택된 글의 답변은 삭제할 수 없습니다.")
+                    hideOptionMenuIfVisible()
+                }
+
             }
 
             //수정하기
             binding.modifyBtn.setOnClickListener {
-                // answerId
-                viewModel.setAnswerId(answer.answerId)
+                if(!viewModel.isSelected.value!!) {
+                    // answerId
+                    viewModel.setAnswerId(answer.answerId)
 
-                val intent = Intent(context, TeacherTalkAnswerActivity::class.java).apply {
-                    putExtra("purpose", "modify")
-                    putExtra("title", viewModel.title.value.toString())
-                    putExtra("body", viewModel.content.value.toString())
-                    putExtra("questionId", viewModel.questionId.value.toString())
-                    putExtra("answerId", viewModel.answerId.value.toString())
-                    putExtra("answerContent", binding.commentBody.text)
+                    val intent = Intent(context, TeacherTalkAnswerActivity::class.java).apply {
+                        putExtra("purpose", "modify")
+                        putExtra("title", viewModel.title.value.toString())
+                        putExtra("body", viewModel.content.value.toString())
+                        putExtra("questionId", viewModel.questionId.value.toString())
+                        putExtra("answerId", viewModel.answerId.value.toString())
+                        putExtra("answerContent", binding.commentBody.text)
 
-                    viewModel.imageUrlList?.let {
-                        if(it.isNotEmpty()) {
-                            putExtra("isImgList", "true")
-                            val imgArrayList = viewModel.imageUrlList as ArrayList<String>
-                            putStringArrayListExtra("imgList", imgArrayList)
+                        viewModel.imageUrlList?.let {
+                            if(it.isNotEmpty()) {
+                                putExtra("isImgList", "true")
+                                val imgArrayList = viewModel.imageUrlList as ArrayList<String>
+                                putStringArrayListExtra("imgList", imgArrayList)
+                            }
+                            else putExtra("isImgList", "false")
                         }
-                        else putExtra("isImgList", "false")
                     }
+                    context.startActivity(intent)
+                } else {
+                    showSnackBar("채택된 글의 답변은 수정할 수 없습니다.")
+                    hideOptionMenuIfVisible()
                 }
-                context.startActivity(intent)
             }
 
             //신고하기
             binding.reportBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
                 context.startActivity(intent)
+            }
+        }
+
+        private fun showSnackBar(msg: String) {
+            val customSnackbar = CustomSnackBar.make(binding.root, msg, 2000)
+            customSnackbar.show()
+        }
+
+        private fun hideOptionMenuIfVisible() {
+            if (binding.writerOption.visibility == View.VISIBLE) {
+                binding.writerOption.visibility = View.GONE
+            }
+            if (binding.nonWriterOption.visibility == View.VISIBLE) {
+                binding.nonWriterOption.visibility = View.GONE
             }
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.RvItemRecommentBossBinding
 import com.example.teacherforboss.domain.model.community.CommentEntity
 import com.example.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
+import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
@@ -44,14 +46,28 @@ class rvAdapterRecommentBoss(
             binding.commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
             binding.commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
 
-            //신고하기
+            // 더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
-                if (binding.reportBtn.visibility == View.GONE) {
-                    binding.reportBtn.visibility = View.VISIBLE
-                } else {
-                    binding.reportBtn.visibility = View.GONE
+                if(comment.isMine) {  // 댓글 작성자인 경우
+                    if(binding.deleteBtn.visibility == View.GONE) binding.deleteBtn.visibility = View.VISIBLE
+                    else binding.deleteBtn.visibility = View.GONE
+                } else {  // 댓글 작성자 아닌 경우
+                    if (binding.reportBtn.visibility == View.GONE) {
+                        binding.reportBtn.visibility = View.VISIBLE
+                    } else {
+                        binding.reportBtn.visibility = View.GONE
+                    }
                 }
             }
+
+            // 삭제하기
+            binding.deleteBtn.setOnClickListener {
+                viewModel.setCommentId(comment.commentId)
+                val dialog = DeleteCommentDialog(binding.root.context, viewModel, lifecycleOwner)
+                dialog.show()
+            }
+
+            // 신고하기
             binding.reportBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
                 binding.root.context.startActivity(intent)

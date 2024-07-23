@@ -21,31 +21,46 @@
         android:theme="@style/Theme.TeacherForBoss"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.community.boss_talk.search.BossTalkSearchActivity"
+            android:exported="true">
+        </activity>
+      
+        <activity
+            android:name=".presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity"
+            android:exported="true">
+        </activity>
+
+       <activity
             android:name=".presentation.ui.mypage.ManageAccountActivity"
             android:exported="false" />
+  
         <activity
             android:name=".presentation.ui.common.TeacherProfileActivity"
             android:exported="false" />
+
         <activity
             android:name=".presentation.ui.auth.login.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+               <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
+  
         <activity
             android:name=".presentation.ui.mypage.modify.ModifyTeacherProfileActivity"
             android:exported="false"
             android:theme="@style/Theme.TeacherForBoss">
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="false"            
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+
+        </activity>
         <activity
             android:name=".presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
             android:exported="false"
@@ -73,32 +88,27 @@
         <activity
             android:name=".presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".presentation.ui.community.teacher_talk.answer.ShowBodyActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".presentation.ui.community.boss_talk.body.BossTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".presentation.ui.community.boss_talk.write.BossTalkWriteActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
         <activity
             android:name=".presentation.ui.auth.signup.SignupFinishActivity"
             android:exported="false"
@@ -117,7 +127,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
                 <data
                     android:host="oauth"
                     android:scheme="kakao50baba15ac88207a1244824c310190e1" />

@@ -7,10 +7,12 @@ import com.example.teacherforboss.databinding.ItemHomeBossTalkPopularPostBinding
 import com.example.teacherforboss.domain.model.home.BossTalkPopularPostEntity
 import com.example.teacherforboss.util.view.ItemDiffCallback
 
-class HomeBossTalkPopularPostAdapter() :
+class HomeBossTalkPopularPostAdapter(
+    private val clickItem: (Long) -> Unit,
+) :
     ListAdapter<BossTalkPopularPostEntity, HomeBossTalkPopularPostViewHolder>(
         ItemDiffCallback<BossTalkPopularPostEntity>(
-            onItemsTheSame = { old, new -> old.number == new.number },
+            onItemsTheSame = { old, new -> old.id == new.id },
             onContentsTheSame = { old, new -> old == new },
         ),
     ) {
@@ -23,6 +25,7 @@ class HomeBossTalkPopularPostAdapter() :
             parent,
             false,
         ),
+        clickItem,
     )
 
     override fun onBindViewHolder(holder: HomeBossTalkPopularPostViewHolder, position: Int) {

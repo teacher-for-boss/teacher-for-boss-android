@@ -3,6 +3,7 @@ package com.example.teacherforboss.di
 import com.example.teacherforboss.domain.repository.AuthRepository
 import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
+import com.example.teacherforboss.domain.repository.HomeRepository
 import com.example.teacherforboss.domain.repository.MemberRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
@@ -19,6 +20,7 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkBo
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
+import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentDeleteUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentListUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkCommentUseCase
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkLikeUseCase
@@ -34,8 +36,12 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkDe
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyAnswerUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
+import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSearchUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkSelectUseCase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUploadPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
+import com.example.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -119,6 +125,11 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+    fun providesBossTalkCommentDelete(communityRepository: CommunityRepository): BossTalkCommentDeleteUseCase =
+        BossTalkCommentDeleteUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
     fun providesBossTalkDeletePostUseCase(communityRepository: CommunityRepository):BossTalkDeletePostUseCase =
         BossTalkDeletePostUseCase(communityRepository=communityRepository)
 
@@ -189,6 +200,26 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+    fun providesTeacherTalkSearchUseCase(communityRepository: CommunityRepository): TeacherTalkSearchUseCase =
+        TeacherTalkSearchUseCase(communityRepository = communityRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetBossTalkPopularPostUseCase(homeRepository: HomeRepository): GetBossTalkPopularPostUseCase =
+        GetBossTalkPopularPostUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetTeacherTalkPopularPostUseCase(homeRepository: HomeRepository): GetTeacherTalkPopularPostUseCase =
+        GetTeacherTalkPopularPostUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetWeeklyBestTeacherUseCase(homeRepository: HomeRepository): GetWeeklyBestTeacherUseCase =
+        GetWeeklyBestTeacherUseCase(homeRepository = homeRepository)
+
+    @Provides
+    @Singleton
     fun providesLogoutUseCase(authRepository: AuthRepository): LogoutUsecase =
         LogoutUsecase(authRepository=authRepository)
 
@@ -201,4 +232,5 @@ class UseCaseModule {
     @Singleton
     fun providesAccountUsecase(memberRepository: MemberRepository): AccountUsecase =
         AccountUsecase(memberRepository)
+
 }

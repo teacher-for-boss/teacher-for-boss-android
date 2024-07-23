@@ -3,6 +3,7 @@ package com.example.teacherforboss.domain.model.common
 import androidx.databinding.ObservableBoolean
 
 data class TeacherProfileDetailEntity(
+    val memberId: Long,
     val nickname: String,
     val profileImgUrl: String,
     val information: String,
@@ -12,6 +13,5 @@ data class TeacherProfileDetailEntity(
     val career: Int,
     val keyword: List<String>,
     val level: String,
-    val isMine: Boolean,
-    var isSelected: ObservableBoolean = ObservableBoolean(false)
+    val isMine: Boolean
 )

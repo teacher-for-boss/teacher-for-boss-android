@@ -170,7 +170,7 @@
     <string name="teacher_level_3_description">답변 채택 개수가 60개 이상~90개 미만일 때입니다.</string>
     <string name="teacher_level_4_description">답변 채택 개수가 90개 이상~120개 미만일 때입니다.</string>
     <string name="teacher_level_5_description">답변 채택 개수가 120개 이상일 때입니다.</string>
-  
+
     <!-- 환전 -->
     <string name="exchange_title">티포 환전하기</string>
     <string name="exchange">환전하기</string>
@@ -223,6 +223,16 @@
     <string name="manage_account_management">계정 관리</string>
     <string name="manage_account_logout">로그아웃</string>
     <string name="manage_account_delete">탈퇴하기</string>
+
+    <!-- ask payment -->
+    <string name="ask_payment_title">질문권 결제</string>
+    <string name="ask_payment_head">질문권 구매하고\n마음껏 질문하세요.</string>
+    <string name="ask_payment_check">✔️ 질문권 1개로 전문가에게 빠르게 답변 받기\n✔️ 여러명의 전문가에게 답변을 받아요\n✔️ 24시간 365일 답변받을 수 있어요</string>
+    <string name="ask_payment_buy">구매하기</string>
+
+
+
+
 
   <!-- teacher profile -->
     <string name="teacher_profile_report">신고하기</string>

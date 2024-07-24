@@ -558,13 +558,6 @@ class SignupViewModel @Inject constructor(
         MutableLiveData()
 
     suspend fun businessNumCheck():Boolean{
-        // TODO: 테스트 후 삭제
-        _businessNum.value="380-20-01941"
-//        _openDate.value= LocalDate.parse("2024-02-01")
-        _openDateStr.value="2024-02-01"
-        _representative.value="남윤수"
-
-        Log.d("signup",representative.value.toString())
 
         return try {
             val businessNumCheckRequest = BusinessNumberCheckRequest(

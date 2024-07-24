@@ -17,19 +17,13 @@ object BindingImgAdapter {
 
             Glide.with(imageView.context)
                 .load(imgUri)
-                .apply(RequestOptions())
+                .apply(RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(false)
+                )
                 .into(imageView)
         }
 
-    }
-    fun bindImgUrl(context: Context, imageView: ImageView, url:String){
-        Glide.with(context)
-            .load(url)
-            .fitCenter()
-            .apply(RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .skipMemoryCache(false))
-            .into(imageView)
     }
 
     fun bindImgUri(imageView: ImageView,imageUri: Uri){
@@ -38,8 +32,8 @@ object BindingImgAdapter {
             .apply(RequestOptions())
             .into(imageView)
     }
-    fun bindProfileImgUrl(context: Context, imageView: ImageView, url:String){
-        Glide.with(context)
+    fun bindProfileImgUrl(imageView: ImageView, url:String){
+        Glide.with(imageView.context)
             .load(url)
             .fitCenter()
             .apply(RequestOptions()

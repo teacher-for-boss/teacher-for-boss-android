@@ -93,7 +93,7 @@ class ProfileImageDialog (
         // 선택된 이미지
 //        binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
         Log.d("profile",viewModel.profileImg.value!!)
-        BindingImgAdapter.bindImgUrl(context,binding.profileImage,viewModel.profileImg.value!!)
+        BindingImgAdapter.bindProfileImgUrl(binding.profileImage,viewModel.profileImg.value!!)
 
         val bindingImgList= listOf(
             binding.p1,binding.p2,binding.p3,binding.p4,binding.p5,binding.p6,
@@ -104,7 +104,7 @@ class ProfileImageDialog (
             val fileName=profileList[index].fileName
             val url="${IMG_BASE_URL}${fileName}"
 
-            BindingImgAdapter.bindProfileImgUrl(context,imageView,url)
+            BindingImgAdapter.bindProfileImgUrl(imageView,url)
 
             clickedMap.put(index,false) // clickedMap 초기화
             imageView.setOnClickListener {

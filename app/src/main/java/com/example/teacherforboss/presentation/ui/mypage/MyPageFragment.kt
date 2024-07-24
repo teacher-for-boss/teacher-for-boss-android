@@ -85,7 +85,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     is UiState.Success -> {
                         val data = userProfileInfoState.data
                         with(binding) {
-                            BindingImgAdapter.bindImage(ivMyPageProfile, data.profileImgUrl)
+                            BindingImgAdapter.bindProfileImgUrl(ivMyPageProfile, data.profileImgUrl)
                             if (data.role == ROLE_TEACHER) {
                                 setTeacherProfileLayoutByAPI(data = data)
                             } else {

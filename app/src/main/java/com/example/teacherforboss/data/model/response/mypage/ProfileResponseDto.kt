@@ -12,7 +12,7 @@ data class ProfileResponseDto (
 
     fun toMyPageProfileEntity() = MyPageProfileEntity(
         nickname = nickname,
-        profileImgUrl = profileImg,
+        profileImg = profileImg,
         role = role,
         teacherInfo = teacherInfo.toTeacherInfoEntity()
     )

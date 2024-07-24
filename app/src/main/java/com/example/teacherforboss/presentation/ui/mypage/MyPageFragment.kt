@@ -43,12 +43,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             setTeacherMenuLayout()
             // TODO 삭제
             setTeacherProfileLayoutByAPI(profile)
-            binding.ivMyPageProfile.loadCircularImage(profile.profileImgUrl)
+            binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         } else {
             setBossMenuLayout()
             // TODO 삭제
             setBossProfileLayoutByAPI(profile)
-            binding.ivMyPageProfile.loadCircularImage(profile.profileImgUrl)
+            binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         }
     }
 
@@ -96,7 +96,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     is UiState.Success -> {
                         val data = userProfileInfoState.data
                         with(binding) {
-                            BindingImgAdapter.bindProfileImgUrl(ivMyPageProfile, data.profileImgUrl)
+                            BindingImgAdapter.bindProfileImgUrl(ivMyPageProfile, data.profileImg)
                             if (data.role == ROLE_TEACHER) {
                                 setTeacherProfileLayoutByAPI(data = data)
                             } else {

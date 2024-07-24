@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMyPageBinding
 import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
+import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.component.DialogPopupFragment
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.onEach
 
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel: MyPageViewModel by activityViewModels()
+    private val accountViewModel: ManageAccountViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,6 +81,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun getProfile() {
+        viewModel.getProfile()
+
+        viewModel.myPageProfileLiveData.observe(viewLifecycleOwner, Observer {
+            initLayout(it)
+        })
+    }
+
     private fun collectData() {
         viewModel.userProfileInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { userProfileInfoState ->
@@ -96,6 +106,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
 
                     else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        accountViewModel.logoutState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { logoutState->
+                when(logoutState){
+                    is UiState.Success->{
+                        accountViewModel.clearTokens()
+                        gotoLoginActivity()
+                    }
+                    else->Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
@@ -174,21 +195,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             leftBtnText = getString(R.string.dialog_exit),
             rightBtnText = getString(R.string.dialog_logout_btn),
             clickLeftBtn = {},
-            clickRightBtn = {},
+            clickRightBtn = {accountViewModel.postLogout()},
         ).show(parentFragmentManager, LOGOUT_DIALOG)
     }
 
     private fun showTeacherLevelDialogFragment() {
         DialogTeacherLevelFragment().show(parentFragmentManager, TEACHER_LEVEL_DIALOG)
     }
-
-    private fun getProfile() {
-        viewModel.getProfile()
-
-        viewModel.myPageProfileLiveData.observe(viewLifecycleOwner, Observer {
-            initLayout(it)
-        })
+    fun gotoLoginActivity(){
+        val intent= Intent(requireActivity(), LoginActivity::class.java).apply {
+        }
+        startActivity(intent)
     }
+
 
     companion object {
         private const val INQUIRE_WEB_LINK =

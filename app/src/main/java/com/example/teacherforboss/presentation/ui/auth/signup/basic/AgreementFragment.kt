@@ -3,6 +3,7 @@ package com.example.teacherforboss.presentation.ui.auth.signup.basic
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.teacherforboss.R
 import com.example.teacherforboss.data.model.response.BaseResponse
 import com.example.teacherforboss.databinding.FragmentAgreementBinding
@@ -51,7 +53,7 @@ class AgreementFragment : BottomSheetDialogFragment() {
         //for xml data bidning
         val otherCheckboxes = arrayOf(
             binding.agreementCheckbox, binding.personalInformationCheckbox,
-            binding.locationServiceCheckbox, binding.benefitInformationCheckbox,
+            binding.locationServiceCheckbox,
             binding.smsCheckbox, binding.emailCheckbox, binding.ageCheckbox
         )
         val vitalCheckboxes = arrayOf(

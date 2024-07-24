@@ -2,7 +2,7 @@ package com.example.teacherforboss.domain.model.mypage
 
 data class MyPageProfileEntity(
     val nickname: String,
-    val profileImgUrl: String,
+    val profileImg: String,
     val role: String,
     val teacherInfo: TeacherInfo?,
 ) {

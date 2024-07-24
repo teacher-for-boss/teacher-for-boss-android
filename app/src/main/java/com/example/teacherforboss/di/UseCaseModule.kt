@@ -10,6 +10,7 @@ import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePo
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.example.teacherforboss.domain.usecase.SignupUseCase
 import com.example.teacherforboss.domain.usecase.Member.AccountUsecase
+import com.example.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.example.teacherforboss.domain.usecase.auth.LogoutUsecase
 import com.example.teacherforboss.domain.usecase.auth.WithdrawUsecase
 import com.example.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
@@ -232,5 +233,10 @@ class UseCaseModule {
     @Singleton
     fun providesAccountUsecase(memberRepository: MemberRepository): AccountUsecase =
         AccountUsecase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun provides(memberRepository: MemberRepository): ProfileUseCase =
+        ProfileUseCase(memberRepository = memberRepository)
 
 }

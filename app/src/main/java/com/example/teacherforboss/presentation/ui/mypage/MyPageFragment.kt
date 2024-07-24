@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.teacherforboss.R
@@ -26,26 +27,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         binding.myPageViewModel = viewModel
 
-        initLayout()
+        getProfile()
         addListeners()
         collectData()
     }
 
-    private fun initLayout() {
+    private fun initLayout(profile: MyPageProfileEntity) {
         // TODO role은 LocalDataSource에서 가져오는 걸로 수정
-        val role = "BOSS"
+        val role = profile.role
         if (role == ROLE_TEACHER) {
             setTeacherProfileLayout()
             setTeacherMenuBarLayout()
             setTeacherMenuLayout()
             // TODO 삭제
-            setTeacherProfileLayoutByAPI(viewModel.mockTeacher)
-            binding.ivMyPageProfile.loadCircularImage(viewModel.mockTeacher.profileImgUrl)
+            setTeacherProfileLayoutByAPI(profile)
+            binding.ivMyPageProfile.loadCircularImage(profile.profileImgUrl)
         } else {
             setBossMenuLayout()
             // TODO 삭제
-            setBossProfileLayoutByAPI(viewModel.mockBoss)
-            binding.ivMyPageProfile.loadCircularImage(viewModel.mockBoss.profileImgUrl)
+            setBossProfileLayoutByAPI(profile)
+            binding.ivMyPageProfile.loadCircularImage(profile.profileImgUrl)
         }
     }
 
@@ -179,6 +180,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun showTeacherLevelDialogFragment() {
         DialogTeacherLevelFragment().show(parentFragmentManager, TEACHER_LEVEL_DIALOG)
+    }
+
+    private fun getProfile() {
+        viewModel.getProfile()
+
+        viewModel.myPageProfileLiveData.observe(viewLifecycleOwner, Observer {
+            initLayout(it)
+        })
     }
 
     companion object {

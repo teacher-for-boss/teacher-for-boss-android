@@ -35,7 +35,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initLayout(profile: MyPageProfileEntity) {
-        // TODO role은 LocalDataSource에서 가져오는 걸로 수정
+        BindingImgAdapter.bindProfileImgUrl(binding.ivMyPageProfile, profile.profileImg)
         val role = profile.role
         if (role == ROLE_TEACHER) {
             setTeacherProfileLayout()
@@ -82,11 +82,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun getProfile() {
-        viewModel.getProfile()
-
-        viewModel.myPageProfileLiveData.observe(viewLifecycleOwner, Observer {
-            initLayout(it)
-        })
+        viewModel.getUserProfile()
     }
 
     private fun collectData() {
@@ -95,14 +91,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 when (userProfileInfoState) {
                     is UiState.Success -> {
                         val data = userProfileInfoState.data
-                        with(binding) {
-                            BindingImgAdapter.bindProfileImgUrl(ivMyPageProfile, data.profileImg)
-                            if (data.role == ROLE_TEACHER) {
-                                setTeacherProfileLayoutByAPI(data = data)
-                            } else {
-                                setBossProfileLayoutByAPI(data = data)
-                            }
-                        }
+                        initLayout(data)
                     }
 
                     else -> Unit

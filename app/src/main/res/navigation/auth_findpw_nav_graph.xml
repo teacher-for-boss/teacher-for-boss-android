@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/findPwFragment"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
         android:label="findPwFragment" >
         <action
             android:id="@+id/action_findPwFragment_to_findPwFragment2"
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/findPwFragment2"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment2"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment2"
         android:label="fragment_find_pw2"
         tools:layout="@layout/fragment_find_pw2" >
         <action
@@ -29,16 +29,16 @@
     </fragment>
     <activity
         android:id="@+id/finishFindPwActivity"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
         android:label="activity_finish_find_pw"
         tools:layout="@layout/activity_finish_find_pw" />
     <activity
         android:id="@+id/signupActivity2"
-        android:name="com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity"
+        android:name="com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity"
         android:label="SignupActivity" />
     <fragment
         android:id="@+id/findPwFragment3"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment3"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment3"
         android:label="fragment_find_pw3"
         tools:layout="@layout/fragment_find_pw3" >
         <action

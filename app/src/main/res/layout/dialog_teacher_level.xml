@@ -7,7 +7,7 @@
 
         <variable
             name="teacherLevelType"
-            type="com.example.teacherforboss.presentation.type.TeacherLevelType" />
+            type="com.company.teacherforboss.presentation.type.TeacherLevelType" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

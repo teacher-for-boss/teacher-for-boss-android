@@ -230,11 +230,17 @@
     <string name="ask_payment_check">✔️ 질문권 1개로 전문가에게 빠르게 답변 받기\n✔️ 여러명의 전문가에게 답변을 받아요\n✔️ 24시간 365일 답변받을 수 있어요</string>
     <string name="ask_payment_buy">구매하기</string>
 
+    <!-- 저장한 글 -->
+    <string name="saved_talk_title">저장한 글</string>
+    <string name="saved_teacher_talk">티처톡</string>
+    <string name="saved_boss_talk">보스톡</string>
 
 
 
 
-  <!-- teacher profile -->
+
+
+    <!-- teacher profile -->
     <string name="teacher_profile_report">신고하기</string>
     <string name="teacher_profile_fix">수정하기</string>
     <string name="teacher_profile_teacher_name">%s 티처</string>

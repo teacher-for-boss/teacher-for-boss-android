@@ -35,6 +35,9 @@ class MyPageViewModel @Inject constructor(
 //        teacherInfo = null
 //    )
 
+    private val _myPageProfileLiveData = MutableLiveData<MyPageProfileEntity>()
+    val myPageProfileLiveData: LiveData<MyPageProfileEntity> get() = _myPageProfileLiveData
+
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
 
@@ -42,15 +45,19 @@ class MyPageViewModel @Inject constructor(
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)
 //        // _userProfileInfoState.value = UiState.Success(mockBoss)
 //    }
+//
+//    fun getUserProfile() {
+//        viewModelScope.launch {
+//            // TODO UseCase 바탕으로 value에 UiState.Success 값 넣기
+//        }
+//    }
 
-    fun getUserProfile() {
+    fun getProfile() {
         viewModelScope.launch {
-            profileUseCase().onSuccess { mypageProfileEntity ->
-                _userProfileInfoState.value=UiState.Success(mypageProfileEntity)
-            }.onFailure { exception: Throwable ->
-                _userProfileInfoState.value=UiState.Error(exception.message)
-            }
+            try {
+                val myPageProfileEntity = profileUseCase()
+                _myPageProfileLiveData.value = myPageProfileEntity
+            } catch (ex:Exception) {}
         }
     }
-
 }

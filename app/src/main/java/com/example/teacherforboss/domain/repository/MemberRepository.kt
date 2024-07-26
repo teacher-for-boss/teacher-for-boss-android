@@ -6,6 +6,6 @@ import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
 interface MemberRepository {
     suspend fun getAccount():Result<AccountEntity>
 
-    suspend fun getProfile():Result<MyPageProfileEntity>
+    suspend fun getProfile(): MyPageProfileEntity
 
 }

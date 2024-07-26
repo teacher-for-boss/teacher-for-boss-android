@@ -168,64 +168,64 @@
 
     </LinearLayout>
 
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp">-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
 
-<!--    </View>-->
+    </View>
 
-<!--    <LinearLayout-->
+    <LinearLayout
 
-<!--        android:orientation="vertical"-->
-<!--        android:id="@+id/social_login_box"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
+        android:orientation="vertical"
+        android:id="@+id/social_login_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-<!--        <TextView-->
-<!--            android:textSize="14dp"-->
-<!--            android:textColor="@color/gray_01"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:text="아래 방법으로도 로그인 가능해요!"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content">-->
+        <TextView
+            android:textSize="14dp"
+            android:textColor="@color/gray_01"
+            android:layout_gravity="center"
+            android:text="아래 방법으로도 로그인 가능해요!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-<!--        </TextView>-->
+        </TextView>
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
 
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="12dp">-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp">
 
-<!--    </View>-->
+    </View>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        >-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        >
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/kakao_btn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@drawable/kakao_login"-->
-<!--            android:scaleType="centerInside">-->
+        <ImageButton
+            android:id="@+id/kakao_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/kakao_login"
+            android:scaleType="centerInside">
 
-<!--        </ImageButton>-->
+        </ImageButton>
 
-<!--        <View-->
-<!--            android:layout_width="10dp"-->
-<!--            android:layout_height="0dp"></View>-->
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp"></View>
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/naver_btn"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:background="@drawable/naver_login"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent">-->
+        <ImageButton
+            android:id="@+id/naver_btn"
+            android:scaleType="centerCrop"
+            android:background="@drawable/naver_login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-<!--        </ImageButton>-->
+        </ImageButton>
 <!--        <Button-->
 <!--            android:id="@+id/logoutBtn"-->
 <!--            android:text="임시 카카오 로그아웃 버튼"-->
@@ -235,7 +235,9 @@
 <!--        </Button>-->
 
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

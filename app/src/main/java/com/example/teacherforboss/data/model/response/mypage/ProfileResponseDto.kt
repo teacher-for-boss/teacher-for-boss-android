@@ -7,14 +7,14 @@ data class ProfileResponseDto (
     @SerializedName("nickname") val nickname: String,
     @SerializedName("profileImg") val profileImg: String,
     @SerializedName("role") val role: String,
-    @SerializedName("teacherInfo") val teacherInfo: TeacherInfoDto
+    @SerializedName("teacherInfo") val teacherInfo: TeacherInfoDto?
 ) {
 
     fun toMyPageProfileEntity() = MyPageProfileEntity(
         nickname = nickname,
         profileImg = profileImg,
         role = role,
-        teacherInfo = teacherInfo.toTeacherInfoEntity()
+        teacherInfo = teacherInfo?.toTeacherInfoEntity()
     )
 
     data class TeacherInfoDto (

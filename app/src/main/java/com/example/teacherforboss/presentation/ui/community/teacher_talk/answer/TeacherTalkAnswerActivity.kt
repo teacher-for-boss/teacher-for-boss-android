@@ -1,6 +1,8 @@
 package com.example.teacherforboss.presentation.ui.community.teacher_talk.answer
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,11 +14,14 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityTeachertalkAnswerBinding
+import com.example.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.adapter.rvAdapterImageTeacherAnswer
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.example.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
@@ -54,8 +59,6 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
         // 뷰 설정
         setInitView()
-        // 이미지 가져오기
-        getImage()
 
         addListeners()
     }
@@ -109,17 +112,40 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         IsValidPost()
         // 나가기
         showExitDialog()
+        // 이미지
+        binding.inputImage.setOnClickListener {
+            checkAndRequestPermissions()
+        }
     }
 
-    fun getImage() {
-        binding.inputImage.setOnClickListener {
-            if(viewModel.imageList.size < 3) {
-                val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-                gallery.type = "image/*"
-                startActivityForResult(gallery, 100)
-            }
-            else {
-                showSnackBar("세장까지만 업로드 가능합니다.")
+    private fun checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                BossTalkWriteActivity.REQUEST_CODE_READ_EXTERNAL_STORAGE
+            )
+        } else {
+            openGallery()
+        }
+    }
+
+    private fun openGallery() {
+        if (viewModel.imageList.size < 3) {
+            val gallery =
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            gallery.type = "image/*"
+            startActivityForResult(gallery, 100)
+        } else {
+            showSnackBar("세장까지만 업로드 가능합니다.")
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == BossTalkWriteActivity.REQUEST_CODE_READ_EXTERNAL_STORAGE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                openGallery()
+            } else {
+                showSnackBar("갤러리 접근 권한이 필요합니다.")
             }
         }
     }

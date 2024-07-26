@@ -35,17 +35,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initLayout(profile: MyPageProfileEntity) {
-        // TODO role은 LocalDataSource에서 가져오는 걸로 수정
+        BindingImgAdapter.bindProfileImgUrl(binding.ivMyPageProfile, profile.profileImg)
         val role = profile.role
         if (role == ROLE_TEACHER) {
             setTeacherProfileLayout()
             setTeacherMenuBarLayout()
-            setTeacherMenuLayout()
+//            setTeacherMenuLayout()
             // TODO 삭제
             setTeacherProfileLayoutByAPI(profile)
             binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         } else {
-            setBossMenuLayout()
+//            setBossMenuLayout()
             // TODO 삭제
             setBossProfileLayoutByAPI(profile)
             binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
@@ -54,27 +54,27 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun addListeners() {
         with(binding) {
-            includeMyPageMenuInquire.root.setOnClickListener {
-                requireActivity().startActivity(
-                    requireActivity().navigateToWebView(INQUIRE_WEB_LINK),
-                )
-            }
-            includeMyPageMenuTerms.root.setOnClickListener {
-                requireActivity().startActivity(
-                    requireActivity().navigateToWebView(TERMS_WEB_LINK),
-                )
-            }
+//            includeMyPageMenuInquire.root.setOnClickListener {
+//                requireActivity().startActivity(
+//                    requireActivity().navigateToWebView(INQUIRE_WEB_LINK),
+//                )
+//            }
+//            includeMyPageMenuTerms.root.setOnClickListener {
+//                requireActivity().startActivity(
+//                    requireActivity().navigateToWebView(TERMS_WEB_LINK),
+//                )
+//            }
             includeMyPageMenuAccount.root.setOnClickListener{
                 val intent = Intent(context,ManageAccountActivity::class.java)
                 startActivity(intent)
             }
-            includeMyPageMenuAccountChange.root.setOnClickListener{
-                val transaction=parentFragmentManager.beginTransaction()
-                transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
-                transaction.addToBackStack(null)
-                transaction.commit()
-
-            }
+//            includeMyPageMenuAccountChange.root.setOnClickListener{
+//                val transaction=parentFragmentManager.beginTransaction()
+//                transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
+//                transaction.addToBackStack(null)
+//                transaction.commit()
+//
+//            }
 
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
             layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
@@ -82,11 +82,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun getProfile() {
-        viewModel.getProfile()
-
-        viewModel.myPageProfileLiveData.observe(viewLifecycleOwner, Observer {
-            initLayout(it)
-        })
+        viewModel.getUserProfile()
     }
 
     private fun collectData() {
@@ -95,14 +91,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 when (userProfileInfoState) {
                     is UiState.Success -> {
                         val data = userProfileInfoState.data
-                        with(binding) {
-                            BindingImgAdapter.bindProfileImgUrl(ivMyPageProfile, data.profileImg)
-                            if (data.role == ROLE_TEACHER) {
-                                setTeacherProfileLayoutByAPI(data = data)
-                            } else {
-                                setBossProfileLayoutByAPI(data = data)
-                            }
-                        }
+                        initLayout(data)
                     }
 
                     else -> Unit
@@ -161,31 +150,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun setTeacherMenuLayout() {
-        with(binding) {
-            tvMyPageMenuReward.text = getString(R.string.my_page_reward_title)
-            includeMyPageMenuAccountChange.title =
-                getString(R.string.my_page_menu_account_change)
-            includeMyPageMenuExchange.title = getString(R.string.my_page_menu_exchange)
-            includeMyPageMenuExchangeDetails.apply {
-                root.visibility = View.VISIBLE
-                title = getString(R.string.my_page_menu_exchange_details)
-            }
-            includeMyPageMenuTeacherTalkQuestionPost.title =
-                getString(R.string.my_page_menu_teacher_talk_answered_post)
-        }
-    }
+//    private fun setTeacherMenuLayout() {
+//        with(binding) {
+//            tvMyPageMenuReward.text = getString(R.string.my_page_reward_title)
+//            includeMyPageMenuAccountChange.title =
+//                getString(R.string.my_page_menu_account_change)
+//            includeMyPageMenuExchange.title = getString(R.string.my_page_menu_exchange)
+//            includeMyPageMenuExchangeDetails.apply {
+//                root.visibility = View.VISIBLE
+//                title = getString(R.string.my_page_menu_exchange_details)
+//            }
+//            includeMyPageMenuTeacherTalkQuestionPost.title =
+//                getString(R.string.my_page_menu_teacher_talk_answered_post)
+//        }
+//    }
 
-    private fun setBossMenuLayout() {
-        with(binding) {
-            includeMyPageMenuAccountChange.title =
-                getString(R.string.my_page_menu_payment_question_ticket)
-            includeMyPageMenuExchange.title = getString(R.string.my_page_menu_payment_history)
-            includeMyPageMenuExchangeDetails.root.visibility = View.GONE
-            includeMyPageMenuTeacherTalkQuestionPost.title =
-                getString(R.string.my_page_menu_teacher_talk_question_post)
-        }
-    }
+//    private fun setBossMenuLayout() {
+//        with(binding) {
+//            includeMyPageMenuAccountChange.title =
+//                getString(R.string.my_page_menu_payment_question_ticket)
+//            includeMyPageMenuExchange.title = getString(R.string.my_page_menu_payment_history)
+//            includeMyPageMenuExchangeDetails.root.visibility = View.GONE
+//            includeMyPageMenuTeacherTalkQuestionPost.title =
+//                getString(R.string.my_page_menu_teacher_talk_question_post)
+//        }
+//    }
 
     private fun showLogoutDialogFragment() {
         // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가

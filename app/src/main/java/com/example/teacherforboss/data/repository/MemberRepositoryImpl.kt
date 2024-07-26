@@ -12,8 +12,9 @@ class MemberRepositoryImpl @Inject constructor(
     override suspend fun getAccount(): Result<AccountEntity> =
         runCatching { memberRemoteDataSource.getAccount().result.toAccountEntity() }
 
-    override suspend fun getProfile(): Result<MyPageProfileEntity> =
-        runCatching { memberRemoteDataSource.getProfile().result.toMyPageProfileEntity() }
-
+    override suspend fun getProfile(): MyPageProfileEntity {
+        return runCatching { memberRemoteDataSource.getProfile().result.toMyPageProfileEntity()
+        }.getOrElse { err -> throw err }
+    }
 
 }

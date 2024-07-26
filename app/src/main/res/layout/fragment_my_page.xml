@@ -374,145 +374,136 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_account"
                         app:title="@{@string/my_page_menu_account}" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_reward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/my_page_pay_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
                         app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_my_page_menu_reward"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="28dp"-->
-<!--                        android:text="@string/my_page_pay_title"-->
-<!--                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"-->
-<!--                        android:textColor="@color/Gray400"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_account_change"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing12"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_reward" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_account_change"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing12"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_reward" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_exchange"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account_change" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_exchange"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_account_change" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_exchange_details"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_exchange"
+                        app:title="@{@string/my_page_menu_exchange_details}" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_exchange_details"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_exchange"-->
-<!--                        app:title="@{@string/my_page_menu_exchange_details}" />-->
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_community"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/my_page_community_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_exchange_details" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_my_page_menu_community"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="28dp"-->
-<!--                        android:text="@string/my_page_community_title"-->
-<!--                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"-->
-<!--                        android:textColor="@color/Gray400"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_exchange_details" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_saved_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_community"
+                        app:title="@{@string/my_page_menu_saved_post}" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_saved_post"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_community"-->
-<!--                        app:title="@{@string/my_page_menu_saved_post}" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_teacher_talk_question_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_saved_post" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_teacher_talk_question_post"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_saved_post" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_boss_talk_written_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_teacher_talk_question_post"
+                        app:title="@{@string/my_page_menu_boss_talk_written_post}" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_boss_talk_written_post"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_teacher_talk_question_post"-->
-<!--                        app:title="@{@string/my_page_menu_boss_talk_written_post}" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_boss_talk_comment_post"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_boss_talk_written_post"
+                        app:title="@{@string/my_page_menu_boss_talk_comment_post}" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_boss_talk_comment_post"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_boss_talk_written_post"-->
-<!--                        app:title="@{@string/my_page_menu_boss_talk_comment_post}" />-->
+                    <TextView
+                        android:id="@+id/tv_my_page_menu_app_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/my_page_app_information_title"
+                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
+                        android:textColor="@color/Gray400"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_boss_talk_comment_post" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_my_page_menu_app_information"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="28dp"-->
-<!--                        android:text="@string/my_page_app_information_title"-->
-<!--                        android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"-->
-<!--                        android:textColor="@color/Gray400"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_boss_talk_comment_post" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_inquire"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_app_information"
+                        app:title="@{@string/my_page_menu_inquire}" />
 
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_inquire"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_menu_app_information"-->
-<!--                        app:title="@{@string/my_page_menu_inquire}" />-->
-
-<!--                    <include-->
-<!--                        android:id="@+id/include_my_page_menu_terms"-->
-<!--                        layout="@layout/view_my_page_menu"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/spacing8"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/gl_bottom"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/gl_start"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_inquire"-->
-<!--                        app:title="@{@string/my_page_menu_terms}" />-->
+                    <include
+                        android:id="@+id/include_my_page_menu_terms"
+                        layout="@layout/view_my_page_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing8"
+                        app:layout_constraintBottom_toBottomOf="@id/gl_bottom"
+                        app:layout_constraintEnd_toEndOf="@id/gl_end"
+                        app:layout_constraintStart_toStartOf="@id/gl_start"
+                        app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_inquire"
+                        app:title="@{@string/my_page_menu_terms}" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="320dp" />
 
                 <TextView
                     android:id="@+id/tv_log_out_btn"
@@ -522,7 +513,6 @@
                     android:paddingHorizontal="30dp"
                     android:paddingVertical="17dp"
                     android:text="@string/log_out" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

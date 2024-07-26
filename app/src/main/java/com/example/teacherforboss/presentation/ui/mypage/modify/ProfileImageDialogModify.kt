@@ -135,9 +135,9 @@ class ProfileImageDialogModify (
 
     private fun<T:ProfileAnimal> addListeners(profileList:List<T>){
         var selectedIndex=0
-//        binding.openGallary.setOnClickListener {
-//            requestGalleryPermission()
-//        }
+        binding.openGallary.setOnClickListener {
+            requestGalleryPermission()
+        }
 
         binding.finishBtn.setOnClickListener {
             if(viewModel._isUserImgSelected.value==false){ // 디폴트 이미지 선택시

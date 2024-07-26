@@ -7,8 +7,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.FragmentMyPageBinding
+import com.company.teacherforboss.R
+import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.example.teacherforboss.util.base.BindingFragment

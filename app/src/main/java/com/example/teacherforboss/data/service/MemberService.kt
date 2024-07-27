@@ -1,9 +1,7 @@
 package com.example.teacherforboss.data.service
 
-import com.example.teacherforboss.data.api.ApiClient
 import com.example.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.example.teacherforboss.data.model.response.mypage.ProfileResponseDto
-import com.example.teacherforboss.data.service.MemberService.Companion.MEMBER
 import com.example.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
 

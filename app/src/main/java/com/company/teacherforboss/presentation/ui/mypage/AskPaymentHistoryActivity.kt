@@ -28,7 +28,10 @@ class AskPaymentHistoryActivity : AppCompatActivity() {
         binding.rvAskPaymentHistory.adapter = adapter
         binding.rvAskPaymentHistory.layoutManager = LinearLayoutManager(this)
 
-
+        onBackBtnPressed()
+    }
+    fun onBackBtnPressed(){
+        binding.includeAskPaymentHistoryTopAppBar.backBtn.setOnClickListener{finish()}
     }
 
 }

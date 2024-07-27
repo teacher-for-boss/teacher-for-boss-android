@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/include_account_top_app_bar"
+            android:id="@+id/include_exchange_history_top_app_bar"
             layout="@layout/view_top_app_bar_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/include_account_top_app_bar" />
+            app:layout_constraintTop_toBottomOf="@id/include_exchange_history_top_app_bar" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

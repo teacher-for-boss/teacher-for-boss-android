@@ -26,9 +26,12 @@ class ExchangeHistoryActivity : AppCompatActivity() {
         binding.rvExchangeHistory.adapter = adapter
         binding.rvExchangeHistory.layoutManager = LinearLayoutManager(this)
 
-
+        onBackBtnPressed()
     }
 
+    fun onBackBtnPressed(){
+        binding.includeExchangeHistoryTopAppBar.backBtn.setOnClickListener{finish()}
+    }
 }
 
 

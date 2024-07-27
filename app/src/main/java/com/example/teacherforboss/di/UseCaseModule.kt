@@ -5,6 +5,7 @@ import com.example.teacherforboss.domain.repository.AwsReository
 import com.example.teacherforboss.domain.repository.CommunityRepository
 import com.example.teacherforboss.domain.repository.HomeRepository
 import com.example.teacherforboss.domain.repository.MemberRepository
+import com.example.teacherforboss.domain.repository.PaymentRepository
 import com.example.teacherforboss.domain.repository.SignupRepository
 import com.example.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.example.teacherforboss.domain.usecase.PresignedUrlUseCase
@@ -43,6 +44,8 @@ import com.example.teacherforboss.domain.usecase.community.teacher.TeacherUpload
 import com.example.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.example.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.example.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
+import com.example.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
+import com.example.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -233,6 +236,15 @@ class UseCaseModule {
     @Singleton
     fun providesAccountUsecase(memberRepository: MemberRepository): AccountUsecase =
         AccountUsecase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesBankAccountUsecase(paymentRepository: PaymentRepository): BankAccountUseCase =
+        BankAccountUseCase(paymentRepository)
+    @Provides
+    @Singleton
+    fun providesBankAccountChangeUsecase(paymentRepository: PaymentRepository): BankAccountChangeUseCase =
+        BankAccountChangeUseCase(paymentRepository)
 
     @Provides
     @Singleton

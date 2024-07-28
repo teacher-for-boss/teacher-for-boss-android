@@ -239,11 +239,11 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesBankAccountUsecase(paymentRepository: PaymentRepository): BankAccountUseCase =
+    fun providesBankAccountUseCase(paymentRepository: PaymentRepository): BankAccountUseCase =
         BankAccountUseCase(paymentRepository)
     @Provides
     @Singleton
-    fun providesBankAccountChangeUsecase(paymentRepository: PaymentRepository): BankAccountChangeUseCase =
+    fun providesBankAccountChangeUseCase(paymentRepository: PaymentRepository): BankAccountChangeUseCase =
         BankAccountChangeUseCase(paymentRepository)
 
     @Provides

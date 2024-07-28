@@ -11,6 +11,7 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.FragmentMyPageBinding
 import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.example.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.example.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.example.teacherforboss.util.base.BindingFragment
 import com.example.teacherforboss.util.base.BindingImgAdapter
 import com.example.teacherforboss.util.component.DialogPopupFragment
@@ -43,6 +44,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 //            setTeacherMenuLayout()
             // TODO 삭제
             setTeacherProfileLayoutByAPI(profile)
+            setTeacherMenuLayout()
             binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         } else {
 //            setBossMenuLayout()
@@ -69,10 +71,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 startActivity(intent)
             }
             includeMyPageMenuAccountChange.root.setOnClickListener{
-                val transaction=parentFragmentManager.beginTransaction()
-                transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
-                transaction.addToBackStack(null)
-                transaction.commit()
+                if (viewModel.role.value == ROLE_TEACHER)
+                {
+                    val intent = Intent(context,AccountChangeActivity::class.java)
+                    startActivity(intent)
+                }
+                else{
+                    val transaction=parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+
+
 
             }
 
@@ -92,6 +103,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     is UiState.Success -> {
                         val data = userProfileInfoState.data
                         initLayout(data)
+                        viewModel._role.value = data.role
                     }
 
                     else -> Unit

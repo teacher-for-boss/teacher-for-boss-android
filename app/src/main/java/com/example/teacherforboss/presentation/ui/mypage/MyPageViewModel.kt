@@ -38,6 +38,10 @@ class MyPageViewModel @Inject constructor(
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
 
+    val _role=MutableLiveData<String>("")
+    val role: LiveData<String>
+        get()=_role
+
 //    fun setMockProfileDate() {
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)
 //        // _userProfileInfoState.value = UiState.Success(mockBoss)

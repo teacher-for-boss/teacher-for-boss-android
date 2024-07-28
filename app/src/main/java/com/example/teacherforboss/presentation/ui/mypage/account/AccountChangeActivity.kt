@@ -12,7 +12,9 @@ import com.example.teacherforboss.R
 import com.example.teacherforboss.databinding.ActivityAccountChangeBinding
 import com.example.teacherforboss.presentation.ui.auth.signup.teacher.BankFragment
 import com.example.teacherforboss.databinding.ActivityExchangeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AccountChangeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAccountChangeBinding
@@ -39,10 +41,11 @@ class AccountChangeActivity : AppCompatActivity() {
 
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
-            val intent= Intent(this, ExchangeActivity::class.java).apply {
+            /*val intent= Intent(this, ExchangeActivity::class.java).apply {
                 putExtra("FRAGMENT_DESTINATION","EXCHANGE")
             }
-            startActivity(intent)
+            startActivity(intent)*/
+            finish()
         }
 
     }

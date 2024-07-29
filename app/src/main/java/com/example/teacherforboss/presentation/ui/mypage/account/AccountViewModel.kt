@@ -3,9 +3,23 @@ package com.example.teacherforboss.presentation.ui.mypage.account
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.teacherforboss.domain.model.mypage.MyPageProfileEntity
+import com.example.teacherforboss.domain.model.payment.BankAccountResponseEntity
+import com.example.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
+import com.example.teacherforboss.domain.usecase.payment.BankAccountUseCase
+import com.example.teacherforboss.util.view.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class AccountViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class AccountViewModel @Inject constructor(
+    private val bankAccountUseCase: BankAccountUseCase,
+    private val bankAccountChangeUseCase: BankAccountChangeUseCase
+) : ViewModel() {
 
     var _chosenBank = MutableLiveData<String>("")
     val chosenBank: LiveData<String>
@@ -43,5 +57,17 @@ class AccountViewModel @Inject constructor() : ViewModel() {
 
     fun setInputName(name: String) {
         _etInputName.value = name
+    }
+    private val _bankAccountInfoState = MutableStateFlow<UiState<BankAccountResponseEntity>>(UiState.Empty)
+    val bankAccountInfoState get() = _bankAccountInfoState.asStateFlow()
+
+    fun getUserProfile() {
+        viewModelScope.launch {
+            bankAccountUseCase().onSuccess { bankAccountResponseEntity ->
+                _bankAccountInfoState.value=UiState.Success(bankAccountResponseEntity)
+            }.onFailure { exception: Throwable ->
+                _bankAccountInfoState.value=UiState.Error(exception.message)
+            }
+        }
     }
 }

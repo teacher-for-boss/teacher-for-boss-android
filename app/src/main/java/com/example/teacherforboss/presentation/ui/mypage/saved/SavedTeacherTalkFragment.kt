@@ -25,7 +25,7 @@ class SavedTeacherTalkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvCard.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCard.adapter = SavedTeacherTalkCardAdapter()
+        binding.rvCard.adapter = SavedTeacherTalkCardAdapter(requireContext())
     }
 
     override fun onDestroyView() {

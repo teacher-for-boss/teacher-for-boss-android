@@ -18,7 +18,7 @@ import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.example.teacherforboss.util.base.LocalDateFormatter
 
 class SavedTeacherTalkCardAdapter(context: Context) :
-    RecyclerView.Adapter<SavedTeacherTalkCardAdapter.TeacherTalkMainCardViewHolder>() {
+    RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     private var teacherTalkCardList: MutableList<QuestionEntity> = mutableListOf()
@@ -28,12 +28,12 @@ class SavedTeacherTalkCardAdapter(context: Context) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TeacherTalkMainCardViewHolder {
+    ): SavedTeacherTalkCardViewHolder {
         val binding = ItemTeacherTalkCardBinding.inflate(inflater, parent, false)
-        return TeacherTalkMainCardViewHolder(binding)
+        return SavedTeacherTalkCardViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TeacherTalkMainCardViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SavedTeacherTalkCardViewHolder, position: Int) {
         holder.onBind(teacherTalkCardList[position])
     }
 
@@ -41,25 +41,10 @@ class SavedTeacherTalkCardAdapter(context: Context) :
         return teacherTalkCardList.size
     }
 
-    fun setCardList(cardList: List<QuestionEntity>) {
-        this.allTeacherTalkCard = cardList
-        this.teacherTalkCardList = allTeacherTalkCard.take(10).toMutableList()
-        notifyDataSetChanged()
-    }
-
-    fun addMoreCards(newQuestionList:List<QuestionEntity>) {
-        val currentSize = teacherTalkCardList.size
-        val newItemSize=newQuestionList.size
-        if(newItemSize>0){
-            teacherTalkCardList.addAll(newQuestionList)
-            notifyItemRangeInserted(currentSize,newItemSize)
-        }
-    }
-
-    inner class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBinding) :
+    inner class SavedTeacherTalkCardViewHolder(private val binding: ItemTeacherTalkCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(teacherTalkCard: QuestionEntity) {
+        fun onBind(teacherTalkCard: QuestionEntity) { // 나중에 수정
             val questionText = "Q. ${teacherTalkCard.title}"
 
             // Q. 부분 색상 설정
@@ -75,9 +60,6 @@ class SavedTeacherTalkCardAdapter(context: Context) :
 
             binding.tvTeacherTalkQuestion.text = spannable
             binding.tvTeacherTalkContent.text = teacherTalkCard.content
-            binding.tvTeacherTalkBookmarkCount.text = teacherTalkCard.bookmarkCount.toString()
-            binding.tvTeacherTalkLikeCount.text = teacherTalkCard.likeCount.toString()
-            binding.tvTeacherTalkAnswerCount.text = teacherTalkCard.answerCount.toString()
             binding.tvTeacherTalkDate.text = LocalDateFormatter.extractDate(teacherTalkCard.createdAt)
 
             binding.icTeacherTalkBookmark.isSelected = teacherTalkCard.bookmarked

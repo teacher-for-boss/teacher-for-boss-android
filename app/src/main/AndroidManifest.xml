@@ -40,19 +40,26 @@
 
         <activity
             android:name=".presentation.ui.auth.login.LoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-             <intent-filter>
-               <action android:name="android.intent.action.MAIN" />
-               <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+
         </activity>
   
         <activity
             android:name=".presentation.ui.mypage.modify.ModifyTeacherProfileActivity"
             android:exported="false"
             android:theme="@style/Theme.TeacherForBoss">
+        </activity>
+
+        <activity
+            android:name=".presentation.ui.mypage.saved.SavedTalkActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TeacherForBoss">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity

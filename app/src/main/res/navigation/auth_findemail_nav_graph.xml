@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/findEmailFragment"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment"
         android:label="findEmailFragment" >
         <action
             android:id="@+id/action_findEmailFragment_to_findEmailFragment2"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/findEmailFragment2"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment2"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment2"
         android:label="fragment_find_email2"
         tools:layout="@layout/fragment_find_email2" >
         <action
@@ -30,16 +30,16 @@
     </fragment>
     <fragment
         android:id="@+id/findPwFragment"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findPwFragment"
         android:label="findPwFragment" />
     <activity
         android:id="@+id/loginActivity"
-        android:name="com.example.teacherforboss.presentation.ui.auth.login.LoginActivity"
+        android:name="com.company.teacherforboss.presentation.ui.auth.login.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
     <fragment
         android:id="@+id/findEmailFragment3"
-        android:name="com.example.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment3"
+        android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.findEmailFragment3"
         android:label="fragment_find_email3"
         tools:layout="@layout/fragment_find_email3" >
         <action
@@ -48,6 +48,6 @@
     </fragment>
     <activity
         android:id="@+id/signupActivity"
-        android:name="com.example.teacherforboss.presentation.ui.auth.signup.SignupActivity"
+        android:name="com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity"
         android:label="SignupActivity" />
 </navigation>

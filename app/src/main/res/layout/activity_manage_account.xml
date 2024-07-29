@@ -8,7 +8,7 @@
     <data>
         <variable
             name="myPageViewModel"
-            type="com.example.teacherforboss.presentation.ui.mypage.MyPageViewModel" />
+            type="com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel" />
 
     </data>
 

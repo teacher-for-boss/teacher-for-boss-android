@@ -5,7 +5,7 @@
     <data>
         <variable
             name="findPwviewModel"
-            type="com.example.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel" />
+            type="com.company.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel" />
 
     </data>
 

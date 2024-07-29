@@ -7,7 +7,7 @@
 
         <variable
             name="teacherProfileViewModel"
-            type="com.example.teacherforboss.presentation.ui.common.TeacherProfileViewModel" />
+            type="com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

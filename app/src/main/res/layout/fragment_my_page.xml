@@ -7,7 +7,7 @@
 
         <variable
             name="myPageViewModel"
-            type="com.example.teacherforboss.presentation.ui.mypage.MyPageViewModel" />
+            type="com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -509,10 +509,6 @@
                         app:layout_constraintTop_toBottomOf="@id/include_my_page_menu_inquire"
                         app:title="@{@string/my_page_menu_terms}" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="320dp" />
 
                 <TextView
                     android:id="@+id/tv_log_out_btn"

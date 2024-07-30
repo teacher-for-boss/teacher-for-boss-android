@@ -1,0 +1,98 @@
+package com.company.teacherforboss.domain.repository
+
+import com.company.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkBookmarkResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkLikeResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentDeleteResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentLikeRequestEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentRequestEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkLikeResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkModifyPostResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkPostsRequestEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkPostsResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkRequestEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkUploadPostRequestEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkUploadPostResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherAnswerPostResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherAnswerModifyResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherAnswerPostRequestEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerRequestEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkDeleteResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkModifyResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherUploadPostRequestEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherUploadPostResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkSelectResponseEntity
+
+
+interface CommunityRepository {
+    suspend fun getBossTalkPosts(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
+
+    suspend fun getTeacherTalkQuestions(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity
+
+    suspend fun searchKeywordBossTalk(bossTalkPostsRequestEntity: BossTalkPostsRequestEntity):BossTalkPostsResponseEntity
+
+    suspend fun uploadBossTalkPost(bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity):BossTalkUploadPostResponseEntity
+
+    suspend fun getBossTalkBookmark(bossTalkRequestEntity: BossTalkRequestEntity):BossTalkBookmarkResponseEntity
+
+    suspend fun getBossTalkLike(bossTalkRequestEntity: BossTalkRequestEntity):BossTalkLikeResponseEntity
+
+    suspend fun getBossTalkBody(bossTalkRequestEntity: BossTalkRequestEntity):BossTalkBodyResponseEntity
+
+    suspend fun modifyBossTalkBody(bossTalkRequestEntity: BossTalkRequestEntity,bossTalkUploadPostRequestEntity: BossTalkUploadPostRequestEntity):BossTalkModifyPostResponseEntity
+
+    suspend fun getBossTalkCommentList(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentListResponseEntity
+
+    suspend fun postBossTalkComment(bossTalkCommentRequestEntity: BossTalkCommentRequestEntity, bossTalkRequestEntity: BossTalkRequestEntity): BossTalkCommentResponseEntity
+
+    suspend fun deleteBossTalkPost(bossTalkRequestEntity: BossTalkRequestEntity): BossTalkDeletePostResponseEntity
+
+    suspend fun deleteBossTalkComment(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentDeleteResponseEntity
+
+    suspend fun postBossTalkCommentLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity): BossTalkCommentLikeResponseEntity
+
+    suspend fun postBossTalkCommentdisLike(bossTalkCommentLikeRequestEntity: BossTalkCommentLikeRequestEntity):BossTalkCommentLikeResponseEntity
+
+    //TeacherTalk
+    suspend fun getTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity):TeacherTalkBodyResponseEntity
+
+    suspend fun uploadTeacherTalkPost(teacherUploadPostRequestEntity: TeacherUploadPostRequestEntity): TeacherUploadPostResponseEntity
+
+    suspend fun modifyTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherUploadPostRequestEntity: TeacherUploadPostRequestEntity): TeacherTalkModifyResponseEntity
+
+    suspend fun deleteTeacherTalkBody(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkDeleteResponseEntity
+
+    suspend fun getTeacherTalkAnswerList(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkAnswerListResponseEntity
+
+    suspend fun postTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerPostResponseEntity
+
+    suspend fun postTeacherTalkAnswerLike(teacherTalkAnswerLikeRequestEntity: TeacherTalkAnswerLikeRequestEntity): TeacherTalkAnswerLikeResponseEntity
+
+    suspend fun postTeacherTalkAnswerDislike(teacherTalkAnswerLikeRequestEntity: TeacherTalkAnswerLikeRequestEntity): TeacherTalkAnswerLikeResponseEntity
+
+    suspend fun deleteTeacherTalkAns(teacherTalkAnsRequestEntity: TeacherTalkAnsRequestEntity): TeacherTalkAnsResponseEntity
+
+    suspend fun modifyTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity, teacherAnswerPostRequestEntity: TeacherAnswerPostRequestEntity): TeacherAnswerModifyResponseEntity
+
+    suspend fun selectTeacherTalkAnswer(teacherTalkRequestEntity: TeacherTalkRequestEntity, teacherTalkAnswerRequestEntity: TeacherTalkAnswerRequestEntity): TeacherTalkSelectResponseEntity
+
+    suspend fun getTeacherTalkLike(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkLikeResponseEntity
+
+    suspend fun getTeacherTalkBookmark(teacherTalkRequestEntity: TeacherTalkRequestEntity): TeacherTalkBookmarkResponseEntity
+
+    suspend fun searchKeywordTeacherTalk(teacherTalkQuestionsRequestEntity: TeacherTalkQuestionsRequestEntity): TeacherTalkQuestionsResponseEntity
+}

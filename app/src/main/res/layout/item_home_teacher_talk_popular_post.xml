@@ -6,7 +6,7 @@
 
         <variable
             name="teacherTalkPopularPostItem"
-            type="com.example.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity" />
+            type="com.company.teacherforboss.domain.model.home.TeacherTalkPopularPostEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

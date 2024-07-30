@@ -7,7 +7,7 @@
 
         <variable
             name="bossTalkPopularPostEntity"
-            type="com.example.teacherforboss.domain.model.home.BossTalkPopularPostEntity" />
+            type="com.company.teacherforboss.domain.model.home.BossTalkPopularPostEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

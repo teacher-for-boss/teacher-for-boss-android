@@ -7,7 +7,7 @@
 
         <variable
             name="weeklyBestTeacherItem"
-            type="com.example.teacherforboss.domain.model.home.WeeklyBestTeacherEntity" />
+            type="com.company.teacherforboss.domain.model.home.WeeklyBestTeacherEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -7,7 +7,7 @@
 
         <variable
             name="teacherTalkShortcutItem"
-            type="com.example.teacherforboss.presentation.model.TeacherTalkShortCutModel" />
+            type="com.company.teacherforboss.presentation.model.TeacherTalkShortCutModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

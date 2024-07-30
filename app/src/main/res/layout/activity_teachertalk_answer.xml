@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerViewModel" />
+            type="com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerViewModel" />
     </data>
 
     <ScrollView

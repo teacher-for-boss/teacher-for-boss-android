@@ -17,7 +17,7 @@ val properties = Properties().apply {
 }
 
 android {
-    namespace = "com.example.teacherforboss"
+    namespace = "com.company.teacherforboss"
     compileSdk = 34
 
     defaultConfig {
@@ -27,7 +27,7 @@ android {
         // manifest
         manifestPlaceholders["KAKAO_APPKEY"] = getApiKey("KAKAO_APPKEY")
 
-        applicationId = "com.example.teacherforboss"
+        applicationId = "com.company.teacherforboss"
         minSdk = 28
         targetSdk = 34
         versionCode = 13

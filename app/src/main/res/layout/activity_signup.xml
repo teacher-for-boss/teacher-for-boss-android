@@ -9,7 +9,7 @@
     <data>
         <variable
             name="signupViewModel"
-            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+            type="com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
 
     </data>
 

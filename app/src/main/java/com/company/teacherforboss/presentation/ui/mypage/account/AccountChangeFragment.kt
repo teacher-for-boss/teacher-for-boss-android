@@ -31,6 +31,8 @@ class AccountChangeFragment : Fragment() {
         _binding = FragmentAccountChangeBinding.inflate(inflater, container, false)
         binding.accountViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        getUserProfile()
+        collectData()
 
 
         return binding.root
@@ -38,8 +40,7 @@ class AccountChangeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getUserProfile()
-        collectData()
+
 
 
         binding.chosenBank.setOnClickListener {
@@ -75,8 +76,8 @@ class AccountChangeFragment : Fragment() {
     private fun initLayout(bankAccount: BankAccountResponseEntity){
         viewModel.apply{
             setChosenBank(bankAccount.bank)
-            setInputAccount(bankAccount.accountHolder)
-            setInputName(bankAccount.accountNumber)
+            setInputAccount(bankAccount.accountNumber)
+            setInputName(bankAccount.accountHolder)
         }
     }
 

@@ -35,21 +35,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initLayout(profile: MyPageProfileEntity) {
-        BindingImgAdapter.bindProfileImgUrl(binding.ivMyPageProfile, profile.profileImg)
+        binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         val role = profile.role
         if (role == ROLE_TEACHER) {
-            setTeacherProfileLayout()
-            setTeacherMenuBarLayout()
-//            setTeacherMenuLayout()
-            // TODO 삭제
-            setTeacherProfileLayoutByAPI(profile)
             setTeacherMenuLayout()
-            binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
+            setTeacherMenuBarLayout()
+            setTeacherProfileLayoutByAPI(profile)
+            setTeacherProfileLayout()
+
         } else {
-//            setBossMenuLayout()
-            // TODO 삭제
+            setBossMenuLayout()
             setBossProfileLayoutByAPI(profile)
-            binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         }
     }
 

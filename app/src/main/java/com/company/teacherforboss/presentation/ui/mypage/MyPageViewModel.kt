@@ -1,5 +1,7 @@
 package com.company.teacherforboss.presentation.ui.mypage
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
@@ -35,7 +37,7 @@ class MyPageViewModel @Inject constructor(
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
 
-    val _role=MutableLiveData<String>("")
+    val _role= MutableLiveData<String>("")
     val role: LiveData<String>
         get()=_role
 

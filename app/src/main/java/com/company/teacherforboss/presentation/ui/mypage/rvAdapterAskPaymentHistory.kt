@@ -7,45 +7,46 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
+import com.company.teacherforboss.databinding.RvItemAskPaymentHistoryBinding
+import com.company.teacherforboss.databinding.RvItemCommentBossBinding
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AskPaymentHistoryItem
 
 class rvAdapterAskPaymentHistory(
     private val context: Context,
     private val AskPaymentHistoryList: List<AskPaymentHistoryItem>
-) : RecyclerView.Adapter<rvAdapterAskPaymentHistory.ItemViewHolder>() {
-    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameText: TextView = itemView.findViewById(R.id.rv_ask_payment_history_name)
-        val QticketText: TextView = itemView.findViewById(R.id.rv_ask_payment_history_Qticket)
-        val timeText: TextView = itemView.findViewById(R.id.rv_ask_payment_history_time)
+) : RecyclerView.Adapter<rvAdapterAskPaymentHistory.ViewHolder>() {
+    inner class ViewHolder(private val binding: RvItemAskPaymentHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind (/*history:ExchangeHistoryEntity*/ history:AskPaymentHistoryItem){
-            timeText.text = history.time
+            binding.rvAskPaymentHistoryTime.text = history.time
             when (history.type){
                 "pay" -> {
-                    nameText.text = context.getString(R.string.ask_payment_history_pay)
-                    QticketText.text = "+${history.questionTicketCount}개"
+                    binding.apply {
+                        rvAskPaymentHistoryName.text = context.getString(R.string.ask_payment_history_pay)
+                        rvAskPaymentHistoryQticket.text = "+${history.questionTicketCount}개"
+                    }
                 }
                 "refund" -> {
-                    nameText.text = context.getString(R.string.ask_payment_history_refund)
-                    QticketText.text = "-${history.questionTicketCount}개"
+                    binding.apply {
+                        rvAskPaymentHistoryName.text = context.getString(R.string.ask_payment_history_refund)
+                        rvAskPaymentHistoryQticket.text = "-${history.questionTicketCount}개"
+                    }
 
                 }
             }
-
-
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_ask_payment_history, parent, false)
-        return ItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = RvItemAskPaymentHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return AskPaymentHistoryList.size
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(AskPaymentHistoryList[position])
     }
 

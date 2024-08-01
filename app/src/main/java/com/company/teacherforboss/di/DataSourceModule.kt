@@ -1,4 +1,4 @@
-package com.company.teacherforboss.di
+package com.example.teacherforboss.di
 
 import com.company.teacherforboss.data.datasource.remote.AuthRemoteDataSource
 import com.company.teacherforboss.data.datasource.remote.AwsRemoteDataSource

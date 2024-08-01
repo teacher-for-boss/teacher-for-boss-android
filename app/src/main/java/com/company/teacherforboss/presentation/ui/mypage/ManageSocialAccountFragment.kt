@@ -68,7 +68,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
                     }
                     else->Unit
                 }
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
     private fun showDialogFragment(index: String) {
         // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가

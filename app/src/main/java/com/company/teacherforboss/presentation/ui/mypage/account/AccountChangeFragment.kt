@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentAccountChangeBinding
-import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.presentation.ui.mypage.account.AccountViewModel
 import com.company.teacherforboss.presentation.ui.mypage.account.BankAccountFragment
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.util.view.UiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

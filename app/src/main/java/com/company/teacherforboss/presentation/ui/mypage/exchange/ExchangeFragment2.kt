@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -31,10 +32,9 @@ class ExchangeFragment2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        applyExchange()
         changeAccountInfo()
+        setupObservers()
         setupClickListeners()
-
 
 
     }
@@ -50,13 +50,17 @@ class ExchangeFragment2 : Fragment() {
             startActivity(intent)
         }
     }
-    fun getAccountInfo(){
+
+    fun getAccountInfo() {
 
     }
 
     private fun setupClickListeners() {
         binding.btnExchangeApply.setOnClickListener {
             val points = viewModel.tpValue.value?.toIntOrNull() ?: 0
+
+            if (!isValidPoints(points)) return@setOnClickListener
+
             viewModel.applyExchange(points)
         }
 
@@ -78,12 +82,20 @@ class ExchangeFragment2 : Fragment() {
         })
     }
 
+    private fun isValidPoints(points: Int): Boolean {
+        return when {
+            points < 550 -> {
+                Toast.makeText(requireContext(), "최소 550tp 이상 교환할 수 있습니다.", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
 
-    private fun applyExchange() {
-        // 환전 신청하기
-        binding.btnExchangeApply.setOnClickListener {
-            val point = viewModel.tpValue.value?.toIntOrNull() ?: 0
-            viewModel.applyExchange(point)
+            points % 100 != 0 -> {
+                Toast.makeText(requireContext(), "100tp 단위로 교환할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                false
+            }
+
+            else -> true
         }
     }
 }

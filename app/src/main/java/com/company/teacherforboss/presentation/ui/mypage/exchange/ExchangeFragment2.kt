@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.room.InvalidationTracker
 import com.company.teacherforboss.databinding.FragmentExchange2Binding
 
 class ExchangeFragment2 : Fragment() {
@@ -28,9 +30,34 @@ class ExchangeFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnExchangeApply.setOnClickListener {
-            val intent = Intent(requireContext(), ExchangeCompleteActivity::class.java)
+
+        applyExchange()
+        changeAccountInfo()
+        setupClickListeners()
+
+
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    fun changeAccountInfo() {
+        binding.tvChangeInfo.setOnClickListener {
+            val intent = Intent(requireContext(), AccountChangeActivity::class.java)
             startActivity(intent)
+        }
+    }
+    fun getAccountInfo(){
+
+    }
+
+    private fun setupClickListeners() {
+        binding.btnExchangeApply.setOnClickListener {
+            val points = viewModel.tpValue.value?.toIntOrNull() ?: 0
+            viewModel.applyExchange(points)
         }
 
         binding.tvChangeInfo.setOnClickListener {
@@ -39,8 +66,24 @@ class ExchangeFragment2 : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setupObservers() {
+        viewModel.exchangeResult.observe(viewLifecycleOwner, Observer { response ->
+            response?.let {
+                val intent = Intent(requireContext(), ExchangeCompleteActivity::class.java).apply {
+                    putExtra("exchangeId", it.exchangeId)
+                    putExtra("createdAt", it.createdAt)
+                }
+                startActivity(intent)
+            }
+        })
+    }
+
+
+    private fun applyExchange() {
+        // 환전 신청하기
+        binding.btnExchangeApply.setOnClickListener {
+            val point = viewModel.tpValue.value?.toIntOrNull() ?: 0
+            viewModel.applyExchange(point)
+        }
     }
 }

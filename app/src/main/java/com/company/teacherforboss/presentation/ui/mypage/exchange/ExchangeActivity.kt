@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityExchangeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ExchangeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityExchangeBinding
@@ -20,15 +22,14 @@ class ExchangeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            // Get the intent and check if it should start with ExchangeFragment2
             if (intent.getBooleanExtra("startWithFragment2", false)) {
                 supportFragmentManager.commit {
                     replace(R.id.fragment_container, ExchangeFragment2())
                 }
             } else {
-                supportFragmentManager.commit {
-                    replace(R.id.fragment_container, ExchangeFragment())
-                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, ExchangeFragment())
+                    .commit()
             }
         }
         onBackBtnPressed()

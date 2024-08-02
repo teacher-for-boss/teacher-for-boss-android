@@ -1,6 +1,8 @@
 package com.company.teacherforboss.data.repository
 
 import com.company.teacherforboss.data.datasource.remote.PaymentRemoteDataSource
+import com.company.teacherforboss.domain.model.exchange.ExchangeRequestEntity
+import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountChangeRequestEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountChangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
@@ -20,4 +22,9 @@ class PaymentRepositoryImpl @Inject constructor(
                 .result.toBankAccountResponseEntity()
         }.getOrElse { err -> throw err }
 
+    override suspend fun exchange(exchangeRequestEntity: ExchangeRequestEntity): ExchangeResponseEntity =
+        runCatching {
+            paymentRemoteDataSource.exchange(requestExchangeDto = exchangeRequestEntity.toRequestExchangeDto())
+                .result.toExchangeResponseEntity()
+        }.getOrElse { err -> throw err }
 }

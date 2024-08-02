@@ -135,10 +135,10 @@
                         app:layout_constraintEnd_toEndOf="parent"/>
 
                     <TextView
-                        android:id="@+id/tv_my_name"
+                        android:id="@+id/tv_account_holder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_account_name"
+                        android:text="@{exchangeViewModel.accountHolder}"
                         android:layout_marginTop="12dp"
                         android:paddingVertical="5dp"
                         android:textSize="14sp"
@@ -148,17 +148,31 @@
                         app:layout_constraintStart_toStartOf="@id/tv_my_account"/>
 
                     <TextView
-                        android:id="@+id/tv_my_account_number"
+                        android:id="@+id/tv_bank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_account_number"
+                        android:text="@{exchangeViewModel.bank}"
                         android:textSize="12sp"
                         android:paddingTop="5dp"
                         android:paddingBottom="17dp"
                         android:textColor="@color/Gray600"
                         android:fontFamily="@font/pretendard_regular"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_name"
-                        app:layout_constraintStart_toStartOf="@id/tv_my_name"/>
+                        app:layout_constraintTop_toBottomOf="@id/tv_account_holder"
+                        app:layout_constraintStart_toStartOf="@id/tv_account_holder"/>
+
+                    <TextView
+                        android:id="@+id/tv_my_account_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{exchangeViewModel.accountNumber}"
+                        android:textSize="12sp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="17dp"
+                        android:layout_marginStart="3dp"
+                        android:textColor="@color/Gray600"
+                        android:fontFamily="@font/pretendard_regular"
+                        app:layout_constraintTop_toBottomOf="@id/tv_account_holder"
+                        app:layout_constraintStart_toEndOf="@id/tv_bank"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

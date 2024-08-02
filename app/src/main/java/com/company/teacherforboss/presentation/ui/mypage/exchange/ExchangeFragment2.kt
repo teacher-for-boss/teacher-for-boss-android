@@ -10,7 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.room.InvalidationTracker
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchange2Binding
+import com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity
+import com.company.teacherforboss.presentation.ui.mypage.ManageAccountFragment
+import com.company.teacherforboss.presentation.ui.mypage.ManageSocialAccountFragment
+import com.company.teacherforboss.util.base.LocalDataSource
 
 class ExchangeFragment2 : Fragment() {
 
@@ -43,6 +48,7 @@ class ExchangeFragment2 : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
     fun changeAccountInfo() {
         binding.tvChangeInfo.setOnClickListener {

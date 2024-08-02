@@ -8,17 +8,28 @@ import com.company.teacherforboss.data.model.request.payment.RequestExchangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseExchangeDto
 import com.company.teacherforboss.domain.model.exchange.ExchangeRequestEntity
 import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
+import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.domain.repository.PaymentRepository
+import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
+import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
+import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ExchangeViewModel @Inject constructor(
     private val paymentRepository: PaymentRepository,
-    private val exchangeUseCase: ExchangeUseCase
+    private val exchangeUseCase: ExchangeUseCase,
+    private val accountUseCase: BankAccountUseCase
 ) : ViewModel() {
+
+    private val _getAccountState: MutableStateFlow<UiState<BankAccountResponseEntity>> = MutableStateFlow(UiState.Empty)
+    val getAccountState get() = _getAccountState.asStateFlow()
+
     val tpValue = MutableLiveData<String>(null)
 
     private var _convertedValue = MutableLiveData<String>()
@@ -32,6 +43,15 @@ class ExchangeViewModel @Inject constructor(
     private val _exchangeResult = MutableLiveData<ExchangeResponseEntity>()
     val exchangeResult: LiveData<ExchangeResponseEntity> get() = _exchangeResult
 
+    private val _bank = MutableLiveData<String>()
+    val bank: LiveData<String> get() = _bank
+
+    private val _accountHolder = MutableLiveData<String>()
+    val accountHolder: LiveData<String> get() = _accountHolder
+
+    private val _accountNumber = MutableLiveData<String>()
+    val accountNumber: LiveData<String> get() = _accountNumber
+
     init {
         tpValue.observeForever {
             _convertedValue.value = try {
@@ -43,13 +63,12 @@ class ExchangeViewModel @Inject constructor(
             }
             _isExchangeButtonEnabled.value = !(it.isNullOrBlank() || it.toDoubleOrNull() == 0.0)
         }
+        getAccountInfo()
     }
 
     fun setTpValue(value: String) {
         tpValue.value = value
     }
-
-
 
     fun applyExchange(points: Int) {
         viewModelScope.launch {
@@ -58,9 +77,21 @@ class ExchangeViewModel @Inject constructor(
                 val response = exchangeUseCase(request)
                 _exchangeResult.postValue(response)
             } catch (e: Exception) {
-            //
+                // Handle the exception
             }
         }
     }
 
+    private fun getAccountInfo() {
+        viewModelScope.launch {
+            accountUseCase().onSuccess { bankAccountResponseEntity ->
+                _bank.postValue(bankAccountResponseEntity.bank)
+                _accountHolder.postValue(bankAccountResponseEntity.accountHolder)
+                _accountNumber.postValue(bankAccountResponseEntity.accountNumber)
+                _getAccountState.value = UiState.Success(bankAccountResponseEntity)
+            }.onFailure { exception: Throwable ->
+                _getAccountState.value = UiState.Error(exception.message)
+            }
+        }
+    }
 }

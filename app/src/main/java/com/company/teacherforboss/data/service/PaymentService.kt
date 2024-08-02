@@ -14,7 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface PaymentService {
-    @GET("payment/accounts")
+    @GET("payments/accounts")
     suspend fun getBankAccount(
     ): BaseResponse<ResponseBankAccountDto>
 

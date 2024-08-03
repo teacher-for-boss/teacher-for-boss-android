@@ -13,9 +13,10 @@ import java.util.Random
 
 class TFBFirebaseMessagingService: FirebaseMessagingService() {
     companion object {
-        private const val NOTIFICATION_CHANNEL_ID = "tfb"
+        private const val NOTIFICATION_CHANNEL_ID = "teacherForBoss"
         private const val NOTIFICATION_CHANNEL_NAME = "Notification"
-        private const val NOTIFICATION_CHANNEL_DESCRIPTION = "notification channel"
+        private const val NOTIFICATION_CHANNEL_DESCRIPTION = "NotificationChannel"
+        const val INFO="INFO"
     }
 
     override fun onNewToken(token: String) {
@@ -24,13 +25,19 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        if (remoteMessage.data.isNotEmpty()) {
-            val content = remoteMessage.data["content"]
-            content?.let { showNotification(it) }
+
+        Log.d("FCM Log", "Message received from: ${remoteMessage.from}")
+        Log.d("fcm test",remoteMessage.toString())
+        remoteMessage.notification!!.body?.let {
+            val title=remoteMessage.notification!!.title.toString()
+            val body = remoteMessage.notification!!.body.toString()
+            Log.d("fcm test",title)
+            Log.d("fcm test",body)
+            showNotification(title,body)
         }
     }
 
-    private fun showNotification(content: String) {
+    private fun showNotification(title: String, content: String) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
@@ -38,10 +45,10 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("A new post you might be interested in.")
+            .setSmallIcon(R.drawable.logo_teacherforboss)
+            .setContentTitle(title)
             .setContentText(content)
-            .setContentInfo("Info")
+            .setContentInfo(INFO)
         notificationManager.notify(Random().nextInt(), notificationBuilder.build())
     }
 
@@ -57,7 +64,6 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
             manager.createNotificationChannel(notificationChannel)
         }
     }
-
 
 
 }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "519656306577",
+    "project_id": "teacher-for-boss",
+    "storage_bucket": "teacher-for-boss.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519656306577:android:3ceabe8ce7923c1bd80c30",
+        "android_client_info": {
+          "package_name": "com.company.teacherforboss"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOcTCnLiOW9EU8eLkKK-wyVbfOekCr4xA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519656306577:android:6a6eed6af09cd7dfd80c30",
+        "android_client_info": {
+          "package_name": "com.company.teacherforboss"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOcTCnLiOW9EU8eLkKK-wyVbfOekCr4xA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,10 +5,11 @@ import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountChangeRequestEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountChangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
+import com.company.teacherforboss.domain.model.payment.TeacherPointResponseEntity
 
 interface PaymentRepository {
     suspend fun getBankAccount(): Result<BankAccountResponseEntity>
     suspend fun changeBankAccount(bankAccountChangeRequestEntity: BankAccountChangeRequestEntity): BankAccountChangeResponseEntity
     suspend fun exchange(exchangeRequestEntity: ExchangeRequestEntity):ExchangeResponseEntity
-
+    suspend fun getTeacherPoint(): Result<TeacherPointResponseEntity>
 }

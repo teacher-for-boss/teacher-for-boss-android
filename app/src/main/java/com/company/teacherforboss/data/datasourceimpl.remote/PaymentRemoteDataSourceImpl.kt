@@ -8,6 +8,7 @@ import com.company.teacherforboss.data.model.response.payment.RequestBankAccount
 import com.company.teacherforboss.data.model.response.payment.ResponseBankAccountChangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseBankAccountDto
 import com.company.teacherforboss.data.model.response.payment.ResponseExchangeDto
+import com.company.teacherforboss.data.model.response.payment.ResponseTeacherPointDto
 import com.company.teacherforboss.data.service.PaymentService
 import com.company.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
@@ -22,5 +23,6 @@ class PaymentRemoteDataSourceImpl @Inject constructor(
         paymentService.changeBankAccount(requestBankAccountChangeDto)
     override suspend fun exchange(requestExchangeDto: RequestExchangeDto): BaseResponse<ResponseExchangeDto>
             =paymentService.exchange(requestExchangeDto)
-
+    override suspend fun getTeacherPoint(): BaseResponse<ResponseTeacherPointDto> =
+        paymentService.getTeacherPoint()
 }

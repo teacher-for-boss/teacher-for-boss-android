@@ -6,6 +6,7 @@ import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountChangeRequestEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountChangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
+import com.company.teacherforboss.domain.model.payment.TeacherPointResponseEntity
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import javax.inject.Inject
 
@@ -27,4 +28,9 @@ class PaymentRepositoryImpl @Inject constructor(
             paymentRemoteDataSource.exchange(requestExchangeDto = exchangeRequestEntity.toRequestExchangeDto())
                 .result.toExchangeResponseEntity()
         }.getOrElse { err -> throw err }
+
+    override suspend fun getTeacherPoint() :Result<TeacherPointResponseEntity> =
+        runCatching {
+            paymentRemoteDataSource.getTeacherPoint().result.toTeacherPointResponseEntity()
+        }
 }

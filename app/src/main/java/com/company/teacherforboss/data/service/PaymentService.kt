@@ -6,6 +6,7 @@ import com.company.teacherforboss.data.model.response.payment.RequestBankAccount
 import com.company.teacherforboss.data.model.response.payment.ResponseBankAccountChangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseBankAccountDto
 import com.company.teacherforboss.data.model.response.payment.ResponseExchangeDto
+import com.company.teacherforboss.data.model.response.payment.ResponseTeacherPointDto
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,4 +28,8 @@ interface PaymentService {
     suspend fun exchange(
         @Body requestExchangeDto: RequestExchangeDto
     ):BaseResponse<ResponseExchangeDto>
+
+    @GET("payments/points")
+    suspend fun getTeacherPoint(
+    ): BaseResponse<ResponseTeacherPointDto>
 }

@@ -50,7 +50,7 @@ class ExchangeFragment2 : Fragment() {
     }
 
 
-    fun changeAccountInfo() {
+    private fun changeAccountInfo() {
         binding.tvChangeInfo.setOnClickListener {
             val intent = Intent(requireContext(), AccountChangeActivity::class.java)
             startActivity(intent)

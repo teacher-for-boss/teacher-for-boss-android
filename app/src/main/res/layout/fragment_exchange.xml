@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="exchangeViewModel"
+            type="com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -43,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                android:id="@+id/tv_current_point"
+                android:id="@+id/tv_teacher_point"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -51,7 +56,7 @@
                 android:textColor="@color/Purple600"
                 android:lineSpacingExtra="6sp"
                 android:fontFamily="@font/pretendard_semibold"
-                android:text="[]TP"
+                app:TeacherPoint="@{exchangeViewModel.currentTeacherPoint}"
                 android:textSize="28sp"
                 android:paddingBottom="20dp"
 

@@ -23,3 +23,8 @@ fun setBackGroundTint(textView: TextView, resId: Int) {
     val colorRes = ContextCompat.getColor(textView.context, resId)
     textView.backgroundTintList = ColorStateList.valueOf(colorRes)
 }
+
+@BindingAdapter("TeacherPoint")
+fun setTeacherPoint(textView: TextView, resId: Int?) {
+    textView.text = resId?.let { "$it TP" } ?: "0 TP"
+}

@@ -19,7 +19,10 @@ class ExchangeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentExchangeBinding.inflate(inflater, container, false)
+        _binding = FragmentExchangeBinding.inflate(inflater, container, false).apply {
+            exchangeViewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
         return binding.root
 
 
@@ -27,6 +30,7 @@ class ExchangeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getTeacherPoint()
 
         binding.btnExchange.setOnClickListener {
             parentFragmentManager.beginTransaction()

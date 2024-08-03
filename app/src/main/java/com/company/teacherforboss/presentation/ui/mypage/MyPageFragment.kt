@@ -11,6 +11,7 @@ import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.component.DialogPopupFragment
@@ -84,6 +85,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
 
 
+            }
+            includeMyPageMenuExchange.root.setOnClickListener{
+                val intent = Intent(context, ExchangeActivity::class.java)
+                startActivity(intent)
             }
 
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }

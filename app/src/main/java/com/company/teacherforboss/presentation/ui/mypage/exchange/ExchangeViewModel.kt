@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.exchange
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.TeacherPointUseCase
+import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExchangeViewModel @Inject constructor(
+    application: Application,
     private val paymentRepository: PaymentRepository,
     private val exchangeUseCase: ExchangeUseCase,
     private val accountUseCase: BankAccountUseCase,
@@ -35,6 +38,9 @@ class ExchangeViewModel @Inject constructor(
 
     private val _getTeacherPointState: MutableStateFlow<UiState<TeacherPointResponseEntity>> = MutableStateFlow(UiState.Empty)
     val getTeacherPointState get() = _getTeacherPointState.asStateFlow()
+
+    private val _userName = MutableLiveData<String>()
+    val userName: LiveData<String> get() = _userName
 
     private val _currentTeacherPoint: MutableLiveData<Int> = MutableLiveData(0)
     val currentTeacherPoint: LiveData<Int>
@@ -74,6 +80,7 @@ class ExchangeViewModel @Inject constructor(
             _isExchangeButtonEnabled.value = !(it.isNullOrBlank() || it.toDoubleOrNull() == 0.0)
         }
         getAccountInfo()
+        _userName.value = LocalDataSource.getUserInfo(application.applicationContext, "name")
         getTeacherPoint()
     }
 

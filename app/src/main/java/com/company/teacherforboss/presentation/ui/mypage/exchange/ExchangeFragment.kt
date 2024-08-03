@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchangeBinding
+import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 
 class ExchangeFragment : Fragment() {
 
@@ -31,6 +33,7 @@ class ExchangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getTeacherPoint()
+        setupObservers()
 
         binding.btnExchange.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -40,9 +43,14 @@ class ExchangeFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupObservers() {
+        viewModel.userName.observe(viewLifecycleOwner, Observer { userName ->
+            binding.tvUserName.text = userName
+        })
     }
 }

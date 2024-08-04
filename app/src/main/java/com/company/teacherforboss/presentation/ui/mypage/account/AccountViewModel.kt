@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.teacherforboss.domain.model.payment.BankAccountChangeRequestEntity
+import com.company.teacherforboss.domain.model.payment.BankAccountChangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
@@ -60,13 +62,29 @@ class AccountViewModel @Inject constructor(
     private val _bankAccountInfoState = MutableStateFlow<UiState<BankAccountResponseEntity>>(UiState.Empty)
     val bankAccountInfoState get() = _bankAccountInfoState.asStateFlow()
 
-    fun getUserProfile() {
+    private val _bankAccountChangeState = MutableStateFlow<UiState<BankAccountChangeResponseEntity>>(UiState.Empty)
+    val bankAccountChangeState get() = _bankAccountChangeState.asStateFlow()
+
+    fun getUserBankAccount() {
         viewModelScope.launch {
             bankAccountUseCase().onSuccess { bankAccountResponseEntity ->
                 _bankAccountInfoState.value=UiState.Success(bankAccountResponseEntity)
             }.onFailure { exception: Throwable ->
                 _bankAccountInfoState.value=UiState.Error(exception.message)
             }
+        }
+    }
+    fun changeUserBankAccount(){
+        viewModelScope.launch {
+            try{
+                val bankAccountChangeResponseEntity = bankAccountChangeUseCase(BankAccountChangeRequestEntity(
+                    bank = chosenBank.value!!,
+                    accountNumber = etInputAccount.value!!,
+                    accountHolder = etInputName.value!!
+                ))
+                _bankAccountChangeState.value = UiState.Success(bankAccountChangeResponseEntity)
+
+            }catch (ex:Exception){_bankAccountChangeState.value=UiState.Error(ex.message)}
         }
     }
 }

@@ -9,11 +9,11 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 
 interface PaymentService {
-    @GET("payment/accounts")
+    @GET("payments/accounts")
     suspend fun getBankAccount(
     ): BaseResponse<ResponseBankAccountDto>
 
-    @PATCH("payment/accounts")
+    @PATCH("payments/accounts")
     suspend fun changeBankAccount(
         @Body requestBankAccountChangeDto: RequestBankAccountChangeDto
     ): BaseResponse<ResponseBankAccountChangeDto>

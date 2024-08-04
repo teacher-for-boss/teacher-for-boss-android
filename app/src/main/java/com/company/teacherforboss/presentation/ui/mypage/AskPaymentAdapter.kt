@@ -39,7 +39,7 @@ class AskPaymentAdapter(private val items: List<AskPaymentItemData>) : RecyclerV
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
-        //프래그먼트 내 데이터 클래스 구현되어있음
+        //model 파일 내 데이터 클래스 구현되어있음
         holder.numberText.text = item.number
         holder.discountText.text = item.discount
         holder.priceText.text = item.price

@@ -7,13 +7,9 @@ import javax.inject.Inject
 
 class MyPageRepositoryImpl @Inject constructor(
     private val myPageDataSource: MyPageRemoteDataSource
-) :MyPageRepository{
-    override suspend fun getAnsweredQuestion(): AnsweredQuestionResponseEntity {
-        return runCatching {
-            myPageDataSource.getAnsweredQuestion(
-            ).result.toAnsweredQuestionEntity()
-        }.getOrElse { err->
-            throw err
+) :MyPageRepository {
+    override suspend fun getAnsweredQuestion(): Result<AnsweredQuestionResponseEntity> =
+        runCatching {
+            myPageDataSource.getAnsweredQuestion().result.toAnsweredQuestionEntity()
         }
-    }
 }

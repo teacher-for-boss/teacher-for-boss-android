@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivitySavedTalkBinding
 import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class SavedTalkActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySavedTalkBinding

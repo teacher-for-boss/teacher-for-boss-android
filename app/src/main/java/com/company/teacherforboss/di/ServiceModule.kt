@@ -4,6 +4,7 @@ import com.company.teacherforboss.data.service.AuthService
 import com.company.teacherforboss.data.service.CommunityService
 import com.company.teacherforboss.data.service.HomeService
 import com.company.teacherforboss.data.service.MemberService
+import com.company.teacherforboss.data.service.MyPageService
 import com.company.teacherforboss.data.service.PaymentService
 import com.company.teacherforboss.data.service.SignupService
 import com.company.teacherforboss.data.service.awsService
@@ -56,5 +57,10 @@ object ServiceModule {
     @Singleton
     fun providesPaymentSerivce(@Auth retrofit: Retrofit): PaymentService =
         retrofit.create(PaymentService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesMyPageService(@Auth retrofit: Retrofit): MyPageService =
+        retrofit.create(MyPageService::class.java)
 
 }

@@ -13,39 +13,39 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemTeacherTalkCardBinding
+import com.company.teacherforboss.databinding.RvItemSavedTeacherBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.company.teacherforboss.domain.model.mypage.AnsweredQuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class SavedTeacherTalkCardAdapter(context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
-
-    private var teacherTalkCardList: MutableList<QuestionEntity> = mutableListOf()
-    private var allTeacherTalkCard: List<QuestionEntity> = emptyList()
+    private var answeredQuestionList: MutableList<AnsweredQuestionEntity> = mutableListOf()
     private val context=context
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): SavedTeacherTalkCardViewHolder {
-        val binding = ItemTeacherTalkCardBinding.inflate(inflater, parent, false)
+        val binding = RvItemSavedTeacherBinding.inflate(inflater, parent, false)
         return SavedTeacherTalkCardViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SavedTeacherTalkCardViewHolder, position: Int) {
-        holder.onBind(teacherTalkCardList[position])
+        holder.onBind(answeredQuestionList[position])
     }
 
     override fun getItemCount(): Int {
-        return teacherTalkCardList.size
+        return answeredQuestionList.size
     }
 
-    inner class SavedTeacherTalkCardViewHolder(private val binding: ItemTeacherTalkCardBinding) :
+    inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(teacherTalkCard: QuestionEntity) { // 나중에 수정
-            val questionText = "Q. ${teacherTalkCard.title}"
+        fun onBind(question: AnsweredQuestionEntity) {
+            val questionText = "Q. ${question.title}"
 
             // Q. 부분 색상 설정
             val spannable = SpannableString(questionText)
@@ -58,20 +58,14 @@ class SavedTeacherTalkCardAdapter(context: Context) :
             spannable.setSpan(colorSpanQ, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannable.setSpan(colorSpanRest, 2, questionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            binding.tvTeacherTalkQuestion.text = spannable
-            binding.tvTeacherTalkContent.text = teacherTalkCard.content
-            binding.tvTeacherTalkDate.text = LocalDateFormatter.extractDate(teacherTalkCard.createdAt)
+            binding.tvAnsweredQuestionTitle.text = spannable
+            binding.tvAnsweredQuestionContent.text = question.content
+            binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(question.createdAt)
 
-            binding.icTeacherTalkBookmark.isSelected = teacherTalkCard.bookmarked
-            binding.tvTeacherTalkBookmarkCount.isSelected = teacherTalkCard.bookmarked
-
-            binding.icTeacherTalkLike.isSelected = teacherTalkCard.liked
-            binding.tvTeacherTalkLikeCount.isSelected = teacherTalkCard.liked
-
-            if(teacherTalkCard.solved) {
+            if(question.solved) {
                 binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
                 Glide.with(binding.root.context)
-                    .load(teacherTalkCard.selectedTeacher)
+                    .load(question.selectedTeacher)
                     .into(binding.ivSelectedTeacher)
             }
             else binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
@@ -79,7 +73,7 @@ class SavedTeacherTalkCardAdapter(context: Context) :
             // 상세 글 이동
             binding.root.setOnClickListener {
                 val intent= Intent(context, TeacherTalkBodyActivity::class.java).apply{
-                    putExtra("questionId",teacherTalkCard.questionId.toString())
+                    putExtra("questionId",question.questionId.toString())
                 }
                 context.startActivity(intent)
             }

@@ -5,6 +5,7 @@ import com.company.teacherforboss.data.datasource.remote.AwsRemoteDataSource
 import com.company.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
 import com.company.teacherforboss.data.datasource.remote.HomeRemoteDataSource
 import com.company.teacherforboss.data.datasource.remote.MemberRemoteDataSource
+import com.company.teacherforboss.data.datasource.remote.MyPageRemoteDataSource
 import com.company.teacherforboss.data.datasource.remote.PaymentRemoteDataSource
 import com.company.teacherforboss.data.datasource.remote.SignupRemoteDataSource
 import com.company.teacherforboss.data.datasourceimpl.remote.AuthRemoteDataSourceImpl
@@ -12,6 +13,7 @@ import com.company.teacherforboss.data.datasourceimpl.remote.AwsRemoteDataSource
 import com.company.teacherforboss.data.datasourceimpl.remote.CommunityRemoteDataSourceImpl
 import com.company.teacherforboss.data.datasourceimpl.remote.HomeRemoteDataSourceImpl
 import com.company.teacherforboss.data.datasourceimpl.remote.MemberRemoteDataSourceImpl
+import com.company.teacherforboss.data.datasourceimpl.remote.MyPageRemoteDataSourceImpl
 import com.company.teacherforboss.data.datasourceimpl.remote.PaymentRemoteDataSourceImpl
 import com.company.teacherforboss.data.datasourceimpl.remote.SignupRemoteDataSourceImpl
 import dagger.Binds
@@ -51,4 +53,7 @@ abstract class DataSourceModule {
     @Singleton
     abstract fun bindsPaymentRemoteDataSource(paymentRemoteDataSourceImpl: PaymentRemoteDataSourceImpl): PaymentRemoteDataSource
 
+    @Binds
+    @Singleton
+    abstract fun bindsMyPageRemoteDataSource(myPageRemoteDataSourceImpl: MyPageRemoteDataSourceImpl): MyPageRemoteDataSource
 }

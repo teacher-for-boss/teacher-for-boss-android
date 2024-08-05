@@ -7,6 +7,6 @@ import com.company.teacherforboss.domain.repository.MyPageRepository
 class AnsweredQuestionUseCase(
     private val myPageRepository: MyPageRepository
 ) {
-    suspend operator fun invoke(): AnsweredQuestionResponseEntity =
+    suspend operator fun invoke(): Result<AnsweredQuestionResponseEntity> =
         myPageRepository.getAnsweredQuestion()
 }

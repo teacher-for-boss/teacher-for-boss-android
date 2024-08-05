@@ -23,14 +23,3 @@ fun setBackGroundTint(textView: TextView, resId: Int) {
     val colorRes = ContextCompat.getColor(textView.context, resId)
     textView.backgroundTintList = ColorStateList.valueOf(colorRes)
 }
-
-// exchangeFragment
-@BindingAdapter("TeacherPoint")
-fun setTeacherPoint(textView: TextView, resId: Int?) {
-    textView.text = resId?.let { "$it TP" } ?: "0 TP"
-}
-
-@BindingAdapter("userName")
-fun setUserName(textView: TextView, resId: String?) {
-    textView.text = resId?.let { "$it 티처의\n현재 보유 티포" } ?: "이름 없음"
-}

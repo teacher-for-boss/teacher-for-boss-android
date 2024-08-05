@@ -45,7 +45,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_coin"
-                app:userName="@{exchangeViewModel.userName}" />
+                android:text= "@{@string/current_user_name(exchangeViewModel.userName)}"/>
+
 
             <TextView
                 android:id="@+id/tv_teacher_point"
@@ -56,7 +57,7 @@
                 android:textColor="@color/Purple600"
                 android:lineSpacingExtra="6sp"
                 android:fontFamily="@font/pretendard_semibold"
-                app:TeacherPoint="@{exchangeViewModel.currentTeacherPoint}"
+                android:text= "@{@string/current_teacher_point(exchangeViewModel.currentTeacherPoint)}"
                 android:textSize="28sp"
                 android:paddingBottom="20dp"
 

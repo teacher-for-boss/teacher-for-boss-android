@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.data.model.request.payment.RequestExchangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseExchangeDto
 import com.company.teacherforboss.domain.model.exchange.ExchangeRequestEntity
@@ -18,6 +19,7 @@ import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.TeacherPointUseCase
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
+import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +32,7 @@ class ExchangeViewModel @Inject constructor(
     private val paymentRepository: PaymentRepository,
     private val exchangeUseCase: ExchangeUseCase,
     private val accountUseCase: BankAccountUseCase,
-    private val teacherPointUseCase: TeacherPointUseCase
+    private val teacherPointUseCase: TeacherPointUseCase,
 ) : ViewModel() {
 
     private val _getAccountState: MutableStateFlow<UiState<BankAccountResponseEntity>> = MutableStateFlow(UiState.Empty)
@@ -80,7 +82,7 @@ class ExchangeViewModel @Inject constructor(
             _isExchangeButtonEnabled.value = !(it.isNullOrBlank() || it.toDoubleOrNull() == 0.0)
         }
         getAccountInfo()
-        _userName.value = LocalDataSource.getUserInfo(application.applicationContext, "name")
+//        _userName.value = LocalDataSource.getUserName(appContext, "name")
         getTeacherPoint()
     }
 
@@ -102,6 +104,10 @@ class ExchangeViewModel @Inject constructor(
 
     fun updateTeacherPoint(point: Int) {
         _currentTeacherPoint.value = point
+    }
+
+    fun setUserName(userName: String) {
+        _userName.value = userName
     }
 
     private fun getAccountInfo() {

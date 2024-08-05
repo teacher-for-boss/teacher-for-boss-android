@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.mypage.saved
+package com.company.teacherforboss.presentation.ui.mypage.saved
 
 import android.content.Context
 import android.content.Intent
@@ -11,11 +11,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.ItemTeacherTalkCardBinding
-import com.example.teacherforboss.domain.model.community.teacher.QuestionEntity
-import com.example.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
-import com.example.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.R
+import com.company.teacherforboss.databinding.ItemTeacherTalkCardBinding
+import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class SavedTeacherTalkCardAdapter(context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {

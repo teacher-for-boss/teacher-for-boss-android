@@ -1,4 +1,4 @@
-package com.example.teacherforboss.presentation.ui.mypage.saved
+package com.company.teacherforboss.presentation.ui.mypage.saved
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
+import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
 
 class SavedTeacherTalkFragment : Fragment() {
 

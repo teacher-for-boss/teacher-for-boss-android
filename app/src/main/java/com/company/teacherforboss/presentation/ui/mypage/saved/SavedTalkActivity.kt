@@ -1,16 +1,15 @@
-package com.example.teacherforboss.presentation.ui.mypage.saved
+package com.company.teacherforboss.presentation.ui.mypage.saved
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.teacherforboss.R
-import com.example.teacherforboss.databinding.ActivitySavedTalkBinding
+import com.company.teacherforboss.R
+import com.company.teacherforboss.databinding.ActivitySavedTalkBinding
 import com.google.android.material.tabs.TabLayout
 
 class SavedTalkActivity : AppCompatActivity() {

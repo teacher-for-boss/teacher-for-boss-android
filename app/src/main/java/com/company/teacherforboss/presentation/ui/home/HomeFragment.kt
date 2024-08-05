@@ -7,17 +7,21 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentHomeBinding
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,10 +29,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home), ItemClickListener {
     private val viewModel: HomeViewModel by activityViewModels()
+    private val teacherTalkMainViewModel: TeacherTalkMainViewModel by activityViewModels()
     private lateinit var bannerViewPagerAdapter: HomeBannerViewPagerAdapter
-    private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter() }
+    private val teacherTalkShortcutAdapter: HomeTeacherTalkShortcutAdapter by lazy { HomeTeacherTalkShortcutAdapter(this) }
     private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter(::navigateToTeacherTalkPost) }
     private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter(::navigateToBossTalkPost) }
     private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter(::navigateToTeacherProfile) }
@@ -204,6 +209,18 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
+    override fun onItemClicked(category: String) {
+        teacherTalkMainViewModel.setCategoryName(category)
+
+        (activity as MainActivity)?.setSelectedMenu(R.id.menu_teacher_talk)
+
+        val transaction = parentFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.fcv_teacher_for_boss, TeacherTalkMainFragment())
+        transaction.commit()
+
+    }
+
     companion object {
         private const val ZERO = 0
         private const val START_SPAN_INDEX = 0
@@ -214,4 +231,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         private const val BOSS_TALK_POST_ID = "postId"
         const val TEACHER_PROFILE_ID = "profileId"
     }
+}
+
+interface ItemClickListener {
+    fun onItemClicked(category: String)
 }

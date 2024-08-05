@@ -12,6 +12,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.main.basic
 import com.company.teacherforboss.presentation.ui.home.HomeFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
+import com.company.teacherforboss.presentation.ui.home.ItemClickListener
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         if (savedInstanceState == null) {
             if(intent.getStringExtra("gotoTeacherTalk") == "gotoTeacherTalk") {
                 replaceFragment(TeacherTalkMainFragment())
-                binding.bnvTeacherForBoss.selectedItemId = R.id.menu_teacher_talk
+                setSelectedMenu(R.id.menu_teacher_talk)
             }
             else {
                 replaceFragment(HomeFragment())
@@ -126,6 +127,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
         }
     }
+
+    fun setSelectedMenu(menuId: Int) {
+        binding.bnvTeacherForBoss.selectedItemId = menuId
+    }
+
     companion object{
         const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
         const val HOME="HOME"

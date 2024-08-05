@@ -38,12 +38,15 @@ class TeacherTalkMainViewModel @Inject constructor(
     var _sortBy= MutableLiveData<String>("latest")
     val sortBy: LiveData<String>
         get() = _sortBy
-    var _category = MutableLiveData<String>("위생")
+    var _category = MutableLiveData<String>("전체")
     val category: LiveData<String>
         get() = _category
 
     var _categoryId = MutableLiveData<Long>(1)
     val categoryId: LiveData<Long> get()=_categoryId
+
+    var _isInitialLoad = MutableLiveData<Boolean>(true)
+    val isInitialLoad: LiveData<Boolean> get() = _isInitialLoad
 
     private val _solved = MutableLiveData<Boolean>()
     val solved: LiveData<Boolean> get() = _solved
@@ -124,6 +127,11 @@ class TeacherTalkMainViewModel @Inject constructor(
     fun setCategory(category: String,questionId: Long) {
         _category.value = category
         updateQuestionIdMap(questionId)
+    }
+
+    fun setCategoryName(category: String) {
+        _category.value = category
+        _categoryId.value = categoryList.indexOf(category).toLong()
     }
 
     override fun setSortBy(sortBy: String) {

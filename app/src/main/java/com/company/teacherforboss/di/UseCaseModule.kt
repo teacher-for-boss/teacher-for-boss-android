@@ -5,6 +5,7 @@ import com.company.teacherforboss.domain.repository.AwsReository
 import com.company.teacherforboss.domain.repository.CommunityRepository
 import com.company.teacherforboss.domain.repository.HomeRepository
 import com.company.teacherforboss.domain.repository.MemberRepository
+import com.company.teacherforboss.domain.repository.MyPageRepository
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.repository.SignupRepository
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
@@ -44,6 +45,7 @@ import com.company.teacherforboss.domain.usecase.community.teacher.TeacherUpload
 import com.company.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
+import com.company.teacherforboss.domain.usecase.mypage.AnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import dagger.Module
@@ -245,6 +247,11 @@ class UseCaseModule {
     @Singleton
     fun providesBankAccountChangeUseCase(paymentRepository: PaymentRepository): BankAccountChangeUseCase =
         BankAccountChangeUseCase(paymentRepository)
+
+    @Provides
+    @Singleton
+    fun providesAnsweredQuestionUseCase(myPageRepository: MyPageRepository): AnsweredQuestionUseCase =
+        AnsweredQuestionUseCase(myPageRepository)
 
     @Provides
     @Singleton

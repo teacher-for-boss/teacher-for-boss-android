@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel" />
+            type="com.company.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
+        <com.company.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
             android:id="@+id/sv_boss_talk_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
 
 
             </LinearLayout>
-        </com.example.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView>
+        </com.company.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView>
       
         <!--플로팅 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

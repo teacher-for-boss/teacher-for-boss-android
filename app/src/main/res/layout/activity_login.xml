@@ -226,18 +226,16 @@
             android:layout_height="match_parent">
 
         </ImageButton>
-<!--        <Button-->
-<!--            android:id="@+id/logoutBtn"-->
-<!--            android:text="임시 카카오 로그아웃 버튼"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent">-->
+        <Button
+            android:id="@+id/logoutBtn"
+            android:text="임시 카카오 로그아웃 버튼"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-<!--        </Button>-->
+        </Button>
 
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

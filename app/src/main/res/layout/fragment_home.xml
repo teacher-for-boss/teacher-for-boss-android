@@ -7,7 +7,7 @@
 
         <variable
             name="homeViewModel"
-            type="com.example.teacherforboss.presentation.ui.home.HomeViewModel" />
+            type="com.company.teacherforboss.presentation.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

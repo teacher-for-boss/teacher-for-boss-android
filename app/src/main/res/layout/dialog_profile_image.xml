@@ -8,7 +8,7 @@
     <data>
         <variable
             name="signupViewModel"
-            type="com.example.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
+            type="com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel" />
 
     </data>
 
@@ -164,13 +164,13 @@
                         android:background="@drawable/profile_background"
                         android:clipToOutline="true" />
 
-                    <ImageView
-                        android:src="@drawable/profile_gallery"
-                        android:id="@+id/open_gallary"
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
-                        android:layout_margin="4dp"
-                        android:clipToOutline="true" />
+<!--                    <ImageView-->
+<!--                        android:src="@drawable/profile_gallery"-->
+<!--                        android:id="@+id/open_gallary"-->
+<!--                        android:layout_width="52dp"-->
+<!--                        android:layout_height="52dp"-->
+<!--                        android:layout_margin="4dp"-->
+<!--                        android:clipToOutline="true" />-->
 
                 </TableRow>
 

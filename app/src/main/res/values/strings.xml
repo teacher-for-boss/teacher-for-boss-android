@@ -240,8 +240,6 @@
     <string name="ask_payment_history_refund">질문권 환불</string>
 
 
-
-
     <!-- teacher profile -->
     <string name="teacher_profile_report">신고하기</string>
     <string name="teacher_profile_fix">수정하기</string>
@@ -254,4 +252,8 @@
     <string name="teacher_profile_tab_info_keyword">티처 키워드</string>
     <string name="teacher_profile_tab_recent_answer_question">Q. %s</string>
     <string name="teacher_profile_tab_recent_answer_answer">A. %s</string>
+
+    <!-- my page question -->
+    <string name="my_page_question_title_boss">티처톡 - 나의 질문</string>
+    <string name="my_page_question_title_teacher">티처톡 - 답변한 질문글</string>
 </resources>

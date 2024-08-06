@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.mypage.exchange
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -132,5 +133,10 @@ class ExchangeViewModel @Inject constructor(
                 _getTeacherPointState.value = UiState.Error(exception.message)
             }
         }
+    }
+
+    private fun getUserName(context: Context) {
+        val userName = LocalDataSource.getUserName(context, "name")
+        _userName.value = userName
     }
 }

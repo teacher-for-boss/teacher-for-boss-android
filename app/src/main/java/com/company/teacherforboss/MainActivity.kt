@@ -26,6 +26,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 replaceFragment(TeacherTalkMainFragment())
                 binding.bnvTeacherForBoss.selectedItemId = R.id.menu_teacher_talk
             }
+            if(intent.getStringExtra("gotoMyPage") == "gotoMyPage") {
+                replaceFragment(MyPageFragment())
+                binding.bnvTeacherForBoss.selectedItemId = R.id.menu_my_page
+            }
             else {
                 replaceFragment(HomeFragment())
             }

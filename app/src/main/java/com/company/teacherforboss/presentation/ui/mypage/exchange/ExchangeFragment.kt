@@ -36,8 +36,8 @@ class ExchangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getTeacherPoint()
-        binding.tvUserName.text = LocalDataSource.getUserName(requireContext(), "name")
-//        setupObservers()
+//        binding.tvUserName.text = LocalDataSource.getUserName(requireContext(), "name")
+        setupObservers()
         setTeacherPoint()
 
         binding.btnExchange.setOnClickListener {
@@ -46,6 +46,7 @@ class ExchangeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
     }
 
     override fun onDestroyView() {

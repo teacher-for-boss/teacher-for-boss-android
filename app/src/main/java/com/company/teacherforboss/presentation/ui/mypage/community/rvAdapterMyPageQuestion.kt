@@ -22,7 +22,7 @@ class rvAdapterMyPageQuestion(
                 tvMyPageQuestionTitle.text = question.title
                 tvMyPageQuestionBody.text = question.content
                 tvMyPageQuestionDate.text = question.createdAt
-                itemQuestionCategory.teacherTalkCategory.text = question.category
+                tvQuestionCategory.text = question.category
                 if(question.solved) {
                     widgetCardViewStatementSolved.visibility = View.VISIBLE
                     Glide.with(root.context)

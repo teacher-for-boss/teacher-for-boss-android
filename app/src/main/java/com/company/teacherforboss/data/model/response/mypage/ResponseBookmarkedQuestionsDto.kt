@@ -1,25 +1,25 @@
 package com.company.teacherforboss.data.model.response.mypage
 
-import com.company.teacherforboss.domain.model.mypage.AnsweredQuestionEntity
-import com.company.teacherforboss.domain.model.mypage.AnsweredQuestionResponseEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
 import com.google.gson.annotations.SerializedName
 
-data class ResponseAnsweredQuestionDto (
+data class ResponseBookmarkedQuestionsDto (
     @SerializedName("hasNext")
     val hasNext:Boolean,
-    @SerializedName("answeredQuestionList")
-    val answeredQuestionList: ArrayList<AnsweredQuestionDto>
+    @SerializedName("bookmarkedQuestionsList")
+    val bookmarkedQuestionsList: ArrayList<BookmarkedQuestionsDto>
 ){
-    fun toAnsweredQuestionEntity(): AnsweredQuestionResponseEntity {
-        val questionEntities = answeredQuestionList.mapTo(ArrayList()){ it.toAnsweredQuestionEntity() }
-        return AnsweredQuestionResponseEntity(
+    fun toBookmarkedQuestionsEntity(): BookmarkedQuestionsResponseEntity {
+        val questionEntities = bookmarkedQuestionsList.mapTo(ArrayList()){ it.toBookmarkedQuestionsEntity() }
+        return BookmarkedQuestionsResponseEntity(
             hasNext=hasNext,
-            answeredQuestionList=questionEntities
+            bookmarkedQuestionsList=questionEntities
         )
     }
 }
 
-data class AnsweredQuestionDto(
+data class BookmarkedQuestionsDto(
     @SerializedName("questionId")
     val questionId: Long,
     @SerializedName("category")
@@ -31,11 +31,11 @@ data class AnsweredQuestionDto(
     @SerializedName("solved")
     val solved: Boolean,
     @SerializedName("selectedTeacher")
-    val selectedTeacher: String,
+    val selectedTeacher: String?,
     @SerializedName("createdAt")
     val createdAt: String
 ){
-    fun toAnsweredQuestionEntity() = AnsweredQuestionEntity(
+    fun toBookmarkedQuestionsEntity() = BookmarkedQuestionsEntity(
         questionId=questionId,
         category=category,
         title=title,

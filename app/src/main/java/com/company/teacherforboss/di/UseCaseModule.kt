@@ -45,7 +45,7 @@ import com.company.teacherforboss.domain.usecase.community.teacher.TeacherUpload
 import com.company.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
-import com.company.teacherforboss.domain.usecase.mypage.AnsweredQuestionUseCase
+import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import dagger.Module
@@ -251,8 +251,8 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesAnsweredQuestionUseCase(myPageRepository: MyPageRepository): AnsweredQuestionUseCase =
-        AnsweredQuestionUseCase(myPageRepository)
+    fun providesBookmarkedQuestionsUseCase(myPageRepository: MyPageRepository): BookmarkedQuestionsUseCase =
+        BookmarkedQuestionsUseCase(myPageRepository)
 
     @Provides
     @Singleton

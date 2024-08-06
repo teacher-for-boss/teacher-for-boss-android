@@ -15,14 +15,14 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemTeacherTalkCardBinding
 import com.company.teacherforboss.databinding.RvItemSavedTeacherBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
-import com.company.teacherforboss.domain.model.mypage.AnsweredQuestionEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class SavedTeacherTalkCardAdapter(context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
     private val inflater by lazy { LayoutInflater.from(context) }
-    private var answeredQuestionList: MutableList<AnsweredQuestionEntity> = mutableListOf()
+    private var answeredQuestionList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
     private val context=context
 
     override fun onCreateViewHolder(
@@ -44,7 +44,7 @@ class SavedTeacherTalkCardAdapter(context: Context) :
     inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(question: AnsweredQuestionEntity) {
+        fun onBind(question: BookmarkedQuestionsEntity) {
             val questionText = "Q. ${question.title}"
 
             // Q. 부분 색상 설정

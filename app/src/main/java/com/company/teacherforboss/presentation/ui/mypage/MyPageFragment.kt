@@ -10,6 +10,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
@@ -90,6 +91,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     startActivity(intent)
                 }
             }
+
+            includeMyPageMenuBossTalkWrittenPost.root.setOnClickListener {
+                Intent(context, MyPageBossTalkWriteActivity::class.java).apply {
+                    putExtra(ROLE_BOSS, BOSS_TALK_WRITE_POST)
+                    startActivity(this)
+                }
+            }
+
+            includeMyPageMenuBossTalkCommentPost.root.setOnClickListener {
+                Intent(context, MyPageBossTalkWriteActivity::class.java).apply {
+                    putExtra(ROLE_BOSS, BOSS_TALK_COMMENT_POST)
+                    startActivity(this)
+                }
+            }
+
 
             includeMyPageMenuExchangeDetails.root.setOnClickListener{
                 val intent = Intent(context,ExchangeHistoryActivity::class.java)
@@ -249,5 +265,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val ROLE_BOSS = "BOSS"
         private const val NICKNAME = "nickname"
         private const val PROFILE_IMG = "profileImg"
+        private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"
+        private const val BOSS_TALK_COMMENT_POST = "bossTalkCommentPost"
     }
 }

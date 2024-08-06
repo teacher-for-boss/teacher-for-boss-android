@@ -84,7 +84,7 @@
                 android:background="@drawable/background_not_solved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
                 android:background="@drawable/background_solved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,17 +145,32 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <include
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/item_question_category"
-                layout="@layout/item_teacher_talk_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="9dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_my_page_question_date"
+                >
 
-                />
+                <TextView
+                    android:id="@+id/tv_question_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_radius4_purple600"
+                    tools:text="카테고리"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Label8"
+                    android:paddingHorizontal="9dp"
+                    android:paddingVertical="6dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

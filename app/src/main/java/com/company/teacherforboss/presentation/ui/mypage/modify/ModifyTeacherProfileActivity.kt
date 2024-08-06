@@ -18,10 +18,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityModifyTeacherProfileBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class ModifyTeacherProfileActivity : AppCompatActivity() {
     private val viewModel: ModifyTeacherProfileViewModel by viewModels()
     private lateinit var binding: ActivityModifyTeacherProfileBinding

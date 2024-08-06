@@ -13,6 +13,7 @@ import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.component.DialogPopupFragment
@@ -34,6 +35,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         getProfile()
         addListeners()
         collectData()
+        gotoModifyActivity()
     }
 
     private fun initLayout(profile: MyPageProfileEntity) {
@@ -209,9 +211,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         DialogTeacherLevelFragment().show(parentFragmentManager, TEACHER_LEVEL_DIALOG)
     }
     fun gotoLoginActivity(){
-        val intent= Intent(requireActivity(), LoginActivity::class.java).apply {
+        Intent(requireActivity(), LoginActivity::class.java).apply {
+            startActivity(this)
         }
-        startActivity(intent)
+    }
+
+    private fun gotoModifyActivity() {
+        binding.layoutMyPageProfileFix.setOnClickListener {
+            if(viewModel.role.value == ROLE_TEACHER) {
+                Intent(requireActivity(), ModifyTeacherProfileActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+            else {
+
+            }
+        }
     }
 
 

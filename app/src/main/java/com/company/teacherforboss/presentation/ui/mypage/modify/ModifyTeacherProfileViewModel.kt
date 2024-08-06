@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,13 +10,18 @@ import com.company.teacherforboss.data.model.request.signup.NicknameRequest
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.data.model.response.signup.NicknameResponse
 import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.domain.model.mypage.ModifyProfileResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ModifyTeacherProfileRequestEntity
+import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
 import com.company.teacherforboss.util.base.ErrorUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
+class ModifyTeacherProfileViewModel @Inject constructor(
+    private val modifyTeacherProfileUseCase: ModifyTeacherProfileUseCase
+): ViewModel() {
 
     var _nickname= MutableLiveData<String>("")
     val nickname: LiveData<String>
@@ -27,7 +33,7 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
 
     var _phone= MutableLiveData<String>("")
     val phone: LiveData<String>
-        get()=phone
+        get()=_phone
 
     var _email= MutableLiveData<String>("")
     val email: LiveData<String>
@@ -73,10 +79,6 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
     val career_str:LiveData<String>
         get() = _carrer_str
 
-    var _career=MutableLiveData<Int>(0)
-    val career:LiveData<Int>
-        get() = _career
-
     var _phoneReveal=MutableLiveData<Boolean>(false)
     val phoneReveal:LiveData<Boolean>
         get() = _phoneReveal
@@ -88,6 +90,9 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
     var nicknameCheck = MutableLiveData<Boolean>(false)
     val userRepo= UserRepositoryImpl()
+
+    private val _modifyTeacherProfileLiveData = MutableLiveData<ModifyProfileResponseEntity>()
+    val modifyTeacherProfileLiveData: LiveData<ModifyProfileResponseEntity> get() = _modifyTeacherProfileLiveData
 
     init {
         _nickname.observeForever {
@@ -141,6 +146,28 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
         }
     }
 
+    fun modifyTeacherProfile() {
+        viewModelScope.launch {
+            try {
+                val modifyTeacherProfileResponseEntity = modifyTeacherProfileUseCase(
+                    ModifyTeacherProfileRequestEntity(
+                        nickname = nickname.value!!,
+                        phone = phoneToLong(),
+                        phoneOpen = phoneReveal.value!!,
+                        email = email.value!!,
+                        emailOpen = emailReveal.value!!,
+                        field = field.value!!,
+                        career = CareerToInt(),
+                        introduction = introduction.value!!,
+                        keywords = keywords.value!!,
+                        profileImg = profileImg.value!!
+                    )
+                )
+                _modifyTeacherProfileLiveData.value = modifyTeacherProfileResponseEntity
+            } catch (ex: Exception) {}
+        }
+    }
+
     private fun validateFields() {
         enableNext.value = !(_nickname.value.isNullOrEmpty() ||
                 _field.value.isNullOrEmpty() ||
@@ -156,19 +183,14 @@ class ModifyTeacherProfileViewModel @Inject constructor(): ViewModel() {
     fun setPhone(phone: String) {
         _phone.value = phone
     }
-    fun setEmail(email: String) {
-        _email.value = email
+    fun setKeywords(keywordList: MutableList<String>) {
+        _keywords.value = keywordList
     }
-    fun setField(field: String) {
-        _field.value = field
+    fun phoneToLong(): Long {
+        return phone.value!!.toLong()
     }
-
-    fun setCareerStr(careerStr: String) {
-        _carrer_str.value = careerStr
-    }
-
-    fun setIntroduction(introduction: String) {
-        _introduction.value = introduction
+    fun CareerToInt(): Int {
+        return career_str.value!!.toInt()
     }
 
 }

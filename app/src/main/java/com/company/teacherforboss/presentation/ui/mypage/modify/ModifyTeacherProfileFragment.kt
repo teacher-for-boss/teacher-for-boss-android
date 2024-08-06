@@ -29,50 +29,38 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentModifyTeacherProfileBinding
     private val viewModel by activityViewModels<ModifyTeacherProfileViewModel>()
+
     val selectedChipList = mutableListOf<String>()
+    private var checkCnt = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_teacher_profile, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.modifyTeacherProfileViewModel = viewModel
         binding.lifecycleOwner = this
 
-        // SwitchCompat 리스너 설정
-        binding.switchPhone.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setPhoneReveal(isChecked)
-        }
-
-        binding.switchEmail.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setEmailReveal(isChecked)
-        }
-
-        val nicknameBox = binding.nicknameBox
-        val veryInfo = binding.veryInfo
-        val successColor = ContextCompat.getColor(requireContext(), R.color.success)
-        val errorColor = ContextCompat.getColor(requireContext(), R.color.error)
-
         addListeners()
+        // phone, email
+        setPhoneTextWatcher()
+        setNicknameTextWatcher()
+        checkNickname()
+        // keywords
         chipListener()
+
         observeProfile()
         setObserver()
+        showProfileImageDialog()
 
-        binding.profileImage.setOnClickListener {
-            showProfileImageDialog()
-        }
+    }
 
-        binding.nicknameVerifyBtn.setOnClickListener {
-            val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
-            if (nicknamePattern.containsMatchIn(binding.nicknameBox.text)) {
-                nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                veryInfo.visibility = View.VISIBLE
-                veryInfo.setTextColor(errorColor)
-                veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
-                viewModel.nicknameCheck.value = false
-            } else viewModel.nicknameUser()
-        }
-
+    private fun setPhoneTextWatcher() {
         binding.etPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -82,14 +70,117 @@ class ModifyTeacherProfileFragment : Fragment() {
                         char.isDigit() || char == '-' || char == ')' || char == '+'
                     }
                     if (filtered != it.toString()) {
-                        binding.etPhone.setText(filtered)
-                        binding.etPhone.setSelection(filtered.length) // 커서를 마지막에 위치시키기
+                        binding.etPhone.apply {
+                            setText(filtered)
+                            setSelection(filtered.length) // 커서를 마지막에 위치시키기
+                        }
                     }
                     viewModel.setPhone(filtered)
                 }
             }
         })
+    }
 
+    private fun setNicknameTextWatcher() {
+        binding.nicknameBox.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup)
+                    val filtered = it.toString().filter { char ->
+                        char.isLetterOrDigit() || char in "가-힣ㄱ-ㅎㅏ-ㅣ"
+                    }
+
+                    if (filtered != it.toString()) {
+                        binding.nicknameBox.removeTextChangedListener(this)
+                        binding.nicknameBox.apply {
+                            setText(filtered)
+                            setSelection(filtered.length)
+                        }
+                        binding.nicknameBox.addTextChangedListener(this)
+                    }
+
+                    binding.veryInfo.visibility = View.INVISIBLE
+                    binding.nicknameVerifyBtn.isEnabled = true
+                    binding.nextBtn.isEnabled = false
+                    viewModel.setNickname(filtered)
+                }
+            }
+        })
+    }
+
+    private fun checkNickname() {
+        val successColor = ContextCompat.getColor(requireContext(), R.color.success)
+        val errorColor = ContextCompat.getColor(requireContext(), R.color.error)
+
+        binding.nicknameVerifyBtn.setOnClickListener {
+            val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
+            if (nicknamePattern.containsMatchIn(binding.nicknameBox.text)) {
+                binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                binding.veryInfo.apply {
+                    visibility = View.VISIBLE
+                    setTextColor(errorColor)
+                    text = "특수문자 제외 10자 이내로 작성해주세요."
+                }
+                viewModel.nicknameCheck.value = false
+            } else viewModel.nicknameUser()
+        }
+
+        viewModel.nicknameResult.observe(viewLifecycleOwner) {
+            when (it) {
+                is BaseResponse.Loading -> {}
+                is BaseResponse.Success -> {
+                    binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
+                    binding.veryInfo.apply {
+                        visibility = View.VISIBLE
+                        setTextColor(successColor)
+                        text = "사용 가능한 닉네임입니다."
+                    }
+                    viewModel.nicknameCheck.value = true
+                }
+                is BaseResponse.Error -> {
+                    binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                    binding.veryInfo.apply {
+                        visibility = View.VISIBLE
+                        setTextColor(errorColor)
+                        text = "사용할 수 없는 닉네임입니다."
+                    }
+                    viewModel.nicknameCheck.value = false
+                }
+                else -> {}
+            }
+            checkFilled()
+        }
+
+    }
+
+    private fun addListeners() {
+        binding.nextBtn.setOnClickListener {
+            viewModel.setKeywords(selectedChipList)
+
+            Log.d("modifyProfile", viewModel.nickname.value.toString())
+            Log.d("modifyProfile", viewModel.phone.value.toString())
+            Log.d("modifyProfile", viewModel.phoneReveal.value.toString())
+            Log.d("modifyProfile", viewModel.email.value.toString())
+            Log.d("modifyProfile", viewModel.emailReveal.value.toString())
+            Log.d("modifyProfile", viewModel.field.value.toString())
+            Log.d("modifyProfile", viewModel.career_str.value.toString())
+            Log.d("modifyProfile", viewModel.introduction.value.toString())
+            Log.d("modifyProfile", viewModel.keywords.value.toString())
+            Log.d("modifyProfile", viewModel.profileImg.value.toString())
+
+            viewModel.modifyTeacherProfile()
+
+            viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+                Intent(requireActivity(), MainActivity::class.java).apply {
+                    startActivity(this)
+                }
+            })
+        }
+    }
+
+    private fun observeProfile() {
         viewModel.isUserImgSelected.observe(viewLifecycleOwner,{bool->
             Log.d("profile","user img selected")
             if (bool==true){
@@ -106,94 +197,6 @@ class ModifyTeacherProfileFragment : Fragment() {
             }
         })
 
-        binding.nicknameBox.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    nicknameBox.setBackgroundResource(R.drawable.selector_signup)
-                    val filtered = it.toString().filter { char ->
-                        char.isLetterOrDigit() || char in "가-힣ㄱ-ㅎㅏ-ㅣ"
-                    }
-
-                    if (filtered != it.toString()) {
-                        nicknameBox.removeTextChangedListener(this)
-                        nicknameBox.setText(filtered)
-                        nicknameBox.setSelection(filtered.length)
-                        nicknameBox.addTextChangedListener(this)
-                    }
-
-                    veryInfo.visibility = View.INVISIBLE
-                    binding.nicknameVerifyBtn.isEnabled = true
-                    binding.nextBtn.isEnabled = false
-                    viewModel.setNickname(filtered)
-                }
-            }
-        })
-
-
-        binding.nextBtn.setOnClickListener {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-        }
-        viewModel.isUserImgSelected.observe(viewLifecycleOwner, { bool ->
-            Log.d("profile", "user img selected")
-            if (bool == true) {
-                Glide.with(this)
-                    .load(viewModel.profileImgUri.value)
-                    .fitCenter()
-                    .apply(RequestOptions().override(80, 80))
-                    .into(binding.profileImage)
-            }
-        })
-
-        viewModel.nicknameResult.observe(viewLifecycleOwner) {
-            when (it) {
-                is BaseResponse.Loading -> {
-                }
-                is BaseResponse.Success -> {
-                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
-                    veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(successColor)
-                    veryInfo.text = "사용 가능한 닉네임입니다."
-                    viewModel.nicknameCheck.value = true
-                }
-                is BaseResponse.Error -> {
-                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                    veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(errorColor)
-                    veryInfo.text = "사용할 수 없는 닉네임입니다."
-                    viewModel.nicknameCheck.value = false
-                }
-                else -> {
-                }
-            }
-            checkFilled()
-        }
-
-        nicknameBox.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                nicknameBox.setBackgroundResource(R.drawable.selector_signup)
-                veryInfo.visibility = View.INVISIBLE
-                binding.nicknameVerifyBtn.isEnabled = true
-                binding.nextBtn.isEnabled = false
-            }
-        })
-
-        return binding.root
-    }
-
-    private fun addListeners() {
-        binding.nextBtn.setOnClickListener {
-            viewModel._keywords.value = selectedChipList
-        }
-    }
-
-    private fun observeProfile() {
         viewModel.isDefaultImgSelected.observe(viewLifecycleOwner, { bool ->
             if (bool == true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
         })
@@ -207,7 +210,6 @@ class ModifyTeacherProfileFragment : Fragment() {
         })
     }
 
-    private var checkCnt = 0
     private fun chipListener() {
         val maxSelectedChip = 5
         val chipGroup = binding.keywordChipGroup
@@ -234,12 +236,16 @@ class ModifyTeacherProfileFragment : Fragment() {
     }
 
     private fun showProfileImageDialog() {
-        val dialog = ProfileImageDialogModify(requireActivity() as ModifyTeacherProfileActivity, viewModel)
-        dialog.show()
+        binding.profileImage.setOnClickListener {
+            val dialog = ProfileImageDialogModify(requireActivity() as ModifyTeacherProfileActivity, viewModel)
+            dialog.show()
+        }
     }
 
     private fun checkFilled() {
         if (viewModel.nicknameCheck.value == true &&
+            !viewModel.phone.value.isNullOrEmpty() &&
+            !viewModel.email.value.isNullOrEmpty() &&
             !viewModel._field.value.isNullOrEmpty() &&
             !viewModel._carrer_str.value.isNullOrEmpty() &&
             !viewModel._introduction.value.isNullOrEmpty() &&
@@ -251,9 +257,20 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     private fun setObserver() {
         val dataObserver = Observer<String> { _ -> checkFilled() }
+        viewModel.phone.observe(viewLifecycleOwner, dataObserver)
+        viewModel._email.observe(viewLifecycleOwner, dataObserver)
         viewModel._field.observe(viewLifecycleOwner, dataObserver)
         viewModel._carrer_str.observe(viewLifecycleOwner, dataObserver)
         viewModel._introduction.observe(viewLifecycleOwner, dataObserver)
+
+        // SwitchCompat 리스너 설정
+        binding.switchPhone.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setPhoneReveal(isChecked)
+        }
+
+        binding.switchEmail.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setEmailReveal(isChecked)
+        }
     }
 
     companion object {

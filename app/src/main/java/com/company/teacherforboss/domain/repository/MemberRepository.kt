@@ -4,6 +4,8 @@ import com.company.teacherforboss.domain.model.auth.AccountEntity
 import com.company.teacherforboss.domain.model.common.TeacherProfileDetailEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.model.common.TeacherDetailProfileRequestEntity
+import com.company.teacherforboss.domain.model.mypage.ModifyProfileResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ModifyTeacherProfileRequestEntity
 
 interface MemberRepository {
     suspend fun getAccount():Result<AccountEntity>
@@ -11,5 +13,7 @@ interface MemberRepository {
     suspend fun getProfile():Result<MyPageProfileEntity>
 
     suspend fun getTeacherDetailProfile(teacherDetailProfileRequestEntity: TeacherDetailProfileRequestEntity): TeacherProfileDetailEntity
+
+    suspend fun modifyTeacherProfile(modifyTeacherProfileRequestEntity: ModifyTeacherProfileRequestEntity): ModifyProfileResponseEntity
 
 }

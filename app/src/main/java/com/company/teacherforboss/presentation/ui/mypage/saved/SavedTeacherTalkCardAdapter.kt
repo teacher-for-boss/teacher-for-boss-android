@@ -12,23 +12,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
-import com.company.teacherforboss.databinding.ItemTeacherTalkCardBinding
 import com.company.teacherforboss.databinding.RvItemSavedTeacherBinding
-import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class SavedTeacherTalkCardAdapter(context: Context) :
+class SavedTeacherTalkCardAdapter(private val context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
+
     private val inflater by lazy { LayoutInflater.from(context) }
     private var answeredQuestionList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
-    private val context=context
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): SavedTeacherTalkCardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedTeacherTalkCardViewHolder {
         val binding = RvItemSavedTeacherBinding.inflate(inflater, parent, false)
         return SavedTeacherTalkCardViewHolder(binding)
     }
@@ -39,6 +34,12 @@ class SavedTeacherTalkCardAdapter(context: Context) :
 
     override fun getItemCount(): Int {
         return answeredQuestionList.size
+    }
+
+    fun setData(newData: List<BookmarkedQuestionsEntity>) {
+        answeredQuestionList.clear()
+        answeredQuestionList.addAll(newData)
+        notifyDataSetChanged()
     }
 
     inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :
@@ -62,22 +63,22 @@ class SavedTeacherTalkCardAdapter(context: Context) :
             binding.tvAnsweredQuestionContent.text = question.content
             binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(question.createdAt)
 
-            if(question.solved) {
+            if (question.solved) {
                 binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
                 Glide.with(binding.root.context)
                     .load(question.selectedTeacher)
                     .into(binding.ivSelectedTeacher)
+            } else {
+                binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
             }
-            else binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
 
             // 상세 글 이동
             binding.root.setOnClickListener {
-                val intent= Intent(context, TeacherTalkBodyActivity::class.java).apply{
-                    putExtra("questionId",question.questionId.toString())
+                val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                    putExtra("questionId", question.questionId.toString())
                 }
                 context.startActivity(intent)
             }
-
         }
     }
 }

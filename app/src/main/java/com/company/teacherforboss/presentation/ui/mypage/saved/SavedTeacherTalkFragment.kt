@@ -3,6 +3,7 @@ package com.company.teacherforboss.presentation.ui.mypage.saved
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
 import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
@@ -15,8 +16,6 @@ class SavedTeacherTalkFragment :
 
     private val viewModel by viewModels<MyPageViewModel>()
     private lateinit var savedTeacherTalkCardAdapter: SavedTeacherTalkCardAdapter
-//    private var _binding: FragmentSavedTeacherTalkBinding? = null
-//    private val binding get() = _binding!!
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -33,22 +32,17 @@ class SavedTeacherTalkFragment :
     }
 
     private fun initView() {
-
+        savedTeacherTalkCardAdapter = SavedTeacherTalkCardAdapter(requireContext())
+        binding.rvCard.apply {
+            adapter = savedTeacherTalkCardAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun getQuestions() {
-        viewModel.getBookmarkedQuestionsLiveData.observe(viewLifecycleOwner, { result ->
-            val questionList = result.bookmarkedQuestionsList
-            viewModel.apply {
-                setAnsweredQuestion(questionList)
-                totalAnsweredQuestion.add(questionList)
-            }
+        viewModel.bookmarkedQuestion.observe(viewLifecycleOwner, { questionList ->
+            savedTeacherTalkCardAdapter.setData(questionList)
         })
         viewModel.getBookmarkedQuestions()
     }
 }
-
-
-
-
-

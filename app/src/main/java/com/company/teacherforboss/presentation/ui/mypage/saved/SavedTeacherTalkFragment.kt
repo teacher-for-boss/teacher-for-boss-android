@@ -29,6 +29,7 @@ class SavedTeacherTalkFragment :
 
         initView()
         getQuestions()
+        viewModel.getBookmarkedQuestions()
     }
 
     private fun initView() {
@@ -45,4 +46,5 @@ class SavedTeacherTalkFragment :
         })
         viewModel.getBookmarkedQuestions()
     }
+
 }

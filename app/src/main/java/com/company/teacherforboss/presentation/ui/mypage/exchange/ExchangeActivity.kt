@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityExchangeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ExchangeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityExchangeBinding

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.company.teacherforboss">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -22,6 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeacherForBoss"
         tools:targetApi="31">
+
         <activity
             android:name="com.company.teacherforboss.presentation.ui.community.boss_talk.search.BossTalkSearchActivity"
             android:exported="true">
@@ -35,6 +37,12 @@
        <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity"
             android:exported="false" />
+        <activity
+            android:name="com.company.teacherforboss.presentation.ui.mypage.AskPaymentHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity"
+            android:exported="false" />
   
         <activity
             android:name="com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity"
@@ -45,14 +53,20 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-             <intent-filter>
-               <action android:name="android.intent.action.MAIN" />
-               <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
   
         <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TeacherForBoss">
+        </activity>
+
+        <activity
+            android:name=".presentation.ui.mypage.saved.SavedTalkActivity"
             android:exported="false"
             android:theme="@style/Theme.TeacherForBoss">
         </activity>

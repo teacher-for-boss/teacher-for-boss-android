@@ -193,6 +193,11 @@
     <string name="exchange_complete2">✔️ 영업일 기준 3일 내로 입금됩니다.</string>
     <string name="exchange_complete3">✔️ 환전 신청한 내역은 마이페이지에서 확인 가능합니다.</string>
 
+    <string name="exchange_history_title">환전 내역</string>
+    <string name="exchange_history_exchange">티포 환전</string>
+    <string name="exchange_history_refund">환전 취소</string>
+
+
     <string name="account_change_title">계좌 확인 몇 변경</string>
     <string name="check_account1">계좌정보를 확인해주세요</string>
     <string name="check_account2">변경된 정보를 수정할 수 있습니다.</string>
@@ -230,6 +235,13 @@
     <string name="ask_payment_check">✔️ 질문권 1개로 전문가에게 빠르게 답변 받기\n✔️ 여러명의 전문가에게 답변을 받아요\n✔️ 24시간 365일 답변받을 수 있어요</string>
     <string name="ask_payment_buy">구매하기</string>
 
+    <!-- 저장한 글 -->
+    <string name="saved_talk_title">저장한 글</string>
+    <string name="saved_teacher_talk">티처톡</string>
+    <string name="saved_boss_talk">보스톡</string>
+    <string name="ask_payment_history_title">결제 내역</string>
+    <string name="ask_payment_history_pay">질문권 결제</string>
+    <string name="ask_payment_history_refund">질문권 환불</string>
 
   <!-- teacher profile -->
     <string name="teacher_profile_report">신고하기</string>

@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentAccountChangeBinding
-import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.presentation.ui.mypage.account.AccountViewModel
 import com.company.teacherforboss.presentation.ui.mypage.account.BankAccountFragment
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.util.view.UiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,6 +23,7 @@ class AccountChangeFragment : Fragment() {
     private var _binding: FragmentAccountChangeBinding? = null
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<AccountViewModel>()
+    private var isInit = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +32,9 @@ class AccountChangeFragment : Fragment() {
         _binding = FragmentAccountChangeBinding.inflate(inflater, container, false)
         binding.accountViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        getUserBankAccount()
+        collectData()
+        addListeners()
 
 
         return binding.root
@@ -38,8 +42,7 @@ class AccountChangeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getUserProfile()
-        collectData()
+
 
 
         binding.chosenBank.setOnClickListener {
@@ -49,16 +52,16 @@ class AccountChangeFragment : Fragment() {
                 .commit()
         }
 
-        binding.btnComplete.setOnClickListener {
+        /*binding.btnComplete.setOnClickListener {
             val intent = Intent(requireActivity(), ExchangeActivity::class.java).apply {
                 putExtra("startWithFragment2", true)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intent)
-        }
+        }*/
     }
-    private fun getUserProfile(){
-        viewModel.getUserProfile()
+    private fun getUserBankAccount(){
+        viewModel.getUserBankAccount()
     }
     private fun collectData() {
         viewModel.bankAccountInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -66,7 +69,19 @@ class AccountChangeFragment : Fragment() {
                 when (bankAccountInfoState) {
                     is UiState.Success -> {
                         val data = bankAccountInfoState.data
-                        initLayout(data)
+                        if(!isInit){
+                            initLayout(data)
+                            isInit = true
+                        }
+                    }
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.bankAccountChangeState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { bankAccountChangeState ->
+                when (bankAccountChangeState) {
+                    is UiState.Success -> {
+                        requireActivity().finish()
                     }
                     else -> Unit
                 }
@@ -75,8 +90,13 @@ class AccountChangeFragment : Fragment() {
     private fun initLayout(bankAccount: BankAccountResponseEntity){
         viewModel.apply{
             setChosenBank(bankAccount.bank)
-            setInputAccount(bankAccount.accountHolder)
-            setInputName(bankAccount.accountNumber)
+            setInputAccount(bankAccount.accountNumber)
+            setInputName(bankAccount.accountHolder)
+        }
+    }
+    private fun addListeners() {
+        binding.btnComplete.setOnClickListener{
+            viewModel.changeUserBankAccount()
         }
     }
 

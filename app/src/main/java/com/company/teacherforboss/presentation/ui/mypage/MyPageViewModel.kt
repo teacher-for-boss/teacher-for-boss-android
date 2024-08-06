@@ -37,7 +37,7 @@ class MyPageViewModel @Inject constructor(
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
 
-    val _role=MutableLiveData<String>("")
+    val _role= MutableLiveData<String>("")
     val role: LiveData<String>
         get()=_role
 

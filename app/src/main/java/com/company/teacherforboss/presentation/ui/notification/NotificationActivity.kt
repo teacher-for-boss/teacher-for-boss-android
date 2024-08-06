@@ -1,4 +1,4 @@
-package com.company.teacherforboss.presentation.ui.alarm
+package com.company.teacherforboss.presentation.ui.notification
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -14,16 +14,16 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
-import com.company.teacherforboss.databinding.ActivityAlarmBinding
+import com.company.teacherforboss.databinding.ActivityNotificationBinding
 import com.company.teacherforboss.util.base.BindingActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AlarmActivity : BindingActivity<ActivityAlarmBinding>(R.layout.activity_alarm) {
-    private val viewModel by viewModels<AlarmViewModel>()
-    private lateinit var alarmItemAdapter:AlarmItemAdapter
+class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layout.activity_notification) {
+    private val viewModel by viewModels<NotificationViewModel>()
+    private lateinit var notificationAdapter:NotificationAdapter
 
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
@@ -60,7 +60,6 @@ class AlarmActivity : BindingActivity<ActivityAlarmBinding>(R.layout.activity_al
         }
 
 
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,11 +72,13 @@ class AlarmActivity : BindingActivity<ActivityAlarmBinding>(R.layout.activity_al
     }
 
     fun setAlarmView(){
-        alarmItemAdapter=AlarmItemAdapter(this,viewModel.dummny_alarms)
-        with(binding.rvAlarm){
-            adapter=alarmItemAdapter
-            layoutManager=LinearLayoutManager(this@AlarmActivity)
+        notificationAdapter=NotificationAdapter(this,viewModel.dummny_alarms)
+        with(binding.rvNotification){
+            adapter=notificationAdapter
+            layoutManager=LinearLayoutManager(this@NotificationActivity)
         }
+        onBackBtnPressed()
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     fun setFirebaseMessaging(){
@@ -93,6 +94,7 @@ class AlarmActivity : BindingActivity<ActivityAlarmBinding>(R.layout.activity_al
         })
     }
 
+    fun onBackBtnPressed(){binding.includeNotificationTopAppBar.backBtn.setOnClickListener {finish()}}
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -100,7 +102,7 @@ class AlarmActivity : BindingActivity<ActivityAlarmBinding>(R.layout.activity_al
                 finishAffinity()
             } else {
                 backPressedOnce = true
-                Toast.makeText(this@AlarmActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NotificationActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
                 exitHandler.postDelayed(resetBackPressed, 2000)
             }
         }

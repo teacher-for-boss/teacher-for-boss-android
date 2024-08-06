@@ -1,4 +1,4 @@
-package com.company.teacherforboss.presentation.ui.alarm
+package com.company.teacherforboss.presentation.ui.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

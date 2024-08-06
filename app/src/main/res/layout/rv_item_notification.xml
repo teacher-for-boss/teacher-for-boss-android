@@ -45,7 +45,7 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/alarm_type"
+            android:id="@+id/notification_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
@@ -55,10 +55,10 @@
             >
 
             <ImageView
-                android:id="@+id/ic_alarm"
+                android:id="@+id/ic_notification"
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_alarm_teacher_talk"
+                android:src="@drawable/ic_notification_teacher_talk"
 
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -67,7 +67,7 @@
             </ImageView>
 
             <TextView
-                android:id="@+id/tv_alarm_type"
+                android:id="@+id/tv_notification_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="알림타입"
@@ -77,7 +77,7 @@
 
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/ic_alarm"
+                app:layout_constraintLeft_toRightOf="@+id/ic_notification"
 
                 >
 
@@ -86,38 +86,38 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tv_alarm_title"
+            android:id="@+id/tv_notification_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
             android:textColor="@color/Gray700"
-            app:layout_constraintTop_toBottomOf="@id/alarm_type"
+            app:layout_constraintTop_toBottomOf="@id/notification_type"
             android:layout_marginTop="8dp"
             >
 
         </TextView>
 
         <TextView
-            android:id="@+id/tv_alarm_content"
+            android:id="@+id/tv_notification_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body3"
             android:textColor="@color/Gray700"
-            app:layout_constraintTop_toBottomOf="@id/tv_alarm_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_notification_title"
             >
 
         </TextView>
 
         <TextView
-            android:id="@+id/tv_alarm_time"
+            android:id="@+id/tv_notification_left_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
             android:textColor="@color/Gray400"
-            android:text="@string/alarm_time"
+            android:text="@string/notification_time"
             android:textAlignment="textEnd"
 
-            app:layout_constraintTop_toBottomOf="@id/tv_alarm_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_notification_content"
             >
 
         </TextView>

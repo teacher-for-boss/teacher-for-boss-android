@@ -10,6 +10,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
@@ -90,6 +91,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
             includeMyPageMenuExchangeDetails.root.setOnClickListener{
                 val intent = Intent(context,ExchangeHistoryActivity::class.java)
+                startActivity(intent)
+            }
+            includeMyPageMenuTeacherTalkQuestionPost.root.setOnClickListener{
+                val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
                 startActivity(intent)
             }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }

@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentHomeBinding
+import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
@@ -100,6 +101,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun addListeners() {
+        binding.ivHomeNotificationButton.setOnClickListener { navigateToAlarm() }
     }
 
     private fun collectData() {
@@ -200,6 +202,12 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun navigateToTeacherProfile(profileId: Long) {
         Intent(requireContext(), TeacherProfileActivity::class.java).apply {
             putExtra(TEACHER_PROFILE_ID, profileId.toString())
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToAlarm(){
+        Intent(requireContext(),NotificationActivity::class.java).apply {
             startActivity(this)
         }
     }

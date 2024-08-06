@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ModifyTeacherProfileRequestDto (
     @SerializedName("nickname") val nickname: String,
-    @SerializedName("phone") val phone: Long,
+    @SerializedName("phone") val phone: String,
     @SerializedName("phoneOpen") val phoneOpen: Boolean,
     @SerializedName("email") val email: String,
     @SerializedName("emailOpen") val emailOpen: Boolean,

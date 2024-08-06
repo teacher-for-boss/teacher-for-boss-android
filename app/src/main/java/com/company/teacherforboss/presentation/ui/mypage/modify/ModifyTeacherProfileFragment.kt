@@ -46,7 +46,6 @@ class ModifyTeacherProfileFragment : Fragment() {
         binding.modifyTeacherProfileViewModel = viewModel
         binding.lifecycleOwner = this
 
-        addListeners()
         // phone, email
         setPhoneTextWatcher()
         setNicknameTextWatcher()
@@ -54,6 +53,7 @@ class ModifyTeacherProfileFragment : Fragment() {
         // keywords
         chipListener()
 
+        modifyTeacherProfile()
         observeProfile()
         setObserver()
         showProfileImageDialog()
@@ -155,21 +155,9 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     }
 
-    private fun addListeners() {
+    private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
             viewModel.setKeywords(selectedChipList)
-
-            Log.d("modifyProfile", viewModel.nickname.value.toString())
-            Log.d("modifyProfile", viewModel.phone.value.toString())
-            Log.d("modifyProfile", viewModel.phoneReveal.value.toString())
-            Log.d("modifyProfile", viewModel.email.value.toString())
-            Log.d("modifyProfile", viewModel.emailReveal.value.toString())
-            Log.d("modifyProfile", viewModel.field.value.toString())
-            Log.d("modifyProfile", viewModel.career_str.value.toString())
-            Log.d("modifyProfile", viewModel.introduction.value.toString())
-            Log.d("modifyProfile", viewModel.keywords.value.toString())
-            Log.d("modifyProfile", viewModel.profileImg.value.toString())
-
             viewModel.modifyTeacherProfile()
 
             viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {

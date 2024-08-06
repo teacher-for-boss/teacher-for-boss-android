@@ -63,6 +63,14 @@ class ModifyTeacherProfileActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, ModifyTeacherProfileFragment())
             .commit()
+
+        gotoMyPage()
+    }
+
+    private fun gotoMyPage() {
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
     }
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {

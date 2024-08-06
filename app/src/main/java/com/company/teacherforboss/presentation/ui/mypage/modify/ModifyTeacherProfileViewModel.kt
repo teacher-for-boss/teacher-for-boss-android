@@ -152,7 +152,7 @@ class ModifyTeacherProfileViewModel @Inject constructor(
                 val modifyTeacherProfileResponseEntity = modifyTeacherProfileUseCase(
                     ModifyTeacherProfileRequestEntity(
                         nickname = nickname.value!!,
-                        phone = phoneToLong(),
+                        phone = phone.value!!,
                         phoneOpen = phoneReveal.value!!,
                         email = email.value!!,
                         emailOpen = emailReveal.value!!,
@@ -185,9 +185,6 @@ class ModifyTeacherProfileViewModel @Inject constructor(
     }
     fun setKeywords(keywordList: MutableList<String>) {
         _keywords.value = keywordList
-    }
-    fun phoneToLong(): Long {
-        return phone.value!!.toLong()
     }
     fun CareerToInt(): Int {
         return career_str.value!!.toInt()

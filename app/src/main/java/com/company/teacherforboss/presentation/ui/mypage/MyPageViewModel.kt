@@ -41,6 +41,12 @@ class MyPageViewModel @Inject constructor(
     val role: LiveData<String>
         get()=_role
 
+    val _nickname = MutableLiveData<String>("")
+    val nickname: LiveData<String> get() = _nickname
+
+    val _profileImg = MutableLiveData<String>("")
+    val profileImg: LiveData<String> get() = _profileImg
+
 //    fun setMockProfileDate() {
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)
 //        // _userProfileInfoState.value = UiState.Success(mockBoss)
@@ -54,6 +60,14 @@ class MyPageViewModel @Inject constructor(
                 _userProfileInfoState.value=UiState.Error(exception.message)
             }
         }
+    }
+
+    fun setNickname(nickname: String) {
+        _nickname.value = nickname
+    }
+
+    fun setProfileImg(img: String) {
+        _profileImg.value = img
     }
 
 }

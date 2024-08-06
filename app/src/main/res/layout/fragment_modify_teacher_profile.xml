@@ -96,7 +96,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/radius_purple_button"
                     android:backgroundTint="@color/selector_all_btn_background"
-                    android:enabled="@{modifyTeacherProfileViewModel.nicknameCheck}"
+                    android:enabled="false"
                     android:text="중복 확인"
                     android:layout_margin="10dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"

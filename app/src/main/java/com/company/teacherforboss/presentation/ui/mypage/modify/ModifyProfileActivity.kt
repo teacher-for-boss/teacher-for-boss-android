@@ -70,9 +70,16 @@ class ModifyProfileActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ModifyBossProfileFragment())
                 .commit()
+
+            initBossLayout()
         }
 
         gotoMyPage()
+    }
+
+    private fun initBossLayout() {
+        viewModel.setNickname(intent.getStringExtra(NICKNAME)!!)
+        viewModel.setProfileImg(intent.getStringExtra(PROFILE_IMG)!!)
     }
 
     private fun gotoMyPage() {
@@ -115,5 +122,7 @@ class ModifyProfileActivity : AppCompatActivity() {
         private const val ROLE = "ROLE"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
+        private const val NICKNAME = "nickname"
+        private const val PROFILE_IMG = "profileImg"
     }
 }

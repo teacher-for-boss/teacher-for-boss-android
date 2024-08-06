@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
@@ -21,16 +22,21 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class ModifyTeacherProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentModifyTeacherProfileBinding
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
+    private val detailProfileViewModel by activityViewModels<TeacherProfileViewModel>()
 
-    val selectedChipList = mutableListOf<String>()
+    var selectedChipList = mutableListOf<String>()
     private var checkCnt = 0
 
     override fun onCreateView(
@@ -46,6 +52,7 @@ class ModifyTeacherProfileFragment : Fragment() {
         binding.modifyTeacherProfileViewModel = viewModel
         binding.lifecycleOwner = this
 
+        initLayout()
         // phone, nickname
         setPhoneTextWatcher()
         setNicknameTextWatcher()
@@ -58,6 +65,53 @@ class ModifyTeacherProfileFragment : Fragment() {
         setObserver()
         showProfileImageDialog()
 
+    }
+
+    private fun initLayout() {
+        getTeacherDetailProfile()
+
+        lifecycleScope.launch {
+            detailProfileViewModel.teacherProfileDetail.collect {
+                it?.let {
+                    // image
+                    binding.profileImage.loadCircularImage(it.profileImg)
+                    viewModel.setProfileImg(it.profileImg)
+                    // nickname
+                    viewModel.setNickname(it.nickname)
+                    viewModel.initialNickname.value = it.nickname
+                    // phone
+                    if(!it.phone.isNullOrEmpty()) {
+                        viewModel.setPhone(it.phone)
+                        viewModel.setPhoneReveal(true)
+                        binding.switchPhone.isChecked = true
+                    }
+                    // email
+                    if(!it.email.isNullOrEmpty()) {
+                        viewModel.setEmail(it.email)
+                        viewModel.setEmailReveal(true)
+                        binding.switchEmail.isChecked = true
+                    }
+                    // field
+                    viewModel.setField(it.field)
+                    // career
+                    viewModel.setCareer(it.career.toString())
+                    // introduction
+                    viewModel.setIntroduction(it.introduction)
+                    // keywords
+                    val chipList = it.keywords
+                    selectedChipList = chipList.toMutableList()
+                    val chipGroup = binding.keywordChipGroup
+                    for (i in 0 until chipGroup.childCount) {
+                        val chip = chipGroup.getChildAt(i) as Chip
+                        if (chip.text in chipList) {
+                            chip.isChecked = true
+                            checkCnt++
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
     private fun setPhoneTextWatcher() {
@@ -102,8 +156,14 @@ class ModifyTeacherProfileFragment : Fragment() {
                     }
 
                     binding.veryInfo.visibility = View.INVISIBLE
-                    binding.nicknameVerifyBtn.isEnabled = true
-                    binding.nextBtn.isEnabled = false
+                    if(viewModel.initialNickname.value != it.toString()) {
+                        binding.nicknameVerifyBtn.isEnabled = true
+                        viewModel._nicknameCheck.value = false
+                    }
+                    else {
+                        binding.nicknameVerifyBtn.isEnabled = false
+                        viewModel._nicknameCheck.value = true
+                    }
                     viewModel.setNickname(filtered)
                 }
             }
@@ -123,7 +183,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                     setTextColor(errorColor)
                     text = "특수문자 제외 10자 이내로 작성해주세요."
                 }
-                viewModel.nicknameCheck.value = false
+                viewModel._nicknameCheck.value = false
             } else viewModel.nicknameUser()
         }
 
@@ -137,7 +197,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                         setTextColor(successColor)
                         text = "사용 가능한 닉네임입니다."
                     }
-                    viewModel.nicknameCheck.value = true
+                    viewModel._nicknameCheck.value = true
                 }
                 is BaseResponse.Error -> {
                     binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
@@ -146,13 +206,17 @@ class ModifyTeacherProfileFragment : Fragment() {
                         setTextColor(errorColor)
                         text = "사용할 수 없는 닉네임입니다."
                     }
-                    viewModel.nicknameCheck.value = false
+                    viewModel._nicknameCheck.value = false
                 }
                 else -> {}
             }
             checkFilled()
         }
 
+    }
+
+    private fun getTeacherDetailProfile() {
+        detailProfileViewModel.getTeacherDetailProfile()
     }
 
     private fun modifyTeacherProfile() {
@@ -231,20 +295,27 @@ class ModifyTeacherProfileFragment : Fragment() {
     }
 
     private fun checkFilled() {
-        if (viewModel.nicknameCheck.value == true &&
-            !viewModel.phone.value.isNullOrEmpty() &&
-            !viewModel.email.value.isNullOrEmpty() &&
-            !viewModel._field.value.isNullOrEmpty() &&
-            !viewModel._carrer_str.value.isNullOrEmpty() &&
-            !viewModel._introduction.value.isNullOrEmpty() &&
-            checkCnt > 0
-        )
-            viewModel.enableNext.value = true
-        else viewModel.enableNext.value = false
+        viewModel.nicknameCheck.observeForever {
+            if (viewModel.nicknameCheck.value == true) {
+                if (!viewModel.phone.value.isNullOrEmpty() &&
+                    !viewModel.email.value.isNullOrEmpty() &&
+                    !viewModel._field.value.isNullOrEmpty() &&
+                    !viewModel._carrer_str.value.isNullOrEmpty() &&
+                    !viewModel._introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0
+                )
+                    viewModel.enableNext.value = true
+                else
+                    viewModel.enableNext.value = false
+            }
+            else
+                viewModel.enableNext.value = false
+        }
     }
 
     private fun setObserver() {
         val dataObserver = Observer<String> { _ -> checkFilled() }
+        viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
         viewModel.phone.observe(viewLifecycleOwner, dataObserver)
         viewModel._email.observe(viewLifecycleOwner, dataObserver)
         viewModel._field.observe(viewLifecycleOwner, dataObserver)

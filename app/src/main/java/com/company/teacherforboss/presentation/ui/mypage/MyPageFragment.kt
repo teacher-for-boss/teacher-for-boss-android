@@ -39,6 +39,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLayout(profile: MyPageProfileEntity) {
         binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
+        viewModel.setProfileImg(profile.profileImg)
+        viewModel.setNickname(profile.nickname)
         val role = profile.role
         if (role == ROLE_TEACHER) {
             setTeacherMenuLayout()
@@ -226,6 +228,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             else {
                 Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
                     putExtra(ROLE, ROLE_BOSS)
+                    putExtra(NICKNAME, viewModel.nickname.value)
+                    putExtra(PROFILE_IMG, viewModel.profileImg.value)
                     startActivity(this)
                 }
             }
@@ -243,5 +247,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val ROLE = "ROLE"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
+        private const val NICKNAME = "nickname"
+        private const val PROFILE_IMG = "profileImg"
     }
 }

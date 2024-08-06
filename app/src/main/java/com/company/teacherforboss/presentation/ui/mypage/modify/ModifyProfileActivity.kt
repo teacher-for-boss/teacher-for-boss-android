@@ -17,16 +17,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
-import com.company.teacherforboss.databinding.ActivityModifyTeacherProfileBinding
+import com.company.teacherforboss.databinding.ActivityModifyProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class ModifyTeacherProfileActivity : AppCompatActivity() {
-    private val viewModel: ModifyTeacherProfileViewModel by viewModels()
-    private lateinit var binding: ActivityModifyTeacherProfileBinding
+class ModifyProfileActivity : AppCompatActivity() {
+    private val viewModel: ModifyProfileViewModel by viewModels()
+    private lateinit var binding: ActivityModifyProfileBinding
     // 갤러리 오픈
     val requestPermissionLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted->
@@ -57,12 +57,20 @@ class ModifyTeacherProfileActivity : AppCompatActivity() {
         }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_modify_teacher_profile)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_modify_profile)
 
         // Fragment 초기화
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ModifyTeacherProfileFragment())
-            .commit()
+        val role = intent.getStringExtra(ROLE)
+        if(role == ROLE_TEACHER) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ModifyTeacherProfileFragment())
+                .commit()
+        }
+        else if(role == ROLE_BOSS) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ModifyBossProfileFragment())
+                .commit()
+        }
 
         gotoMyPage()
     }
@@ -101,5 +109,11 @@ class ModifyTeacherProfileActivity : AppCompatActivity() {
         }
 
         return size
+    }
+
+    companion object {
+        private const val ROLE = "ROLE"
+        private const val ROLE_TEACHER = "TEACHER"
+        private const val ROLE_BOSS = "BOSS"
     }
 }

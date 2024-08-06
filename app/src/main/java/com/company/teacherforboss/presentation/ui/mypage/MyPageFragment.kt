@@ -13,9 +13,8 @@ import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
-import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileActivity
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.util.base.BindingFragment
-import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.UiState
@@ -219,12 +218,16 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun gotoModifyActivity() {
         binding.layoutMyPageProfileFix.setOnClickListener {
             if(viewModel.role.value == ROLE_TEACHER) {
-                Intent(requireActivity(), ModifyTeacherProfileActivity::class.java).apply {
+                Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
+                    putExtra(ROLE, ROLE_TEACHER)
                     startActivity(this)
                 }
             }
             else {
-
+                Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
+                    putExtra(ROLE, ROLE_BOSS)
+                    startActivity(this)
+                }
             }
         }
     }
@@ -237,6 +240,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
         private const val LOGOUT_DIALOG = "logoutModal"
         const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
+        private const val ROLE = "ROLE"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
     }

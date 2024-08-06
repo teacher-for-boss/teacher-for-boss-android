@@ -5,6 +5,7 @@ import com.company.teacherforboss.domain.model.auth.AccountEntity
 import com.company.teacherforboss.domain.model.common.TeacherProfileDetailEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.model.common.TeacherDetailProfileRequestEntity
+import com.company.teacherforboss.domain.model.mypage.ModifyBossProfileRequestEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyProfileResponseEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyTeacherProfileRequestEntity
 import com.company.teacherforboss.domain.repository.MemberRepository
@@ -32,4 +33,12 @@ class MemberRepositoryImpl @Inject constructor(
                 .result.toModifyProfileResponseEntity()
         }.getOrElse { err -> throw err }
     }
+
+    override suspend fun modifyBossProfile(modifyBossProfileRequestEntity: ModifyBossProfileRequestEntity): ModifyProfileResponseEntity {
+        return runCatching {
+            memberRemoteDataSource.modifyBossProfile(modifyBossProfileRequestDto = modifyBossProfileRequestEntity.toModifyBossProfileRequestDto())
+                .result.toModifyProfileResponseEntity()
+        }.getOrElse { err -> throw err }
+    }
+
 }

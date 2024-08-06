@@ -1,5 +1,6 @@
 package com.company.teacherforboss.data.service
 
+import com.company.teacherforboss.data.model.request.mypage.ModifyBossProfileRequestDto
 import com.company.teacherforboss.data.model.request.mypage.ModifyTeacherProfileRequestDto
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ModifyProfileResponseDto
@@ -33,5 +34,10 @@ interface MemberService {
     @PATCH("${MEMBER}/profiles/teacher")
     suspend fun modifyTeacherProfile(
         @Body modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto
+    ): BaseResponse<ModifyProfileResponseDto>
+
+    @PATCH("${MEMBER}/profiles/boss")
+    suspend fun modifyBossProfile(
+        @Body modifyBossProfileRequestDto: ModifyBossProfileRequestDto
     ): BaseResponse<ModifyProfileResponseDto>
 }

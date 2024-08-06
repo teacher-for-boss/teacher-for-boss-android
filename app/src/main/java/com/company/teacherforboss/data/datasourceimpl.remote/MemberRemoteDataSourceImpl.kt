@@ -1,6 +1,7 @@
 package com.company.teacherforboss.data.datasourceimpl.remote
 
 import com.company.teacherforboss.data.datasource.remote.MemberRemoteDataSource
+import com.company.teacherforboss.data.model.request.mypage.ModifyBossProfileRequestDto
 import com.company.teacherforboss.data.model.request.mypage.ModifyTeacherProfileRequestDto
 import com.company.teacherforboss.data.model.request.mypage.TeacherDetailProfileRequestDto
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
@@ -23,5 +24,8 @@ class MemberRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun modifyTeacherProfile(modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto): BaseResponse<ModifyProfileResponseDto>
     = memberService.modifyTeacherProfile(modifyTeacherProfileRequestDto = modifyTeacherProfileRequestDto)
+
+    override suspend fun modifyBossProfile(modifyBossProfileRequestDto: ModifyBossProfileRequestDto): BaseResponse<ModifyProfileResponseDto>
+    = memberService.modifyBossProfile(modifyBossProfileRequestDto = modifyBossProfileRequestDto)
 
 }

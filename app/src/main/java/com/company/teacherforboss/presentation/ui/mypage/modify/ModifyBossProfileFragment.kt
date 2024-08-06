@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -19,66 +18,42 @@ import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
-import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
+import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
-import com.google.android.material.chip.Chip
 
-class ModifyTeacherProfileFragment : Fragment() {
+class ModifyBossProfileFragment : Fragment() {
 
-    private lateinit var binding: FragmentModifyTeacherProfileBinding
+    private lateinit var binding: FragmentModifyBossProfileBinding
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
-
-    val selectedChipList = mutableListOf<String>()
-    private var checkCnt = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_teacher_profile, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_boss_profile, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.modifyTeacherProfileViewModel = viewModel
+        binding.modifyBossProfileViewModel = viewModel
         binding.lifecycleOwner = this
 
-        // phone, nickname
-        setPhoneTextWatcher()
+        initLayout()
+
+        // nickname
         setNicknameTextWatcher()
         checkNickname()
-        // keywords
-        chipListener()
 
         modifyTeacherProfile()
         observeProfile()
-        setObserver()
         showProfileImageDialog()
 
     }
 
-    private fun setPhoneTextWatcher() {
-        binding.etPhone.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    val filtered = it.toString().filter { char ->
-                        char.isDigit() || char == '-' || char == ')' || char == '+'
-                    }
-                    if (filtered != it.toString()) {
-                        binding.etPhone.apply {
-                            setText(filtered)
-                            setSelection(filtered.length) // 커서를 마지막에 위치시키기
-                        }
-                    }
-                    viewModel.setPhone(filtered)
-                }
-            }
-        })
+    private fun initLayout() {
     }
 
     private fun setNicknameTextWatcher() {
@@ -152,15 +127,14 @@ class ModifyTeacherProfileFragment : Fragment() {
             }
             checkFilled()
         }
-
     }
 
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
-            viewModel.setKeywords(selectedChipList)
-            viewModel.modifyTeacherProfile()
 
-            viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+            viewModel.modifyBossProfile()
+
+            viewModel.modifyBossProfileLiveData.observe(viewLifecycleOwner, Observer {
                 Intent(requireActivity(), MainActivity::class.java).apply {
                     startActivity(this)
                 }
@@ -198,31 +172,6 @@ class ModifyTeacherProfileFragment : Fragment() {
         })
     }
 
-    private fun chipListener() {
-        val maxSelectedChip = 5
-        val chipGroup = binding.keywordChipGroup
-
-        for (i in 0 until chipGroup.childCount) {
-            val chip = chipGroup.getChildAt(i) as Chip
-            chip.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked && checkCnt >= maxSelectedChip) {
-                    chip.isChecked = false
-                    Toast.makeText(context, "5개 도달", Toast.LENGTH_SHORT).show()
-                } else {
-                    if (isChecked) {
-                        selectedChipList.add(chip.text.toString())
-                        checkCnt++
-                        if (checkCnt == 1) checkFilled()
-                    } else {
-                        selectedChipList.remove(chip.text.toString())
-                        checkCnt--
-                        if (checkCnt == 0) checkFilled()
-                    }
-                }
-            }
-        }
-    }
-
     private fun showProfileImageDialog() {
         binding.profileImage.setOnClickListener {
             val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, viewModel)
@@ -231,39 +180,9 @@ class ModifyTeacherProfileFragment : Fragment() {
     }
 
     private fun checkFilled() {
-        if (viewModel.nicknameCheck.value == true &&
-            !viewModel.phone.value.isNullOrEmpty() &&
-            !viewModel.email.value.isNullOrEmpty() &&
-            !viewModel._field.value.isNullOrEmpty() &&
-            !viewModel._carrer_str.value.isNullOrEmpty() &&
-            !viewModel._introduction.value.isNullOrEmpty() &&
-            checkCnt > 0
-        )
+        if (viewModel.nicknameCheck.value == true)
             viewModel.enableNext.value = true
         else viewModel.enableNext.value = false
     }
 
-    private fun setObserver() {
-        val dataObserver = Observer<String> { _ -> checkFilled() }
-        viewModel.phone.observe(viewLifecycleOwner, dataObserver)
-        viewModel._email.observe(viewLifecycleOwner, dataObserver)
-        viewModel._field.observe(viewLifecycleOwner, dataObserver)
-        viewModel._carrer_str.observe(viewLifecycleOwner, dataObserver)
-        viewModel._introduction.observe(viewLifecycleOwner, dataObserver)
-
-        // SwitchCompat 리스너 설정
-        binding.switchPhone.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setPhoneReveal(isChecked)
-        }
-
-        binding.switchEmail.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setEmailReveal(isChecked)
-        }
-    }
-
-    companion object {
-        const val USER_INFO = "USER_INFO"
-        const val SIGNUP_TYPE = "SIGNUP_TYPE"
-        const val SIGNUP_DEFAULT = "SIGNUP_DEFAULT"
-    }
 }

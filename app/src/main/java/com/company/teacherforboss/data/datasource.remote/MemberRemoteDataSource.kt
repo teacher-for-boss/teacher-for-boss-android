@@ -1,5 +1,6 @@
 package com.company.teacherforboss.data.datasource.remote
 
+import com.company.teacherforboss.data.model.request.mypage.ModifyBossProfileRequestDto
 import com.company.teacherforboss.data.model.request.mypage.ModifyTeacherProfileRequestDto
 import com.company.teacherforboss.data.model.request.mypage.TeacherDetailProfileRequestDto
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
@@ -17,5 +18,8 @@ interface MemberRemoteDataSource {
     ): BaseResponse<TeacherDetailProfileResponseDto>
 
     suspend fun modifyTeacherProfile(modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto
+    ): BaseResponse<ModifyProfileResponseDto>
+
+    suspend fun modifyBossProfile(modifyBossProfileRequestDto: ModifyBossProfileRequestDto
     ): BaseResponse<ModifyProfileResponseDto>
 }

@@ -1,7 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +9,10 @@ import com.company.teacherforboss.data.model.request.signup.NicknameRequest
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.data.model.response.signup.NicknameResponse
 import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.domain.model.mypage.ModifyBossProfileRequestEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyProfileResponseEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyTeacherProfileRequestEntity
+import com.company.teacherforboss.domain.usecase.Member.ModifyBossProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
 import com.company.teacherforboss.util.base.ErrorUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +20,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ModifyTeacherProfileViewModel @Inject constructor(
-    private val modifyTeacherProfileUseCase: ModifyTeacherProfileUseCase
+class ModifyProfileViewModel @Inject constructor(
+    private val modifyTeacherProfileUseCase: ModifyTeacherProfileUseCase,
+    private val modifyBossProfileUseCase: ModifyBossProfileUseCase
 ): ViewModel() {
 
     var _nickname= MutableLiveData<String>("")
@@ -94,6 +96,9 @@ class ModifyTeacherProfileViewModel @Inject constructor(
     private val _modifyTeacherProfileLiveData = MutableLiveData<ModifyProfileResponseEntity>()
     val modifyTeacherProfileLiveData: LiveData<ModifyProfileResponseEntity> get() = _modifyTeacherProfileLiveData
 
+    private val _modifyBossProfileLiveData = MutableLiveData<ModifyProfileResponseEntity>()
+    val modifyBossProfileLiveData: LiveData<ModifyProfileResponseEntity> get() = _modifyBossProfileLiveData
+
     init {
         _nickname.observeForever {
             _nicknameCount.value = "${it.length}/10"
@@ -165,6 +170,20 @@ class ModifyTeacherProfileViewModel @Inject constructor(
                 )
                 _modifyTeacherProfileLiveData.value = modifyTeacherProfileResponseEntity
             } catch (ex: Exception) {}
+        }
+    }
+
+    fun modifyBossProfile() {
+        viewModelScope.launch {
+            try {
+                val modifyBossProfileResponseEntity = modifyBossProfileUseCase(
+                    ModifyBossProfileRequestEntity(
+                        nickname = nickname.value!!,
+                        profileImg = profileImg.value!!
+                    )
+                )
+                _modifyBossProfileLiveData.value = modifyBossProfileResponseEntity
+            } catch (ex:Exception) {}
         }
     }
 

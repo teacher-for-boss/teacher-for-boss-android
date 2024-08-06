@@ -27,8 +27,7 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
 
         initLayout()
         collectData()
-        val adapter = rvAdapterMyPageQuestion(this,viewModel.questionList.value?: emptyList())
-        binding.rvMyPageQuestion.adapter = adapter
+
         onBackBtnPressed()
     }
     fun initLayout() {
@@ -44,6 +43,8 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
                 when (answeredQuestionState) {
                     is UiState.Success -> {
                         viewModel.setQuestionList(answeredQuestionState.data.answeredQuestionList)
+                        val adapter = rvAdapterMyPageQuestion(this,viewModel.questionList.value?: emptyList())
+                        binding.rvMyPageQuestion.adapter = adapter
                     }
                     else -> Unit
                 }

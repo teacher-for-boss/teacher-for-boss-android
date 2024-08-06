@@ -10,7 +10,7 @@ interface MyPageService {
     companion object{
         const val MYPAGE="mypage"
     }
-    @GET("${MYPAGE}/board/answered-questions?lastPostId={lastPostId}&size={size}")
+    @GET("${MYPAGE}/board/answered-questions")
     suspend fun getAnsweredQuestion(
         @Query("lastQuestionId") lastQuestionId:Long,
         @Query("size") size:Int,

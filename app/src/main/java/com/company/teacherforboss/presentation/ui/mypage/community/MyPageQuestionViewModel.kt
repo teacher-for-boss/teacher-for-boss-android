@@ -29,7 +29,7 @@ class MyPageQuestionViewModel @Inject constructor(
     val size: LiveData<Int>
         get() = _size
 
-    var _questionList = MutableLiveData<List<MyPageQuestionEntity>>()
+    var _questionList = MutableLiveData<List<MyPageQuestionEntity>>(emptyList())
     val questionList : LiveData<List<MyPageQuestionEntity>>
         get() =_questionList
 

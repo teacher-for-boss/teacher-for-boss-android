@@ -8,10 +8,5 @@ import java.io.Serializable
 class MyPageAnsweredQuestionResponseEntity(
     val hasNext: Boolean,
     val answeredQuestionList: ArrayList<MyPageQuestionEntity>
-){
-    fun toResponseMyPageAnsweredQuestionDto()= ResponseMyPageAnsweredQuestionDto(
-        hasNext=hasNext,
-        answeredQuestionList=answeredQuestionList.mapTo(java.util.ArrayList()) {it.toMyPageQuestionDto()}
-    )
-}
+)
 

@@ -14,7 +14,7 @@ import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
 
 class rvAdapterMyPageQuestion(
     private val context: Context,
-    private val questionList: List<MyPageQuestionEntity> = emptyList()
+    private val questionList: List<MyPageQuestionEntity>
 ) : RecyclerView.Adapter<rvAdapterMyPageQuestion.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemMyPageQuestionCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind (question: MyPageQuestionEntity){
@@ -22,7 +22,7 @@ class rvAdapterMyPageQuestion(
                 tvMyPageQuestionTitle.text = question.title
                 tvMyPageQuestionBody.text = question.content
                 tvMyPageQuestionDate.text = question.createdAt
-                itemQuestionCategory.category = question.category
+                itemQuestionCategory.teacherTalkCategory.text = question.category
                 if(question.solved) {
                     widgetCardViewStatementSolved.visibility = View.VISIBLE
                     Glide.with(root.context)

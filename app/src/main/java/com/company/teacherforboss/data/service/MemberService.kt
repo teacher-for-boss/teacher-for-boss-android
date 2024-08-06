@@ -2,8 +2,10 @@ package com.company.teacherforboss.data.service
 
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.TeacherDetailProfileResponseDto
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface MemberService {
     companion object{
@@ -17,4 +19,10 @@ interface MemberService {
     @GET("${MEMBER}/profiles")
     suspend fun getProfile()
     :BaseResponse<ProfileResponseDto>
+
+    @GET("${MEMBER}/profiles/teacher/detail?")
+    suspend fun getTeacherDetailProfile(
+        @Query("memberId") memberId: Long?
+    )
+    :BaseResponse<TeacherDetailProfileResponseDto>
 }

@@ -3,6 +3,7 @@ package com.company.teacherforboss.presentation.ui.common
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
@@ -11,7 +12,10 @@ import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TeacherProfileActivity :
     BindingActivity<ActivityTeacherProfileBinding>(R.layout.activity_teacher_profile) {
 
@@ -46,28 +50,8 @@ class TeacherProfileActivity :
                 }
             }.attach()
 
-            // TODO 아래 코드로 가져온 profileId 통해서 서버통신
-            // intent.getStringExtra(TEACHER_PROFILE_ID)
-
-
-            // TODO 서버통신 완료했을 때 실행되는 코드로 이동
-            viewModel.setTeacherProfileDetail()
-            binding.teacherProfileDetailEntity = viewModel.teacherProfileDetail.value
-            binding.ivTeacherProfileImg.loadCircularImage(viewModel.teacherProfileDetail.value!!.profileImgUrl)
-
-            tvTeacherProfileEmail.visibility =
-                if (!viewModel.teacherProfileDetail.value?.email.isNullOrBlank()) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-            tvTeacherProfilePhone.visibility =
-                if (!viewModel.teacherProfileDetail.value?.phoneNum.isNullOrBlank()) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            viewModel.setMemberId(intent.getStringExtra(TEACHER_PROFILE_ID)!!.toLong())
+            viewModel.getTeacherDetailProfile()
         }
     }
 
@@ -129,12 +113,34 @@ class TeacherProfileActivity :
     }
 
     private fun collectData() {
+        lifecycleScope.launch {
+            viewModel.teacherProfileDetail.collect {
+                it?.let {
+                    binding.teacherProfileDetailEntity = viewModel.teacherProfileDetail.value
+                    binding.ivTeacherProfileImg.loadCircularImage(viewModel.teacherProfileDetail.value!!.profileImg)
 
+                    binding.tvTeacherProfileEmail.visibility =
+                        if (!viewModel.teacherProfileDetail.value?.email.isNullOrBlank()) {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
+
+                    binding.tvTeacherProfilePhone.visibility =
+                        if (!viewModel.teacherProfileDetail.value?.phone.isNullOrBlank()) {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
+                }
+            }
+        }
     }
 
     companion object {
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"
+        const val TEACHER_PROFILE_ID = "profileId"
     }
 }

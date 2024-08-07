@@ -11,10 +11,13 @@ import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
+import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
+import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
+import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
@@ -81,6 +84,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     transaction.addToBackStack(null)
                     transaction.commit()
                 }
+
+            }
+            includeMyPageTopAppBar.icNotification.setOnClickListener {
+                navigateToAlarm()
             }
             includeMyPageMenuExchange.root.setOnClickListener{
                 if (viewModel.role.value == ROLE_TEACHER) {
@@ -90,6 +97,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     val intent = Intent(context,AskPaymentHistoryActivity::class.java)
                     startActivity(intent)
                 }
+            }
+            includeMyPageMenuExchange.root.setOnClickListener{
+                val intent = Intent(context, ExchangeActivity::class.java)
+                startActivity(intent)
             }
 
             includeMyPageMenuBossTalkWrittenPost.root.setOnClickListener {
@@ -111,8 +122,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,ExchangeHistoryActivity::class.java)
                 startActivity(intent)
             }
+            includeMyPageMenuTeacherTalkQuestionPost.root.setOnClickListener{
+                val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
+                startActivity(intent)
+            }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
             layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
+
+            ivMyPageMenuBarBookmark.setOnClickListener{
+                val intent = Intent(context,SavedTalkActivity::class.java)
+                startActivity(intent)
+            }
+            includeMyPageMenuSavedPost.root.setOnClickListener{
+                val intent = Intent(context,SavedTalkActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -252,6 +276,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun navigateToAlarm(){
+        Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
 
     companion object {
         private const val INQUIRE_WEB_LINK =

@@ -19,6 +19,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.main.BossT
 import com.company.teacherforboss.presentation.ui.community.boss_talk.search.BossTalkSearchActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
+import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -158,6 +159,9 @@ class BossTalkMainFragment :
 
             finishSearch()
         }
+        binding.ivAlarmBtn.setOnClickListener {
+            navigateToAlarm()
+        }
     }
 
     private fun finishSearch() {
@@ -175,6 +179,12 @@ class BossTalkMainFragment :
     private fun gotoBossTalkWrite(){
         val intent=Intent(requireContext(),BossTalkWriteActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun navigateToAlarm(){
+        Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     companion object{

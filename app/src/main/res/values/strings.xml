@@ -176,7 +176,6 @@
     <string name="exchange">환전하기</string>
     <string name="exchange_apply">환전 신청하기</string>
     <string name="exchange_check">확인했어요</string>
-    <string name="current_point_explain">[] 티쳐의\n 현재 보유 티포</string>
     <string name="use_point1">TP(티처 포인트) 이용 안내</string>
     <string name="use_point2">티처톡에서 답변하고 티포(티처 포인트)를 얻어요\n채택 1번당 100TP의 리워드를 얻어요\n24시간 365일 답변하고 채택받을 수 있어요</string>
     <string name="point_info1">이용 방법 : 질문권은 ‘티쳐톡’에서 얻을 수 있습니다.  질문글에 답변을 한 후 채택되면 100TP를 얻습니다. 질문글에 달린 답변이 일주일동안 채택되지 않으면 답변자 모두 (100/답변자 수)TP를 얻습니다.</string>
@@ -192,6 +191,9 @@
     <string name="exchange_complete1">환전 신청이 완료되었습니다!</string>
     <string name="exchange_complete2">✔️ 영업일 기준 3일 내로 입금됩니다.</string>
     <string name="exchange_complete3">✔️ 환전 신청한 내역은 마이페이지에서 확인 가능합니다.</string>
+    <string name="current_teacher_point">%s TP</string>
+    <string name="current_user_name">%s 티쳐의\n 현재 보유 티포</string>
+
 
     <string name="exchange_history_title">환전 내역</string>
     <string name="exchange_history_exchange">티포 환전</string>
@@ -235,14 +237,15 @@
     <string name="ask_payment_check">✔️ 질문권 1개로 전문가에게 빠르게 답변 받기\n✔️ 여러명의 전문가에게 답변을 받아요\n✔️ 24시간 365일 답변받을 수 있어요</string>
     <string name="ask_payment_buy">구매하기</string>
 
+    <!-- 저장한 글 -->
+    <string name="saved_talk_title">저장한 글</string>
+    <string name="saved_teacher_talk">티처톡</string>
+    <string name="saved_boss_talk">보스톡</string>
     <string name="ask_payment_history_title">결제 내역</string>
     <string name="ask_payment_history_pay">질문권 결제</string>
     <string name="ask_payment_history_refund">질문권 환불</string>
 
-
-
-
-    <!-- teacher profile -->
+  <!-- teacher profile -->
     <string name="teacher_profile_report">신고하기</string>
     <string name="teacher_profile_fix">수정하기</string>
     <string name="teacher_profile_teacher_name">%s 티처</string>
@@ -254,4 +257,22 @@
     <string name="teacher_profile_tab_info_keyword">티처 키워드</string>
     <string name="teacher_profile_tab_recent_answer_question">Q. %s</string>
     <string name="teacher_profile_tab_recent_answer_answer">A. %s</string>
+
+    <!-- my page question -->
+    <string name="my_page_question_title_boss">티처톡 - 나의 질문</string>
+    <string name="my_page_question_title_teacher">티처톡 - 답변한 질문글</string>
+
+    <!--알림-->
+    <string name="notification">알림</string>
+    <string name="notification_time">%d시간 전</string>
+    <string name="notification_title">%s</string>
+    <string name="notification_content">%s</string>
+    <string name="notification_info">최대 1달전까지의 알림을 확인할 수 있어요</string>
+
+    <string name="notification_type_teacher_talk">티처톡</string>
+    <string name="notification_type_boss_talk">보스톡</string>
+    <string name="notification_type_home">홈</string>
+    <string name="notification_type_event">이벤트</string>ㅅ
+    <string name="notification_type_exchange">환전신청완료</string>
+
 </resources>

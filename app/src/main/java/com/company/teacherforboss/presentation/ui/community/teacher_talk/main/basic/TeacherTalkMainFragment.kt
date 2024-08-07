@@ -21,6 +21,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Ca
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
+import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.LocalDataSource
 
@@ -180,6 +181,9 @@ class TeacherTalkMainFragment :
             viewModel.setKeyword(binding.etSearchView.text.toString())
             viewModel.searchKeywordTeacherTalk()
         }
+        binding.ivAlarmBtn.setOnClickListener {
+            navigateToAlarm()
+        }
     }
 
     private fun finishSearch() {
@@ -198,6 +202,12 @@ class TeacherTalkMainFragment :
     fun gotoTeacherTalkWrite(){
         val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun navigateToAlarm(){
+        Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     companion object{

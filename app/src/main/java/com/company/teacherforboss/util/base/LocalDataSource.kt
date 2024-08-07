@@ -10,7 +10,6 @@ object LocalDataSource {
         val editor = prefs.edit()
         editor.putString(USER_NAME, name)
         editor.apply()
-
     }
     fun saveSignupType(context:Context,type:String){
         val prefs: SharedPreferences =
@@ -39,6 +38,12 @@ object LocalDataSource {
         return prefs.getString(key, INFO_NULL)?: INFO_NULL
     }
 
+    fun getUserName(context: Context,key:String):String{
+        val prefs=context.getSharedPreferences(USER_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(key, NAME_NULL)?: NAME_NULL
+    }
+
+
     fun resetSinupType(context: Context){
         val prefs: SharedPreferences =
             context.getSharedPreferences(SIGNUP_TYPE, Context.MODE_PRIVATE)
@@ -57,6 +62,7 @@ object LocalDataSource {
     const val USER_NAME="USER_NAME"
     const val USER_INFO="USER_INFO"
     const val INFO_NULL="INFO_NULL"
+    const val NAME_NULL="NAME_NULL"
     const val SIGNUP_TYPE="SIGNUP_TYPE"
     const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
 }

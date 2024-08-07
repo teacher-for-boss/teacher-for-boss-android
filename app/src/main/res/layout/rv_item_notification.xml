@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/spacing12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/spacing12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/spacing16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/spacing16" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/guideline_top"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/notification_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/ic_notification"
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_notification_teacher_talk"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                >
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/tv_notification_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알림타입"
+                android:textColor="@color/main_purple_00"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
+                android:layout_marginLeft="4dp"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/ic_notification"
+
+                >
+
+            </TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_notification_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+            android:textColor="@color/Gray700"
+            app:layout_constraintTop_toBottomOf="@id/notification_type"
+            android:layout_marginTop="8dp"
+            >
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_notification_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body3"
+            android:textColor="@color/Gray700"
+            app:layout_constraintTop_toBottomOf="@id/tv_notification_title"
+            >
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_notification_left_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
+            android:textColor="@color/Gray400"
+            android:text="@string/notification_time"
+            android:textAlignment="textEnd"
+
+            app:layout_constraintTop_toBottomOf="@id/tv_notification_content"
+            >
+
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/Gray200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+    </View>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

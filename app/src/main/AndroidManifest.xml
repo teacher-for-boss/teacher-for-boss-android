@@ -50,7 +50,7 @@
 
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.login.LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -68,12 +68,8 @@
 
         <activity
             android:name=".presentation.ui.mypage.saved.SavedTalkActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.TeacherForBoss">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity

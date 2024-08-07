@@ -12,6 +12,7 @@ import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
+import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
 import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
@@ -78,6 +79,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     transaction.addToBackStack(null)
                     transaction.commit()
                 }
+
+            }
+            includeMyPageTopAppBar.icNotification.setOnClickListener {
+                navigateToAlarm()
             }
             includeMyPageMenuExchange.root.setOnClickListener{
                 if (viewModel.role.value == ROLE_TEACHER) {
@@ -87,6 +92,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     val intent = Intent(context,AskPaymentHistoryActivity::class.java)
                     startActivity(intent)
                 }
+            }
+            includeMyPageMenuExchange.root.setOnClickListener{
+                val intent = Intent(context, ExchangeActivity::class.java)
+                startActivity(intent)
             }
 
             includeMyPageMenuExchangeDetails.root.setOnClickListener{
@@ -224,6 +233,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         startActivity(intent)
     }
 
+    private fun navigateToAlarm(){
+        Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
 
     companion object {
         private const val INQUIRE_WEB_LINK =

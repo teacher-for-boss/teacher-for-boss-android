@@ -7,6 +7,7 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("com.google.gms.google-services")
 
     val room_version = "2.6.1"
     id("androidx.room") version "$room_version" apply false
@@ -184,8 +185,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     implementation("androidx.core:core-ktx:1.9.0")

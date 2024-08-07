@@ -73,12 +73,12 @@ class TeacherTalkCardAdapter(context: Context) :
             spannable.setSpan(colorSpanQ, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannable.setSpan(colorSpanRest, 2, questionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            binding.tvTeacherTalkQuestion.text = spannable
-            binding.tvTeacherTalkContent.text = teacherTalkCard.content
+            binding.tvAnsweredQuestionTitle.text = spannable
+            binding.tvAnsweredQuestionContent.text = teacherTalkCard.content
             binding.tvTeacherTalkBookmarkCount.text = teacherTalkCard.bookmarkCount.toString()
             binding.tvTeacherTalkLikeCount.text = teacherTalkCard.likeCount.toString()
             binding.tvTeacherTalkAnswerCount.text = teacherTalkCard.answerCount.toString()
-            binding.tvTeacherTalkDate.text = LocalDateFormatter.extractDate(teacherTalkCard.createdAt)
+            binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(teacherTalkCard.createdAt)
 
             binding.icTeacherTalkBookmark.isSelected = teacherTalkCard.bookmarked
             binding.tvTeacherTalkBookmarkCount.isSelected = teacherTalkCard.bookmarked

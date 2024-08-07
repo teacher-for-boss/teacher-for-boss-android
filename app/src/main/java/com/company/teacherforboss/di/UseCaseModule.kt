@@ -5,36 +5,37 @@ import com.company.teacherforboss.domain.repository.AwsReository
 import com.company.teacherforboss.domain.repository.CommunityRepository
 import com.company.teacherforboss.domain.repository.HomeRepository
 import com.company.teacherforboss.domain.repository.MemberRepository
+import com.company.teacherforboss.domain.repository.MyPageRepository
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.repository.SignupRepository
-import com.company.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
-import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
-import com.company.teacherforboss.domain.usecase.SignupUseCase
 import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
+import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
+import com.company.teacherforboss.domain.usecase.SignupUseCase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
 import com.company.teacherforboss.domain.usecase.auth.WithdrawUsecase
-import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
-import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
-import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
-import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
-import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
-import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentDeleteUseCase
+import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentDisLikeUseCase
+import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentLikeUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentListUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentUseCase
+import com.company.teacherforboss.domain.usecase.community.boss.BossTalkDeletePostUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkLikeUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkPostsUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkSearchUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
+import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnsUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerDislikeUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerLikeUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerListUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkAnswerPostUseCase
+import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkBodyUseCase
+import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkBookmarkUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkDeleteBodyUseCase
+import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkLikeUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyAnswerUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkModifyBodyUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
@@ -44,6 +45,7 @@ import com.company.teacherforboss.domain.usecase.community.teacher.TeacherUpload
 import com.company.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
+import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -53,6 +55,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -247,6 +250,11 @@ class UseCaseModule {
     @Singleton
     fun providesBankAccountChangeUseCase(paymentRepository: PaymentRepository): BankAccountChangeUseCase =
         BankAccountChangeUseCase(paymentRepository)
+
+    @Provides
+    @Singleton
+    fun providesBookmarkedQuestionsUseCase(myPageRepository: MyPageRepository): BookmarkedQuestionsUseCase =
+        BookmarkedQuestionsUseCase(myPageRepository)
 
     @Provides
     @Singleton

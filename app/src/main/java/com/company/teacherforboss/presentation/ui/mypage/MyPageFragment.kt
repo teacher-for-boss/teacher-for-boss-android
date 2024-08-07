@@ -14,6 +14,7 @@ import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeA
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
+import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.component.DialogPopupFragment
@@ -103,6 +104,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
             layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
+
+            ivMyPageMenuBarBookmark.setOnClickListener{
+                val intent = Intent(context,SavedTalkActivity::class.java)
+                startActivity(intent)
+            }
+            includeMyPageMenuSavedPost.root.setOnClickListener{
+                val intent = Intent(context,SavedTalkActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

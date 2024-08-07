@@ -7,35 +7,42 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.company.teacherforboss.R
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.databinding.ActivitySavedTalkBinding
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SavedTalkActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySavedTalkBinding
+    private lateinit var pagerAdapter: SavedTalkPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySavedTalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when(tab.position) {
-                    0 -> replaceFragment(SavedTeacherTalkFragment())
-                    1 -> replaceFragment(SavedBossTalkFragment())
-                }
-            }
+        pagerAdapter = SavedTalkPagerAdapter(this)
+        binding.viewPager.adapter = pagerAdapter
 
-            override fun onTabReselected(p0: TabLayout.Tab?) {
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "티쳐톡"
+                else -> "보스톡"
             }
+        }.attach()
 
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-            }
-        })
+        // 초기 탭 선택
+        if (savedInstanceState == null) {
+            binding.viewPager.setCurrentItem(0, false)
+        }
+
+        binding.backBtn.setOnClickListener {
+            onBackBtnPressed()
+        }
     }
+
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -43,21 +50,12 @@ class SavedTalkActivity : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(ev)
     }
-    fun onBackBtnPressed(){
-        binding.backBtn.setOnClickListener {
-            val intent= Intent(this, SavedTalkActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION","EXCHANGE")
-            }
-            startActivity(intent)
+
+    fun onBackBtnPressed() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("gotoMyPage", "gotoMyPage")
         }
+        startActivity(intent)
+        finish()
     }
-
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-        Log.d("MainActivity", "Fragment replaced with: ${fragment::class.java.simpleName}")
-
-    }
-
 }

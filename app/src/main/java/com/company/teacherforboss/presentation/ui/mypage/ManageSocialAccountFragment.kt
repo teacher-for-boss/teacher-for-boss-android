@@ -33,7 +33,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
 
     }
     private fun initView(){
-        val socialType = LocalDataSource.getSignupType(appContext,SIGNUP_TYPE)
+        val socialType = LocalDataSource.getSignupType(appContext)
 
         when (socialType){
             SIGNUP_SOCIAL_KAKAO -> {binding.includeEmail.title = getString(R.string.manage_account_email_kakao)}
@@ -109,8 +109,6 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
     companion object {
         private const val LOGOUT_DIALOG = "logoutModal"
         private const val DELETE_DIALOG = "deleteModal"
-        private const val SIGNUP_TYPE="SIGNUP_TYPE"
-        private const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
         private const val SIGNUP_SOCIAL_NAVER="NAVER"
         private const val SIGNUP_SOCIAL_KAKAO="KAKAO"
     }

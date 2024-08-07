@@ -170,7 +170,7 @@ class TeacherProfileFragment : Fragment(){
             viewModel.profileImg.observe(viewLifecycleOwner,{
                 if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
                     viewModel._keywords.value=selectedChipList
-                    val signupType=LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+                    val signupType=LocalDataSource.getSignupType(requireContext())
                     if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
                     else signup()
                 }
@@ -273,8 +273,7 @@ class TeacherProfileFragment : Fragment(){
 
 
     fun getSocialSignupProvidedInfo(){
-        val signupType= LocalDataSource.getSignupType(requireContext(),
-            SignupStartFragment.SIGNUP_TYPE)
+        val signupType= LocalDataSource.getSignupType(requireContext())
 
         if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
             val activity=activity as SignupActivity
@@ -335,7 +334,6 @@ class TeacherProfileFragment : Fragment(){
     }
     companion object{
         const val USER_INFO="USER_INFO"
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
         const val DEFAULT_TEACHER_PROFILE_IMG_URL="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_teacher.png"
     }

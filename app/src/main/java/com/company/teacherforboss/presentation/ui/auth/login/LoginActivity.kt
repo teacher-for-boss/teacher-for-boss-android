@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     loginViewModel.saveToken(it.data)
-                    LocalDataSource.saveUserName(appContext,it.data?.result?.name?:"".toString())
+                    LocalDataSource.saveUserInfo(appContext, USER_NAME,it.data?.result?.name?:"".toString())
                     LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     LocalDataSource.saveUserInfo(appContext,"email",it.data?.result?.email!!)
                     gotoMainActivity()
@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Loading ->{}
                 is BaseResponse.Success ->{
                     loginViewModel.saveToken(it.data)
-                    LocalDataSource.saveUserName(appContext,it.data?.result?.name!!.toString())
+                    LocalDataSource.saveUserInfo(appContext, USER_NAME,it.data?.result?.name!!.toString())
                     LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
                     gotoMainActivity()
                 }

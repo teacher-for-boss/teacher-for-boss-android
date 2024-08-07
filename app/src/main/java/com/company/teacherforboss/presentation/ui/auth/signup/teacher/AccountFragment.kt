@@ -37,7 +37,7 @@ class AccountFragment : Fragment() {
 
     private fun addListeners(){
         val activity = activity as SignupActivity
-        val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+        val signupType= LocalDataSource.getSignupType(requireContext())
 
         binding.btnNextSignup.setOnClickListener {
             // 소셜로그인으로 회원가입 시
@@ -67,7 +67,6 @@ class AccountFragment : Fragment() {
     }
 
     companion object{
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
     }
 

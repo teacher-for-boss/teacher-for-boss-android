@@ -45,7 +45,7 @@ class SignupStartFragment : Fragment() {
             btn2.isSelected = true
         }
         binding.nextBtn.setOnClickListener(){
-            val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+            val signupType= LocalDataSource.getSignupType(requireContext())
 
             if(btn1.isSelected){
                 viewModel.setBossMode()

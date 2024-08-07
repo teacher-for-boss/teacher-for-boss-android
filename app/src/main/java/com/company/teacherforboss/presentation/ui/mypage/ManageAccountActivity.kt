@@ -30,7 +30,7 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
             .commit()
     }
     fun setFragment(){
-        val signupType= LocalDataSource.getSignupType(this, SIGNUP_TYPE)
+        val signupType= LocalDataSource.getSignupType(this)
         if (signupType != SIGNUP_DEFAULT) initView(ManageSocialAccountFragment())
         else {
             viewModel.getAccount()
@@ -55,7 +55,6 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
     }
 
     companion object{
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
         const val PHONE="phone"
     }

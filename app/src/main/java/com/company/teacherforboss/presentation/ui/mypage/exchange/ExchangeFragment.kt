@@ -11,6 +11,7 @@ import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchangeBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel.Companion.USER_NAME
 import com.company.teacherforboss.util.base.LocalDataSource
 
 class ExchangeFragment : Fragment() {
@@ -36,9 +37,8 @@ class ExchangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getTeacherPoint()
-//        binding.tvUserName.text = LocalDataSource.getUserName(requireContext(), "name")
-        setupObservers()
         setTeacherPoint()
+        setTeacherName()
 
         binding.btnExchange.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -54,16 +54,14 @@ class ExchangeFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupObservers() {
-        viewModel.userName.observe(viewLifecycleOwner, Observer { userName ->
-            binding.tvUserName.text = userName
-        })
-    }
-
     private fun setTeacherPoint() {
         binding.tvTeacherPoint.text = getString(
             R.string.current_teacher_point,
             " TP"
         )
+    }
+    private fun setTeacherName(){
+        val userName = LocalDataSource.getUserInfo(requireContext(), USER_NAME)
+        viewModel.setUserName(userName)
     }
 }

@@ -64,5 +64,4 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindMyPageRepository(myPageRepositoryImpl: MyPageRepositoryImpl): MyPageRepository
 
-
 }

@@ -8,10 +8,12 @@ import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
+import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
 
 class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
 
     private var binding: FragmentBossTalkMainBinding? = null
+    private var savedTeacherTalkBinding: FragmentSavedTeacherTalkBinding? = null
 
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)

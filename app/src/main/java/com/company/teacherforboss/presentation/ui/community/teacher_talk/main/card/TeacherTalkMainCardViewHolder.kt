@@ -12,11 +12,11 @@ class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBind
 
     fun onBind(cardData: QuestionEntity) {
         with(binding) {
-            tvTeacherTalkQuestion.text = "Q. " + cardData.title
-            tvTeacherTalkContent.text = cardData.content
+            tvAnsweredQuestionTitle.text = "Q. " + cardData.title
+            tvAnsweredQuestionContent.text = cardData.content
             val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
             val formattedDate = cardData.createdAt.format(formatter)
-            tvTeacherTalkDate.text = formattedDate
+            tvAnsweredQuestionDate.text = formattedDate
             tvTeacherTalkBookmarkCount.text = cardData.bookmarkCount.toString()
             tvTeacherTalkLikeCount.text = cardData.likeCount.toString()
             tvTeacherTalkAnswerCount.text = cardData.answerCount.toString()

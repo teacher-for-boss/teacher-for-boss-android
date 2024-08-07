@@ -5,6 +5,9 @@ import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnswe
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
+import com.company.teacherforboss.util.base.BaseResponse
+import retrofit2.http.GET
 
 interface MyPageService {
     companion object{
@@ -16,4 +19,9 @@ interface MyPageService {
         @Query("size") size:Int,
     )
     : BaseResponse<ResponseMyPageAnsweredQuestionDto>
+
+    @GET("mypage/board/bookmarked-questions")
+    suspend fun getBookmarkedQuestions(
+    ): BaseResponse<ResponseBookmarkedQuestionsDto>
+
 }

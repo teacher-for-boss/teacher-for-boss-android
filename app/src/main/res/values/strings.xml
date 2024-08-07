@@ -176,7 +176,6 @@
     <string name="exchange">환전하기</string>
     <string name="exchange_apply">환전 신청하기</string>
     <string name="exchange_check">확인했어요</string>
-    <string name="current_point_explain">[] 티쳐의\n 현재 보유 티포</string>
     <string name="use_point1">TP(티처 포인트) 이용 안내</string>
     <string name="use_point2">티처톡에서 답변하고 티포(티처 포인트)를 얻어요\n채택 1번당 100TP의 리워드를 얻어요\n24시간 365일 답변하고 채택받을 수 있어요</string>
     <string name="point_info1">이용 방법 : 질문권은 ‘티쳐톡’에서 얻을 수 있습니다.  질문글에 답변을 한 후 채택되면 100TP를 얻습니다. 질문글에 달린 답변이 일주일동안 채택되지 않으면 답변자 모두 (100/답변자 수)TP를 얻습니다.</string>
@@ -192,6 +191,9 @@
     <string name="exchange_complete1">환전 신청이 완료되었습니다!</string>
     <string name="exchange_complete2">✔️ 영업일 기준 3일 내로 입금됩니다.</string>
     <string name="exchange_complete3">✔️ 환전 신청한 내역은 마이페이지에서 확인 가능합니다.</string>
+    <string name="current_teacher_point">%s TP</string>
+    <string name="current_user_name">%s 티쳐의\n 현재 보유 티포</string>
+
 
     <string name="exchange_history_title">환전 내역</string>
     <string name="exchange_history_exchange">티포 환전</string>
@@ -243,7 +245,7 @@
     <string name="ask_payment_history_pay">질문권 결제</string>
     <string name="ask_payment_history_refund">질문권 환불</string>
 
-    <!-- teacher profile -->
+  <!-- teacher profile -->
     <string name="teacher_profile_report">신고하기</string>
     <string name="teacher_profile_fix">수정하기</string>
     <string name="teacher_profile_teacher_name">%s 티처</string>

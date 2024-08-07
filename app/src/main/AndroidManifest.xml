@@ -50,13 +50,15 @@
 
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.login.LoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+          
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
   
         <activity
@@ -91,8 +93,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        </activity>
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity"
             android:exported="false"
@@ -122,7 +126,6 @@
             android:name="com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         </activity>
 
         <activity

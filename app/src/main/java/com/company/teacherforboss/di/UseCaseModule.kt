@@ -46,6 +46,8 @@ import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostU
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
+import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
+import com.company.teacherforboss.domain.usecase.payment.TeacherPointUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -245,6 +247,16 @@ class UseCaseModule {
     @Singleton
     fun providesBankAccountChangeUseCase(paymentRepository: PaymentRepository): BankAccountChangeUseCase =
         BankAccountChangeUseCase(paymentRepository)
+
+    @Provides
+    @Singleton
+    fun providesExchangeUseCase(paymentRepository: PaymentRepository): ExchangeUseCase =
+        ExchangeUseCase(paymentRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherPointUseCase(paymentRepository: PaymentRepository) :TeacherPointUseCase =
+        TeacherPointUseCase(paymentRepository)
 
     @Provides
     @Singleton

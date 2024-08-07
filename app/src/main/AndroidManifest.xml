@@ -127,6 +127,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
+        <activity android:name=".presentation.ui.mypage.community.MyPageTeacherTalkActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity"
             android:exported="false"

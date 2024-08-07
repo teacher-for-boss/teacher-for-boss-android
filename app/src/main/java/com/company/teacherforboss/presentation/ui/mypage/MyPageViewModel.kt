@@ -96,6 +96,7 @@ class MyPageViewModel @Inject constructor(
 
     fun setProfileImg(img: String) {
         _profileImg.value = img
+    }
       
     fun getBookmarkedQuestions() {
         viewModelScope.launch {

@@ -257,7 +257,7 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesProfile(memberRepository: MemberRepository): ProfileUseCase =
+    fun providesProfile(memberRepository: MemberRepository): ProfileUseCase = ProfileUseCase(memberRepository)
 
     @Provides
     @Singleton
@@ -278,10 +278,6 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherPointUseCase(paymentRepository: PaymentRepository) :TeacherPointUseCase =
         TeacherPointUseCase(paymentRepository)
-
-    @Provides
-    @Singleton
-    fun provides(memberRepository: MemberRepository): ProfileUseCase = ProfileUseCase(memberRepository = memberRepository)
 
     @Provides
     @Singleton

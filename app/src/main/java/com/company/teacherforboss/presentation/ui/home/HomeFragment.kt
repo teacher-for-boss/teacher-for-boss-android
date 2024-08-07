@@ -221,6 +221,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         transaction.replace(R.id.fcv_teacher_for_boss, TeacherTalkMainFragment())
         transaction.commit()
 
+    }
 
     private fun navigateToAlarm(){
         Intent(requireContext(),NotificationActivity::class.java).apply {

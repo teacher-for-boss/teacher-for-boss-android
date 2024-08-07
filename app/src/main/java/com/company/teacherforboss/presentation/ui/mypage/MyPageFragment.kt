@@ -10,6 +10,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
@@ -117,7 +118,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
             }
 
-
             includeMyPageMenuExchangeDetails.root.setOnClickListener{
                 val intent = Intent(context,ExchangeHistoryActivity::class.java)
                 startActivity(intent)
@@ -136,6 +136,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             includeMyPageMenuSavedPost.root.setOnClickListener{
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
+            }
+            tvMyPageProfileName.setOnClickListener {
+                Intent(context,TeacherProfileActivity::class.java).apply {
+                    putExtra(TEACHER_PROFILE_ID,"4") //TODO: 마이페이지에서 memberId 받기
+                    startActivity(this)
+                }
+            }
+            ivMyPageProfile.setOnClickListener {
+                Intent(context,TeacherProfileActivity::class.java).apply {
+                    putExtra(TEACHER_PROFILE_ID,"4") //TODO: 마이페이지에서 memberId 받기
+                    startActivity(this)
+                }
             }
         }
     }
@@ -296,5 +308,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val PROFILE_IMG = "profileImg"
         private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"
         private const val BOSS_TALK_COMMENT_POST = "bossTalkCommentPost"
+        const val TEACHER_PROFILE_ID = "profileId"
     }
 }

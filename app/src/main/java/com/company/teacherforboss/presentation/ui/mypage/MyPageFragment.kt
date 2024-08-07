@@ -12,6 +12,8 @@ import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
+import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.component.DialogPopupFragment
@@ -36,21 +38,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initLayout(profile: MyPageProfileEntity) {
-        BindingImgAdapter.bindProfileImgUrl(binding.ivMyPageProfile, profile.profileImg)
+        binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         val role = profile.role
         if (role == ROLE_TEACHER) {
-            setTeacherProfileLayout()
-            setTeacherMenuBarLayout()
-//            setTeacherMenuLayout()
-            // TODO 삭제
-            setTeacherProfileLayoutByAPI(profile)
             setTeacherMenuLayout()
-            binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
+            setTeacherMenuBarLayout()
+            setTeacherProfileLayoutByAPI(profile)
+            setTeacherProfileLayout()
+
         } else {
-//            setBossMenuLayout()
-            // TODO 삭제
+            setBossMenuLayout()
             setBossProfileLayoutByAPI(profile)
-            binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         }
     }
 
@@ -70,27 +68,39 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,ManageAccountActivity::class.java)
                 startActivity(intent)
             }
-            includeMyPageMenuAccountChange.root.setOnClickListener{
-                if (viewModel.role.value == ROLE_TEACHER)
-                {
-                    val intent = Intent(context,AccountChangeActivity::class.java)
+            includeMyPageMenuAccountChange.root.setOnClickListener {
+                if (viewModel.role.value == ROLE_TEACHER) {
+                    val intent = Intent(context, AccountChangeActivity::class.java)
                     startActivity(intent)
-                }
-                else{
-                    val transaction=parentFragmentManager.beginTransaction()
+                } else {
+                    val transaction = parentFragmentManager.beginTransaction()
                     transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
                     transaction.addToBackStack(null)
                     transaction.commit()
                 }
 
-
-
+            }
+            includeMyPageTopAppBar.icNotification.setOnClickListener {
+                navigateToAlarm()
+            }
+            includeMyPageMenuExchange.root.setOnClickListener{
+                if (viewModel.role.value == ROLE_TEACHER) {
+                    val intent = Intent(context, ExchangeActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(context,AskPaymentHistoryActivity::class.java)
+                    startActivity(intent)
+                }
             }
             includeMyPageMenuExchange.root.setOnClickListener{
                 val intent = Intent(context, ExchangeActivity::class.java)
                 startActivity(intent)
             }
 
+            includeMyPageMenuExchangeDetails.root.setOnClickListener{
+                val intent = Intent(context,ExchangeHistoryActivity::class.java)
+                startActivity(intent)
+            }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
             layoutMyPageLevelInfo.setOnClickListener { showTeacherLevelDialogFragment() }
         }
@@ -213,6 +223,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         startActivity(intent)
     }
 
+    private fun navigateToAlarm(){
+        Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
 
     companion object {
         private const val INQUIRE_WEB_LINK =

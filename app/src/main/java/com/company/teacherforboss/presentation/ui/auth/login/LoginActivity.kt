@@ -144,12 +144,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        binding.kakaoBtn.setOnClickListener {
-//            socialLoginViewModel.kakaoLogin()
-//        }
-//        binding.naverBtn.setOnClickListener {
-//            socialLoginViewModel.naverLogin()
-//        }
+        binding.kakaoBtn.setOnClickListener {
+            socialLoginViewModel.kakaoLogin()
+        }
+        binding.naverBtn.setOnClickListener {
+            socialLoginViewModel.naverLogin()
+        }
 
 
         binding.findEmailBtn.setOnClickListener {

@@ -19,7 +19,7 @@ interface PaymentService {
     suspend fun getBankAccount(
     ): BaseResponse<ResponseBankAccountDto>
 
-    @PATCH("payment/accounts")
+    @PATCH("payments/accounts")
     suspend fun changeBankAccount(
         @Body requestBankAccountChangeDto: RequestBankAccountChangeDto
     ): BaseResponse<ResponseBankAccountChangeDto>

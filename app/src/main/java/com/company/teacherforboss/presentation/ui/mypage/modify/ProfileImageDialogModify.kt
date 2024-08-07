@@ -19,16 +19,16 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.DialogProfileImageBinding
-import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileActivity
-import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileViewModel
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.preloadImage
 import com.company.teacherforboss.util.base.UrlConfig
 
 class ProfileImageDialogModify (
-    val activity: ModifyTeacherProfileActivity,
-    private val viewModel: ModifyTeacherProfileViewModel,
+    val activity: ModifyProfileActivity,
+    private val viewModel: ModifyProfileViewModel,
 ): Dialog(activity){
     private lateinit var binding: DialogProfileImageBinding
     val clickedMap= mutableMapOf<Int,Boolean>()

@@ -3,9 +3,11 @@ package com.company.teacherforboss.presentation.ui.common
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentTeacherProfileInfoBinding
 import com.company.teacherforboss.util.base.BindingFragment
+import kotlinx.coroutines.launch
 
 
 class TeacherProfileInfoFragment : BindingFragment<FragmentTeacherProfileInfoBinding>(R.layout.fragment_teacher_profile_info) {
@@ -23,9 +25,15 @@ class TeacherProfileInfoFragment : BindingFragment<FragmentTeacherProfileInfoBin
     }
 
     private fun initLayout() {
-        viewModel.setTeacherProfileDetail()
-        binding.teacherProfileDetailEntity = viewModel.teacherProfileDetail.value
-        binding.rvTeacherProfileInfoKeywordDetail.adapter = teacherProfileInfoKeywordAdapter
-        teacherProfileInfoKeywordAdapter.submitList(viewModel.teacherProfileDetail.value?.keyword)
+        lifecycleScope.launch {
+            viewModel.teacherProfileDetail.collect {
+                it?.let {
+                    binding.teacherProfileDetailEntity = viewModel.teacherProfileDetail.value
+                    binding.rvTeacherProfileInfoKeywordDetail.adapter = teacherProfileInfoKeywordAdapter
+                    teacherProfileInfoKeywordAdapter.submitList(viewModel.teacherProfileDetail.value?.keywords)
+                }
+            }
+        }
+
     }
 }

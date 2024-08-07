@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:maxLines="2"
-                android:text="@{teacherProfileDetailEntity.specialty}"
+                android:text="@{teacherProfileDetailEntity.field}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
                 android:textColor="@color/Gray600"
                 app:layout_constraintStart_toStartOf="@id/gl_start"

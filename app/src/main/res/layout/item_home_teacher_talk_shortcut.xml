@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="14dp"
@@ -37,6 +38,7 @@
             app:layout_constraintTop_toTopOf="@id/view_category_background" />
 
         <TextView
+            android:id="@+id/tv_category_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

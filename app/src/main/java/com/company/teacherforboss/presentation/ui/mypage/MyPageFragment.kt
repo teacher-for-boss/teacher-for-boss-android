@@ -10,14 +10,15 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentMyPageBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
-import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.UiState
@@ -37,10 +38,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         getProfile()
         addListeners()
         collectData()
+        gotoModifyActivity()
     }
 
     private fun initLayout(profile: MyPageProfileEntity) {
         binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
+        viewModel.setProfileImg(profile.profileImg)
+        viewModel.setNickname(profile.nickname)
         val role = profile.role
         if (role == ROLE_TEACHER) {
             setTeacherMenuLayout()
@@ -98,6 +102,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context, ExchangeActivity::class.java)
                 startActivity(intent)
             }
+
+            includeMyPageMenuBossTalkWrittenPost.root.setOnClickListener {
+                Intent(context, MyPageBossTalkWriteActivity::class.java).apply {
+                    putExtra(ROLE_BOSS, BOSS_TALK_WRITE_POST)
+                    startActivity(this)
+                }
+            }
+
+            includeMyPageMenuBossTalkCommentPost.root.setOnClickListener {
+                Intent(context, MyPageBossTalkWriteActivity::class.java).apply {
+                    putExtra(ROLE_BOSS, BOSS_TALK_COMMENT_POST)
+                    startActivity(this)
+                }
+            }
+
 
             includeMyPageMenuExchangeDetails.root.setOnClickListener{
                 val intent = Intent(context,ExchangeHistoryActivity::class.java)
@@ -233,9 +252,28 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         DialogTeacherLevelFragment().show(parentFragmentManager, TEACHER_LEVEL_DIALOG)
     }
     fun gotoLoginActivity(){
-        val intent= Intent(requireActivity(), LoginActivity::class.java).apply {
+        Intent(requireActivity(), LoginActivity::class.java).apply {
+            startActivity(this)
         }
-        startActivity(intent)
+    }
+
+    private fun gotoModifyActivity() {
+        binding.layoutMyPageProfileFix.setOnClickListener {
+            if(viewModel.role.value == ROLE_TEACHER) {
+                Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
+                    putExtra(ROLE, ROLE_TEACHER)
+                    startActivity(this)
+                }
+            }
+            else {
+                Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
+                    putExtra(ROLE, ROLE_BOSS)
+                    putExtra(NICKNAME, viewModel.nickname.value)
+                    putExtra(PROFILE_IMG, viewModel.profileImg.value)
+                    startActivity(this)
+                }
+            }
+        }
     }
 
     private fun navigateToAlarm(){
@@ -251,7 +289,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
         private const val LOGOUT_DIALOG = "logoutModal"
         const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
+        private const val ROLE = "ROLE"
         private const val ROLE_TEACHER = "TEACHER"
         private const val ROLE_BOSS = "BOSS"
+        private const val NICKNAME = "nickname"
+        private const val PROFILE_IMG = "profileImg"
+        private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"
+        private const val BOSS_TALK_COMMENT_POST = "bossTalkCommentPost"
     }
 }

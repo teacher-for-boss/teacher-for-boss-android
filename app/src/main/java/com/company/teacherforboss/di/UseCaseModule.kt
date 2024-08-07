@@ -9,7 +9,10 @@ import com.company.teacherforboss.domain.repository.MyPageRepository
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.repository.SignupRepository
 import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
+import com.company.teacherforboss.domain.usecase.Member.ModifyBossProfileUseCase
+import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
+import com.company.teacherforboss.domain.usecase.Member.TeacherDetailProfileUseCase
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.company.teacherforboss.domain.usecase.SignupUseCase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
@@ -254,6 +257,10 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+    fun providesProfile(memberRepository: MemberRepository): ProfileUseCase =
+
+    @Provides
+    @Singleton
     fun providesMyPageAnsweredQuestionUseCase(myPageRepository: MyPageRepository): MyPageAnsweredQuestionUseCase =
         MyPageAnsweredQuestionUseCase(myPageRepository)
         
@@ -274,7 +281,21 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provides(memberRepository: MemberRepository): ProfileUseCase =
-        ProfileUseCase(memberRepository = memberRepository)
+    fun provides(memberRepository: MemberRepository): ProfileUseCase = ProfileUseCase(memberRepository = memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherDetailProfileUseCase(memberRepository: MemberRepository): TeacherDetailProfileUseCase =
+        TeacherDetailProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesModifyTeacherProfile(memberRepository: MemberRepository): ModifyTeacherProfileUseCase =
+        ModifyTeacherProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesModifyBossProfile(memberRepository: MemberRepository): ModifyBossProfileUseCase =
+        ModifyBossProfileUseCase(memberRepository)
 
 }

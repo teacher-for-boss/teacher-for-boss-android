@@ -19,6 +19,10 @@ class TeacherTalkCategoryAdapter(
     var selectedItemPosition = DEFAULT_TAG_POSITION
     var previousItemPosition = RecyclerView.NO_POSITION
 
+    init {
+        selectedItemPosition = viewModel.categoryId.value!!.toInt()
+    }
+
     inner class ViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {

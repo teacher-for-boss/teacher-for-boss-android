@@ -24,6 +24,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -212,8 +213,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     override fun onItemClicked(category: String) {
-        teacherTalkMainViewModel.setCategoryName(category)
-
+        teacherTalkMainViewModel.setCategory(category,DEFAULT_LASTID)
         (activity as MainActivity)?.setSelectedMenu(R.id.menu_teacher_talk)
 
         val transaction = parentFragmentManager.beginTransaction()

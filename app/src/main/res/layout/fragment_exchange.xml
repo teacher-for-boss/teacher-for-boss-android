@@ -44,8 +44,10 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_coin"
-                android:text= "@{@string/current_user_name(exchangeViewModel.userName)}"/>
+                app:layout_constraintTop_toBottomOf="@id/iv_coin"/>
+<!--                android:text= "@{@string/current_user_name(exchangeViewModel.userName)}"-->
+
+                />
 
 
             <TextView

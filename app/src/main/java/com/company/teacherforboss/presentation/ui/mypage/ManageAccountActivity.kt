@@ -8,15 +8,20 @@ import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityManageAccountBinding
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.layout.activity_manage_account) {
     private val viewModel by viewModels<ManageAccountViewModel>()
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +35,7 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
             .commit()
     }
     fun setFragment(){
-        val signupType= LocalDataSource.getSignupType(this)
+        val signupType= localDataSource.getSignupType()
         if (signupType != SIGNUP_DEFAULT) initView(ManageSocialAccountFragment())
         else {
             viewModel.getAccount()
@@ -45,7 +50,7 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
                 when(accountState){
                     is UiState.Success->{
                         accountState.data.apply {
-                            LocalDataSource.saveUserInfo(applicationContext,PHONE,phone!!)
+                            localDataSource.saveUserInfo(USER_PHONE,phone!!)
                         }
                     }
                     else->Unit
@@ -54,8 +59,4 @@ class ManageAccountActivity : BindingActivity<ActivityManageAccountBinding>(R.la
 
     }
 
-    companion object{
-        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
-        const val PHONE="phone"
-    }
 }

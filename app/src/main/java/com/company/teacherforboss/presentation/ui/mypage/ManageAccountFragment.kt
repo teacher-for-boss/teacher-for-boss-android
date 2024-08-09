@@ -14,20 +14,23 @@ import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.view.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.layout.fragment_manage_account) {
     private val viewModel: ManageAccountViewModel by activityViewModels()
-    val appContext= GlobalApplication.instance
-
+    @Inject
+    lateinit var localDataSource: LocalDataSource
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.myPageViewModel = viewModel
 
-        binding.includeEmail.content = LocalDataSource.getUserInfo(appContext,"email")
-        binding.includePhone.content = LocalDataSource.getUserInfo(appContext,"phone")
+        binding.includeEmail.content = localDataSource.getUserInfo(USER_EMAIL)
+        binding.includePhone.content = localDataSource.getUserInfo(USER_PHONE)
 
         addListeners()
         collectData()
@@ -100,5 +103,7 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
     companion object {
         private const val LOGOUT_DIALOG = "logoutModal"
         private const val DELETE_DIALOG = "deleteModal"
+        private const val USER_EMAIL="USER_EMAIL"
+        private const val USER_PHONE="USER_PHONE"
     }
 }

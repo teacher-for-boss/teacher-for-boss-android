@@ -6,20 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchangeBinding
-import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
-import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel.Companion.USER_NAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
 import com.company.teacherforboss.util.base.LocalDataSource
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ExchangeFragment : Fragment() {
 
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ExchangeViewModel by activityViewModels()
-    val appContext= GlobalApplication.instance
+    @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +61,8 @@ class ExchangeFragment : Fragment() {
         )
     }
     private fun setTeacherName(){
-        val userName = LocalDataSource.getUserInfo(requireContext(), USER_NAME)
+        val userName = localDataSource.getUserInfo(USER_NAME)
+        binding.tvUserName.text=resources.getString(R.string.current_user_name,userName)
         viewModel.setUserName(userName)
     }
 }

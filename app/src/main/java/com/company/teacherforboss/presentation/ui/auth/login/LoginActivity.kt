@@ -23,6 +23,17 @@ import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginV
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_GENDER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PROFILEIMG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -39,25 +50,24 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginActivity: AppCompatActivity(){
     private lateinit var binding:ActivityLoginBinding
-
     private val signupViewModel by viewModels<SignupViewModel>()
     private val loginViewModel by viewModels<LoginViewModel>()
     private val socialLoginViewModel by viewModels<SocialLoginViewModel>()
     private val context=this
-
-    val appContext=GlobalApplication.instance
+    @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        LocalDataSource.deleteUserInfo(context)
-        LocalDataSource.resetSinupType(context)
+        localDataSource.deleteUserInfo()
+        localDataSource.resetSignupType()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
@@ -71,9 +81,9 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is BaseResponse.Success ->{
                     loginViewModel.saveToken(it.data)
-                    LocalDataSource.saveUserInfo(appContext, USER_NAME,it.data?.result?.name?:"".toString())
-                    LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
-                    LocalDataSource.saveUserInfo(appContext,"email",it.data?.result?.email!!)
+                    localDataSource.saveUserInfo(USER_NAME,it.data?.result?.name?:"")
+                    localDataSource.saveUserInfo(USER_ROLE,it.data?.result?.role?:"boss")
+                    localDataSource.saveUserInfo(USER_EMAIL,it.data?.result?.email!!)
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
@@ -116,8 +126,8 @@ class LoginActivity : AppCompatActivity() {
                 is BaseResponse.Loading ->{}
                 is BaseResponse.Success ->{
                     loginViewModel.saveToken(it.data)
-                    LocalDataSource.saveUserInfo(appContext, USER_NAME,it.data?.result?.name!!.toString())
-                    LocalDataSource.saveUserInfo(appContext,"role",it.data?.result?.role?:"boss")
+                    localDataSource.saveUserInfo(USER_NAME,it.data?.result?.name!!.toString())
+                    localDataSource.saveUserInfo(USER_ROLE,it.data?.result?.role?:"boss")
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
@@ -144,23 +154,24 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.kakaoBtn.setOnClickListener {
-            socialLoginViewModel.kakaoLogin()
-        }
-        binding.naverBtn.setOnClickListener {
-            socialLoginViewModel.naverLogin()
-        }
+        // TODO: 깨져서 주석함, 앱 심사 후 권한 요청
+//        binding.kakaoBtn.setOnClickListener {
+//            socialLoginViewModel.kakaoLogin()
+//        }
+//        binding.naverBtn.setOnClickListener {
+//            socialLoginViewModel.naverLogin()
+//        }
 
 
         binding.findEmailBtn.setOnClickListener {
             val intent=Intent(this, FindPwActivity::class.java)
-            intent.putExtra("destination","email")
+            intent.putExtra(ACTIVITY_DESTINATION,"email")
             startActivity(intent)
         }
 
         binding.findPwBtn.setOnClickListener {
             val intent=Intent(this,FindPwActivity::class.java)
-            intent.putExtra("destination","pw")
+            intent.putExtra(ACTIVITY_DESTINATION,"pw")
             startActivity(intent)
         }
 
@@ -205,12 +216,12 @@ class LoginActivity : AppCompatActivity() {
 
                         signupViewModel._birthDate.value=birthYear+"-"+birthDay
 
-                        LocalDataSource.saveUserInfo(context ,"name",result.profile?.name.toString())
-                        LocalDataSource.saveUserInfo(context,"email",result.profile?.email.toString())
-                        LocalDataSource.saveUserInfo(context,"phone",result.profile?.mobile.toString().replace("-",""))
-                        LocalDataSource.saveUserInfo(context,"birthDate",birthYear+"-"+birthDay)
-                        LocalDataSource.saveUserInfo(context,"profileImg",result.profile?.profileImage.toString())
-                        LocalDataSource.saveUserInfo(context,"gender",gender_int.toString())
+                        localDataSource.saveUserInfo(USER_NAME,result.profile?.name.toString())
+                        localDataSource.saveUserInfo(USER_EMAIL,result.profile?.email.toString())
+                        localDataSource.saveUserInfo(USER_PHONE,result.profile?.mobile.toString().replace("-",""))
+                        localDataSource.saveUserInfo(USER_BIRTHDATE,birthYear+"-"+birthDay)
+                        localDataSource.saveUserInfo(USER_PROFILEIMG,result.profile?.profileImage.toString())
+                        localDataSource.saveUserInfo(USER_GENDER,gender_int.toString())
 
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이름 : $name")
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이메일 : $email")
@@ -221,7 +232,7 @@ class LoginActivity : AppCompatActivity() {
 
                         // 소셜 로그인 요청
                         loginViewModel.socialLogin(type="naver",email)
-                        LocalDataSource.saveSignupType(context,SIGNUP_SOCIAL_NAVER)
+                        localDataSource.saveSignupType(SIGNUP_SOCIAL_NAVER)
                         signupViewModel._socialType.value=3
                     }
 
@@ -353,14 +364,14 @@ class LoginActivity : AppCompatActivity() {
                 signupViewModel._birthDate.value=birthDate.toString()
                 signupViewModel._socialType.value=2
 
-                LocalDataSource.saveUserInfo(context,"name",user.kakaoAccount?.name!!)
-                LocalDataSource.saveUserInfo(context,"email",user.kakaoAccount?.email!!)
-                LocalDataSource.saveUserInfo(context,"phone",formatted_phone)
-                LocalDataSource.saveUserInfo(context,"birthDate",birthDate.toString())
-                LocalDataSource.saveUserInfo(context,"profileImg",user.kakaoAccount?.profile?.thumbnailImageUrl?:"")
-                LocalDataSource.saveUserInfo(context,"gender",gender.toString())
-                LocalDataSource.saveSignupType(context,SIGNUP_SOCIAL_KAKAO)
-                loginViewModel.socialLogin("kakao",user.kakaoAccount?.email!!)
+                localDataSource.saveUserInfo(USER_NAME,user.kakaoAccount?.name!!)
+                localDataSource.saveUserInfo(USER_EMAIL,user.kakaoAccount?.email!!)
+                localDataSource.saveUserInfo(USER_PHONE,formatted_phone)
+                localDataSource.saveUserInfo(USER_BIRTHDATE,birthDate.toString())
+                localDataSource.saveUserInfo(USER_PROFILEIMG,user.kakaoAccount?.profile?.thumbnailImageUrl?:"")
+                localDataSource.saveUserInfo(USER_GENDER,gender.toString())
+                localDataSource.saveSignupType(SIGNUP_SOCIAL_KAKAO)
+                loginViewModel.socialLogin(SIGNUP_SOCIAL_KAKAO,user.kakaoAccount?.email!!)
 //                loginViewModel.socialLogin(type="kakao",email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
             }
         }
@@ -481,14 +492,6 @@ class LoginActivity : AppCompatActivity() {
                         "\n만료시간: ${tokenInfo.expiresIn} 초")
             }
         }
-    }
-
-
-    companion object{
-        const val USER_INFO="USER_INFO"
-        const val USER_NAME="USER_NAME"
-        const val SIGNUP_SOCIAL_NAVER="NAVER"
-        const val SIGNUP_SOCIAL_KAKAO="KAKAO"
     }
 
 }

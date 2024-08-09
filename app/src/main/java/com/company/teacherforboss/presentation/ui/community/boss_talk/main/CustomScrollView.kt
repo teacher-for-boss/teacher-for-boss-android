@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
 
-class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
+class NewScrollView : ScrollView {
 
     private var binding: FragmentBossTalkMainBinding? = null
     private var savedTeacherTalkBinding: FragmentSavedTeacherTalkBinding? = null
+    private var headerInitialTop = 0
 
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
@@ -23,7 +24,6 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
         defStyleAttr
     ) {
         overScrollMode = OVER_SCROLL_NEVER
-        viewTreeObserver.addOnGlobalLayoutListener(this)
     }
 
     var header: View? = null
@@ -37,26 +37,23 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
                     callStickListener()
                 }
             }
+
+            // 헤더 초기 위치 저장
+            headerInitialTop = header?.top ?: 0
         }
 
     var stickListener: (View) -> Unit = {}
     var freeListener: (View) -> Unit = {}
 
-    private var mIsHeaderSticky = false
-    private var mHeaderInitPosition = 0f
-
-    override fun onGlobalLayout() {
-        mHeaderInitPosition = header?.top?.toFloat() ?: 0f
-        adjustRecyclerViewHeight()
-    }
+    private var isHeaderSticky = false
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
         super.onScrollChanged(l, t, oldl, oldt)
 
-        val scrolly = t
+        val scrollY = t
 
-        if (scrolly > mHeaderInitPosition) {
-            stickHeader(scrolly - mHeaderInitPosition)
+        if (scrollY > headerInitialTop) {
+            stickHeader((scrollY - headerInitialTop).toFloat())
         } else {
             freeHeader()
         }
@@ -68,9 +65,9 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     }
 
     private fun callStickListener() {
-        if (!mIsHeaderSticky) {
+        if (!isHeaderSticky) {
             stickListener(header ?: return)
-            mIsHeaderSticky = true
+            isHeaderSticky = true
         }
     }
 
@@ -80,36 +77,46 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     }
 
     private fun callFreeListener() {
-        if (mIsHeaderSticky) {
+        if (isHeaderSticky) {
             freeListener(header ?: return)
-            mIsHeaderSticky = false
+            isHeaderSticky = false
         }
     }
 
     fun setBinding(binding: FragmentBossTalkMainBinding) {
         this.binding = binding
+        adjustRecyclerViewHeight(binding.rvBossTalkCard)
     }
 
-    private fun adjustRecyclerViewHeight() {
-        val recyclerView = binding?.rvBossTalkCard
-        recyclerView?.apply {
-            post {
-                val adapter = adapter ?: return@post
-                var totalHeight = 0
-                for (i in 0 until adapter.itemCount) {
-                    val holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i))
-                    adapter.onBindViewHolder(holder, i)
-                    holder.itemView.measure(
-                        MeasureSpec.makeMeasureSpec(recyclerView.width, MeasureSpec.EXACTLY),
-                        MeasureSpec.UNSPECIFIED
-                    )
-                    totalHeight += holder.itemView.measuredHeight
+    private fun adjustRecyclerViewHeight(recyclerView: RecyclerView) {
+        // RecyclerView의 높이를 화면에 맞게 동적으로 조정하지 않고, 기본 스크롤을 사용하도록 변경
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val totalHeight = calculateTotalHeight(recyclerView)
+                if (totalHeight > 0) {
+                    val params = recyclerView.layoutParams
+                    params.height = totalHeight
+                    recyclerView.layoutParams = params
                 }
-                val params = layoutParams
-                params.height = totalHeight + (recyclerView.itemDecorationCount * getItemDecorationHeight(recyclerView))
-                layoutParams = params
             }
+        })
+    }
+
+    private fun calculateTotalHeight(recyclerView: RecyclerView): Int {
+        val adapter = recyclerView.adapter ?: return 0
+        var totalHeight = 0
+        for (i in 0 until adapter.itemCount) {
+            val holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i))
+            adapter.onBindViewHolder(holder, i)
+            holder.itemView.measure(
+                MeasureSpec.makeMeasureSpec(recyclerView.width, MeasureSpec.EXACTLY),
+                MeasureSpec.UNSPECIFIED
+            )
+            totalHeight += holder.itemView.measuredHeight
         }
+        totalHeight += recyclerView.itemDecorationCount * getItemDecorationHeight(recyclerView)
+        return totalHeight
     }
 
     private fun getItemDecorationHeight(recyclerView: RecyclerView): Int {
@@ -121,10 +128,5 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
             totalHeight += outRect.top + outRect.bottom
         }
         return totalHeight
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 }

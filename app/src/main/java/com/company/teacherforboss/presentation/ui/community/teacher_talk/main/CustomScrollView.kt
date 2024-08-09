@@ -40,23 +40,26 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     var stickListener: (View) -> Unit = {}
     var freeListener: (View) -> Unit = {}
 
-    private var mIsHeaderSticky = false
-    private var mHeaderInitPosition = 0f
+    private var isHeaderSticky = false
+    private var headerInitialTop = 0f
 
     override fun onGlobalLayout() {
-        mHeaderInitPosition = header?.top?.toFloat() ?: 0f
+        headerInitialTop = header?.top?.toFloat() ?: 0f
         adjustRecyclerViewHeight()
     }
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
         super.onScrollChanged(l, t, oldl, oldt)
 
-        val scrolly = t
-
-        if (scrolly > mHeaderInitPosition) {
-            stickHeader(scrolly - mHeaderInitPosition)
+        if (t > headerInitialTop) {
+            val position = (t - headerInitialTop).toFloat()
+            if (header?.translationY != position) {
+                stickHeader(position)
+            }
         } else {
-            freeHeader()
+            if (header?.translationY != 0f) {
+                freeHeader()
+            }
         }
     }
 
@@ -66,9 +69,9 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     }
 
     private fun callStickListener() {
-        if (!mIsHeaderSticky) {
+        if (!isHeaderSticky) {
             stickListener(header ?: return)
-            mIsHeaderSticky = true
+            isHeaderSticky = true
         }
     }
 
@@ -78,9 +81,9 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     }
 
     private fun callFreeListener() {
-        if (mIsHeaderSticky) {
+        if (isHeaderSticky) {
             freeListener(header ?: return)
-            mIsHeaderSticky = false
+            isHeaderSticky = false
         }
     }
 
@@ -93,18 +96,32 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
         recyclerView?.apply {
             post {
                 val adapter = adapter ?: return@post
+                val itemViewTypeHeights = mutableMapOf<Int, Int>()
                 var totalHeight = 0
+                var itemDecorationHeight = 0
+
                 for (i in 0 until adapter.itemCount) {
-                    val holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i))
-                    adapter.onBindViewHolder(holder, i)
-                    holder.itemView.measure(
-                        MeasureSpec.makeMeasureSpec(recyclerView.width, MeasureSpec.EXACTLY),
-                        MeasureSpec.UNSPECIFIED
-                    )
-                    totalHeight += holder.itemView.measuredHeight
+                    val viewType = adapter.getItemViewType(i)
+                    val itemHeight = itemViewTypeHeights[viewType] ?: run {
+                        val holder = adapter.createViewHolder(recyclerView, viewType)
+                        adapter.onBindViewHolder(holder, i)
+                        holder.itemView.measure(
+                            MeasureSpec.makeMeasureSpec(recyclerView.width, MeasureSpec.EXACTLY),
+                            MeasureSpec.UNSPECIFIED
+                        )
+                        val measuredHeight = holder.itemView.measuredHeight
+                        itemViewTypeHeights[viewType] = measuredHeight
+                        measuredHeight
+                    }
+                    totalHeight += itemHeight
+
+                    if (i == 0) {
+                        itemDecorationHeight = getItemDecorationHeight(recyclerView)
+                    }
                 }
+
                 val params = layoutParams
-                params.height = totalHeight + (recyclerView.itemDecorationCount * getItemDecorationHeight(recyclerView))
+                params.height = totalHeight + (adapter.itemCount * itemDecorationHeight)
                 layoutParams = params
             }
         }

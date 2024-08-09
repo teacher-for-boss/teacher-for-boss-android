@@ -15,6 +15,8 @@ import androidx.databinding.DataBindingUtil
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivitySignupFinishBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +31,7 @@ class SignupFinishActivity : AppCompatActivity() {
 
         binding= DataBindingUtil.setContentView(this, R.layout.activity_signup_finish)
         binding.lifecycleOwner=this
-        val role = intent.getIntExtra("role",0)
+        val role = intent.getIntExtra(USER_ROLE,0)
 
         setContentView(binding.root)
 
@@ -47,7 +49,7 @@ class SignupFinishActivity : AppCompatActivity() {
 
     }
     fun initView(int:Int?){
-        val nickname = intent.getStringExtra("nickname")?: ""
+        val nickname = intent.getStringExtra(USER_NICKNAME)?: ""
         var text = ""
         if (int == 1) {
             text = "$nickname 보스,\n회원가입을 축하합니다!"

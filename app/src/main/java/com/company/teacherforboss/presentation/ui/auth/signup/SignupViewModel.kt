@@ -30,6 +30,10 @@ import com.company.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.company.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.company.teacherforboss.util.Timer.Custom3mTimer
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_IMG_FILE_TYPE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ErrorUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -635,11 +639,11 @@ class SignupViewModel @Inject constructor(
 
     fun setBossMode(){
         _role.value=1
-        _profileImg.value="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png"
+        _profileImg.value= DEFAULT_BOSS_PROFILE_IMG_URL
     }
     fun setTeacherMode(){
         _role.value=2
-        _profileImg.value="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_teacher.png"
+        _profileImg.value= DEFAULT_TEACHER_PROFILE_IMG_URL
     }
 
     fun changeToBossPageSize(){
@@ -695,8 +699,6 @@ class SignupViewModel @Inject constructor(
         private const val DEFAULT_PROGRESSBAR=1f
         const val BOSS_FRAGMENT_SIZE=8f // 보스: 온보딩 1 + 일반 4 + 프로필 1 =6
         const val TEACHER_FRAGMENT_SZIE=14f
-        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
-        const val DEFAULT_PROFILE_IMG_URL="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png"
     }
 
 }

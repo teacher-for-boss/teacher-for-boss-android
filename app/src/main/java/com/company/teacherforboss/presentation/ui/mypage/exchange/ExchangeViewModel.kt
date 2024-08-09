@@ -134,7 +134,4 @@ class ExchangeViewModel @Inject constructor(
         }
     }
 
-    companion object{
-        const val USER_NAME="USER_NAME"
-    }
 }

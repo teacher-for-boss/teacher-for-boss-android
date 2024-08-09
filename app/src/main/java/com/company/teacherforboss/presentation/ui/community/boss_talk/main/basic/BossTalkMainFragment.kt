@@ -21,6 +21,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,7 +60,7 @@ class BossTalkMainFragment :
         binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 var presentSortBy=viewModel.sortBy.value
-                viewModel.resetLastPostIdMap(presentSortBy!!, DEFAULT_LAST_QUESTIOIN_ID)
+                viewModel.resetLastPostIdMap(presentSortBy!!, DEFAULT_LASTID)
                 when(presentSortBy){
                     "latest"-> presentSortBy="최신순"
                     "views"->presentSortBy="조회수순"
@@ -131,7 +132,7 @@ class BossTalkMainFragment :
                 setHasNext(result.hasNext)
                 if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
 
-                if(previoustLastPostId== DEFAULT_LAST_QUESTIOIN_ID) initPostView(postList)
+                if(previoustLastPostId== DEFAULT_LASTID) initPostView(postList)
                 else updatePosts(postList)
 
             }
@@ -187,9 +188,6 @@ class BossTalkMainFragment :
         }
     }
 
-    companion object{
-        const val DEFAULT_LAST_QUESTIOIN_ID=0L
-    }
 }
 
 class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {

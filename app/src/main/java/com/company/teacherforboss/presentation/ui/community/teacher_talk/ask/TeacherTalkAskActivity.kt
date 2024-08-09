@@ -32,6 +32,13 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -56,7 +63,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        purpose = intent.getStringExtra("purpose")?:"write"
+        purpose = intent.getStringExtra(POST_PURPOSE)?:"write"
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
@@ -72,20 +79,20 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
     fun initView() {
         if(purpose=="modify") {
-            viewModel.questionId = intent.getStringExtra("questionId")!!.toLong()
+            viewModel.questionId = intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
             //title
-            val fullText = intent.getStringExtra("title").toString()
+            val fullText = intent.getStringExtra(POST_TITLE).toString()
             val modifiedText = if (fullText.length > 3) fullText.substring(3) else ""
             viewModel._title.value = modifiedText
             //content
-            viewModel._content.value = intent.getStringExtra("body").toString()
+            viewModel._content.value = intent.getStringExtra(POST_BODY).toString()
             //category
-            viewModel.categoryName = intent.getStringExtra("categoryName")!!
+            viewModel.categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME)!!
             categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
 
-            if(intent.getStringExtra("isTagList").toString()=="true")
+            if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
                 viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
-            if(intent.getStringExtra("isImgList").toString()=="true")
+            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true")
                 viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
         }
 
@@ -359,7 +366,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra("questionId", it.questionId.toString())
+                putExtra(TEACHER_QUESTIONID, it.questionId.toString())
                 putExtra("snackBarMsg","질문이 등록되었습니다.")
             }
             startActivity(intent)
@@ -367,7 +374,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
         viewModel.modifyPostLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra("questionId", it.questionId.toString())
+                putExtra(TEACHER_QUESTIONID, it.questionId.toString())
                 putExtra("snackBarMsg","질문이 수정되었습니다.")
             }
             startActivity(intent)

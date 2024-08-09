@@ -12,6 +12,9 @@ import com.company.teacherforboss.domain.usecase.community.boss.BossTalkBookmark
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkPostsUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkSearchUseCase
 import com.company.teacherforboss.presentation.ui.community.common.TalkMainViewModel
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_SIZE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_SORTBY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,19 +28,19 @@ class BossTalkMainViewModel @Inject constructor(
     var _isInitialziedView=MutableLiveData<Boolean>(false)
     val isInitialziedView:LiveData<Boolean> get() = _isInitialziedView
 
-    var _lastPostId=MutableLiveData<Long>(0L)
+    var _lastPostId=MutableLiveData<Long>(DEFAULT_LASTID)
     val lastPostId:LiveData<Long>
         get() = _lastPostId
 
     val sortByItems= listOf<String>("latest","views","likes")
 
     var lastPostIdMap= mutableMapOf<String,Long>().apply {
-        sortByItems.forEach { put(it,0L) }
+        sortByItems.forEach { put(it, DEFAULT_LASTID) }
     }
-    var _size=MutableLiveData<Int>(10)
+    var _size=MutableLiveData<Int>(DEFAULT_SIZE)
     val size:LiveData<Int>
         get() = _size
-    var _sortBy=MutableLiveData<String>("latest")
+    var _sortBy=MutableLiveData<String>(DEFAULT_SORTBY)
     val sortBy:LiveData<String>
         get() = _sortBy
     var _keyword=MutableLiveData<String>("")
@@ -61,9 +64,9 @@ class BossTalkMainViewModel @Inject constructor(
             try{
                 val bossTalkPostsResponseEntity=bossTalkPostsUseCase(
                     BossTalkPostsRequestEntity(
-                        lastPostId = getLastPostId()?:0L,
-                        size=size.value?:10,
-                        sortBy=sortBy.value?:"latest",
+                        lastPostId = getLastPostId()?: DEFAULT_LASTID,
+                        size=size.value?: DEFAULT_SIZE,
+                        sortBy=sortBy.value?: DEFAULT_SORTBY,
                         keyword =null
                     )
                 )
@@ -78,9 +81,9 @@ class BossTalkMainViewModel @Inject constructor(
             try{
                 val bossTalkPostsResponseEntity=bossTalkSearchUseCase(
                     BossTalkPostsRequestEntity(
-                        lastPostId = getLastPostId()?:lastPostId.value!!,
-                        size=size.value?:10,
-                        sortBy=sortBy.value?:"latest",
+                        lastPostId = getLastPostId()?:lastPostId.value?: DEFAULT_LASTID,
+                        size=size.value?: DEFAULT_SIZE,
+                        sortBy=sortBy.value?:DEFAULT_SORTBY,
                         keyword =keyword.value
                     )
                 )
@@ -92,7 +95,6 @@ class BossTalkMainViewModel @Inject constructor(
     }
 
     override fun setSortBy(sortBy: String) {
-        Log.d("spinner","?2")
         var sort=""
         when(sortBy){
             "최신순"-> sort="latest"
@@ -120,7 +122,7 @@ class BossTalkMainViewModel @Inject constructor(
         _bossTalkPosts.value= emptyList()
         totalBossTalkPosts.clear()
         _isInitialziedView.value=false
-        _lastPostId.value=0L
+        _lastPostId.value= DEFAULT_LASTID
         _hasNext.value=false
 
     }

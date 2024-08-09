@@ -332,9 +332,4 @@ class ModifyTeacherProfileFragment : Fragment() {
         }
     }
 
-    companion object {
-        const val USER_INFO = "USER_INFO"
-        const val SIGNUP_TYPE = "SIGNUP_TYPE"
-        const val SIGNUP_DEFAULT = "SIGNUP_DEFAULT"
-    }
 }

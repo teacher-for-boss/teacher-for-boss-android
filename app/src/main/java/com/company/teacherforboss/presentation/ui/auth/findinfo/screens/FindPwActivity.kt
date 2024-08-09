@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityFindPwBinding
 import com.company.teacherforboss.presentation.ui.auth.findinfo.viewPagerAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +36,7 @@ class FindPwActivity : AppCompatActivity() {
         }
 
         //이전 로그인 화면에서 도착 경로 받기
-        var destination=intent.getStringExtra("destination")
+        var destination=intent.getStringExtra(ACTIVITY_DESTINATION)
 
         //viewPager2 view 초기화
         initView(destination?:"email")

@@ -14,6 +14,8 @@ import com.company.teacherforboss.data.model.response.login.LoginResponseInterfa
 import com.company.teacherforboss.data.repository.UserRepositoryImpl
 import com.company.teacherforboss.data.model.response.login.socialLoginResponse
 import com.company.teacherforboss.data.tokenmanager.TokenManager
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -47,13 +49,10 @@ class LoginViewModel @Inject constructor(
                     loginResult.value= BaseResponse.Success(response.body())
                 }
                 else{
-                    Log.d("login test",response?.body().toString())
-                    Log.d("login test",response?.code().toString())
                     loginResult.value= BaseResponse.Error(response?.message())
                 }
             }catch(ex:Exception){
                 loginResult.value= BaseResponse.Error(ex.message.toString())
-//                loginResult.value= BaseResponse.Error(ex.message)
             }
         }
     }
@@ -69,8 +68,8 @@ class LoginViewModel @Inject constructor(
 
                 var response: Response<socialLoginResponse>?=null
 
-                if(type=="kakao") {response=userRepo.kakaoLogin(socialLoginRequest)}
-                else if(type=="naver"){
+                if(type== SIGNUP_SOCIAL_KAKAO) {response=userRepo.kakaoLogin(socialLoginRequest)}
+                else if(type== SIGNUP_SOCIAL_NAVER){
                     response=userRepo.naverLogin(socialLoginRequest)
                 }
                 else{
@@ -108,6 +107,5 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
 
 }

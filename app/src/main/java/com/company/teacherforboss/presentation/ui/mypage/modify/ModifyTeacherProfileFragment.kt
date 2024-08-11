@@ -80,16 +80,24 @@ class ModifyTeacherProfileFragment : Fragment() {
                     viewModel.setNickname(it.nickname)
                     viewModel.initialNickname.value = it.nickname
                     // phone
-                    if(!it.phone.isNullOrEmpty()) {
-                        viewModel.setPhone(it.phone)
+                    viewModel.setPhone(it.phone!!)
+                    if(it.phoneOpen) {
                         viewModel.setPhoneReveal(true)
                         binding.switchPhone.isChecked = true
                     }
+                    else {
+                        viewModel.setPhoneReveal(false)
+                        binding.switchPhone.isChecked = false
+                    }
                     // email
-                    if(!it.email.isNullOrEmpty()) {
-                        viewModel.setEmail(it.email)
+                    viewModel.setEmail(it.email!!)
+                    if(it.emailOpen) {
                         viewModel.setEmailReveal(true)
                         binding.switchEmail.isChecked = true
+                    }
+                    else {
+                        viewModel.setEmailReveal(false)
+                        binding.switchEmail.isChecked = false
                     }
                     // field
                     viewModel.setField(it.field)

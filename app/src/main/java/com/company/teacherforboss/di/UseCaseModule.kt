@@ -6,6 +6,7 @@ import com.company.teacherforboss.domain.repository.CommunityRepository
 import com.company.teacherforboss.domain.repository.HomeRepository
 import com.company.teacherforboss.domain.repository.MemberRepository
 import com.company.teacherforboss.domain.repository.MyPageRepository
+import com.company.teacherforboss.domain.repository.NotificationRepository
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.repository.SignupRepository
 import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
@@ -50,6 +51,7 @@ import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostU
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
+import com.company.teacherforboss.domain.usecase.notification.NotificationUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -294,4 +296,8 @@ class UseCaseModule {
     fun providesModifyBossProfile(memberRepository: MemberRepository): ModifyBossProfileUseCase =
         ModifyBossProfileUseCase(memberRepository)
 
+    @Provides
+    @Singleton
+    fun providesNotificationUseCase(notificationRepository: NotificationRepository):NotificationUseCase =
+        NotificationUseCase(notificationRepository)
 }

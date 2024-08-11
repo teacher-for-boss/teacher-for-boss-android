@@ -1,4 +1,4 @@
-package com.company.teacherforboss.data.repository
+package com.company.teacherforboss.data.repositoryImpl
 
 import com.company.teacherforboss.data.datasource.remote.MemberRemoteDataSource
 import com.company.teacherforboss.domain.model.auth.AccountEntity

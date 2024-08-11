@@ -19,8 +19,8 @@ import com.company.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.company.teacherforboss.data.model.response.signup.EmailResponse
 import com.company.teacherforboss.data.model.response.signup.PhoneCheckResponse
 import com.company.teacherforboss.data.model.response.signup.PhoneResponse
-import com.company.teacherforboss.data.repository.FindInfoRepositoryImpl
-import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.FindInfoRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.util.Timer.Custom3mTimer
 import com.company.teacherforboss.util.base.ErrorUtils
 import com.company.teacherforboss.util.view.UiState

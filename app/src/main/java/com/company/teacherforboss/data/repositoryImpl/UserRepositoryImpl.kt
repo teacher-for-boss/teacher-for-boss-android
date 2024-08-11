@@ -1,4 +1,4 @@
-package com.company.teacherforboss.data.repository
+package com.company.teacherforboss.data.repositoryImpl
 
 import com.company.teacherforboss.data.service.AuthService
 import com.company.teacherforboss.data.model.request.login.LoginRequest

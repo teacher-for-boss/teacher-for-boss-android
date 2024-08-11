@@ -1,7 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.data.model.request.signup.NicknameRequest
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.data.model.response.signup.NicknameResponse
-import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.domain.model.mypage.ModifyBossProfileRequestEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyProfileResponseEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyTeacherProfileRequestEntity

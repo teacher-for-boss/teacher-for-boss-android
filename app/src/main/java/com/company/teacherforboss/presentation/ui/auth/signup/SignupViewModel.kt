@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.data.model.request.signup.BusinessNumberCheckRequest
 import com.company.teacherforboss.data.model.response.BaseResponse
-import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.data.model.request.signup.EmailCheckRequest
 import com.company.teacherforboss.data.model.response.signup.EmailCheckResponse
 import com.company.teacherforboss.data.model.request.signup.EmailRequest

@@ -2,7 +2,7 @@ package com.company.teacherforboss.data.intercepter
 
 import android.content.Context
 import android.util.Log
-import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.data.tokenmanager.TokenManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

@@ -11,7 +11,7 @@ import com.company.teacherforboss.data.model.request.login.SocialLoginRequest
 import com.company.teacherforboss.data.model.response.login.LoginResponse
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.data.model.response.login.LoginResponseInterface
-import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.data.model.response.login.socialLoginResponse
 import com.company.teacherforboss.data.tokenmanager.TokenManager
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO

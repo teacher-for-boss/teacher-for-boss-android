@@ -50,6 +50,7 @@ import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostU
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.ChipInfoUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -293,5 +294,10 @@ class UseCaseModule {
     @Singleton
     fun providesModifyBossProfile(memberRepository: MemberRepository): ModifyBossProfileUseCase =
         ModifyBossProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesChipInfoUseCase(myPageRepository: MyPageRepository): ChipInfoUseCase =
+        ChipInfoUseCase(myPageRepository)
 
 }

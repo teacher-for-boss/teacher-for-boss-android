@@ -4,6 +4,7 @@ import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionRequ
 import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionResponseEntity
 import com.company.teacherforboss.data.datasource.remote.MyPageRemoteDataSource
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.repository.MyPageRepository
 import javax.inject.Inject
 
@@ -21,4 +22,8 @@ class MyPageRepositoryImpl @Inject constructor(
             myPageRemoteDataSource.getBookmarkedQuestions().result.toBookmarkedQuestionsEntity()
         }.getOrElse { err -> throw err }
 
+    override suspend fun getChipInfo(): ChipInfoResponseEntity =
+        runCatching {
+            myPageRemoteDataSource.getChipInfo().result.toChipInfoResponseEntity()
+        }.getOrElse { err -> throw err }
 }

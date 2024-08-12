@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
@@ -44,6 +45,9 @@ class MyPageViewModel @Inject constructor(
 
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
+
+    private val _userChipInfoState = MutableStateFlow<UiState<ChipInfoResponseEntity>>(UiState.Empty)
+    val userChipInfoState get() = _userChipInfoState.asStateFlow()
 
     val _role= MutableLiveData<String>("")
     val role: LiveData<String>
@@ -104,10 +108,12 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun getChipInfo() {
+    fun getUserChipInfo() {
         viewModelScope.launch {
-            chipInfoUseCase().onSuccess {
-
+            chipInfoUseCase().onSuccess {chipInfoUseCase ->
+                _userChipInfoState.value = UiState.Success(chipInfoUseCase)
+            }.onFailure { exception: Throwable ->
+                _userChipInfoState.value = UiState.Error(exception.message)
             }
         }
     }

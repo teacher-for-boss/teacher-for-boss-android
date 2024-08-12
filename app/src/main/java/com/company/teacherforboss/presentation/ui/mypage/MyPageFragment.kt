@@ -158,7 +158,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun getChipInfo() {
-        viewModel.getChipInfo()
+        viewModel.getUserChipInfo()
     }
     private fun collectData() {
         viewModel.userProfileInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)

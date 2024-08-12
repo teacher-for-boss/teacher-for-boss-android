@@ -22,8 +22,8 @@ class MyPageRepositoryImpl @Inject constructor(
             myPageRemoteDataSource.getBookmarkedQuestions().result.toBookmarkedQuestionsEntity()
         }.getOrElse { err -> throw err }
 
-    override suspend fun getChipInfo(): ChipInfoResponseEntity =
+    override suspend fun getChipInfo(): Result<ChipInfoResponseEntity> =
         runCatching {
             myPageRemoteDataSource.getChipInfo().result.toChipInfoResponseEntity()
-        }.getOrElse { err -> throw err }
+        }
 }

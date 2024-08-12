@@ -9,6 +9,7 @@ import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRespons
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.ChipInfoUseCase
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
-    private val bookmarkedQuestionsUseCase: BookmarkedQuestionsUseCase
+    private val bookmarkedQuestionsUseCase: BookmarkedQuestionsUseCase,
+    private val chipInfoUseCase: ChipInfoUseCase
 ) : ViewModel() {
 //    val mockTeacher = MyPageProfileEntity(
 //        nickname = "하지은컨설팅",
@@ -75,6 +77,18 @@ class MyPageViewModel @Inject constructor(
     val _hasNext=MutableLiveData<Boolean>().apply { value=true }
     val hasNext:LiveData<Boolean> get() = _hasNext
 
+    var _commentCount = MutableLiveData<Int>()
+    val commentCount:LiveData<Int> get() = _commentCount
+
+    var _bookmarkCount = MutableLiveData<Int>()
+    val bookmarkCount:LiveData<Int> get() = _bookmarkCount
+
+    var _point = MutableLiveData<Int?>()
+    val point:LiveData<Int?> get() = _point
+
+    var _questionTicketCount = MutableLiveData<Int?>()
+    val questionTicketCount:LiveData<Int?> get() = _questionTicketCount
+
 //    fun setMockProfileDate() {
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)
 //        // _userProfileInfoState.value = UiState.Success(mockBoss)
@@ -86,6 +100,14 @@ class MyPageViewModel @Inject constructor(
                 _userProfileInfoState.value=UiState.Success(mypageProfileEntity)
             }.onFailure { exception: Throwable ->
                 _userProfileInfoState.value=UiState.Error(exception.message)
+            }
+        }
+    }
+
+    fun getChipInfo() {
+        viewModelScope.launch {
+            chipInfoUseCase().onSuccess {
+
             }
         }
     }

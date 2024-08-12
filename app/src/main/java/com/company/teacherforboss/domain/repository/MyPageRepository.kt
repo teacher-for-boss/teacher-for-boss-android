@@ -9,7 +9,7 @@ import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 interface MyPageRepository {
     suspend fun getAnsweredQuestion(myPageAnsweredQuestionRequestEntity: MyPageAnsweredQuestionRequestEntity):MyPageAnsweredQuestionResponseEntity
     suspend fun getBookmarkedQuestions(): BookmarkedQuestionsResponseEntity
-    suspend fun getChipInfo(): ChipInfoResponseEntity
+    suspend fun getChipInfo(): Result<ChipInfoResponseEntity>
 
 
 }

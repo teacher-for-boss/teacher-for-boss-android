@@ -37,6 +37,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.myPageViewModel = viewModel
 
         getProfile()
+        getChipInfo()
         addListeners()
         collectData()
         gotoModifyActivity()
@@ -156,6 +157,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         viewModel.getUserProfile()
     }
 
+    private fun getChipInfo() {
+        viewModel.getChipInfo()
+    }
     private fun collectData() {
         viewModel.userProfileInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { userProfileInfoState ->

@@ -19,8 +19,9 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Cu
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
+import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.rvAdapterCardTeacher
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
@@ -43,7 +44,7 @@ class TeacherTalkMainFragment :
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
-        newScrollView.setBinding(binding)
+        newScrollView.setBinding(binding.teacherTalkWidget2, binding.rvTeacherTalkCard)
 
         binding.viewModel = viewModel
         binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)

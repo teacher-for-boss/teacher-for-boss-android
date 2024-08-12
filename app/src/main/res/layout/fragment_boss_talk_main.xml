@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.company.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
+        <com.company.teacherforboss.presentation.ui.community.common.NewScrollView
             android:id="@+id/sv_boss_talk_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
 
 
             </LinearLayout>
-        </com.company.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView>
+        </com.company.teacherforboss.presentation.ui.community.common.NewScrollView>
       
         <!--플로팅 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

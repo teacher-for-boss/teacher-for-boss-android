@@ -2,7 +2,9 @@ package com.company.teacherforboss.presentation.ui.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -16,6 +18,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         private const val NOTIFICATION_CHANNEL_ID = "teacherForBoss"
         private const val NOTIFICATION_CHANNEL_NAME = "Notification"
         private const val NOTIFICATION_CHANNEL_DESCRIPTION = "NotificationChannel"
+        const val NOTIFICATION_ID="notification_id"
         const val INFO="INFO"
     }
 
@@ -27,7 +30,6 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         Log.d("FCM Log", "Message received from: ${remoteMessage.from}")
-        Log.d("fcm test",remoteMessage.toString())
         remoteMessage.notification!!.body?.let {
             val title=remoteMessage.notification!!.title.toString()
             val body = remoteMessage.notification!!.body.toString()
@@ -42,6 +44,16 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
         }
+        val notificationId=Random().nextInt()
+
+        val intent= Intent(this,NotificationActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .putExtra(NOTIFICATION_ID,notificationId)
+        }
+        val pendingIntent=PendingIntent.getActivity(
+            this,0,intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
@@ -49,7 +61,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
             .setContentTitle(title)
             .setContentText(content)
             .setContentInfo(INFO)
-        notificationManager.notify(Random().nextInt(), notificationBuilder.build())
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
     private fun createNotificationChannel(manager: NotificationManager) {

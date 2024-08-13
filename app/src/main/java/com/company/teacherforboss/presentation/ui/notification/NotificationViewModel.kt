@@ -3,7 +3,9 @@ package com.company.teacherforboss.presentation.ui.notification
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.domain.model.notification.NotificationListEntity
+import com.company.teacherforboss.domain.model.notification.NotificationReadEntity
 import com.company.teacherforboss.domain.usecase.notification.NotificationUseCase
+import com.company.teacherforboss.domain.usecase.notification.ReadNotificationUseCase
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val notificationUseCase: NotificationUseCase
+    private val notificationUseCase: NotificationUseCase,
+    private val readNotificationUseCase: ReadNotificationUseCase
 ): ViewModel() {
 
     val dummny_alarms= listOf(
@@ -102,6 +105,19 @@ class NotificationViewModel @Inject constructor(
                _notificationState.value=UiState.Error(exception.message)
            }
        }
+    }
+
+    private val _readNotificationState= MutableStateFlow<UiState<NotificationReadEntity>>(UiState.Empty)
+    val readNotificationState=_readNotificationState.asStateFlow()
+
+    fun readNotification(notificationId:Long){
+        viewModelScope.launch {
+            readNotificationUseCase(notificationId).onSuccess { readState->
+                _readNotificationState.value=UiState.Success(readState)
+            }.onFailure {
+                _readNotificationState.value=UiState.Error(it.message)
+            }
+        }
     }
 
 }

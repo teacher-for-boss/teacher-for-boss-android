@@ -52,6 +52,7 @@ import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCas
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.notification.NotificationUseCase
+import com.company.teacherforboss.domain.usecase.notification.ReadNotificationUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -300,4 +301,9 @@ class UseCaseModule {
     @Singleton
     fun providesNotificationUseCase(notificationRepository: NotificationRepository):NotificationUseCase =
         NotificationUseCase(notificationRepository)
+
+    @Provides
+    @Singleton
+    fun providesReadNotificationUseCase(notificationRepository: NotificationRepository):ReadNotificationUseCase=
+        ReadNotificationUseCase(notificationRepository)
 }

@@ -61,6 +61,20 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
+    fun readNotification(){
+        val notifiationId=intent.getStringExtra(NOTIFICATION_ID)?.toLong()
+        viewModel.readNotification(notifiationId!!)
+    }
+
+    fun updateNotificationState(){
+        viewModel.readNotificationState.flowWithLifecycle(this.lifecycle).onEach { readState->
+            when(readState){
+                is UiState.Success-> "" //TODO: 해당 notification entity의 read와 updatedAt 변경
+                else->Unit
+            }
+        }.launchIn(this.lifecycleScope)
+    }
+
     fun setFirebaseMessaging(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

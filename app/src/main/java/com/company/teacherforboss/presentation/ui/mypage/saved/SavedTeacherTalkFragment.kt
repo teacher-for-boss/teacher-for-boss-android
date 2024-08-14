@@ -36,6 +36,7 @@ class SavedTeacherTalkFragment :
             adapter = bookmarkedQuestionsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        viewModel.getBookmarkedQuestions()
     }
 
     private fun initSavedQuestionListView(questionList: List<BookmarkedQuestionsEntity>) {
@@ -65,14 +66,20 @@ class SavedTeacherTalkFragment :
 //    }
 
     private fun getQuestions() {
+        viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, {questioinList ->
+            val questionList = questioinList
+            bookmarkedQuestionsAdapter.setCardList(questionList)
+//
+        })
         viewModel.getSavedTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, {result ->
             val questionList = result.bookmarkedQuestionsList
-            viewModel.apply {
-                setBookmarkedTeacherTalkQuestionList(questionList)
-                initSavedQuestionListView(questionList)
-            }
+            bookmarkedQuestionsAdapter.setCardList(questionList)
+//            viewModel.apply {
+//                setBookmarkedTeacherTalkQuestionList(questionList)
+//                initSavedQuestionListView(questionList)
+//            }
         })
-        viewModel.getBookmarkedQuestions()
+//        viewModel.getBookmarkedQuestions()
 
     }
 }

@@ -57,8 +57,8 @@ class MyPageViewModel @Inject constructor(
     val getBookmarkedQuestionsLiveData:LiveData<BookmarkedQuestionsResponseEntity>
         get() = _getBookmarkedQuestionsLiveData
 
-    var _bookmarkedQuestion=MutableLiveData<List<BookmarkedQuestionsEntity>>()
-    val bookmarkedQuestion:LiveData<List<BookmarkedQuestionsEntity>> =_bookmarkedQuestion
+    var _bookmarkedQuestionList=MutableLiveData<List<BookmarkedQuestionsEntity>>()
+    val bookmarkedQuestionList:LiveData<List<BookmarkedQuestionsEntity>> =_bookmarkedQuestionList
 
     val totalAnsweredQuestion= mutableListOf<List<BookmarkedQuestionsEntity>>()
 
@@ -95,7 +95,9 @@ class MyPageViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val bookmarkedQuestionsResponseEntity=bookmarkedQuestionsUseCase()
-                _getBookmarkedQuestionsLiveData.value = bookmarkedQuestionsResponseEntity
+//                _getBookmarkedQuestionsLiveData.value = bookmarkedQuestionsResponseEntity
+                setHasNext(bookmarkedQuestionsResponseEntity.hasNext)
+                setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsResponseEntity.bookmarkedQuestionsList)
             } catch(ex:Exception){ }
 
         }
@@ -105,10 +107,10 @@ class MyPageViewModel @Inject constructor(
         _hasNext.value=hasNext
     }
     fun setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsList:List<BookmarkedQuestionsEntity>){
-        _bookmarkedQuestion.value=bookmarkedQuestionsList
+        _bookmarkedQuestionList.value=bookmarkedQuestionsList
     }
     fun clearData(){
-        _bookmarkedQuestion.value= emptyList()
+        _bookmarkedQuestionList.value= emptyList()
 //        totalAnsweredQuestion.clear()
 //        _isInitializedView.value=false
         _lastPostId.value=0L

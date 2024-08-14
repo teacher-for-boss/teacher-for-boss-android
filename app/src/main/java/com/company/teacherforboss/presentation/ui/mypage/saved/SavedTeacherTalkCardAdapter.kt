@@ -21,8 +21,8 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
 
     private val inflater by lazy { LayoutInflater.from(context) }
-    private var bookmarkedQuestionsList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
-    private var allSavedTeacherTalkCard: List<BookmarkedQuestionsEntity> = emptyList()
+    private var bookmarkedQuestionsList: List<BookmarkedQuestionsEntity> = mutableListOf()
+//    private var allSavedTeacherTalkCard: List<BookmarkedQuestionsEntity> = emptyList()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedTeacherTalkCardViewHolder {
@@ -39,14 +39,15 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
     }
 
     fun setData(newData: List<BookmarkedQuestionsEntity>) {
-        bookmarkedQuestionsList.clear()
-        bookmarkedQuestionsList.addAll(newData)
+//        bookmarkedQuestionsList.clear()
+        bookmarkedQuestionsList=newData
         notifyDataSetChanged()
     }
 
     fun setCardList(cardList: List<BookmarkedQuestionsEntity>) {
-        this.allSavedTeacherTalkCard = cardList
-        this.bookmarkedQuestionsList = allSavedTeacherTalkCard.take(this.bookmarkedQuestionsList.size).toMutableList()
+//        this.allSavedTeacherTalkCard = cardList
+        this.bookmarkedQuestionsList=cardList
+//        this.bookmarkedQuestionsList = allSavedTeacherTalkCard.take(this.bookmarkedQuestionsList.size).toMutableList()
         notifyDataSetChanged()
     }
     inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :

@@ -30,7 +30,7 @@ class SavedBossTalkFragment :
 
         initView()
         getQuestions()
-        viewModel.getBookmarkedQuestions()
+
     }
 
     private fun initView() {
@@ -39,13 +39,14 @@ class SavedBossTalkFragment :
             adapter = savedTeacherTalkCardAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        viewModel.getBookmarkedQuestions()
     }
 
     private fun getQuestions() {
-        viewModel.bookmarkedQuestion.observe(viewLifecycleOwner, { questionList ->
-            savedTeacherTalkCardAdapter.setData(questionList)
+        viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, { questionList ->
+//            savedTeacherTalkCardAdapter.setData(questionList)
+            savedTeacherTalkCardAdapter.setCardList(questionList)
         })
-        viewModel.getBookmarkedQuestions()
     }
 
 }

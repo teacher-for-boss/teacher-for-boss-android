@@ -21,7 +21,9 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
 
     private val inflater by lazy { LayoutInflater.from(context) }
-    private var answeredQuestionList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
+    private var bookmarkedQuestionsList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
+    private var allSavedTeacherTalkCard: List<BookmarkedQuestionsEntity> = emptyList()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedTeacherTalkCardViewHolder {
         val binding = RvItemSavedTeacherBinding.inflate(inflater, parent, false)
@@ -29,19 +31,24 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: SavedTeacherTalkCardViewHolder, position: Int) {
-        holder.onBind(answeredQuestionList[position])
+        holder.onBind(bookmarkedQuestionsList[position])
     }
 
     override fun getItemCount(): Int {
-        return answeredQuestionList.size
+        return bookmarkedQuestionsList.size
     }
 
     fun setData(newData: List<BookmarkedQuestionsEntity>) {
-        answeredQuestionList.clear()
-        answeredQuestionList.addAll(newData)
+        bookmarkedQuestionsList.clear()
+        bookmarkedQuestionsList.addAll(newData)
         notifyDataSetChanged()
     }
 
+    fun setCardList(cardList: List<BookmarkedQuestionsEntity>) {
+        this.allSavedTeacherTalkCard = cardList
+        this.bookmarkedQuestionsList = allSavedTeacherTalkCard.take(this.bookmarkedQuestionsList.size).toMutableList()
+        notifyDataSetChanged()
+    }
     inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -62,6 +69,8 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
             binding.tvAnsweredQuestionTitle.text = spannable
             binding.tvAnsweredQuestionContent.text = question.content
             binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(question.createdAt)
+            binding.cardCategory.text = question.category
+
 
             if (question.solved) {
                 binding.widgetCardViewStatementSolved.visibility = View.VISIBLE

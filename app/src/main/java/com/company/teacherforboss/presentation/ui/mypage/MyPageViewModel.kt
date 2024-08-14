@@ -95,7 +95,6 @@ class MyPageViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val bookmarkedQuestionsResponseEntity=bookmarkedQuestionsUseCase()
-//                _getBookmarkedQuestionsLiveData.value = bookmarkedQuestionsResponseEntity
                 setHasNext(bookmarkedQuestionsResponseEntity.hasNext)
                 setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsResponseEntity.bookmarkedQuestionsList)
             } catch(ex:Exception){ }

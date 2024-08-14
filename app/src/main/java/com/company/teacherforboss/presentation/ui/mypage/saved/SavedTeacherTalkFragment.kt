@@ -39,47 +39,12 @@ class SavedTeacherTalkFragment :
         viewModel.getBookmarkedQuestions()
     }
 
-    private fun initSavedQuestionListView(questionList: List<BookmarkedQuestionsEntity>) {
-        bookmarkedQuestionsAdapter.setCardList(questionList)
-        bookmarkedQuestionsAdapter.notifyDataSetChanged()
-
-        val rvLayoutManager = LinearLayoutManager(requireContext())
-        binding.rvCard.layoutManager = rvLayoutManager
-    }
-
-//    private fun getQuestions() {
-//        viewModel.getSavedTeacherTalkQuestionLiveData.observe(viewLifecycleOwner) { result ->
-//            val bookmarkedQuestionList = result.bookmarkedQuestionsList
-//            if (bookmarkedQuestionList.isNullOrEmpty().not()) {
-//                viewModel.setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionList)
-//                initSavedQuestionListView(bookmarkedQuestionList)
-//            } else {
-//                Log.d("SavedTeacherTalkFragment", "Bookmarked questions list is empty")
-//            }
-//        }
-//    }
-//    private fun getQuestions() {
-//        viewModel.bookmarkedQuestion.observe(viewLifecycleOwner, { questionList ->
-//            bookmarkedQuestionsAdapter.setData(questionList)
-//        })
-//        viewModel.getBookmarkedQuestions()
-//    }
 
     private fun getQuestions() {
         viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, {questioinList ->
             val questionList = questioinList
             bookmarkedQuestionsAdapter.setCardList(questionList)
-//
         })
-        viewModel.getSavedTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, {result ->
-            val questionList = result.bookmarkedQuestionsList
-            bookmarkedQuestionsAdapter.setCardList(questionList)
-//            viewModel.apply {
-//                setBookmarkedTeacherTalkQuestionList(questionList)
-//                initSavedQuestionListView(questionList)
-//            }
-        })
-//        viewModel.getBookmarkedQuestions()
 
     }
 }

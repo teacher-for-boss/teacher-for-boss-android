@@ -7,7 +7,8 @@ import com.company.teacherforboss.data.model.request.mypage.TeacherDetailProfile
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ModifyProfileResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ProfileResponseDto
-import com.company.teacherforboss.data.model.response.mypage.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherRecentAnswersResponseDto
 import com.company.teacherforboss.data.service.MemberService
 import com.company.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
@@ -21,6 +22,8 @@ class MemberRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getTeacherDetailProfile(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto): BaseResponse<TeacherDetailProfileResponseDto>
     = memberService.getTeacherDetailProfile(memberId = teacherDetailProfileRequestDto.memberId)
+
+    override suspend fun getTeacherRecentAnswers(): BaseResponse<TeacherRecentAnswersResponseDto> = memberService.getTeacherRecentAnswers()
 
     override suspend fun modifyTeacherProfile(modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto): BaseResponse<ModifyProfileResponseDto>
     = memberService.modifyTeacherProfile(modifyTeacherProfileRequestDto = modifyTeacherProfileRequestDto)

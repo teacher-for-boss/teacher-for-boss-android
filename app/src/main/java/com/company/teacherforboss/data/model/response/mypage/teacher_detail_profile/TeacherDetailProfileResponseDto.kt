@@ -1,4 +1,4 @@
-package com.company.teacherforboss.data.model.response.mypage
+package com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile
 
 import com.company.teacherforboss.domain.model.common.TeacherProfileDetailEntity
 import com.google.gson.annotations.SerializedName

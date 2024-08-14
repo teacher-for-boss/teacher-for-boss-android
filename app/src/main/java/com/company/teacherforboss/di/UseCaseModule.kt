@@ -13,6 +13,7 @@ import com.company.teacherforboss.domain.usecase.Member.ModifyBossProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.TeacherDetailProfileUseCase
+import com.company.teacherforboss.domain.usecase.Member.TeacherRecentAnswersUseCase
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.company.teacherforboss.domain.usecase.SignupUseCase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
@@ -283,6 +284,11 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherDetailProfileUseCase(memberRepository: MemberRepository): TeacherDetailProfileUseCase =
         TeacherDetailProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherRecentAnswersUseCase(memberRepository: MemberRepository): TeacherRecentAnswersUseCase =
+        TeacherRecentAnswersUseCase(memberRepository)
 
     @Provides
     @Singleton

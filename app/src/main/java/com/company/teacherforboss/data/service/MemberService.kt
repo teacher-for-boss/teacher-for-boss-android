@@ -5,7 +5,8 @@ import com.company.teacherforboss.data.model.request.mypage.ModifyTeacherProfile
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ModifyProfileResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ProfileResponseDto
-import com.company.teacherforboss.data.model.response.mypage.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherRecentAnswersResponseDto
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -30,6 +31,10 @@ interface MemberService {
         @Query("memberId") memberId: Long?
     )
     :BaseResponse<TeacherDetailProfileResponseDto>
+
+    @GET("${MEMBER}/profiles/teacher/detail/recent-answers")
+    suspend fun getTeacherRecentAnswers()
+    :BaseResponse<TeacherRecentAnswersResponseDto>
 
     @PATCH("${MEMBER}/profiles/teacher")
     suspend fun modifyTeacherProfile(

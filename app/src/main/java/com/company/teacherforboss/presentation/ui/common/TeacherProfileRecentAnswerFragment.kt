@@ -34,8 +34,10 @@ class TeacherProfileRecentAnswerFragment :
 
     private fun initLayout() {
         binding.rvTeacherProfileRecentAnswer.adapter = teacherProfileRecentAnswerAdapter
-        viewModel.setRecentAnswerList()
-        teacherProfileRecentAnswerAdapter.submitList(viewModel.teacherProfileRecentAnswerList.value)
+//        viewModel.setRecentAnswerList()
+        teacherProfileRecentAnswerAdapter.submitList(viewModel.teacherProfileRecentAnswerList.value.recentAnswerList)
+
+        viewModel.getTeacherRecentAnswers()
     }
 
     private fun addListeners() {
@@ -45,7 +47,7 @@ class TeacherProfileRecentAnswerFragment :
     private fun collectData() {
         viewModel.teacherProfileRecentAnswerList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { teacherRecentAnswers ->
-                teacherProfileRecentAnswerAdapter.submitList(teacherRecentAnswers)
+                teacherProfileRecentAnswerAdapter.submitList(teacherRecentAnswers.recentAnswerList)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }

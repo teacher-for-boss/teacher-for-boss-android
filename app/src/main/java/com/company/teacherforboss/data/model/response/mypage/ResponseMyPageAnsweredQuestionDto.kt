@@ -8,14 +8,19 @@ import com.google.gson.annotations.SerializedName
 data class ResponseMyPageAnsweredQuestionDto (
     @SerializedName("hasNext")
     val hasNext:Boolean,
+    @SerializedName("answeredQuestionList")
+    val answeredQuestionList: ArrayList<MyPageQuestionDto>?,
     @SerializedName("questionList")
-    val answeredQuestionList: ArrayList<MyPageQuestionDto>
+    val questionList: ArrayList<MyPageQuestionDto>?
 ){
     fun toMyPageAnsweredQuestionResponseEntity(): MyPageAnsweredQuestionResponseEntity {
-        val answeredQuestionList = answeredQuestionList.mapTo(ArrayList()) {it.toMyPageQuestionEntity()}
+        val answeredQuestionList = answeredQuestionList?.mapTo(ArrayList()) {it.toMyPageQuestionEntity()}
+        val questionList = questionList?.mapTo(ArrayList()) {it.toMyPageQuestionEntity()}
+
         return MyPageAnsweredQuestionResponseEntity(
             hasNext = hasNext,
-            answeredQuestionList=answeredQuestionList
+            answeredQuestionList=answeredQuestionList,
+            questionList=questionList
         )
     }
 }

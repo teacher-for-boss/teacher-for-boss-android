@@ -7,6 +7,7 @@ import java.io.Serializable
 
 class MyPageAnsweredQuestionResponseEntity(
     val hasNext: Boolean,
-    val answeredQuestionList: ArrayList<MyPageQuestionEntity>
+    val answeredQuestionList: ArrayList<MyPageQuestionEntity>?,
+    val questionList: ArrayList<MyPageQuestionEntity>?
 )
 

@@ -33,11 +33,14 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
     fun initLayout() {
         if(myPageViewModel.role.value == "TEACHER"){
             binding.includeMyPageQuestionTopAppBar.title="티쳐톡 - 답변한 질문글"
+            viewModel.getAnsweredQuestion()
+
         }
         else{
             binding.includeMyPageQuestionTopAppBar.title="티쳐톡 - 나의 질문"
+            viewModel.getMyQuestion()
+
         }
-        viewModel.getAnsweredQuestion()
     }
     fun collectData() {
         viewModel.answeredQuestionState.flowWithLifecycle(this.lifecycle)
@@ -45,7 +48,21 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
                 when (answeredQuestionState) {
                     is UiState.Success -> {
                         val questionList = answeredQuestionState.data.answeredQuestionList
-                        viewModel.setQuestionList(questionList)
+                        viewModel.setQuestionList(questionList!!)
+                        val adapter = rvAdapterMyPageQuestion(this,viewModel.questionList.value!!)
+                        binding.rvMyPageQuestion.adapter = adapter
+
+                    }
+                    else -> Unit
+                }
+            }.launchIn(this.lifecycleScope)
+
+        viewModel.myQuestionState.flowWithLifecycle(this.lifecycle)
+            .onEach { answeredQuestionState ->
+                when (answeredQuestionState) {
+                    is UiState.Success -> {
+                        val questionList = answeredQuestionState.data.questionList
+                        viewModel.setQuestionList(questionList!!)
                         val adapter = rvAdapterMyPageQuestion(this,viewModel.questionList.value!!)
                         binding.rvMyPageQuestion.adapter = adapter
 

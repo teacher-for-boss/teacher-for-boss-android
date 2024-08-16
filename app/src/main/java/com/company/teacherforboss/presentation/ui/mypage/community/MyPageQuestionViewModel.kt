@@ -42,7 +42,7 @@ class MyPageQuestionViewModel @Inject constructor(
     val answeredQuestionState get() = _answeredQuestionState.asStateFlow()
 
     private val _myQuestionState = MutableStateFlow<UiState<MyPageAnsweredQuestionResponseEntity>>(UiState.Empty)
-    val myQuestionState get() = _answeredQuestionState.asStateFlow()
+    val myQuestionState get() = _myQuestionState.asStateFlow()
 
     fun getLastQuestionId():Long = lastQuestionId.value?:0L
     fun setLastQuestionId(questionId: Long){

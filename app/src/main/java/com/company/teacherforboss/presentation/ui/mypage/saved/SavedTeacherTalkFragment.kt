@@ -1,11 +1,13 @@
 package com.company.teacherforboss.presentation.ui.mypage.saved
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
+import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
 import com.company.teacherforboss.util.base.BindingFragment
@@ -39,12 +41,47 @@ class SavedTeacherTalkFragment :
         viewModel.getBookmarkedQuestions()
     }
 
+    private fun initBookmarkedQuestionsList(questionList: List<BookmarkedQuestionsEntity>) {
+        bookmarkedQuestionsAdapter.setCardList(questionList)
+        bookmarkedQuestionsAdapter.notifyDataSetChanged()
+
+        val rvLayoutManager=LinearLayoutManager(requireContext())
+        binding.rvCard.layoutManager = rvLayoutManager
+    }
+
+    private fun updateQuestions(questionList:List<BookmarkedQuestionsEntity>) {
+        Log.d("test","update")
+        bookmarkedQuestionsAdapter.addMoreCards(questionList)
+    }
+
+//    private fun getQuestions() {
+//        viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, {questioinList ->
+//            val questionList = questioinList
+//            bookmarkedQuestionsAdapter.setCardList(questionList)
+//        })
+//    }
 
     private fun getQuestions() {
         viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, {questioinList ->
             val questionList = questioinList
-            bookmarkedQuestionsAdapter.setCardList(questionList)
-        })
+            val previousLastQuestionId = viewModel.getLastQuestionId()
+//                val previousLastQuestionId = lastQuestionId.value ?: DEFAULT_LAST_QUESTIOIN_ID
+            val lastQuestionId = questionList.get(questionList.lastIndex).questionId
 
+            viewModel.updateLastQuestionId(lastQuestionId)
+            viewModel.setHasNext(viewModel.hasNext.value ?: false)
+
+            if (previousLastQuestionId == DEFAULT_LAST_QUESTIOIN_ID) {
+                bookmarkedQuestionsAdapter.setCardList(questionList)
+            } else {
+                updateQuestions(questionList)
+            }
+            binding.btnMoreCard.visibility = if (viewModel.hasNext.value == true) View.VISIBLE else View.GONE
+
+        })
+    }
+
+    companion object{
+        const val DEFAULT_LAST_QUESTIOIN_ID=0L
     }
 }

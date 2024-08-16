@@ -1,13 +1,11 @@
 package com.company.teacherforboss.presentation.ui.mypage
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
-import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
@@ -65,9 +63,11 @@ class MyPageViewModel @Inject constructor(
     var _isInitializedView=MutableLiveData<Boolean>(false)
     val isInitializedView:LiveData<Boolean> get() = _isInitializedView
 
-    var _lastPostId=MutableLiveData<Long>(0L)
-    val lastPostId:LiveData<Long>
-        get() = _lastPostId
+    var _lastQuestionId=MutableLiveData<Long>(0L)
+    val lastQuestionId:LiveData<Long>
+        get() = _lastQuestionId
+
+    val size = MutableLiveData<Int>(10)
 
     val _hasNext=MutableLiveData<Boolean>().apply { value=true }
     val hasNext:LiveData<Boolean> get() = _hasNext
@@ -94,7 +94,12 @@ class MyPageViewModel @Inject constructor(
     fun getBookmarkedQuestions() {
         viewModelScope.launch {
             try {
-                val bookmarkedQuestionsResponseEntity=bookmarkedQuestionsUseCase()
+                val bookmarkedQuestionsResponseEntity=bookmarkedQuestionsUseCase(
+                    BookmarkedQuestionsRequestEntity(
+                        lastQuestionId = lastQuestionId.value ?: 0L,
+                        size = size.value?: 10,
+                    )
+                )
                 setHasNext(bookmarkedQuestionsResponseEntity.hasNext)
                 setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsResponseEntity.bookmarkedQuestionsList)
             } catch(ex:Exception){ }
@@ -108,11 +113,21 @@ class MyPageViewModel @Inject constructor(
     fun setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsList:List<BookmarkedQuestionsEntity>){
         _bookmarkedQuestionList.value=bookmarkedQuestionsList
     }
+
+    fun updateLastQuestionId(lastId: Long) {
+        _lastQuestionId.value = lastId
+    }
+
+    fun getLastQuestionId(): Long? {
+        return _lastQuestionId.value
+    }
+
+
     fun clearData(){
         _bookmarkedQuestionList.value= emptyList()
 //        totalAnsweredQuestion.clear()
 //        _isInitializedView.value=false
-        _lastPostId.value=0L
+        _lastQuestionId.value=0L
         _hasNext.value=false
     }
 

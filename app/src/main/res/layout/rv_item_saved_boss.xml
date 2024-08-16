@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/tv_boss_talk_question"
+                android:id="@+id/tv_boss_talk_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
@@ -56,7 +56,7 @@
                 android:textColor="@color/Gray500"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_boss_talk_question" />
+                app:layout_constraintTop_toBottomOf="@id/tv_boss_talk_title" />
 
             <TextView
                 android:id="@+id/tv_boss_talk_date"

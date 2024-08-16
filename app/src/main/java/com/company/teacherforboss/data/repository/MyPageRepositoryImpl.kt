@@ -1,6 +1,9 @@
 package com.company.teacherforboss.data.repository
 
 import com.company.teacherforboss.data.datasource.remote.MyPageRemoteDataSource
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsRequestEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
 import com.company.teacherforboss.domain.repository.MyPageRepository
@@ -14,5 +17,12 @@ class MyPageRepositoryImpl @Inject constructor(
             myPageDataSource.getBookmarkedQuestions(
                 requestBookmarkedQuestionsDto = bookmarkedQuestionsRequestEntity.toRequestBookmarkedQuestionsDto()
             ).result.toBookmarkedQuestionsEntity()
+        }.getOrElse { err -> throw err }
+
+    override suspend fun getBookmarkedPosts(bookmarkedPostsRequestEntity: BookmarkedPostsRequestEntity): BookmarkedPostsResponseEntity =
+        runCatching {
+            myPageDataSource.getBookmarkedPosts(
+                requestBookmarkedPostsDto = bookmarkedPostsRequestEntity.toRequestBookmarkedPostsDto()
+            ).result.toBookmarkedPostsEntity()
         }.getOrElse { err -> throw err }
 }

@@ -21,11 +21,11 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.ad
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -54,7 +54,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         transaction.commit()
 
         // post id
-        postId = intent.getStringExtra("postId")!!.toLong()
+        postId = intent.getLongExtra(BOSS_POSTID,-1L)
         viewModel.setPostId(postId)
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
@@ -119,7 +119,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 putExtra(POST_PURPOSE, "modify")
                 putExtra(POST_TITLE, binding.bodyTitle.text.toString())
                 putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(POST_POSTID, postId.toString())
+                putExtra(BOSS_POSTID, postId)
 
                 viewModel.getTagList()?.let {
                     if (it.isNotEmpty()) {

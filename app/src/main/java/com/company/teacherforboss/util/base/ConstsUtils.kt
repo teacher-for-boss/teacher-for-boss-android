@@ -27,13 +27,15 @@ class ConstsUtils {
         const val POST_PURPOSE="purpose"
         const val POST_TITLE="title"
         const val POST_BODY="body"
-        const val POST_POSTID="postId"
         const val POST_ISTAGLIST="isTagList"
         const val POST_ISIMGLIST="isImgList"
 
         const val DEFAULT_LASTID=0L
         const val DEFAULT_SORTBY="latest"
         const val DEFAULT_SIZE=10
+
+        // 보스톡
+        const val BOSS_POSTID="postId"
 
         // 티처톡
         const val TEACHER_QUESTIONID="questionId"

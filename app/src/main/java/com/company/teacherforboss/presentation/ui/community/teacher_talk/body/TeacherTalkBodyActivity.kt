@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkBodyBinding
@@ -60,7 +59,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
         // questionId
-        questionId = intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
+        questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
         viewModel.setQuestionId(questionId)
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
@@ -127,7 +126,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 putExtra(POST_PURPOSE, "modify")
                 putExtra(POST_TITLE, binding.bodyTitle.text.toString())
                 putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(TEACHER_QUESTIONID, questionId.toString())
+                putExtra(TEACHER_QUESTIONID, questionId)
                 putExtra(TEACHER_CATAEGORYNAME, categoryName)
 
                 viewModel.getTagList()?.let {
@@ -220,7 +219,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 putExtra(POST_PURPOSE, "answer")
                 putExtra(POST_TITLE, binding.bodyTitle.text.toString())
                 putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
+                putExtra(TEACHER_QUESTIONID, questionId)
             }
             startActivity(intent)
         }

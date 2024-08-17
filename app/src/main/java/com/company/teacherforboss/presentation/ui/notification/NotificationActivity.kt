@@ -38,6 +38,8 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
     }
 
     fun setNotificationView(){
+        notificationAdapter = NotificationAdapter(this, emptyList())
+
         viewModel.getNotificatioins()
 
         viewModel.notificationState.flowWithLifecycle(this.lifecycle)

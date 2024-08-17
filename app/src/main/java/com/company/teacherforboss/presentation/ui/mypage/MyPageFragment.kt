@@ -124,6 +124,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
             includeMyPageMenuTeacherTalkQuestionPost.root.setOnClickListener{
                 val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
+                intent.putExtra("role",viewModel.role.value)
                 startActivity(intent)
             }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }

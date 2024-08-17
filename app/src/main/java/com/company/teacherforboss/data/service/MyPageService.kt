@@ -17,6 +17,12 @@ interface MyPageService {
         @Query("size") size:Int,
     )
     : BaseResponse<ResponseMyPageAnsweredQuestionDto>
+    @GET("${MYPAGE}/board/my-questions")
+    suspend fun getMyQuestion(
+        @Query("lastQuestionId") lastQuestionId:Long,
+        @Query("size") size:Int,
+    )
+    : BaseResponse<ResponseMyPageAnsweredQuestionDto>
 
     @GET("mypage/board/bookmarked-questions")
     suspend fun getBookmarkedQuestions(

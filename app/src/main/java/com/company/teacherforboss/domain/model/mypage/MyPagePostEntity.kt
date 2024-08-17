@@ -16,16 +16,4 @@ data class MyPagePostEntity(
     val liked: Boolean,
     val bookmarked: Boolean,
     val createdAt: String
-): Serializable {
-    fun toMyPagePostDto()= MyPagePostDto(
-        postId = postId,
-        title = title,
-        content = content,
-        bookmarkCount = bookmarkCount,
-        commentCount = commentCount,
-        likeCount = likeCount,
-        liked = liked,
-        bookmarked = bookmarked,
-        createdAt = createdAt
-    )
-}
+)

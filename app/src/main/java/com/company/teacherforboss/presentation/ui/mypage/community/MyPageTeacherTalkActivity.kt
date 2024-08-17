@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.onEach
 class MyPageTeacherTalkActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyPageTeacherTalkBinding
     private val viewModel by viewModels<MyPageQuestionViewModel>()
-    private var questionList: ArrayList<MyPageQuestionEntity> = TODO()
-    private var adapter: rvAdapterMyPageQuestion
+    private lateinit var questionList: ArrayList<MyPageQuestionEntity>
+    private lateinit var adapter: rvAdapterMyPageQuestion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyPageTeacherTalkBinding.inflate(layoutInflater)
@@ -47,9 +47,9 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
                 when (answeredQuestionState) {
                     is UiState.Success -> {
                         questionList = answeredQuestionState.data.questionList
-                        adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!)
-
                         viewModel.setQuestionList(questionList)
+
+                        adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!)
                         binding.rvMyPageQuestion.adapter = adapter
                     }
 
@@ -62,9 +62,9 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
                 when (myQuestionState) {
                     is UiState.Success -> {
                         questionList = myQuestionState.data.questionList
-                        adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!)
-
                         viewModel.setQuestionList(questionList)
+
+                        adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!)
                         binding.rvMyPageQuestion.adapter = adapter
                     }
 

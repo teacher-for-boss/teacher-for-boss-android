@@ -12,14 +12,4 @@ data class MyPageQuestionEntity(
     val solved: Boolean,
     val selectedTeacher: String?,
     val createdAt: String
-): Serializable {
-    fun toMyPageQuestionDto()= MyPageQuestionDto(
-        questionId=questionId,
-        category = category,
-        title=title,
-        content=content,
-        solved=solved,
-        selectedTeacher=selectedTeacher,
-        createdAt=createdAt,
-    )
-}
+)

@@ -4,6 +4,7 @@ import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.google.gson.annotations.SerializedName
 
 data class ProfileResponseDto (
+    @SerializedName("memberId") val memberId:Long,
     @SerializedName("nickname") val nickname: String,
     @SerializedName("profileImg") val profileImg: String,
     @SerializedName("role") val role: String,
@@ -11,6 +12,7 @@ data class ProfileResponseDto (
 ) {
 
     fun toMyPageProfileEntity() = MyPageProfileEntity(
+        memberId=memberId,
         nickname = nickname,
         profileImg = profileImg,
         role = role,

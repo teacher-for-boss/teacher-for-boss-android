@@ -8,6 +8,7 @@ import com.company.teacherforboss.domain.model.common.TeacherProfileDetailEntity
 import com.company.teacherforboss.domain.model.common.TeacherRecentAnswerListEntity.TeacherRecentAnswer
 import com.company.teacherforboss.domain.model.common.TeacherDetailProfileRequestEntity
 import com.company.teacherforboss.domain.usecase.Member.TeacherDetailProfileUseCase
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +35,7 @@ class TeacherProfileViewModel @Inject constructor(
             try {
                 val teacherDetailProfileResponseEntity = teacherDetailProfileUseCase(
                     TeacherDetailProfileRequestEntity(
-                        memberId = memberId.value
+                        memberId = memberId.value?:DEFAULT_ID
                     )
                 )
                 _teacherProfileDetail.value = teacherDetailProfileResponseEntity

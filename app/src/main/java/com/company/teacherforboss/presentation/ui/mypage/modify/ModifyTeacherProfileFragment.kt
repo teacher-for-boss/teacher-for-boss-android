@@ -80,13 +80,13 @@ class ModifyTeacherProfileFragment : Fragment() {
                     viewModel.setNickname(it.nickname)
                     viewModel.initialNickname.value = it.nickname
                     // phone
-                    if(!it.phone.isNullOrEmpty()) {
+                    if(it.phoneOpen==true && !it.phone.isNullOrEmpty()) {
                         viewModel.setPhone(it.phone)
                         viewModel.setPhoneReveal(true)
                         binding.switchPhone.isChecked = true
                     }
                     // email
-                    if(!it.email.isNullOrEmpty()) {
+                    if(it.emailOpen==true && !it.email.isNullOrEmpty()) {
                         viewModel.setEmail(it.email)
                         viewModel.setEmailReveal(true)
                         binding.switchEmail.isChecked = true

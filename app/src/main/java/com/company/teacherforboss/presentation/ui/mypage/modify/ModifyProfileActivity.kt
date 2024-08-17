@@ -18,6 +18,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityModifyProfileBinding
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +29,9 @@ import kotlinx.coroutines.withContext
 @AndroidEntryPoint
 class ModifyProfileActivity : AppCompatActivity() {
     private val viewModel: ModifyProfileViewModel by viewModels()
+    private val detailProfileViewModel: TeacherProfileViewModel by viewModels()
     private lateinit var binding: ActivityModifyProfileBinding
+
     // 갤러리 오픈
     val requestPermissionLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted->
@@ -62,6 +67,7 @@ class ModifyProfileActivity : AppCompatActivity() {
         // Fragment 초기화
         val role = intent.getStringExtra(ROLE)
         if(role == ROLE_TEACHER) {
+            detailProfileViewModel.setMemberId(intent.getLongExtra(TEACHER_PROFILE_ID,DEFAULT_ID))
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ModifyTeacherProfileFragment())
                 .commit()

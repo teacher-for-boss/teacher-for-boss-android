@@ -9,6 +9,8 @@ import com.company.teacherforboss.databinding.ActivityTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.tabs.TabLayoutMediator
@@ -50,7 +52,7 @@ class TeacherProfileActivity :
                 }
             }.attach()
 
-            viewModel.setMemberId(intent.getStringExtra(TEACHER_PROFILE_ID)!!.toLong())
+            viewModel.setMemberId(intent.getLongExtra(TEACHER_PROFILE_ID, DEFAULT_ID))
             viewModel.getTeacherDetailProfile()
         }
     }
@@ -141,6 +143,5 @@ class TeacherProfileActivity :
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"
-        const val TEACHER_PROFILE_ID = "profileId"
     }
 }

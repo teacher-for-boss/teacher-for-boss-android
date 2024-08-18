@@ -190,9 +190,9 @@ class ModifyBossProfileFragment : Fragment() {
     private fun checkFilled() {
         viewModel.nicknameCheck.observeForever {
             if (viewModel.nicknameCheck.value == true)
-                viewModel.enableNext.value = true
+                viewModel.setEnableNextState(true)
             else
-                viewModel.enableNext.value = false
+                viewModel.setEnableNextState(false)
         }
     }
 

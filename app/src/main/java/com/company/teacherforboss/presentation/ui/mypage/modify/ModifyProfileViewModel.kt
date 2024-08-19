@@ -103,7 +103,7 @@ class ModifyProfileViewModel @Inject constructor(
     val initialField = MutableLiveData<String>("")
     val initialCareer = MutableLiveData<String>("")
     val initialIntroduction = MutableLiveData<String>("")
-    val initialKeywords = MutableLiveData<MutableList<String>>()
+    val initialKeywords = MutableLiveData<List<String>>()
 
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
 
@@ -276,9 +276,8 @@ class ModifyProfileViewModel @Inject constructor(
     fun setInitIntroduction(introduction: String) {
         initialIntroduction.value = introduction
     }
-    fun setInitKeywords(keywordList: MutableList<String>) {
+    fun setInitKeywords(keywordList: List<String>) {
         initialKeywords.value = keywordList
-
     }
 
     val isModified = MediatorLiveData<Boolean>().apply {
@@ -325,7 +324,6 @@ class ModifyProfileViewModel @Inject constructor(
                 currentCareerStr != initialCareerValue ||
                 currentIntroduction != initialIntroductionValue ||
                 keywordsModified
-//                currentKeywords.toString() != initialKeywordsValue.toString()
 
         isModified.value = modified
     }

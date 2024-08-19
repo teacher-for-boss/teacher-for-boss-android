@@ -118,7 +118,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                             checkCnt++
                         }
                     }
-                    viewModel.setInitKeywords(selectedChipList)
+                    viewModel.setInitKeywords(it.keywords)
 
                     viewModel.setEnableNextState(false)
                     binding.nextBtn.isEnabled=false
@@ -298,6 +298,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                         checkCnt--
                         if (checkCnt == 0) checkFilled()
                     }
+                    viewModel.setKeywords(selectedChipList)
                 }
             }
         }

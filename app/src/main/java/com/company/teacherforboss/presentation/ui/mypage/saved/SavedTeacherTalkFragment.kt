@@ -38,6 +38,10 @@ class SavedTeacherTalkFragment :
             layoutManager = LinearLayoutManager(context)
         }
         viewModel.getBookmarkedQuestions()
+
+        binding.btnMoreCard.setOnClickListener {
+            viewModel.getBookmarkedQuestions()
+        }
     }
 
     private fun initBookmarkedQuestionsList(questionList: List<BookmarkedQuestionsEntity>) {

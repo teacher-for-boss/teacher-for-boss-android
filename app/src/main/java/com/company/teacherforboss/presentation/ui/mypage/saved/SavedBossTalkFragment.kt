@@ -26,6 +26,7 @@ class SavedBossTalkFragment :
 
         initView()
         getPosts()
+
     }
 
     override fun onDestroyView() {
@@ -40,6 +41,10 @@ class SavedBossTalkFragment :
             layoutManager = LinearLayoutManager(context)
         }
         viewModel.getBookmarkedPosts()
+
+        binding.btnMoreCard.setOnClickListener {
+            viewModel.getBookmarkedPosts()
+        }
     }
 
     private fun updatePosts(postList:List<BookmarkedPostsEntity>) {

@@ -69,86 +69,73 @@
                 android:textSize="9sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_boss_talk_content" />
-            <TextView
-                android:id="@+id/card_category"
+
+            <ImageView
+                android:id="@+id/ic_boss_talk_bookmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="카테고리"
+                android:src="@drawable/selector_bookmark"
+                app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_bookmark_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_bookmark_count"
+                app:layout_constraintTop_toTopOf="@id/tv_boss_talk_bookmark_count" />
+
+            <TextView
+                android:id="@+id/tv_boss_talk_bookmark_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/teacher_talk_bookmark_count"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:textColor="@drawable/selector_color_purple600_gray300"
+                app:layout_constraintBottom_toBottomOf="@id/ic_boss_talk_comment"
+                app:layout_constraintEnd_toStartOf="@id/ic_boss_talk_comment"
+                app:layout_constraintTop_toTopOf="@id/ic_boss_talk_comment" />
+
+
+            <ImageView
+                android:id="@+id/ic_boss_talk_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_comment_24"
+                app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_comment_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_comment_count"
+                app:layout_constraintTop_toTopOf="@id/tv_boss_talk_comment_count" />
+
+            <TextView
+                android:id="@+id/tv_boss_talk_comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/teacher_talk_comment_count"
+                android:layout_marginEnd="8dp"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:textColor="@color/Gray300"
+                app:layout_constraintBottom_toBottomOf="@id/ic_boss_talk_like"
+                app:layout_constraintEnd_toStartOf="@id/ic_boss_talk_like"
+                app:layout_constraintTop_toTopOf="@id/ic_boss_talk_like" />
+
+            <ImageView
+                android:id="@+id/ic_boss_talk_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_like"
+                app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_like_count"
+                app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_like_count"
+                app:layout_constraintTop_toTopOf="@id/tv_boss_talk_like_count" />
+
+            <TextView
+                android:id="@+id/tv_boss_talk_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:textColor="@color/white"
-                android:background="@drawable/background_radius4_purple600"
-                android:paddingVertical="7dp"
-                android:paddingHorizontal="8dp"
-                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label8"
-                app:layout_constraintTop_toBottomOf="@id/tv_boss_talk_date"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-                <ImageView
-                    android:id="@+id/ic_boss_talk_bookmark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/selector_bookmark"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_bookmark_count"
-                    app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_bookmark_count"
-                    app:layout_constraintTop_toTopOf="@id/tv_boss_talk_bookmark_count" />
-
-                <TextView
-                    android:id="@+id/tv_boss_talk_bookmark_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/teacher_talk_bookmark_count"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:textColor="@drawable/selector_color_purple600_gray300"
-                    app:layout_constraintBottom_toBottomOf="@id/ic_boss_talk_comment"
-                    app:layout_constraintEnd_toStartOf="@id/ic_boss_talk_comment"
-                    app:layout_constraintTop_toTopOf="@id/ic_boss_talk_comment" />
-
-
-                <ImageView
-                    android:id="@+id/ic_boss_talk_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_comment_24"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_comment_count"
-                    app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_comment_count"
-                    app:layout_constraintTop_toTopOf="@id/tv_boss_talk_comment_count" />
-
-                <TextView
-                    android:id="@+id/tv_boss_talk_comment_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/teacher_talk_comment_count"
-                    android:layout_marginEnd="8dp"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/Gray300"
-                    app:layout_constraintBottom_toBottomOf="@id/ic_boss_talk_like"
-                    app:layout_constraintEnd_toStartOf="@id/ic_boss_talk_like"
-                    app:layout_constraintTop_toTopOf="@id/ic_boss_talk_like" />
-
-                <ImageView
-                    android:id="@+id/ic_boss_talk_like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/selector_like"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_boss_talk_like_count"
-                    app:layout_constraintEnd_toStartOf="@id/tv_boss_talk_like_count"
-                    app:layout_constraintTop_toTopOf="@id/tv_boss_talk_like_count" />
-
-                <TextView
-                    android:id="@+id/tv_boss_talk_like_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/teacher_talk_like_count"
-                    android:textStyle="bold"
-                    android:textColor="@drawable/selector_color_purple600_gray300"
-                    android:textSize="9sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_boss_talk_date" />
+                android:text="@string/teacher_talk_like_count"
+                android:textStyle="bold"
+                android:textColor="@drawable/selector_color_purple600_gray300"
+                android:textSize="9sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_boss_talk_date" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

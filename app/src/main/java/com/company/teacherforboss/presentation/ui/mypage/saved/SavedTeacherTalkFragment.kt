@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
-import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
 import com.company.teacherforboss.util.base.BindingFragment
@@ -30,7 +29,7 @@ class SavedTeacherTalkFragment :
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.clearData()
+        viewModel.clearQuestionData()
     }
     private fun initView() {
         bookmarkedQuestionsAdapter = SavedTeacherTalkCardAdapter(requireContext())
@@ -62,26 +61,26 @@ class SavedTeacherTalkFragment :
 //    }
 
     private fun getQuestions() {
-        viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, {questioinList ->
-            val questionList = questioinList
+        viewModel.bookmarkedQuestionList.observe(viewLifecycleOwner, {questionList ->
+            val questioinList = questionList
             val previousLastQuestionId = viewModel.getLastQuestionId()
 //                val previousLastQuestionId = lastQuestionId.value ?: DEFAULT_LAST_QUESTIOIN_ID
-            val lastQuestionId = questionList.get(questionList.lastIndex).questionId
+            val lastQuestionId = questioinList.get(questioinList.lastIndex).questionId
 
             viewModel.updateLastQuestionId(lastQuestionId)
-            viewModel.setHasNext(viewModel.hasNext.value ?: false)
+            viewModel.setHasNextQuestion(viewModel.hasNextQuestion.value ?: false)
 
-            if (previousLastQuestionId == DEFAULT_LAST_QUESTIOIN_ID) {
-                bookmarkedQuestionsAdapter.setCardList(questionList)
+            if (previousLastQuestionId == DEFAULT_LAST_QUESTION_ID) {
+                bookmarkedQuestionsAdapter.setCardList(questioinList)
             } else {
-                updateQuestions(questionList)
+                updateQuestions(questioinList)
             }
-            binding.btnMoreCard.visibility = if (viewModel.hasNext.value == true) View.VISIBLE else View.GONE
+            binding.btnMoreCard.visibility = if (viewModel.hasNextQuestion.value == true) View.VISIBLE else View.GONE
 
         })
     }
 
     companion object{
-        const val DEFAULT_LAST_QUESTIOIN_ID=0L
+        const val DEFAULT_LAST_QUESTION_ID=0L
     }
 }

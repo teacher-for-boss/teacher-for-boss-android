@@ -65,6 +65,17 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
                     else->Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.getAccountState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { getAccountState->
+                when(getAccountState) {
+                    is UiState.Success->{
+                        binding.includeEmail.content = getAccountState.data.email
+                        binding.includePhone.content = getAccountState.data.phone
+                    }
+                    else->Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
     private fun showDialogFragment(index: String) {
         // TODO clickRightBtn에 로그아웃 뷰모델 로직 추가

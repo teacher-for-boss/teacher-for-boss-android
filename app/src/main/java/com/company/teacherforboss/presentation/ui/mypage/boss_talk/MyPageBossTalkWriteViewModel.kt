@@ -30,6 +30,10 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
     val size: LiveData<Int>
         get() = _size
 
+    var _hasNext = MutableLiveData<Boolean>(false)
+    val hasNext:LiveData<Boolean>
+        get() = _hasNext
+
     var _postList = MutableLiveData<List<MyPagePostEntity>>(emptyList())
     val postList : LiveData<List<MyPagePostEntity>>
         get() =_postList
@@ -41,29 +45,44 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
     private val _myPostsState = MutableStateFlow<UiState<MyPagePostsResponseEntity>>(UiState.Empty)
     val myPostsState get() = _myPostsState.asStateFlow()
 
+    private var isLoading = false
+
     fun getLastPostId():Long = lastPostId.value?:0L
     fun setLastPostId(postId: Long){
         _lastPostId.value = postId
+    }
+    fun setHasNext(hasNext: Boolean){
+        _hasNext.value = hasNext
     }
     fun setPostList(postList: List<MyPagePostEntity>){
         _postList.value = postList
     }
 
     fun getCommentedPosts(){
+        if(isLoading) return
+
+        isLoading = true
         viewModelScope.launch {
-            try{
+            try {
                 val myPageCommentedPostsResponseEntity = myPageCommentedPostsUseCase(
                     MyPageCommentedPostsRequestEntity(
-                        lastPostId = lastPostId.value?:0L,
-                        size = size.value?:10
+                        lastPostId = lastPostId.value ?: 0L,
+                        size = size.value ?: 10
                     )
                 )
-                _myPostsState.value = UiState.Success(myPageCommentedPostsResponseEntity)
+                _commentedPostsState.value = UiState.Success(myPageCommentedPostsResponseEntity)
 
-            }catch (ex:Exception){_myPostsState.value=UiState.Error(ex.message)}
+            } catch (ex: Exception) {
+                _commentedPostsState.value = UiState.Error(ex.message)
+            } finally {
+                isLoading = false
+            }
         }
     }
     fun getMyPosts(){
+        if(isLoading) return
+
+        isLoading = true
         viewModelScope.launch {
             try{
                 val myPageMyPostsResponseEntity = myPageMyPostsUseCase(
@@ -74,7 +93,11 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
                 )
                 _myPostsState.value = UiState.Success(myPageMyPostsResponseEntity)
 
-            }catch (ex:Exception){_myPostsState.value=UiState.Error(ex.message)}
+            }catch (ex:Exception){
+                _myPostsState.value=UiState.Error(ex.message)
+            }finally {
+                isLoading = false
+            }
         }
     }
 

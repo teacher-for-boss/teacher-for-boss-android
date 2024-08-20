@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemBossSearchCardBinding
+import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterBoss(
     private val context: Context,
-    private val postList: List<MyPagePostEntity>
+    private val postList: MutableList<MyPagePostEntity>
 ): RecyclerView.Adapter<rvAdapterBoss.ViewHolder>() {
     class ViewHolder(private val binding: RvItemBossSearchCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -39,6 +40,13 @@ class rvAdapterBoss(
                 context.startActivity(intent)
             }
         }
+    }
+    fun addMoreCards(newPostList:List<MyPagePostEntity>) {
+        val currentSize = postList.size
+        val newItemSize= newPostList.size
+        postList.addAll(newPostList)
+        notifyItemRangeInserted(currentSize,newItemSize)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

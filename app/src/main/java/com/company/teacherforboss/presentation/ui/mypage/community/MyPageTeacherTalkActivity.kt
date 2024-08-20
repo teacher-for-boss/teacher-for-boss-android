@@ -5,9 +5,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.ActivityMyPageTeacherTalkBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
 import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
+import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -26,7 +29,7 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
 
         initLayout()
         collectData()
-
+        addListeners()
         onBackBtnPressed()
     }
 
@@ -46,11 +49,23 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
             .onEach { answeredQuestionState ->
                 when (answeredQuestionState) {
                     is UiState.Success -> {
-                        questionList = answeredQuestionState.data.questionList
-                        viewModel.setQuestionList(questionList)
+                            val previousLastQuestionId = viewModel.lastQuestionId.value
+                            questionList = answeredQuestionState.data.questionList
+                            viewModel.setQuestionList(questionList)
+                            viewModel.apply {
+                                setHasNext(answeredQuestionState.data.hasNext)
+                                setQuestionList(answeredQuestionState.data.questionList)
+                                setLastQuestionId(answeredQuestionState.data.questionList.last().questionId)
+                            }
+                            if(previousLastQuestionId == 0L){
+                                adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!.toMutableList())
+                                binding.rvMyPageQuestion.adapter = adapter
+                            }
+                            else{
+                                adapter.addMoreCards(viewModel.questionList.value!!)
+                            }
 
-                        adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!)
-                        binding.rvMyPageQuestion.adapter = adapter
+
                     }
 
                     else -> Unit
@@ -61,16 +76,50 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
             .onEach { myQuestionState ->
                 when (myQuestionState) {
                     is UiState.Success -> {
+                        val previousLastQuestionId = viewModel.lastQuestionId.value
                         questionList = myQuestionState.data.questionList
                         viewModel.setQuestionList(questionList)
+                        viewModel.apply {
+                            setHasNext(myQuestionState.data.hasNext)
+                            setQuestionList(myQuestionState.data.questionList)
+                            setLastQuestionId(myQuestionState.data.questionList.last().questionId)
+                        }
+                        if(previousLastQuestionId == 0L){
+                            adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!.toMutableList())
+                            binding.rvMyPageQuestion.adapter = adapter
+                        }
+                        else{
+                            adapter.addMoreCards(viewModel.questionList.value!!)
+                        }
 
-                        adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!)
-                        binding.rvMyPageQuestion.adapter = adapter
+
                     }
 
                     else -> Unit
                 }
             }.launchIn(this.lifecycleScope)
+    }
+    fun addListeners() {
+        binding.rvMyPageQuestion.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = binding.rvMyPageQuestion.layoutManager as LinearLayoutManager
+                // 마지막 아이템의 위치를 확인
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                // 로딩 중이 아니고, 마지막 아이템이 화면에 보이면 추가 데이터 로드
+                if (viewModel.hasNext.value == true
+                    && lastVisibleItemPosition == totalItemCount - 1) {
+                    if (intent.getStringExtra("role") == "TEACHER") {
+                        viewModel.getAnsweredQuestion()
+                    }
+                    else {
+                        viewModel.getMyQuestion()
+                    }
+                }
+            }
+        })
     }
 
     fun onBackBtnPressed() {

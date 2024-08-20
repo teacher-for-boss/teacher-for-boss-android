@@ -28,9 +28,10 @@ class MemberRepositoryImpl @Inject constructor(
         }.getOrElse { err -> throw err }
     }
 
-    override suspend fun getTeacherRecentAnswers(): TeacherRecentAnswerListEntity {
+    override suspend fun getTeacherRecentAnswers(teacherDetailProfileRequestEntity: TeacherDetailProfileRequestEntity): TeacherRecentAnswerListEntity {
         return runCatching {
-            memberRemoteDataSource.getTeacherRecentAnswers().result.toTeacherRecentAnswerListEntity()
+            memberRemoteDataSource.getTeacherRecentAnswers(teacherDetailProfileRequestDto = teacherDetailProfileRequestEntity.toTeacherDetailProfileRequestDto())
+                .result.toTeacherRecentAnswerListEntity()
         }.getOrElse { err -> throw err }
     }
 

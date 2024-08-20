@@ -34,9 +34,6 @@ class TeacherProfileRecentAnswerFragment :
 
     private fun initLayout() {
         binding.rvTeacherProfileRecentAnswer.adapter = teacherProfileRecentAnswerAdapter
-//        viewModel.setRecentAnswerList()
-        teacherProfileRecentAnswerAdapter.submitList(viewModel.teacherProfileRecentAnswerList.value.recentAnswerList)
-
         viewModel.getTeacherRecentAnswers()
     }
 

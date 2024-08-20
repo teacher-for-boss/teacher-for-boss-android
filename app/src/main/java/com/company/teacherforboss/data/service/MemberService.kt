@@ -32,9 +32,10 @@ interface MemberService {
     )
     :BaseResponse<TeacherDetailProfileResponseDto>
 
-    @GET("${MEMBER}/profiles/teacher/detail/recent-answers")
-    suspend fun getTeacherRecentAnswers()
-    :BaseResponse<TeacherRecentAnswersResponseDto>
+    @GET("${MEMBER}/profiles/teacher/{memberId}/recent-answers")
+    suspend fun getTeacherRecentAnswers(
+        @Path("memberId") memberId: Long
+    ):BaseResponse<TeacherRecentAnswersResponseDto>
 
     @PATCH("${MEMBER}/profiles/teacher")
     suspend fun modifyTeacherProfile(

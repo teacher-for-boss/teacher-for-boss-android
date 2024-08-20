@@ -23,7 +23,8 @@ class MemberRemoteDataSourceImpl @Inject constructor(
     override suspend fun getTeacherDetailProfile(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto): BaseResponse<TeacherDetailProfileResponseDto>
     = memberService.getTeacherDetailProfile(memberId = teacherDetailProfileRequestDto.memberId)
 
-    override suspend fun getTeacherRecentAnswers(): BaseResponse<TeacherRecentAnswersResponseDto> = memberService.getTeacherRecentAnswers()
+    override suspend fun getTeacherRecentAnswers(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto): BaseResponse<TeacherRecentAnswersResponseDto>
+    = memberService.getTeacherRecentAnswers(memberId = teacherDetailProfileRequestDto.memberId)
 
     override suspend fun modifyTeacherProfile(modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto): BaseResponse<ModifyProfileResponseDto>
     = memberService.modifyTeacherProfile(modifyTeacherProfileRequestDto = modifyTeacherProfileRequestDto)

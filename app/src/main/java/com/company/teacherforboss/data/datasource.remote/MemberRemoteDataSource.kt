@@ -18,7 +18,8 @@ interface MemberRemoteDataSource {
     suspend fun getTeacherDetailProfile(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto
     ): BaseResponse<TeacherDetailProfileResponseDto>
 
-    suspend fun getTeacherRecentAnswers(): BaseResponse<TeacherRecentAnswersResponseDto>
+    suspend fun getTeacherRecentAnswers(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto
+    ): BaseResponse<TeacherRecentAnswersResponseDto>
 
     suspend fun modifyTeacherProfile(modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto
     ): BaseResponse<ModifyProfileResponseDto>

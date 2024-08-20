@@ -16,7 +16,7 @@ interface MemberRepository {
 
     suspend fun getTeacherDetailProfile(teacherDetailProfileRequestEntity: TeacherDetailProfileRequestEntity): TeacherProfileDetailEntity
 
-    suspend fun getTeacherRecentAnswers(): TeacherRecentAnswerListEntity
+    suspend fun getTeacherRecentAnswers(teacherDetailProfileRequestEntity: TeacherDetailProfileRequestEntity): TeacherRecentAnswerListEntity
 
     suspend fun modifyTeacherProfile(modifyTeacherProfileRequestEntity: ModifyTeacherProfileRequestEntity): ModifyProfileResponseEntity
 

@@ -10,6 +10,7 @@ import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
 import com.company.teacherforboss.domain.model.mypage.MyPagePostsResponseEntity
 import com.company.teacherforboss.domain.usecase.mypage.MyPageCommentedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyPostsUseCase
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,6 +57,11 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
     }
     fun setPostList(postList: List<MyPagePostEntity>){
         _postList.value = postList
+    }
+    fun clearData(){
+        _postList.value= emptyList()
+        _lastPostId.value= ConstsUtils.DEFAULT_LASTID
+        _hasNext.value=false
     }
 
     fun getCommentedPosts(){

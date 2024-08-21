@@ -32,6 +32,10 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
         addListeners()
         onBackBtnPressed()
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clearData()
+    }
 
     fun initLayout() {
         if (intent.getStringExtra("role") == "TEACHER") {

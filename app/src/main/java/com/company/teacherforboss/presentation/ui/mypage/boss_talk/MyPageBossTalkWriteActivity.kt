@@ -34,6 +34,11 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
         onBackBtnPressed()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clearData()
+    }
+
     fun initLayout() {
         if(intent.getStringExtra(ROLE_BOSS) == BOSS_TALK_WRITE_POST) {
             binding.includeMyPagePostTopAppBar.title = "보스톡 - 작성한 게시글"

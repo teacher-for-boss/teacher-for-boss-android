@@ -12,6 +12,7 @@ import com.company.teacherforboss.domain.model.payment.BankAccountChangeRequestE
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyQuestionUseCase
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,6 +60,11 @@ class MyPageQuestionViewModel @Inject constructor(
     }
     fun setQuestionList(questionList: List<MyPageQuestionEntity>){
         _questionList.value=questionList
+    }
+    fun clearData(){
+        _questionList.value= emptyList()
+        _lastQuestionId.value= ConstsUtils.DEFAULT_LASTID
+        _hasNext.value=false
     }
 
 

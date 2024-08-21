@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentSavedBossTalkBinding
 import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsEntity
@@ -26,6 +27,7 @@ class SavedBossTalkFragment :
 
         initView()
         getPosts()
+        addListeners()
 
     }
 
@@ -42,14 +44,30 @@ class SavedBossTalkFragment :
         }
         viewModel.getBookmarkedPosts()
 
-        binding.btnMoreCard.setOnClickListener {
-            viewModel.getBookmarkedPosts()
-        }
     }
 
     private fun updatePosts(postList:List<BookmarkedPostsEntity>) {
         Log.d("test","update")
         bookmarkedPostsAdapter.addMoreCards(postList)
+    }
+
+    fun addListeners() {
+        binding.rvCard.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = binding.rvCard.layoutManager as LinearLayoutManager
+                // 마지막 아이템의 위치를 확인
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                // 로딩 중이 아니고, 마지막 아이템이 화면에 보이면 추가 데이터 로드
+                if (viewModel.hasNextPost.value == true
+                    && lastVisibleItemPosition == totalItemCount - 1) {
+                    viewModel.getBookmarkedPosts()
+                }
+            }
+
+        })
     }
     private fun getPosts() {
         viewModel.bookmarkedPostList.observe(viewLifecycleOwner, { postList ->
@@ -57,7 +75,7 @@ class SavedBossTalkFragment :
             val previousLastPostId = viewModel.getLastPostId()
             val lastPostId = postList.get(postList.lastIndex).postId
 
-            viewModel.updateLastPostId(lastPostId)
+            viewModel.setLastPostId(lastPostId)
             viewModel.setHasNextPost(viewModel.hasNextPost.value ?: false)
 
             if (previousLastPostId == DEFAULT_LAST_POST_ID) {
@@ -65,9 +83,6 @@ class SavedBossTalkFragment :
             } else {
                 updatePosts(postList)
             }
-            binding.btnMoreCard.visibility =
-                if (viewModel.hasNextQuestion.value == true) View.VISIBLE else View.GONE
-
         })
     }
 

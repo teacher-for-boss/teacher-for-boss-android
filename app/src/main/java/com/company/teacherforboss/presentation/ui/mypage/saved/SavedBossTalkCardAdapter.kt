@@ -46,10 +46,8 @@ class SavedBossTalkCardAdapter(private val context: Context) :
     fun addMoreCards(newPostList:List<BookmarkedPostsEntity>) {
         val currentSize = bookmarkedPostsList.size
         val newItemSize=newPostList.size
-        if(newItemSize>0){
-            bookmarkedPostsList.addAll(newPostList)
-            notifyItemRangeInserted(currentSize,newItemSize)
-        }
+        bookmarkedPostsList.addAll(newPostList)
+        notifyItemRangeInserted(currentSize,newItemSize)
     }
     inner class SavedBossTalkCardViewHolder(private val binding: RvItemSavedBossBinding) :
         RecyclerView.ViewHolder(binding.root) {

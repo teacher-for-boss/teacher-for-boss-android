@@ -92,8 +92,12 @@ class MyPageViewModel @Inject constructor(
     val _hasNextQuestion=MutableLiveData<Boolean>().apply { value=true }
     val hasNextQuestion:LiveData<Boolean> get() = _hasNextQuestion
 
+    private var isQuestionLoading = false
+
     val _hasNextPost=MutableLiveData<Boolean>().apply { value=true }
     val hasNextPost:LiveData<Boolean> get() = _hasNextPost
+
+    private var isPostLoading = false
 
     private val _getSavedTeacherTalkQuestionsLiveData= MutableLiveData<BookmarkedQuestionsResponseEntity>()
     val getSavedTeacherTalkQuestionLiveData: LiveData<BookmarkedQuestionsResponseEntity>
@@ -118,7 +122,10 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun getBookmarkedQuestions() {
+    fun getBookmarkedQuestions(){
+        if(isQuestionLoading) return
+
+        isQuestionLoading = true
         viewModelScope.launch {
             try {
                 val bookmarkedQuestionsResponseEntity=bookmarkedQuestionsUseCase(
@@ -127,10 +134,14 @@ class MyPageViewModel @Inject constructor(
                         size = bookmarkedQuestionSize.value?: 10,
                     )
                 )
+                _bookmarkedQuestionsState.value = UiState.Success(bookmarkedQuestionsResponseEntity)
                 setHasNextQuestion(bookmarkedQuestionsResponseEntity.hasNext)
-                setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsResponseEntity.bookmarkedQuestionsList)
-            } catch(ex:Exception){ }
-
+                setBookmarkedQuestionList(bookmarkedQuestionsResponseEntity.bookmarkedQuestionsList)
+            } catch (ex: Exception) {
+                _bookmarkedQuestionsState.value = UiState.Error(ex.message)
+            } finally {
+                isQuestionLoading = false
+            }
         }
     }
 
@@ -143,19 +154,18 @@ class MyPageViewModel @Inject constructor(
                         size = bookmarkedQuestionSize.value?: 10,
                     )
                 )
-                setHasNextQuestion(bookmarkedPostsResponseEntity.hasNext)
+                setHasNextPost(bookmarkedPostsResponseEntity.hasNext)
                 setBookmarkedPostsList(bookmarkedPostsResponseEntity.postList)
             } catch(ex:Exception){}
         }
     }
-
     fun setHasNextQuestion(hasNext:Boolean){
         _hasNextQuestion.value=hasNext
     }
     fun setHasNextPost(hasNext:Boolean){
         _hasNextPost.value=hasNext
     }
-    fun setBookmarkedTeacherTalkQuestionList(bookmarkedQuestionsList:List<BookmarkedQuestionsEntity>){
+    fun setBookmarkedQuestionList(bookmarkedQuestionsList:List<BookmarkedQuestionsEntity>){
         _bookmarkedQuestionList.value=bookmarkedQuestionsList
     }
 
@@ -163,7 +173,7 @@ class MyPageViewModel @Inject constructor(
         _bookmarkedPostList.value=postList
     }
 
-    fun updateLastQuestionId(lastId: Long) {
+    fun setLastQuestionId(lastId: Long) {
         _lastQuestionId.value = lastId
     }
 
@@ -171,7 +181,7 @@ class MyPageViewModel @Inject constructor(
         return _lastQuestionId.value
     }
 
-    fun updateLastPostId(lastId: Long) {
+    fun setLastPostId(lastId: Long) {
         _lastPostId.value = lastId
     }
 

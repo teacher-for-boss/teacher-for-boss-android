@@ -48,12 +48,12 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
 
     fun addMoreCards(newQuestionList:List<BookmarkedQuestionsEntity>) {
         val currentSize = bookmarkedQuestionsList.size
-        val newItemSize=newQuestionList.size
-        if(newItemSize>0){
-            bookmarkedQuestionsList.addAll(newQuestionList)
-            notifyItemRangeInserted(currentSize,newItemSize)
-        }
+        val newItemSize= newQuestionList.size
+        bookmarkedQuestionsList.addAll(newQuestionList)
+        notifyItemRangeInserted(currentSize,newItemSize)
+
     }
+
     inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

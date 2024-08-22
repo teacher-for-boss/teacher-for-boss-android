@@ -4,9 +4,9 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="light_status">#F5F5F5</color>
-    <color name="main_purple_00">#7B79E8</color>
+    <color name="main_purple_00">#8D37EF</color>
     <color name="main_gray_01">#515152</color>
-    <color name="main_purple_02">#E9E9FF</color>
+    <color name="main_purple_02">##F5EEFF</color>
 
     <color name="sub_red">#F54343</color>
     <color name="sub_green">#57E155</color>
@@ -32,7 +32,7 @@
     <color name="OrangeLight">#FFE6CE</color>
 
     <!--primary-->
-    <color name="Primary01">#7B79E8</color>
+    <color name="Primary01">#8D37EF</color>
     <color name="Primary02">#E9E9FF</color>
     <color name="Primary03">#F9F9FF</color>
 
@@ -53,12 +53,12 @@
     <color name="back_deemed">#CC171717</color>
     
     <!--브랜딩 이후 컬러-->
-    <color name="Purple100">#F6F6FF</color>
+    <color name="Purple100">#F5EEFF</color>
     <color name="Purple200">#EFEFFF</color>
-    <color name="Purple300">#D4D3FF</color>
-    <color name="Purple400">#AAA9FF</color>
-    <color name="Purple500">#716EF8</color>
-    <color name="Purple600">#5F5CE8</color>
+    <color name="Purple300">#DBBDFF</color>
+    <color name="Purple400">##B57DF5</color>
+    <color name="Purple500">##A15AF2</color>
+    <color name="Purple600">##8D37EF</color>
 
     <color name="Blue100">#F7FBFF</color>
     <color name="Blue200">#E2F1FF</color>

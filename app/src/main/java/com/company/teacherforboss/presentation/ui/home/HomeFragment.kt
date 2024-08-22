@@ -194,14 +194,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun navigateToTeacherTalkPost(questionId: Long) {
         Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply {
-            putExtra(TEACHER_TALK_QUESTION_ID, questionId.toString())
+            putExtra(TEACHER_TALK_QUESTION_ID, questionId)
             startActivity(this)
         }
     }
 
     private fun navigateToBossTalkPost(postId: Long) {
         Intent(requireContext(), BossTalkBodyActivity::class.java).apply {
-            putExtra(BOSS_TALK_POST_ID, postId.toString())
+            putExtra(BOSS_TALK_POST_ID, postId)
             startActivity(this)
         }
     }

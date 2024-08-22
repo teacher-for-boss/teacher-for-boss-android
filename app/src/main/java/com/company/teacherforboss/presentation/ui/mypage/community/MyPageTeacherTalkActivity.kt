@@ -32,8 +32,9 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
         addListeners()
         onBackBtnPressed()
     }
-    override fun onDestroy() {
-        super.onDestroy()
+
+    override fun onRestart() {
+        super.onRestart()
         viewModel.clearData()
     }
 

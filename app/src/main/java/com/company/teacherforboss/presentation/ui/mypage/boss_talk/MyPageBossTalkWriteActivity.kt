@@ -34,8 +34,8 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
         onBackBtnPressed()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onRestart() {
+        super.onRestart()
         viewModel.clearData()
     }
 

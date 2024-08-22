@@ -23,7 +23,7 @@ interface MyPageService {
     suspend fun getBookmarkedQuestions(
     ): BaseResponse<ResponseBookmarkedQuestionsDto>
 
-    @GET("${MYPAGE}/board/Info")
+    @GET("${MYPAGE}/board/info")
     suspend fun getChipInfo(
     ): BaseResponse<ResponseChipInfoDto>
 

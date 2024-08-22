@@ -4,15 +4,19 @@ import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseChipInfoDto(
-    @SerializedName("commentCount") val commentCount: Int,
-    @SerializedName("bookmarkCount") val bookmarkCount: Int,
-    @SerializedName("point") val point: Int?, //보스면 null
-    @SerializedName("questionTicketCount") val questionTicketCount: Int?, //티처면 null
+    @SerializedName("memberRole") val memberRole: String, // BOSS / TEACHER
+    @SerializedName("answerCount") val answerCount: Long,
+    @SerializedName("questionCount") val questionCount: Long,
+    @SerializedName("bookmarkCount") val bookmarkCount: Long,
+    @SerializedName("points") val points: Int, //보스면 0
+    @SerializedName("questionTicketCount") val questionTicketCount: Int, //티처면 0
 ) {
     fun toChipInfoResponseEntity() = ChipInfoResponseEntity(
-        commentCount = commentCount,
+        memberRole = memberRole,
+        answerCount = answerCount,
+        questionCount = questionCount,
         bookmarkCount = bookmarkCount,
-        point = point,
+        points = points,
         questionTicketCount = questionTicketCount
     )
 }

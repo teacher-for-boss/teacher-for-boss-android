@@ -1,8 +1,10 @@
 package com.company.teacherforboss.domain.model.mypage
 
 data class ChipInfoResponseEntity (
-    val commentCount: Int,
-    val bookmarkCount: Int,
-    val point: Int?,
-    val questionTicketCount: Int?
+    val memberRole: String,
+    val answerCount: Long,
+    val questionCount: Long,
+    val bookmarkCount: Long,
+    val points: Int,
+    val questionTicketCount: Int
 )

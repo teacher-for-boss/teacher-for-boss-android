@@ -7,6 +7,7 @@ import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsRequestEnti
 import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageCommentedPostsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageMyPostsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageMyQuestionRequestEntity
@@ -52,4 +53,8 @@ class MyPageRepositoryImpl @Inject constructor(
                 .result.toMyPagePostsResponseEntity()
         }.getOrElse { err -> throw err }
 
+    override suspend fun getChipInfo(): Result<ChipInfoResponseEntity> =
+        runCatching {
+            myPageRemoteDataSource.getChipInfo().result.toChipInfoResponseEntity()
+        }
 }

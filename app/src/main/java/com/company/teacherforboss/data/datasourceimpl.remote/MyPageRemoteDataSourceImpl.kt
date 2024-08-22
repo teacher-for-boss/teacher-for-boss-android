@@ -12,6 +12,7 @@ import com.company.teacherforboss.data.model.request.mypage.RequestMyPageMyPosts
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageMyQuestionDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnsweredQuestionDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
+import com.company.teacherforboss.data.model.response.mypage.ResponseChipInfoDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPagePostsDto
 import com.company.teacherforboss.data.service.MyPageService
 import com.company.teacherforboss.util.base.BaseResponse
@@ -37,5 +38,8 @@ class MyPageRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getMyPosts(requestMyPageMyPostsDto: RequestMyPageMyPostsDto): BaseResponse<ResponseMyPagePostsDto>
             =myPageService.getMyPosts(lastPostId = requestMyPageMyPostsDto.lastPostId, size = requestMyPageMyPostsDto.size)
+
+    override suspend fun getChipInfo(): BaseResponse<ResponseChipInfoDto>
+    =myPageService.getChipInfo()
 
 }

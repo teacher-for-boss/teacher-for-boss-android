@@ -10,10 +10,12 @@ import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsResponseEnt
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.ChipInfoUseCase
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
@@ -27,11 +29,15 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val bookmarkedQuestionsUseCase: BookmarkedQuestionsUseCase,
+    private val chipInfoUseCase: ChipInfoUseCase
     private val bookmarkedPostsUseCase: BookmarkedPostsUseCase
 ) : ViewModel() {
     @Inject lateinit var localDataSource:LocalDataSource
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
+
+    private val _userChipInfoState = MutableStateFlow<UiState<ChipInfoResponseEntity>>(UiState.Empty)
+    val userChipInfoState get() = _userChipInfoState.asStateFlow()
 
     val _role = MutableLiveData<String>("")
     val role: LiveData<String>
@@ -103,6 +109,25 @@ class MyPageViewModel @Inject constructor(
     val getSavedPostsLiveData: LiveData<BookmarkedPostsResponseEntity>
         get() = _getSavedPostsLiveData
 
+    var _memeberRole = MutableLiveData<String>()
+    val memberRole:LiveData<String> get() = _memeberRole
+
+
+    var _answerCount = MutableLiveData<Long>()
+    val answerCount:LiveData<Long> get() = _answerCount
+
+    var _questionCount = MutableLiveData<Long>()
+    val questionCount:LiveData<Long> get() = _questionCount
+
+    var _bookmarkCount = MutableLiveData<Long>()
+    val bookmarkCount:LiveData<Long> get() = _bookmarkCount
+
+    var _points = MutableLiveData<Int>()
+    val points:LiveData<Int> get() = _points
+
+    var _questionTicketCount = MutableLiveData<Int>()
+    val questionTicketCount:LiveData<Int> get() = _questionTicketCount
+
 //    fun setMockProfileDate() {
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)
 //        // _userProfileInfoState.value = UiState.Success(mockBoss)
@@ -114,6 +139,16 @@ class MyPageViewModel @Inject constructor(
                 _userProfileInfoState.value = UiState.Success(mypageProfileEntity)
             }.onFailure { exception: Throwable ->
                 _userProfileInfoState.value = UiState.Error(exception.message)
+            }
+        }
+    }
+
+    fun getUserChipInfo() {
+        viewModelScope.launch {
+            chipInfoUseCase().onSuccess {chipInfoUseCase ->
+                _userChipInfoState.value = UiState.Success(chipInfoUseCase)
+            }.onFailure { exception: Throwable ->
+                _userChipInfoState.value = UiState.Error(exception.message)
             }
         }
     }

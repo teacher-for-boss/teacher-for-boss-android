@@ -16,6 +16,9 @@ import javax.inject.Inject
 class MyPageRemoteDataSourceImpl @Inject constructor(
     private val myPageService: MyPageService
 ) :MyPageRemoteDataSource{
+    override suspend fun getAnsweredQuestion(requestMyPageAnsweredQuestionDto: RequestMyPageAnsweredQuestionDto): BaseResponse<ResponseMyPageAnsweredQuestionDto>
+    =myPageService.getAnsweredQuestion(lastQuestionId = requestMyPageAnsweredQuestionDto.lastQuestionId, size = requestMyPageAnsweredQuestionDto.size)
+
     override suspend fun getBookmarkedQuestions(requestBookmarkedQuestionsDto: RequestBookmarkedQuestionsDto): BaseResponse<ResponseBookmarkedQuestionsDto>
     =myPageService.getBookmarkedQuestions(lastQuestionId = requestBookmarkedQuestionsDto.lastQuestionId, size = requestBookmarkedQuestionsDto.size)
 

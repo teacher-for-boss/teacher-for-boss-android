@@ -7,8 +7,6 @@ import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnswe
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.http.Query
-import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
 
 interface MyPageService {
     companion object{

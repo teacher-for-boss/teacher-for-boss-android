@@ -13,7 +13,4 @@ interface MyPageRepository {
     suspend fun getBookmarkedPosts(bookmarkedPostsRequestEntity: BookmarkedPostsRequestEntity): BookmarkedPostsResponseEntity
     suspend fun getAnsweredQuestion(myPageAnsweredQuestionRequestEntity: MyPageAnsweredQuestionRequestEntity):MyPageAnsweredQuestionResponseEntity
 
-    suspend fun getBookmarkedQuestions(): BookmarkedQuestionsResponseEntity
-
-
 }

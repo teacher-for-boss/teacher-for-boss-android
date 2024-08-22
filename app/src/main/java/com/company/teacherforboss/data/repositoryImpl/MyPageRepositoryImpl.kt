@@ -7,7 +7,10 @@ import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsRequestEnti
 import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.MyPageCommentedPostsRequestEntity
+import com.company.teacherforboss.domain.model.mypage.MyPageMyPostsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageMyQuestionRequestEntity
+import com.company.teacherforboss.domain.model.mypage.MyPagePostsResponseEntity
 import com.company.teacherforboss.domain.repository.MyPageRepository
 import javax.inject.Inject
 
@@ -38,5 +41,15 @@ class MyPageRepositoryImpl @Inject constructor(
             myPageDataSource.getBookmarkedPosts(
                 requestBookmarkedPostsDto = bookmarkedPostsRequestEntity.toRequestBookmarkedPostsDto()
             ).result.toBookmarkedPostsEntity()
+    override suspend fun getCommentedPosts(myPageCommentedPostsRequestEntity: MyPageCommentedPostsRequestEntity): MyPagePostsResponseEntity =
+        runCatching{
+            myPageRemoteDataSource.getCommentedPosts(myPageCommentedPostsRequestEntity.toRequestMyPageCommentedPostsDto())
+                .result.toMyPagePostsResponseEntity()
+        }.getOrElse { err -> throw err }
+    override suspend fun getMyPosts(myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity): MyPagePostsResponseEntity =
+        runCatching{
+            myPageRemoteDataSource.getMyPosts(myPageMyPostsRequestEntity.toRequestMyPageMyPostsDto())
+                .result.toMyPagePostsResponseEntity()
+        }.getOrElse { err -> throw err }
 
 }

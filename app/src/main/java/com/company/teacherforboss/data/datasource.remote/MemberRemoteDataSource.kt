@@ -6,7 +6,8 @@ import com.company.teacherforboss.data.model.request.mypage.TeacherDetailProfile
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ModifyProfileResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ProfileResponseDto
-import com.company.teacherforboss.data.model.response.mypage.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherRecentAnswersResponseDto
 import com.company.teacherforboss.util.base.BaseResponse
 
 interface MemberRemoteDataSource {
@@ -16,6 +17,9 @@ interface MemberRemoteDataSource {
 
     suspend fun getTeacherDetailProfile(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto
     ): BaseResponse<TeacherDetailProfileResponseDto>
+
+    suspend fun getTeacherRecentAnswers(teacherDetailProfileRequestDto: TeacherDetailProfileRequestDto
+    ): BaseResponse<TeacherRecentAnswersResponseDto>
 
     suspend fun modifyTeacherProfile(modifyTeacherProfileRequestDto: ModifyTeacherProfileRequestDto
     ): BaseResponse<ModifyProfileResponseDto>

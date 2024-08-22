@@ -2,6 +2,7 @@ package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -75,11 +76,13 @@ class ModifyProfileViewModel @Inject constructor(
     val introduction:LiveData<String>
         get() = _introduction
 
-    var enableNext = MutableLiveData<Boolean>(false)
+    var _enableNext = MutableLiveData<Boolean>(false)
+    val enableNext:LiveData<Boolean>
+        get() = _enableNext
 
-    var _carrer_str=MutableLiveData<String>("")
+    var _career_str=MutableLiveData<String>("")
     val career_str:LiveData<String>
-        get() = _carrer_str
+        get() = _career_str
 
     var _phoneReveal=MutableLiveData<Boolean>(false)
     val phoneReveal:LiveData<Boolean>
@@ -88,6 +91,19 @@ class ModifyProfileViewModel @Inject constructor(
     var _emailReveal=MutableLiveData<Boolean>(false)
     val emailReveal:LiveData<Boolean>
         get() = _emailReveal
+
+    var _isInitializedView=MutableLiveData<Boolean>(false)
+    val isInitializedView:LiveData<Boolean> get() = _isInitializedView
+
+    // 사용자 초기 프로필 데이터
+    val initialProfileImg = MutableLiveData<String>("")
+    val initialNickname = MutableLiveData<String>("")
+    val initialPhone = MutableLiveData<String>("")
+    val initialEmail = MutableLiveData<String>("")
+    val initialField = MutableLiveData<String>("")
+    val initialCareer = MutableLiveData<String>("")
+    val initialIntroduction = MutableLiveData<String>("")
+    val initialKeywords = MutableLiveData<List<String>>()
 
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
 
@@ -101,7 +117,7 @@ class ModifyProfileViewModel @Inject constructor(
     private val _modifyBossProfileLiveData = MutableLiveData<ModifyProfileResponseEntity>()
     val modifyBossProfileLiveData: LiveData<ModifyProfileResponseEntity> get() = _modifyBossProfileLiveData
 
-    var initialNickname = MutableLiveData<String>()
+//    var initialNickname = MutableLiveData<String>()
 
     init {
         nickname.observeForever {
@@ -131,6 +147,11 @@ class ModifyProfileViewModel @Inject constructor(
     fun setEmailReveal(reveal: Boolean) {
         _emailReveal.value = reveal
     }
+
+    fun setIsInitializedView(isInitializedState:Boolean){
+        _isInitializedView.value=isInitializedState
+    }
+    fun getIsInitializedView()=isInitializedView.value?:false
 
 
     fun nicknameUser() {
@@ -192,9 +213,9 @@ class ModifyProfileViewModel @Inject constructor(
     }
 
     private fun validateFields() {
-        enableNext.value = !(_nickname.value.isNullOrEmpty() ||
+        _enableNext.value = !(_nickname.value.isNullOrEmpty() ||
                 _field.value.isNullOrEmpty() ||
-                _carrer_str.value.isNullOrEmpty() ||
+                _career_str.value.isNullOrEmpty() ||
                 _introduction.value.isNullOrEmpty())
     }
     fun updateNicknameCount(nickname: String) {
@@ -216,7 +237,7 @@ class ModifyProfileViewModel @Inject constructor(
         _field.value = field
     }
     fun setCareer(career: String) {
-        _carrer_str.value = career
+        _career_str.value = career
     }
     fun setIntroduction(introduction: String) {
         _introduction.value = introduction
@@ -226,6 +247,85 @@ class ModifyProfileViewModel @Inject constructor(
     }
     fun CareerToInt(): Int {
         return career_str.value!!.toInt()
+    }
+
+    fun setEnableNextState(state:Boolean){
+        _enableNext.value=state
+    }
+    fun getEnableNextState()=enableNext.value
+
+    // set init
+    fun setInitNickname(nickname: String) {
+        initialNickname.value = nickname
+    }
+    fun setInitProfileImg(img: String) {
+        initialProfileImg.value = img
+    }
+    fun setInitPhone(phone: String) {
+        initialPhone.value = phone
+    }
+    fun setInitEmail(email: String) {
+        initialEmail.value = email
+    }
+    fun setInitField(field: String) {
+        initialField.value = field
+    }
+    fun setInitCareer(career: String) {
+        initialCareer.value = career
+    }
+    fun setInitIntroduction(introduction: String) {
+        initialIntroduction.value = introduction
+    }
+    fun setInitKeywords(keywordList: List<String>) {
+        initialKeywords.value = keywordList
+    }
+
+    val isModified = MediatorLiveData<Boolean>().apply {
+        value=false
+        addSource(_profileImg) { checkIfModified() }
+        addSource(_nickname) { checkIfModified() }
+        addSource(_phone) { checkIfModified() }
+        addSource(_email) { checkIfModified() }
+        addSource(_field) { checkIfModified() }
+        addSource(_career_str) { checkIfModified() }
+        addSource(_introduction) { checkIfModified() }
+        addSource(_keywords) { checkIfModified() }
+    }
+
+    fun getIsModified()=isModified.value?:false
+
+    fun checkIfModified() {
+        val currentProfileImg = profileImg.value ?: ""
+        val initialProfileImgValue = initialProfileImg.value ?: ""
+        val currentNickname = nickname.value ?: ""
+        val initialNicknameValue = initialNickname.value ?: ""
+        val currentPhone = phone.value ?: ""
+        val initialPhoneValue = initialPhone.value ?: ""
+        val currentEmail = email.value ?: ""
+        val initialEmailValue = initialEmail.value ?: ""
+        val currentField = field.value ?: ""
+        val initialFieldValue = initialField.value ?: ""
+        val currentCareerStr = career_str.value ?: ""
+        val initialCareerValue = initialCareer.value ?: ""
+        val currentIntroduction = introduction.value ?: ""
+        val initialIntroductionValue = initialIntroduction.value ?: ""
+        val currentKeywords = keywords.value ?: mutableListOf()
+        val initialKeywordsValue = initialKeywords.value ?: mutableListOf()
+
+        // 키워드 리스트를 내용으로 비교
+        val keywordsModified = currentKeywords.size != initialKeywordsValue.size ||
+                currentKeywords.sorted() != initialKeywordsValue.sorted()
+
+        val modified = currentProfileImg != initialProfileImgValue ||
+                currentNickname != initialNicknameValue ||
+                currentPhone != initialPhoneValue ||
+                currentEmail != initialEmailValue ||
+                currentField != initialFieldValue ||
+                currentCareerStr != initialCareerValue ||
+                currentIntroduction != initialIntroductionValue ||
+                keywordsModified
+
+        isModified.value = modified
     }
 
 }

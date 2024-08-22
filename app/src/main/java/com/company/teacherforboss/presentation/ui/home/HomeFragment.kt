@@ -25,6 +25,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -207,7 +208,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun navigateToTeacherProfile(profileId: Long) {
         Intent(requireContext(), TeacherProfileActivity::class.java).apply {
-            putExtra(TEACHER_PROFILE_ID, profileId.toString())
+            putExtra(TEACHER_PROFILE_ID, profileId)
             startActivity(this)
         }
     }
@@ -238,7 +239,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         private const val AUTO_SCROLL_INTERVAL = 2500L
         private const val TEACHER_TALK_QUESTION_ID = "questionId"
         private const val BOSS_TALK_POST_ID = "postId"
-        const val TEACHER_PROFILE_ID = "profileId"
     }
 }
 

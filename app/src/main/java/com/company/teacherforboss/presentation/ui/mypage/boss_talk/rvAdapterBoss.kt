@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemBossSearchCardBinding
-import com.company.teacherforboss.domain.model.community.boss.PostEntity
+import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
-import com.company.teacherforboss.presentation.ui.community.boss_talk.search.rvAdapterCardBoss
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class rvAdapterBoss(private val context: Context, private val postList: List<PostEntity>
+class rvAdapterBoss(
+    private val context: Context,
+    private val postList: MutableList<MyPagePostEntity>
 ): RecyclerView.Adapter<rvAdapterBoss.ViewHolder>() {
     class ViewHolder(private val binding: RvItemBossSearchCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(context: Context, post: PostEntity) {
+        fun bind(context: Context, post: MyPagePostEntity) {
 
             // init View
             binding.title.text = post.title
@@ -30,14 +32,21 @@ class rvAdapterBoss(private val context: Context, private val postList: List<Pos
             if (post.bookmarked) binding.bookmarkIv.isSelected = true
 
             // 본문 상세보기
-//            binding.root.setOnClickListener {
-//                val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
-//                    putExtra("PREVIOUS_ACTIVITY", "BossTalkSearchActivity")
-//                    putExtra("postId", post.postId.toString())
-//                }
-//                context.startActivity(intent)
-//            }
+            binding.root.setOnClickListener {
+                val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
+                    putExtra("PREVIOUS_ACTIVITY", "BossTalkSearchActivity")
+                    putExtra("postId", post.postId.toString())
+                }
+                context.startActivity(intent)
+            }
         }
+    }
+    fun addMoreCards(newPostList:List<MyPagePostEntity>) {
+        val currentSize = postList.size
+        val newItemSize= newPostList.size
+        postList.addAll(newPostList)
+        notifyItemRangeInserted(currentSize,newItemSize)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

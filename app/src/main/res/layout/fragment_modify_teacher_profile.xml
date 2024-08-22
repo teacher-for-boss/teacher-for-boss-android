@@ -272,7 +272,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/selector_signup"
                     android:gravity="center"
-                    android:text="@={modifyTeacherProfileViewModel._carrer_str}"
+                    android:text="@={modifyTeacherProfileViewModel._career_str}"
                     android:hint="00"
                     android:inputType="number"
                     android:padding="12dp"

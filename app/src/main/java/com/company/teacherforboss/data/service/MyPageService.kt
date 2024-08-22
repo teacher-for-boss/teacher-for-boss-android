@@ -7,6 +7,8 @@ import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnswe
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
+import com.company.teacherforboss.data.model.response.mypage.ResponseMyPagePostsDto
 
 interface MyPageService {
     companion object{
@@ -36,5 +38,18 @@ interface MyPageService {
         @Query("lastPostId") lastPostId:Long,
         @Query("size") size:Int,
     ): BaseResponse<ResponseBookmarkedPostsDto>
+  
+    @GET("${MYPAGE}/board/commented-posts")
+    suspend fun getCommentedPosts(
+        @Query("lastPostId") lastPostId:Long,
+        @Query("size") size:Int,
+    )
+    : BaseResponse<ResponseMyPagePostsDto>
 
+    @GET("${MYPAGE}/board/my-posts")
+    suspend fun getMyPosts(
+        @Query("lastPostId") lastPostId:Long,
+        @Query("size") size:Int,
+    )
+    : BaseResponse<ResponseMyPagePostsDto>
 }

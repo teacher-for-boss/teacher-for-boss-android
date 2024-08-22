@@ -33,6 +33,7 @@ class ConstsUtils {
         const val DEFAULT_LASTID=0L
         const val DEFAULT_SORTBY="latest"
         const val DEFAULT_SIZE=10
+        const val DEFAULT_ID=-1L
 
         // 보스톡
         const val BOSS_POSTID="postId"
@@ -45,5 +46,8 @@ class ConstsUtils {
         // 경로 변경
         const val ACTIVITY_DESTINATION="ACTIVITY_DESTINATION"
         const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
+
+        // 티처 프로필 정보
+        const val TEACHER_PROFILE_ID = "teacherProfileId"
     }
 }

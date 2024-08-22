@@ -14,7 +14,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
-import com.company.teacherforboss.presentation.ui.community.boss_talk.main.NewScrollView
+import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.company.teacherforboss.presentation.ui.community.boss_talk.search.BossTalkSearchActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
@@ -39,7 +39,7 @@ class BossTalkMainFragment :
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svBossTalkMain as NewScrollView
-        newScrollView.setBinding(binding)
+        newScrollView.setBinding(binding.bossTalkWidget1, binding.rvBossTalkCard)
 
         binding.viewModel=viewModel
 

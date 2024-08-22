@@ -5,8 +5,8 @@ import com.company.teacherforboss.data.model.response.community.teacher.Response
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnsweredQuestionDto
 import java.io.Serializable
 
-class MyPageAnsweredQuestionResponseEntity(
+class MyPagePostsResponseEntity(
     val hasNext: Boolean,
-    val questionList: ArrayList<MyPageQuestionEntity>
+    val postList: ArrayList<MyPagePostEntity>
 )
 

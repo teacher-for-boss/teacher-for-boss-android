@@ -1,6 +1,7 @@
 package com.company.teacherforboss.domain.model.mypage
 
 data class MyPageProfileEntity(
+    val memberId:Long,
     val nickname: String,
     val profileImg: String,
     val role: String,

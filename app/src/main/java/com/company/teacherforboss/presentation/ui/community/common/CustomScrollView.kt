@@ -1,4 +1,4 @@
-package com.company.teacherforboss.presentation.ui.community.teacher_talk.main
+package com.company.teacherforboss.presentation.ui.community.common
 
 import android.content.Context
 import android.graphics.Rect
@@ -7,30 +7,29 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.recyclerview.widget.RecyclerView
+import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.company.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 
-class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
+class NewScrollView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ScrollView(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
 
-    private var binding: FragmentTeacherTalkMainBinding? = null
+    private var headerInitialTop = 0f
+    private var isHeaderSticky = false
+    private var recyclerView: RecyclerView? = null
 
-    constructor(context: Context) : this(context, null, 0)
-    constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
-    constructor(context: Context, attr: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attr,
-        defStyleAttr
-    ) {
+    init {
         overScrollMode = OVER_SCROLL_NEVER
         viewTreeObserver.addOnGlobalLayoutListener(this)
     }
-
     var header: View? = null
         set(value) {
             field = value
             field?.let {
                 it.translationZ = 1f
                 it.setOnClickListener { _ ->
-                    // 클릭 시, 헤더뷰가 최상단으로 오게 스크롤 이동
                     this.smoothScrollTo(scrollX, it.top)
                     callStickListener()
                 }
@@ -39,9 +38,6 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
 
     var stickListener: (View) -> Unit = {}
     var freeListener: (View) -> Unit = {}
-
-    private var isHeaderSticky = false
-    private var headerInitialTop = 0f
 
     override fun onGlobalLayout() {
         headerInitialTop = header?.top?.toFloat() ?: 0f
@@ -77,22 +73,18 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
 
     private fun freeHeader() {
         header?.translationY = 0f
-        callFreeListener()
-    }
-
-    private fun callFreeListener() {
         if (isHeaderSticky) {
             freeListener(header ?: return)
             isHeaderSticky = false
         }
     }
 
-    fun setBinding(binding: FragmentTeacherTalkMainBinding) {
-        this.binding = binding
+    fun setBinding(headerView: View, recyclerView: RecyclerView) {
+        this.header = headerView
+        this.recyclerView = recyclerView
     }
 
     private fun adjustRecyclerViewHeight() {
-        val recyclerView = binding?.rvTeacherTalkCard
         recyclerView?.apply {
             post {
                 val adapter = adapter ?: return@post
@@ -103,10 +95,10 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
                 for (i in 0 until adapter.itemCount) {
                     val viewType = adapter.getItemViewType(i)
                     val itemHeight = itemViewTypeHeights[viewType] ?: run {
-                        val holder = adapter.createViewHolder(recyclerView, viewType)
+                        val holder = adapter.createViewHolder(this, viewType)
                         adapter.onBindViewHolder(holder, i)
                         holder.itemView.measure(
-                            MeasureSpec.makeMeasureSpec(recyclerView.width, MeasureSpec.EXACTLY),
+                            MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                             MeasureSpec.UNSPECIFIED
                         )
                         val measuredHeight = holder.itemView.measuredHeight
@@ -116,7 +108,7 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
                     totalHeight += itemHeight
 
                     if (i == 0) {
-                        itemDecorationHeight = getItemDecorationHeight(recyclerView)
+                        itemDecorationHeight = getItemDecorationHeight(this)
                     }
                 }
 

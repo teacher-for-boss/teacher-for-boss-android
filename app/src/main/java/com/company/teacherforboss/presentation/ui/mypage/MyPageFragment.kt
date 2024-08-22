@@ -20,6 +20,7 @@ import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistor
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.UiState
@@ -76,7 +77,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 startActivity(intent)
             }
             includeMyPageMenuAccountChange.root.setOnClickListener {
-                if (viewModel.role.value == ROLE_TEACHER) {
+                if (viewModel.getRole() == ROLE_TEACHER) {
                     val intent = Intent(context, AccountChangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -91,7 +92,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 navigateToAlarm()
             }
             includeMyPageMenuExchange.root.setOnClickListener{
-                if (viewModel.role.value == ROLE_TEACHER) {
+                if (viewModel.getRole()== ROLE_TEACHER) {
                     val intent = Intent(context, ExchangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -124,6 +125,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
             includeMyPageMenuTeacherTalkQuestionPost.root.setOnClickListener{
                 val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
+                intent.putExtra("role",viewModel.role.value)
                 startActivity(intent)
             }
             tvLogOutBtn.setOnClickListener { showLogoutDialogFragment() }
@@ -139,13 +141,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
             tvMyPageProfileName.setOnClickListener {
                 Intent(context,TeacherProfileActivity::class.java).apply {
-                    putExtra(TEACHER_PROFILE_ID,"4") //TODO: 마이페이지에서 memberId 받기
+                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
                     startActivity(this)
                 }
             }
             ivMyPageProfile.setOnClickListener {
                 Intent(context,TeacherProfileActivity::class.java).apply {
-                    putExtra(TEACHER_PROFILE_ID,"4") //TODO: 마이페이지에서 memberId 받기
+                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
                     startActivity(this)
                 }
             }
@@ -163,7 +165,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     is UiState.Success -> {
                         val data = userProfileInfoState.data
                         initLayout(data)
-                        viewModel._role.value = data.role
+                        viewModel.setRole(data.role)
+                        viewModel.setMemberId(data.memberId)
                     }
 
                     else -> Unit
@@ -274,6 +277,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             if(viewModel.role.value == ROLE_TEACHER) {
                 Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
                     putExtra(ROLE, ROLE_TEACHER)
+                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
                     startActivity(this)
                 }
             }
@@ -308,6 +312,5 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val PROFILE_IMG = "profileImg"
         private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"
         private const val BOSS_TALK_COMMENT_POST = "bossTalkCommentPost"
-        const val TEACHER_PROFILE_ID = "profileId"
     }
 }

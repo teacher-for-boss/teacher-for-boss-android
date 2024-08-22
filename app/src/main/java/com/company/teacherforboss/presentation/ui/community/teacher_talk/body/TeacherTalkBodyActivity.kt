@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkBodyBinding
@@ -25,6 +24,8 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.Tea
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
@@ -50,6 +51,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
+    private val notificationViewModel: NotificationViewModel by viewModels()
     private var questionId: Long = 0
     private var categoryName: String = ""
     @Inject
@@ -60,7 +62,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
         // questionId
-        questionId = intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
+        questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
         viewModel.setQuestionId(questionId)
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
@@ -88,12 +90,20 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         gotoAnswer()
         // 뒤로 가기
         onBackBtnPressed()
+        // 알림 클릭
+        readNotification()
 
         updateLike()
         binding.root.setOnClickListener {
             hideOptionMenuIfVisible()
         }
     }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        notificationViewModel.readNotification(notifiationId)
+    }
+
 
     fun showOptionMenu() {
         // 더보기 버튼
@@ -127,7 +137,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 putExtra(POST_PURPOSE, "modify")
                 putExtra(POST_TITLE, binding.bodyTitle.text.toString())
                 putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(TEACHER_QUESTIONID, questionId.toString())
+                putExtra(TEACHER_QUESTIONID, questionId)
                 putExtra(TEACHER_CATAEGORYNAME, categoryName)
 
                 viewModel.getTagList()?.let {
@@ -220,7 +230,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 putExtra(POST_PURPOSE, "answer")
                 putExtra(POST_TITLE, binding.bodyTitle.text.toString())
                 putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
+                putExtra(TEACHER_QUESTIONID, questionId)
             }
             startActivity(intent)
         }

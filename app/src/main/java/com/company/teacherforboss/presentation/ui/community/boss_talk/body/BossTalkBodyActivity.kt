@@ -19,13 +19,15 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -40,6 +42,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBosstalkBodyBinding
     private val viewModel by viewModels<BossTalkBodyViewModel>()
+    private val notificationViewModel by viewModels<NotificationViewModel>()
     private var postId: Long = 0
 
     private var currentOptionButton: View? = null
@@ -54,7 +57,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         transaction.commit()
 
         // post id
-        postId = intent.getStringExtra("postId")!!.toLong()
+        postId = intent.getLongExtra(BOSS_POSTID,-1L)
         viewModel.setPostId(postId)
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
@@ -80,10 +83,17 @@ class BossTalkBodyActivity : AppCompatActivity() {
         setCommentView()
         // 답글 쓰기
         setRecommentListener()
+        // 알림 읽기
+        readNotification()
 
 //        binding.root.setOnClickListener {
 //            hideOptionMenuIfVisible()
 //        }
+    }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        notificationViewModel.readNotification(notifiationId)
     }
 
     private fun showOptionMenu() {
@@ -119,7 +129,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 putExtra(POST_PURPOSE, "modify")
                 putExtra(POST_TITLE, binding.bodyTitle.text.toString())
                 putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(POST_POSTID, postId.toString())
+                putExtra(BOSS_POSTID, postId)
 
                 viewModel.getTagList()?.let {
                     if (it.isNotEmpty()) {

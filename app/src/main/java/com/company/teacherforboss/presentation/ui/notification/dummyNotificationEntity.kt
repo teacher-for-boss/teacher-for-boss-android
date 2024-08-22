@@ -1,6 +1,6 @@
 package com.company.teacherforboss.presentation.ui.notification
 
-data class NotificationEntity(
+data class dummyNotificationEntity(
     val notificationType: NotificationType,
     val notificationTitle:String,
     val notificationContent:String,

@@ -1,24 +1,25 @@
 package com.company.teacherforboss.presentation.ui.notification
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityNotificationBinding
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.view.UiState
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layout.activity_notification) {
@@ -29,56 +30,46 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
 
-
-    // Declare the launcher at the top of your Activity/Fragment:
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
-        } else {
-            // TODO: Inform user that that your app will not show notifications.
-        }
-    }
-
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setAlarmView()
+        setNotificationView()
         setFirebaseMessaging()
-        askNotificationPermission()
-
     }
 
-    fun setAlarmView(){
-        notificationAdapter=NotificationAdapter(this,viewModel.dummny_alarms)
+    fun setNotificationView(){
+        notificationAdapter = NotificationAdapter(this, emptyList())
+
+        viewModel.getNotificatioins()
+
+        viewModel.notificationState.flowWithLifecycle(this.lifecycle)
+            .onEach { notificationState->
+                when(notificationState){
+                    is UiState.Success-> notificationAdapter=NotificationAdapter(this,notificationState.data.notificationList)
+                    else-> Unit
+                }
+            }.launchIn(this.lifecycleScope)
+
         with(binding.rvNotification){
             adapter=notificationAdapter
             layoutManager=LinearLayoutManager(this@NotificationActivity)
         }
         onBackBtnPressed()
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        viewModel.readNotification(notifiationId)
+    }
+
+    fun updateNotificationState(){
+        viewModel.readNotificationState.flowWithLifecycle(this.lifecycle).onEach { readState->
+            when(readState){
+                is UiState.Success-> "" //TODO: 해당 notification entity의 read와 updatedAt 변경
+                else->Unit
+            }
+        }.launchIn(this.lifecycleScope)
     }
 
     fun setFirebaseMessaging(){

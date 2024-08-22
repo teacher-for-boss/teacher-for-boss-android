@@ -15,6 +15,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemTeacherTalkCardBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class TeacherTalkCardAdapter(context: Context) :
@@ -97,7 +98,7 @@ class TeacherTalkCardAdapter(context: Context) :
             // 상세 글 이동
             binding.root.setOnClickListener {
                 val intent= Intent(context, TeacherTalkBodyActivity::class.java).apply{
-                    putExtra("questionId",teacherTalkCard.questionId.toString())
+                    putExtra(TEACHER_QUESTIONID,teacherTalkCard.questionId)
                 }
                 context.startActivity(intent)
             }

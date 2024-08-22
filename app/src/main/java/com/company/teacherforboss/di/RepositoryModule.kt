@@ -6,6 +6,7 @@ import com.company.teacherforboss.data.repositoryImpl.CommunityRepositoryImpl
 import com.company.teacherforboss.data.repositoryImpl.HomeRepositoryImpl
 import com.company.teacherforboss.data.repositoryImpl.MemberRepositoryImpl
 import com.company.teacherforboss.data.repositoryImpl.MyPageRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.NotificationRepositoryImpl
 import com.company.teacherforboss.data.repositoryImpl.PaymentRepositoryImpl
 import com.company.teacherforboss.data.repositoryImpl.SignupRepositoryImpl
 import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
@@ -15,6 +16,7 @@ import com.company.teacherforboss.domain.repository.CommunityRepository
 import com.company.teacherforboss.domain.repository.HomeRepository
 import com.company.teacherforboss.domain.repository.MemberRepository
 import com.company.teacherforboss.domain.repository.MyPageRepository
+import com.company.teacherforboss.domain.repository.NotificationRepository
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.repository.SignupRepository
 import com.company.teacherforboss.domain.repository.UserRepository
@@ -63,5 +65,9 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMyPageRepository(myPageRepositoryImpl: MyPageRepositoryImpl): MyPageRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsNotificationRepository(notificationRepositoryImpl: NotificationRepositoryImpl):NotificationRepository
 
 }

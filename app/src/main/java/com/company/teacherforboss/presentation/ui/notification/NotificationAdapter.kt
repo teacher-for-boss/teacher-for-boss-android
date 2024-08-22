@@ -7,8 +7,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemNotificationBinding
+import com.company.teacherforboss.domain.model.notification.NotificationEntity
+import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class NotificationAdapter(context: Context, private val alarmList:List<NotificationEntity>
+class NotificationAdapter(context: Context, private val notificationList:List<NotificationEntity>
 ):RecyclerView.Adapter<NotificationAdapter.AlarmItemViewHolder>() {
     private val inflater by lazy{LayoutInflater.from(context)}
     private val context=context
@@ -19,11 +21,11 @@ class NotificationAdapter(context: Context, private val alarmList:List<Notificat
                     with(binding){
                         icNotification.setImageResource(notificationEntity.notificationType.notificationIcon)
                         tvNotificationType.text=context.resources.getString(notificationEntity.notificationType.notificationType)
-                        tvNotificationTitle.text=notificationEntity.notificationTitle
-                        tvNotificationContent.text=notificationEntity.notificationContent
-                        tvNotificationLeftTime.text= context.resources.getString(R.string.notification_time,notificationEntity.notificationTime)
+                        tvNotificationTitle.text=notificationEntity.contents
+//                        tvNotificationContent.text=dummyNotificationEntity.notificationContent
+                        tvNotificationLeftTime.text=LocalDateFormatter.extractDate(notificationEntity.createdAt)
 
-                        if(notificationEntity.isClicked){
+                        if(notificationEntity.read){
                             val clickedBgColor=ContextCompat.getColor(context,R.color.Gray200)
                             val clickedTextColor=ContextCompat.getColor(context,R.color.Gray400)
                             binding.root.setBackgroundColor(clickedBgColor)
@@ -39,9 +41,9 @@ class NotificationAdapter(context: Context, private val alarmList:List<Notificat
         return AlarmItemViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = alarmList.size
+    override fun getItemCount(): Int = notificationList.size
 
     override fun onBindViewHolder(holder: AlarmItemViewHolder, position: Int) {
-       holder.onBind(alarmList[position])
+       holder.onBind(notificationList[position])
     }
 }

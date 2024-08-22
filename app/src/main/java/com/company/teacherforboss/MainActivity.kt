@@ -1,11 +1,17 @@
 package com.company.teacherforboss
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.company.teacherforboss.databinding.ActivityMainBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.basic.BossTalkMainFragment
@@ -13,12 +19,30 @@ import com.company.teacherforboss.presentation.ui.home.HomeFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.presentation.ui.home.ItemClickListener
+import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
+    private var backPressedOnce = false
+    private val exitHandler = Handler(Looper.getMainLooper())
+    private val resetBackPressed = Runnable { backPressedOnce = false }
+
+    private val notificationViewModel by viewModels<NotificationViewModel>()
+
+    // fcm messaging 권한 요청
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,15 +61,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
         clickBottomNavigation()
         setFragment()
+        askNotificationPermission()
+        readNotification()
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
         if (snackBarMsg!=null){
             showSnackBar(snackBarMsg)
         }
 
-
         // 백 버튼 콜백 설정
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        notificationViewModel.readNotification(notifiationId)
     }
 
     private fun clickBottomNavigation() {
@@ -113,9 +143,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         customSnackbar.show()
     }
 
-    private var backPressedOnce = false
-    private val exitHandler = Handler(Looper.getMainLooper())
-    private val resetBackPressed = Runnable { backPressedOnce = false }
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val fragmentManager = supportFragmentManager
@@ -134,6 +161,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     fun setSelectedMenu(menuId: Int) {
         binding.bnvTeacherForBoss.selectedItemId = menuId
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: 사용자가 권한 거부 했을때, 권한 왜 필요한지 알려주는 뷰
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
     }
 
     companion object{

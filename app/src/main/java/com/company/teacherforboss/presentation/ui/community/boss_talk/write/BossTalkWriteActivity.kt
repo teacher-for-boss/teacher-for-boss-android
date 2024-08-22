@@ -33,7 +33,7 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.UploadUtil
@@ -70,7 +70,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
 
     fun initView(){
         if(purpose=="modify"){
-            viewModel.postId=intent.getStringExtra(POST_POSTID)!!.toLong()
+            viewModel.postId=intent.getLongExtra(BOSS_POSTID,-1L)
             viewModel._title.value=intent.getStringExtra(POST_TITLE).toString()
             viewModel._content.value=intent.getStringExtra(POST_BODY).toString()
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true") viewModel.hashTagList=intent.getStringArrayListExtra("tagList")!!
@@ -343,7 +343,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
     fun finishUpload(){
         viewModel.uploadPostLiveData.observe(this, Observer {
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
-                putExtra(POST_POSTID,it.postId.toString())
+                putExtra(BOSS_POSTID,it.postId)
                 putExtra("snackBarMsg","게시글이 등록되었습니다.")
 
             }
@@ -352,7 +352,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
 
         viewModel.modifyPostLiveData.observe(this, Observer {
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
-                putExtra(POST_POSTID,it.postId.toString())
+                putExtra(BOSS_POSTID,it.postId)
                 putExtra("snackBarMsg","게시글이 수정되었습니다.")
             }
             startActivity(intent)

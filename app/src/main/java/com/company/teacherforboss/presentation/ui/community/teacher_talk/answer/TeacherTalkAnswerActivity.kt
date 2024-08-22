@@ -54,7 +54,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         purpose=intent.getStringExtra(POST_PURPOSE).toString()
 
         //questionId
-        questionId=intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
+        questionId=intent.getLongExtra(TEACHER_QUESTIONID,-1)
         viewModel.setQuestionId(questionId)
 
         //answerId
@@ -257,7 +257,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
     fun finishUpload() {
         viewModel.uploadPostAnswerLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
+                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra("snackBarMsg","답변이 등록되었습니다.")
             }
             startActivity(intent)
@@ -265,7 +265,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
         viewModel.modifyAnswerLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
+                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra("snackBarMsg","답변이 수정되었습니다.")
 
             }

@@ -13,6 +13,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class BossTalkMainCardAdapter(context: Context) :
@@ -86,7 +87,7 @@ class BossTalkMainCardAdapter(context: Context) :
             // 상세 글 이동
             binding.root.setOnClickListener {
                 val intent=Intent(context,BossTalkBodyActivity::class.java).apply{
-                    putExtra("postId",bossTalkCard.postId.toString())
+                    putExtra(BOSS_POSTID,bossTalkCard.postId)
                 }
                 context.startActivity(intent)
             }

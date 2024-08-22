@@ -79,7 +79,8 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
     fun initView() {
         if(purpose=="modify") {
-            viewModel.questionId = intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
+            viewModel.questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
+            Log.d("test modi",intent.getLongExtra(TEACHER_QUESTIONID,-1L).toString())
             //title
             val fullText = intent.getStringExtra(POST_TITLE).toString()
             val modifiedText = if (fullText.length > 3) fullText.substring(3) else ""
@@ -366,7 +367,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra(TEACHER_QUESTIONID, it.questionId.toString())
+                putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra("snackBarMsg","질문이 등록되었습니다.")
             }
             startActivity(intent)
@@ -374,7 +375,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
         viewModel.modifyPostLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra(TEACHER_QUESTIONID, it.questionId.toString())
+                putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra("snackBarMsg","질문이 수정되었습니다.")
             }
             startActivity(intent)

@@ -179,7 +179,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                         putExtra("purpose", "modify")
                         putExtra("title", viewModel.title.value.toString())
                         putExtra("body", viewModel.content.value.toString())
-                        putExtra("questionId", viewModel.questionId.value.toString())
+                        putExtra("questionId", viewModel.questionId.value)
                         putExtra("answerId", viewModel.answerId.value.toString())
                         putExtra("answerContent", binding.commentBody.text)
 

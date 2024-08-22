@@ -4,10 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsRequestEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
+import com.company.teacherforboss.domain.usecase.mypage.BookmarkedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.base.LocalDataSource
@@ -21,16 +26,16 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
-    private val bookmarkedQuestionsUseCase: BookmarkedQuestionsUseCase
+    private val bookmarkedQuestionsUseCase: BookmarkedQuestionsUseCase,
+    private val bookmarkedPostsUseCase: BookmarkedPostsUseCase
 ) : ViewModel() {
-
     @Inject lateinit var localDataSource:LocalDataSource
     private val _userProfileInfoState = MutableStateFlow<UiState<MyPageProfileEntity>>(UiState.Empty)
     val userProfileInfoState get() = _userProfileInfoState.asStateFlow()
 
-    val _role= MutableLiveData<String>("")
+    val _role = MutableLiveData<String>("")
     val role: LiveData<String>
-        get()=_role
+        get() = _role
 
     val _nickname = MutableLiveData<String>("")
     val nickname: LiveData<String> get() = _nickname
@@ -44,24 +49,59 @@ class MyPageViewModel @Inject constructor(
     private val _bookmarkedQuestionsState = MutableStateFlow<UiState<BookmarkedQuestionsResponseEntity>>(UiState.Empty)
     val bookmarkedQuestionsState get() = _bookmarkedQuestionsState.asStateFlow()
 
-    private val _getBookmarkedQuestionsLiveData=MutableLiveData<BookmarkedQuestionsResponseEntity>()
-    val getBookmarkedQuestionsLiveData:LiveData<BookmarkedQuestionsResponseEntity>
+    private val _bookmarkedPostsState =
+        MutableStateFlow<UiState<BookmarkedPostsResponseEntity>>(UiState.Empty)
+    val bookmarkedPostsState get() = _bookmarkedPostsState.asStateFlow()
+
+    private val _getBookmarkedQuestionsLiveData =
+        MutableLiveData<BookmarkedQuestionsResponseEntity>()
+    val getBookmarkedQuestionsLiveData: LiveData<BookmarkedQuestionsResponseEntity>
         get() = _getBookmarkedQuestionsLiveData
 
-    var _bookmarkedQuestion=MutableLiveData<List<BookmarkedQuestionsEntity>>()
-    val bookmarkedQuestion:LiveData<List<BookmarkedQuestionsEntity>> =_bookmarkedQuestion
+    private val _getBookmarkedPostsLiveData = MutableLiveData<BookmarkedPostsResponseEntity>()
+    val getBookmarkedPostsLiveData: LiveData<BookmarkedPostsResponseEntity>
+        get() = _getBookmarkedPostsLiveData
 
-    val totalAnsweredQuestion= mutableListOf<List<BookmarkedQuestionsEntity>>()
+    var _bookmarkedQuestionList = MutableLiveData<List<BookmarkedQuestionsEntity>>()
+    val bookmarkedQuestionList: LiveData<List<BookmarkedQuestionsEntity>> = _bookmarkedQuestionList
 
-    var _isInitializedView=MutableLiveData<Boolean>(false)
-    val isInitializedView:LiveData<Boolean> get() = _isInitializedView
+    var _bookmarkedPostList = MutableLiveData<List<BookmarkedPostsEntity>>()
+    val bookmarkedPostList: LiveData<List<BookmarkedPostsEntity>> = _bookmarkedPostList
 
-    var _lastPostId=MutableLiveData<Long>(0L)
-    val lastPostId:LiveData<Long>
+    val totalAnsweredQuestion = mutableListOf<List<BookmarkedQuestionsEntity>>()
+
+    var _isInitializedView = MutableLiveData<Boolean>(false)
+    val isInitializedView: LiveData<Boolean> get() = _isInitializedView
+
+    var _lastQuestionId = MutableLiveData<Long>(0L)
+    val lastQuestionId: LiveData<Long>
+        get() = _lastQuestionId
+
+    var _lastPostId = MutableLiveData<Long>(0L)
+    val lastPostId: LiveData<Long>
         get() = _lastPostId
 
-    val _hasNext=MutableLiveData<Boolean>().apply { value=true }
-    val hasNext:LiveData<Boolean> get() = _hasNext
+    val bookmarkedQuestionSize = MutableLiveData<Int>(10)
+    val bookmarkedPostSize = MutableLiveData<Int>(10)
+
+    val _hasNextQuestion = MutableLiveData<Boolean>().apply { value = true }
+    val hasNextQuestion: LiveData<Boolean> get() = _hasNextQuestion
+
+    private var isQuestionLoading = false
+
+    val _hasNextPost = MutableLiveData<Boolean>().apply { value = true }
+    val hasNextPost: LiveData<Boolean> get() = _hasNextPost
+
+    private var isPostLoading = false
+
+    private val _getSavedTeacherTalkQuestionsLiveData =
+        MutableLiveData<BookmarkedQuestionsResponseEntity>()
+    val getSavedTeacherTalkQuestionLiveData: LiveData<BookmarkedQuestionsResponseEntity>
+        get() = _getSavedTeacherTalkQuestionsLiveData
+
+    private val _getSavedPostsLiveData = MutableLiveData<BookmarkedPostsResponseEntity>()
+    val getSavedPostsLiveData: LiveData<BookmarkedPostsResponseEntity>
+        get() = _getSavedPostsLiveData
 
 //    fun setMockProfileDate() {
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)
@@ -71,9 +111,9 @@ class MyPageViewModel @Inject constructor(
     fun getUserProfile() {
         viewModelScope.launch {
             profileUseCase().onSuccess { mypageProfileEntity ->
-                _userProfileInfoState.value=UiState.Success(mypageProfileEntity)
+                _userProfileInfoState.value = UiState.Success(mypageProfileEntity)
             }.onFailure { exception: Throwable ->
-                _userProfileInfoState.value=UiState.Error(exception.message)
+                _userProfileInfoState.value = UiState.Error(exception.message)
             }
         }
     }
@@ -85,121 +125,93 @@ class MyPageViewModel @Inject constructor(
     fun setProfileImg(img: String) {
         _profileImg.value = img
     }
-      
+
     fun getBookmarkedQuestions() {
+        if (isQuestionLoading) return
+
+        isQuestionLoading = true
         viewModelScope.launch {
-//            try {
-//                val bookmarkedQuestionsResponseEntity = bookmarkedQuestionsUseCase()
-//                _bookmarkedQuestionsState.value = UiState.Success(bookmarkedQuestionsResponseEntity)
-//            } catch (ex:Exception) { _bookmarkedQuestionsState.value = UiState.Error(ex.message) }
-            val dummyData = BookmarkedQuestionsResponseEntity(
-                hasNext = false,
-                bookmarkedQuestionsList = arrayListOf(
-                    BookmarkedQuestionsEntity(
-                        questionId = 124,
-                        category = "운영",
-                        title = "음식사진",
-                        content = "음식사진을 이렇게 찍어도 될까요?",
-                        solved = false,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-22T10:34:43.845768"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 112,
-                        category = "마케팅",
-                        title = "마켙팅에 대한 글을 작성합니다. 보스테스트 계정",
-                        content = "보스테스트 계정",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-19T16:57:46.547503"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 24,
-                        category = "위생",
-                        title = "위생에 관한 글 주저리주저리",
-                        content = "위생은 중요하다.",
-                        solved = false,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-05T18:22:31.51143"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 26,
-                        category = "위생",
-                        title = "티쳐톡 질문하기 제목입니다.",
-                        content = "티쳐톡 질문하기 글 본문입니다.",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-05T18:43:43.793877"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 110,
-                        category = "상권",
-                        title = "서울에서 카페를 어디에 차릴까요",
-                        content = "새로운 카페를 차리려하는데 어디에 차려야 좋을까요?",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-18T13:40:48.688842"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 1,
-                        category = "마케팅",
-                        title = "티쳐톡 테스트 1차 수정",
-                        content = "난 이미 지쳤어요 땡벌 땡벌!",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-16T15:38:43"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 61,
-                        category = "마케팅",
-                        title = "제목",
-                        content = "ㅇㅇ오모모모모목",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-05T22:45:49.620137"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 99,
-                        category = "마케팅",
-                        title = "제제제",
-                        content = "목목ㅁ곰고",
-                        solved = false,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-08T21:53:21.322096"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 98,
-                        category = "마케팅",
-                        title = "제목",
-                        content = "본문",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-08T21:50:54.30989"
-                    ),
-                    BookmarkedQuestionsEntity(
-                        questionId = 67,
-                        category = "마케팅",
-                        title = "ㅇ2",
-                        content = "ㅇ",
-                        solved = true,
-                        selectedTeacher = "https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png",
-                        createdAt = "2024-07-05T23:25:28.569501"
+            try {
+                val bookmarkedQuestionsResponseEntity = bookmarkedQuestionsUseCase(
+                    BookmarkedQuestionsRequestEntity(
+                        lastQuestionId = lastQuestionId.value ?: 0L,
+                        size = bookmarkedQuestionSize.value ?: 10,
                     )
                 )
-            )
-
-            _bookmarkedQuestion.value = dummyData.bookmarkedQuestionsList
-            _bookmarkedQuestionsState.value = UiState.Success(dummyData)
+                _bookmarkedQuestionsState.value =
+                    UiState.Success(bookmarkedQuestionsResponseEntity)
+                setHasNextQuestion(bookmarkedQuestionsResponseEntity.hasNext)
+                setBookmarkedQuestionList(bookmarkedQuestionsResponseEntity.bookmarkedQuestionsList)
+            } catch (ex: Exception) {
+                _bookmarkedQuestionsState.value = UiState.Error(ex.message)
+            } finally {
+                isQuestionLoading = false
+            }
         }
     }
 
-    fun setHasNext(hasNext:Boolean){
-        _hasNext.value=hasNext
-    }
-    fun setAnsweredQuestion(bookmarkedQuestionsList:List<BookmarkedQuestionsEntity>){
-        _bookmarkedQuestion.value=bookmarkedQuestionsList
+    fun getBookmarkedPosts() {
+        viewModelScope.launch {
+            try {
+                val bookmarkedPostsResponseEntity = bookmarkedPostsUseCase(
+                    BookmarkedPostsRequestEntity(
+                        lastPostId = lastPostId.value ?: 0L,
+                        size = bookmarkedQuestionSize.value ?: 10,
+                    )
+                )
+                setHasNextPost(bookmarkedPostsResponseEntity.hasNext)
+                setBookmarkedPostsList(bookmarkedPostsResponseEntity.postList)
+            } catch (ex: Exception) {
+            }
+        }
     }
 
+    fun setHasNextQuestion(hasNext: Boolean) {
+        _hasNextQuestion.value = hasNext
+    }
+
+    fun setHasNextPost(hasNext: Boolean) {
+        _hasNextPost.value = hasNext
+    }
+
+    fun setBookmarkedQuestionList(bookmarkedQuestionsList: List<BookmarkedQuestionsEntity>) {
+        _bookmarkedQuestionList.value = bookmarkedQuestionsList
+    }
+
+    fun setBookmarkedPostsList(postList: List<BookmarkedPostsEntity>) {
+        _bookmarkedPostList.value = postList
+    }
+
+    fun setLastQuestionId(lastId: Long) {
+        _lastQuestionId.value = lastId
+    }
+
+    fun getLastQuestionId(): Long? {
+        return _lastQuestionId.value
+    }
+
+    fun setLastPostId(lastId: Long) {
+        _lastPostId.value = lastId
+    }
+
+    fun getLastPostId(): Long? {
+        return _lastPostId.value
+    }
+
+
+    fun clearQuestionData() {
+        _bookmarkedQuestionList.value = emptyList()
+//        totalAnsweredQuestion.clear()
+//        _isInitializedView.value=false
+        _lastQuestionId.value = 0L
+        _hasNextQuestion.value = false
+    }
+
+    fun clearPostData() {
+        _bookmarkedQuestionList.value = emptyList()
+        _lastQuestionId.value = 0L
+        _hasNextQuestion.value = false
+      
     fun setRole(role:String){
         _role.value=role
     }

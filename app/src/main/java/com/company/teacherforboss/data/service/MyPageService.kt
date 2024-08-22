@@ -1,5 +1,7 @@
 package com.company.teacherforboss.data.service
 
+import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedPostsDto
+import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnsweredQuestionDto
 import com.company.teacherforboss.util.base.BaseResponse
@@ -27,8 +29,16 @@ interface MyPageService {
 
     @GET("mypage/board/bookmarked-questions")
     suspend fun getBookmarkedQuestions(
+        @Query("lastQuestionId") lastQuestionId:Long,
+        @Query("size") size:Int,
     ): BaseResponse<ResponseBookmarkedQuestionsDto>
 
+    @GET("mypage/board/bookmarked-posts")
+    suspend fun getBookmarkedPosts(
+        @Query("lastPostId") lastPostId:Long,
+        @Query("size") size:Int,
+    ): BaseResponse<ResponseBookmarkedPostsDto>
+  
     @GET("${MYPAGE}/board/commented-posts")
     suspend fun getCommentedPosts(
         @Query("lastPostId") lastPostId:Long,
@@ -42,5 +52,4 @@ interface MyPageService {
         @Query("size") size:Int,
     )
     : BaseResponse<ResponseMyPagePostsDto>
-
 }

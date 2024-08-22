@@ -32,7 +32,7 @@ class TeacherTalkSearchActivity : AppCompatActivity() {
         hasNext = intent.getBooleanExtra("hasNext", false)
         questionList = intent.getSerializableExtra("questionList") as ArrayList<QuestionEntity>
         viewModel.setKeyword(intent.getStringExtra("keyword").toString())
-        viewModel._lastQuestionId.value = intent.getStringExtra("lastQuestionId")?.toLong()
+        viewModel._lastQuestionId.value = intent.getLongExtra("lastQuestionId",-1L)
 
         initView()
         onBackBtnPressed()

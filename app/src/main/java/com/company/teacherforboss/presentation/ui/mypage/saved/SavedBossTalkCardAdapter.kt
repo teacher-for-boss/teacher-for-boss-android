@@ -83,7 +83,7 @@ class SavedBossTalkCardAdapter(private val context: Context) :
             // 상세 글 이동
             binding.root.setOnClickListener {
                 val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
-                    putExtra("postId", post.postId.toString())
+                    putExtra("postId", post.postId)
                 }
                 context.startActivity(intent)
             }

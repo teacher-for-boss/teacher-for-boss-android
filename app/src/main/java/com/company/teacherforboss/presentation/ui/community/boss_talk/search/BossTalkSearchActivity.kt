@@ -30,7 +30,7 @@ class BossTalkSearchActivity : AppCompatActivity() {
         hasNext = intent.getBooleanExtra("hasNext", false)
         postList = intent.getSerializableExtra("postList") as ArrayList<PostEntity>
         viewModel.setKeyword(intent.getStringExtra("keyword").toString())
-        viewModel._lastPostId.value = intent.getStringExtra("lastPostId")?.toLong()
+        viewModel._lastPostId.value = intent.getLongExtra("lastPostId",-1L)
 
         initView()
         searchKeyword()

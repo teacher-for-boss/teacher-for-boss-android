@@ -39,7 +39,7 @@ class rvAdapterMyPageQuestion(
 
                 root.setOnClickListener {
                     val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
-                        putExtra("questionId", question.questionId.toString())
+                        putExtra("questionId", question.questionId)
                     }
                     context.startActivity(intent)
                 }

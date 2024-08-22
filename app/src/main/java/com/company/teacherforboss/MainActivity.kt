@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.company.teacherforboss.databinding.ActivityMainBinding
@@ -18,6 +19,8 @@ import com.company.teacherforboss.presentation.ui.home.HomeFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.presentation.ui.home.ItemClickListener
+import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +30,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
+
+    private val notificationViewModel by viewModels<NotificationViewModel>()
 
     // fcm messaging 권한 요청
     private val requestPermissionLauncher = registerForActivityResult(
@@ -57,6 +62,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         clickBottomNavigation()
         setFragment()
         askNotificationPermission()
+        readNotification()
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
         if (snackBarMsg!=null){
@@ -65,6 +71,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         // 백 버튼 콜백 설정
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        notificationViewModel.readNotification(notifiationId)
     }
 
     private fun clickBottomNavigation() {

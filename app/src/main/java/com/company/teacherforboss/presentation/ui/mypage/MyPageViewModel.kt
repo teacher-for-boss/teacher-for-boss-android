@@ -81,17 +81,24 @@ class MyPageViewModel @Inject constructor(
     val _hasNext=MutableLiveData<Boolean>().apply { value=true }
     val hasNext:LiveData<Boolean> get() = _hasNext
 
-    var _commentCount = MutableLiveData<Int>()
-    val commentCount:LiveData<Int> get() = _commentCount
+    var _memeberRole = MutableLiveData<String>()
+    val memberRole:LiveData<String> get() = _memeberRole
 
-    var _bookmarkCount = MutableLiveData<Int>()
-    val bookmarkCount:LiveData<Int> get() = _bookmarkCount
 
-    var _point = MutableLiveData<Int?>()
-    val point:LiveData<Int?> get() = _point
+    var _answerCount = MutableLiveData<Long>()
+    val answerCount:LiveData<Long> get() = _answerCount
 
-    var _questionTicketCount = MutableLiveData<Int?>()
-    val questionTicketCount:LiveData<Int?> get() = _questionTicketCount
+    var _questionCount = MutableLiveData<Long>()
+    val questionCount:LiveData<Long> get() = _questionCount
+
+    var _bookmarkCount = MutableLiveData<Long>()
+    val bookmarkCount:LiveData<Long> get() = _bookmarkCount
+
+    var _points = MutableLiveData<Int>()
+    val points:LiveData<Int> get() = _points
+
+    var _questionTicketCount = MutableLiveData<Int>()
+    val questionTicketCount:LiveData<Int> get() = _questionTicketCount
 
 //    fun setMockProfileDate() {
 //        _userProfileInfoState.value = UiState.Success(mockTeacher)

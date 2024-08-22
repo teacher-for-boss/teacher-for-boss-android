@@ -8,6 +8,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentMyPageBinding
+import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
@@ -43,7 +44,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         gotoModifyActivity()
     }
 
-    private fun initLayout(profile: MyPageProfileEntity) {
+    private fun initLayout(profile: MyPageProfileEntity, chipData: ChipInfoResponseEntity) {
         binding.ivMyPageProfile.loadCircularImage(profile.profileImg)
         viewModel.setProfileImg(profile.profileImg)
         viewModel.setNickname(profile.nickname)
@@ -53,10 +54,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             setTeacherMenuBarLayout()
             setTeacherProfileLayoutByAPI(profile)
             setTeacherProfileLayout()
+            setTeacherChipInfo(chipData)
 
         } else {
             setBossMenuLayout()
             setBossProfileLayoutByAPI(profile)
+            setBossChipInfo(chipData)
         }
     }
 
@@ -165,9 +168,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             .onEach { userProfileInfoState ->
                 when (userProfileInfoState) {
                     is UiState.Success -> {
-                        val data = userProfileInfoState.data
-                        initLayout(data)
-                        viewModel._role.value = data.role
+                        val profileData = userProfileInfoState.data
+
+                        viewModel.userChipInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+                            .onEach { chipInfoState ->
+                                when (chipInfoState) {
+                                    is UiState.Success -> {
+                                        val chipData = chipInfoState.data
+
+                                        initLayout(profileData, chipData)
+                                    }
+                                    else -> Unit
+                                }
+                            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+                        viewModel._role.value = profileData.role
                     }
 
                     else -> Unit
@@ -184,6 +199,27 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     else->Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun setTeacherChipInfo(data: ChipInfoResponseEntity) {
+        with(binding) {
+            tvMyPageMenuBarFirstCount.text = data.answerCount.toString()
+            tvMyPageMenuBarBookmarkCount.text = data.bookmarkCount.toString()
+            tvMyPageMenuBarThird.text = getString(
+                R.string.my_page_teacher_menu_bar_tp,
+                data.points.toString()
+            )
+        }
+    }
+    private fun setBossChipInfo(data: ChipInfoResponseEntity) {
+        with(binding) {
+            tvMyPageMenuBarFirstCount.text = data.questionCount.toString()
+            tvMyPageMenuBarBookmarkCount.text = data.bookmarkCount.toString()
+            tvMyPageMenuBarThird.text = getString(
+                R.string.my_page_boss_menu_bar_question_ticket,
+                data.questionTicketCount.toString()
+            )
+        }
     }
 
     private fun setTeacherProfileLayout() {
@@ -221,7 +257,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setTeacherMenuBarLayout() {
         with(binding) {
-            tvMyPageMenuBarThird.text = getString(R.string.my_page_teacher_menu_bar_tp)
             ivMyPageMenuBarThird.setImageResource(R.drawable.ic_teacher_point_30)
         }
     }

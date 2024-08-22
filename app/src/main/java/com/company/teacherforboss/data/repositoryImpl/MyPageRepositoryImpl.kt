@@ -3,7 +3,11 @@ package com.company.teacherforboss.data.repositoryImpl
 import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionResponseEntity
 import com.company.teacherforboss.data.datasource.remote.MyPageRemoteDataSource
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsRequestEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageCommentedPostsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageMyPostsRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageMyQuestionRequestEntity
@@ -26,11 +30,18 @@ class MyPageRepositoryImpl @Inject constructor(
                 .result.toMyPageAnsweredQuestionResponseEntity()
         }.getOrElse { err -> throw err }
         
-    override suspend fun getBookmarkedQuestions(): BookmarkedQuestionsResponseEntity =
+        override suspend fun getBookmarkedQuestions(bookmarkedQuestionsRequestEntity: BookmarkedQuestionsRequestEntity): BookmarkedQuestionsResponseEntity =
         runCatching {
-            myPageRemoteDataSource.getBookmarkedQuestions().result.toBookmarkedQuestionsEntity()
+            myPageDataSource.getBookmarkedQuestions(
+                requestBookmarkedQuestionsDto = bookmarkedQuestionsRequestEntity.toRequestBookmarkedQuestionsDto()
+            ).result.toBookmarkedQuestionsEntity()
         }.getOrElse { err -> throw err }
 
+    override suspend fun getBookmarkedPosts(bookmarkedPostsRequestEntity: BookmarkedPostsRequestEntity): BookmarkedPostsResponseEntity =
+        runCatching {
+            myPageDataSource.getBookmarkedPosts(
+                requestBookmarkedPostsDto = bookmarkedPostsRequestEntity.toRequestBookmarkedPostsDto()
+            ).result.toBookmarkedPostsEntity()
     override suspend fun getCommentedPosts(myPageCommentedPostsRequestEntity: MyPageCommentedPostsRequestEntity): MyPagePostsResponseEntity =
         runCatching{
             myPageRemoteDataSource.getCommentedPosts(myPageCommentedPostsRequestEntity.toRequestMyPageCommentedPostsDto())
@@ -42,4 +53,8 @@ class MyPageRepositoryImpl @Inject constructor(
                 .result.toMyPagePostsResponseEntity()
         }.getOrElse { err -> throw err }
 
+    override suspend fun getChipInfo(): Result<ChipInfoResponseEntity> =
+        runCatching {
+            myPageRemoteDataSource.getChipInfo().result.toChipInfoResponseEntity()
+        }
 }

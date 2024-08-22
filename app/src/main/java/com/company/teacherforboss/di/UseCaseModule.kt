@@ -50,10 +50,12 @@ import com.company.teacherforboss.domain.usecase.community.teacher.TeacherUpload
 import com.company.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
+import com.company.teacherforboss.domain.usecase.mypage.BookmarkedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.notification.NotificationUseCase
 import com.company.teacherforboss.domain.usecase.notification.ReadNotificationUseCase
+import com.company.teacherforboss.domain.usecase.mypage.ChipInfoUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageCommentedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyQuestionUseCase
@@ -270,7 +272,8 @@ class UseCaseModule {
     @Singleton
     fun providesMyPageAnsweredQuestionUseCase(myPageRepository: MyPageRepository): MyPageAnsweredQuestionUseCase =
         MyPageAnsweredQuestionUseCase(myPageRepository)
-    @Provides
+
+  @Provides
     @Singleton
     fun providesMyPageMyQuestionUseCase(myPageRepository: MyPageRepository): MyPageMyQuestionUseCase =
         MyPageMyQuestionUseCase(myPageRepository)
@@ -280,6 +283,10 @@ class UseCaseModule {
     fun providesBookmarkedQuestionsUseCase(myPageRepository: MyPageRepository): BookmarkedQuestionsUseCase =
         BookmarkedQuestionsUseCase(myPageRepository)
 
+    @Provides
+    @Singleton
+    fun providesBookmarkedPostsUseCase(myPageRepository: MyPageRepository): BookmarkedPostsUseCase =
+        BookmarkedPostsUseCase(myPageRepository)
     @Provides
     @Singleton
     fun providesMyPageCommentedPostsUseCase(myPageRepository: MyPageRepository): MyPageCommentedPostsUseCase =
@@ -329,4 +336,10 @@ class UseCaseModule {
     @Singleton
     fun providesReadNotificationUseCase(notificationRepository: NotificationRepository):ReadNotificationUseCase=
         ReadNotificationUseCase(notificationRepository)
+
+    @Provides
+    @Singleton
+    fun providesChipInfoUseCase(myPageRepository: MyPageRepository): ChipInfoUseCase =
+        ChipInfoUseCase(myPageRepository)
+
 }

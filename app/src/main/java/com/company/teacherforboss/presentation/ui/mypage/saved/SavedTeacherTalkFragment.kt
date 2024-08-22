@@ -58,7 +58,7 @@ class SavedTeacherTalkFragment :
             .onEach { bookmarkedQuestionsState ->
                 when (bookmarkedQuestionsState) {
                     is UiState.Success -> {
-                        val previousLastPostId = viewModel.lastPostId.value
+                        val previousLastPostId = viewModel.getLastPostId()
                         viewModel.apply {
                             setHasNextQuestion(bookmarkedQuestionsState.data.hasNext)
                             setBookmarkedQuestionList(bookmarkedQuestionsState.data.bookmarkedQuestionsList)

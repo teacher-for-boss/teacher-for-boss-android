@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemTeacherTalkCategoryBinding
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 
 class TeacherTalkCategoryAdapter(
     private val context: Context,
@@ -19,6 +20,10 @@ class TeacherTalkCategoryAdapter(
     var selectedItemPosition = DEFAULT_TAG_POSITION
     var previousItemPosition = RecyclerView.NO_POSITION
 
+    init {
+        selectedItemPosition=viewModel.getCategoryId()
+    }
+
     inner class ViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
@@ -27,7 +32,7 @@ class TeacherTalkCategoryAdapter(
                 selectedItemPosition = adapterPosition
 
                 val selectedCategory = categoryList[selectedItemPosition]
-                viewModel.setCategory(selectedCategory,0L)
+                viewModel.setCategory(selectedCategory,DEFAULT_LASTID)
 
                 notifyItemChanged(previousItemPosition)
                 notifyItemChanged(selectedItemPosition)

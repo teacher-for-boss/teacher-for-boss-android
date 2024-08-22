@@ -7,7 +7,7 @@ import com.company.teacherforboss.databinding.ItemHomeTeacherTalkShortcutBinding
 import com.company.teacherforboss.presentation.model.TeacherTalkShortCutModel
 import com.company.teacherforboss.util.view.ItemDiffCallback
 
-class HomeTeacherTalkShortcutAdapter() :
+class HomeTeacherTalkShortcutAdapter(private val itemClickListener: ItemClickListener) :
     ListAdapter<TeacherTalkShortCutModel, HomeTeacherTalkShortcutViewHolder>(
         ItemDiffCallback<TeacherTalkShortCutModel>(
             onItemsTheSame = { old, new -> old.shortCutTitle == new.shortCutTitle },
@@ -23,6 +23,7 @@ class HomeTeacherTalkShortcutAdapter() :
             parent,
             false,
         ),
+        itemClickListener
     )
 
     override fun onBindViewHolder(holder: HomeTeacherTalkShortcutViewHolder, position: Int) {

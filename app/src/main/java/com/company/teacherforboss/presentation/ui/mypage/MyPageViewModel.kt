@@ -53,6 +53,12 @@ class MyPageViewModel @Inject constructor(
     val role: LiveData<String>
         get()=_role
 
+    val _nickname = MutableLiveData<String>("")
+    val nickname: LiveData<String> get() = _nickname
+
+    val _profileImg = MutableLiveData<String>("")
+    val profileImg: LiveData<String> get() = _profileImg
+
     private val _bookmarkedQuestionsState = MutableStateFlow<UiState<BookmarkedQuestionsResponseEntity>>(UiState.Empty)
     val bookmarkedQuestionsState get() = _bookmarkedQuestionsState.asStateFlow()
 
@@ -122,6 +128,15 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun setNickname(nickname: String) {
+        _nickname.value = nickname
+    }
+
+    fun setProfileImg(img: String) {
+        _profileImg.value = img
+    }
+
+    fun getBookmarkedQuestions() {
     fun getBookmarkedQuestions(){
         if(isQuestionLoading) return
 

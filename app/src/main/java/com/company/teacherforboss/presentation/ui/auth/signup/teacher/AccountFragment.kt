@@ -14,11 +14,17 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.TeacherProfileFragment
 import com.company.teacherforboss.signup.fragment.EmailFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.LocalDataSource
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AccountFragment : Fragment() {
     private lateinit var binding: FragmentAccountBinding
     private val viewModel by activityViewModels<SignupViewModel>()
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +43,7 @@ class AccountFragment : Fragment() {
 
     private fun addListeners(){
         val activity = activity as SignupActivity
-        val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+        val signupType= localDataSource.getSignupType()
 
         binding.btnNextSignup.setOnClickListener {
             // 소셜로그인으로 회원가입 시
@@ -64,11 +70,6 @@ class AccountFragment : Fragment() {
         viewModel._bank.observe(viewLifecycleOwner,dataObserver)
         viewModel._accountNum.observe(viewLifecycleOwner,dataObserver)
         viewModel._accountHoler.observe(viewLifecycleOwner,dataObserver)
-    }
-
-    companion object{
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
-        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
     }
 
 }

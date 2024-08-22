@@ -14,18 +14,21 @@ import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.view.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountBinding>(R.layout.fragment_manage_social_account) {
     private val viewModel: ManageAccountViewModel by activityViewModels()
-    val appContext= GlobalApplication.instance
+    @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.myPageViewModel = viewModel
-        binding.includeEmail.content = LocalDataSource.getUserInfo(appContext,"email")
+        binding.includeEmail.content = localDataSource.getUserInfo(USER_EMAIL)
 
         initView()
         addListeners()
@@ -33,7 +36,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
 
     }
     private fun initView(){
-        val socialType = LocalDataSource.getSignupType(appContext,SIGNUP_TYPE)
+        val socialType = localDataSource.getSignupType()
 
         when (socialType){
             SIGNUP_SOCIAL_KAKAO -> {binding.includeEmail.title = getString(R.string.manage_account_email_kakao)}
@@ -109,9 +112,8 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
     companion object {
         private const val LOGOUT_DIALOG = "logoutModal"
         private const val DELETE_DIALOG = "deleteModal"
-        private const val SIGNUP_TYPE="SIGNUP_TYPE"
-        private const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
         private const val SIGNUP_SOCIAL_NAVER="NAVER"
         private const val SIGNUP_SOCIAL_KAKAO="KAKAO"
+        private const val USER_EMAIL="USER_EMAIL"
     }
 }

@@ -1,4 +1,4 @@
-package com.company.teacherforboss.presentation.ui.community.boss_talk.main
+package com.company.teacherforboss.presentation.ui.community.common
 
 import android.content.Context
 import android.graphics.Rect
@@ -8,31 +8,28 @@ import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
-import com.company.teacherforboss.databinding.FragmentSavedTeacherTalkBinding
+import com.company.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 
-class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
+class NewScrollView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ScrollView(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
 
-    private var binding: FragmentBossTalkMainBinding? = null
-    private var savedTeacherTalkBinding: FragmentSavedTeacherTalkBinding? = null
+    private var headerInitialTop = 0f
+    private var isHeaderSticky = false
+    private var recyclerView: RecyclerView? = null
 
-    constructor(context: Context) : this(context, null, 0)
-    constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
-    constructor(context: Context, attr: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attr,
-        defStyleAttr
-    ) {
+    init {
         overScrollMode = OVER_SCROLL_NEVER
         viewTreeObserver.addOnGlobalLayoutListener(this)
     }
-
     var header: View? = null
         set(value) {
             field = value
             field?.let {
                 it.translationZ = 1f
                 it.setOnClickListener { _ ->
-                    // 클릭 시, 헤더뷰가 최상단으로 오게 스크롤 이동
                     this.smoothScrollTo(scrollX, it.top)
                     callStickListener()
                 }
@@ -42,23 +39,23 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     var stickListener: (View) -> Unit = {}
     var freeListener: (View) -> Unit = {}
 
-    private var mIsHeaderSticky = false
-    private var mHeaderInitPosition = 0f
-
     override fun onGlobalLayout() {
-        mHeaderInitPosition = header?.top?.toFloat() ?: 0f
+        headerInitialTop = header?.top?.toFloat() ?: 0f
         adjustRecyclerViewHeight()
     }
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
         super.onScrollChanged(l, t, oldl, oldt)
 
-        val scrolly = t
-
-        if (scrolly > mHeaderInitPosition) {
-            stickHeader(scrolly - mHeaderInitPosition)
+        if (t > headerInitialTop) {
+            val position = (t - headerInitialTop).toFloat()
+            if (header?.translationY != position) {
+                stickHeader(position)
+            }
         } else {
-            freeHeader()
+            if (header?.translationY != 0f) {
+                freeHeader()
+            }
         }
     }
 
@@ -68,45 +65,55 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     }
 
     private fun callStickListener() {
-        if (!mIsHeaderSticky) {
+        if (!isHeaderSticky) {
             stickListener(header ?: return)
-            mIsHeaderSticky = true
+            isHeaderSticky = true
         }
     }
 
     private fun freeHeader() {
         header?.translationY = 0f
-        callFreeListener()
-    }
-
-    private fun callFreeListener() {
-        if (mIsHeaderSticky) {
+        if (isHeaderSticky) {
             freeListener(header ?: return)
-            mIsHeaderSticky = false
+            isHeaderSticky = false
         }
     }
 
-    fun setBinding(binding: FragmentBossTalkMainBinding) {
-        this.binding = binding
+    fun setBinding(headerView: View, recyclerView: RecyclerView) {
+        this.header = headerView
+        this.recyclerView = recyclerView
     }
 
     private fun adjustRecyclerViewHeight() {
-        val recyclerView = binding?.rvBossTalkCard
         recyclerView?.apply {
             post {
                 val adapter = adapter ?: return@post
+                val itemViewTypeHeights = mutableMapOf<Int, Int>()
                 var totalHeight = 0
+                var itemDecorationHeight = 0
+
                 for (i in 0 until adapter.itemCount) {
-                    val holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i))
-                    adapter.onBindViewHolder(holder, i)
-                    holder.itemView.measure(
-                        MeasureSpec.makeMeasureSpec(recyclerView.width, MeasureSpec.EXACTLY),
-                        MeasureSpec.UNSPECIFIED
-                    )
-                    totalHeight += holder.itemView.measuredHeight
+                    val viewType = adapter.getItemViewType(i)
+                    val itemHeight = itemViewTypeHeights[viewType] ?: run {
+                        val holder = adapter.createViewHolder(this, viewType)
+                        adapter.onBindViewHolder(holder, i)
+                        holder.itemView.measure(
+                            MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                            MeasureSpec.UNSPECIFIED
+                        )
+                        val measuredHeight = holder.itemView.measuredHeight
+                        itemViewTypeHeights[viewType] = measuredHeight
+                        measuredHeight
+                    }
+                    totalHeight += itemHeight
+
+                    if (i == 0) {
+                        itemDecorationHeight = getItemDecorationHeight(this)
+                    }
                 }
+
                 val params = layoutParams
-                params.height = totalHeight + (recyclerView.itemDecorationCount * getItemDecorationHeight(recyclerView))
+                params.height = totalHeight + (adapter.itemCount * itemDecorationHeight)
                 layoutParams = params
             }
         }

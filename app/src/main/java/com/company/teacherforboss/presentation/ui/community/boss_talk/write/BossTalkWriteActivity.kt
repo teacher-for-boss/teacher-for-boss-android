@@ -30,6 +30,12 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.adap
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -50,7 +56,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
         binding.viewModel=viewModel
         binding.lifecycleOwner=this
 
-        purpose=intent.getStringExtra("purpose")?:"write"
+        purpose=intent.getStringExtra(POST_PURPOSE)?:"write"
 
         // 초기 뷰 설정
         initView()
@@ -64,11 +70,11 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
 
     fun initView(){
         if(purpose=="modify"){
-            viewModel.postId=intent.getStringExtra("postId")!!.toLong()
-            viewModel._title.value=intent.getStringExtra("title").toString()
-            viewModel._content.value=intent.getStringExtra("body").toString()
-            if(intent.getStringExtra("isTagList").toString()=="true") viewModel.hashTagList=intent.getStringArrayListExtra("tagList")!!
-            if(intent.getStringExtra("isImgList").toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
+            viewModel.postId=intent.getStringExtra(POST_POSTID)!!.toLong()
+            viewModel._title.value=intent.getStringExtra(POST_TITLE).toString()
+            viewModel._content.value=intent.getStringExtra(POST_BODY).toString()
+            if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true") viewModel.hashTagList=intent.getStringArrayListExtra("tagList")!!
+            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
         }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
@@ -337,7 +343,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
     fun finishUpload(){
         viewModel.uploadPostLiveData.observe(this, Observer {
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
-                putExtra("postId",it.postId.toString())
+                putExtra(POST_POSTID,it.postId.toString())
                 putExtra("snackBarMsg","게시글이 등록되었습니다.")
 
             }
@@ -346,7 +352,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
 
         viewModel.modifyPostLiveData.observe(this, Observer {
             val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
-                putExtra("postId",it.postId.toString())
+                putExtra(POST_POSTID,it.postId.toString())
                 putExtra("snackBarMsg","게시글이 수정되었습니다.")
             }
             startActivity(intent)

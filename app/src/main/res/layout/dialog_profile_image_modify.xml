@@ -8,7 +8,7 @@
     <data>
         <variable
             name="modifyTeacherProfileViewModel"
-            type="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileViewModel" />
+            type="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileViewModel" />
 
     </data>
 

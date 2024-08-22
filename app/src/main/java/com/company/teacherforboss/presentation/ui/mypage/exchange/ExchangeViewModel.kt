@@ -83,7 +83,6 @@ class ExchangeViewModel @Inject constructor(
             _isExchangeButtonEnabled.value = !(it.isNullOrBlank() || it.toDoubleOrNull() == 0.0)
         }
         getAccountInfo()
-//        _userName.value = LocalDataSource.getUserName(appContext, "name")
         getTeacherPoint()
     }
 
@@ -135,8 +134,4 @@ class ExchangeViewModel @Inject constructor(
         }
     }
 
-    private fun getUserName(context: Context) {
-        val userName = LocalDataSource.getUserName(context, "name")
-        _userName.value = userName
-    }
 }

@@ -21,6 +21,13 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.ad
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -109,24 +116,24 @@ class BossTalkBodyActivity : AppCompatActivity() {
         binding.modifyBtn.setOnClickListener {
             hideOptionMenuIfVisible()
             val intent = Intent(this, BossTalkWriteActivity::class.java).apply {
-                putExtra("purpose", "modify")
-                putExtra("title", binding.bodyTitle.text.toString())
-                putExtra("body", binding.bodyBody.text.toString())
-                putExtra("postId", postId.toString())
+                putExtra(POST_PURPOSE, "modify")
+                putExtra(POST_TITLE, binding.bodyTitle.text.toString())
+                putExtra(POST_BODY, binding.bodyBody.text.toString())
+                putExtra(POST_POSTID, postId.toString())
 
                 viewModel.getTagList()?.let {
                     if (it.isNotEmpty()) {
-                        putExtra("isTagList", "true")
+                        putExtra(POST_ISTAGLIST, "true")
                         putStringArrayListExtra("tagList", viewModel.tagList.value)
-                    } else putExtra("isTagList", "false")
+                    } else putExtra(POST_ISTAGLIST, "false")
                 }
                 // TODO: 이미지 바인딩 수정 필요
                 viewModel.imgUrlList?.let {
                     if (it.isNotEmpty()) {
-                        putExtra("isImgList", "true")
+                        putExtra(POST_ISIMGLIST, "true")
                         val imgArrayList = viewModel.imgUrlList as ArrayList<String>
                         putStringArrayListExtra("imgList", imgArrayList)
-                    } else putExtra("isImgList", "false")
+                    } else putExtra(POST_ISIMGLIST, "false")
                 }
             }
             startActivity(intent)
@@ -318,7 +325,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 finish()
             } else {
                 startActivity(Intent(this, MainActivity::class.java).apply {
-                    putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
+                    putExtra(FRAGMENT_DESTINATION, "BOSS_TALK")
                 })
             }
         }

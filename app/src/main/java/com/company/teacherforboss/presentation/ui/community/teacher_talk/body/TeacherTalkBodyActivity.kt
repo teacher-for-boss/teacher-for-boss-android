@@ -27,6 +27,15 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.ad
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
@@ -34,6 +43,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherTalkBodyActivity : AppCompatActivity() {
@@ -42,14 +52,15 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
     private var questionId: Long = 0
     private var categoryName: String = ""
-    val appContext= GlobalApplication.instance
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_teachertalk_body)
 
         // questionId
-        questionId = intent.getStringExtra("questionId")!!.toLong()
+        questionId = intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
         viewModel.setQuestionId(questionId)
 
         val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
@@ -113,28 +124,28 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         // 수정하기
         binding.modifyBtn.setOnClickListener {
             val intent = Intent(this, TeacherTalkAskActivity::class.java).apply {
-                putExtra("purpose", "modify")
-                putExtra("title", binding.bodyTitle.text.toString())
-                putExtra("body", binding.bodyBody.text.toString())
-                putExtra("questionId", questionId.toString())
-                putExtra("categoryName", categoryName)
+                putExtra(POST_PURPOSE, "modify")
+                putExtra(POST_TITLE, binding.bodyTitle.text.toString())
+                putExtra(POST_BODY, binding.bodyBody.text.toString())
+                putExtra(TEACHER_QUESTIONID, questionId.toString())
+                putExtra(TEACHER_CATAEGORYNAME, categoryName)
 
                 viewModel.getTagList()?.let {
                     if (it.isNotEmpty()) {
-                        putExtra("isTagList", "true")
+                        putExtra(POST_ISTAGLIST, "true")
                         putStringArrayListExtra("tagList", viewModel.tagList.value)
                     } else {
-                        putExtra("isTagList", "false")
+                        putExtra(POST_ISTAGLIST, "false")
                     }
                 }
 
                 viewModel.imageUrlList?.let {
                     if (it.isNotEmpty()) {
-                        putExtra("isImgList", "true")
+                        putExtra(POST_ISIMGLIST, "true")
                         val imgArrayList = viewModel.imageUrlList as ArrayList<String>
                         putStringArrayListExtra("imgList", imgArrayList)
                     } else {
-                        putExtra("isImgList", "false")
+                        putExtra(POST_ISIMGLIST, "false")
                     }
                 }
             }
@@ -206,10 +217,10 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         // 답변 작성하기
         binding.answerBtn.setOnClickListener {
             val intent = Intent(this, TeacherTalkAnswerActivity::class.java).apply {
-                putExtra("purpose", "answer")
-                putExtra("title", binding.bodyTitle.text.toString())
-                putExtra("body", binding.bodyBody.text.toString())
-                putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra(POST_PURPOSE, "answer")
+                putExtra(POST_TITLE, binding.bodyTitle.text.toString())
+                putExtra(POST_BODY, binding.bodyBody.text.toString())
+                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
             }
             startActivity(intent)
         }
@@ -271,7 +282,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 viewModel._content.value = it.content
 
                 // 보스인 경우 답변작성하기 버튼 invisible
-                val role= LocalDataSource.getUserInfo(appContext,"role")
+                val role= localDataSource.getUserInfo(USER_ROLE)
                 if(role=="BOSS")binding.answerBtn.visibility=View.GONE
 
             },
@@ -350,7 +361,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
                 finish()
             } else {
                 startActivity(Intent(this, MainActivity::class.java).apply {
-                    putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
+                    putExtra(FRAGMENT_DESTINATION, "TEACHER_TALK")
                 })
             }
         }

@@ -27,6 +27,10 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_ANSWERID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,14 +51,14 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         binding.lifecycleOwner = this
 
         //purpose
-        purpose=intent.getStringExtra("purpose").toString()
+        purpose=intent.getStringExtra(POST_PURPOSE).toString()
 
         //questionId
-        questionId=intent.getStringExtra("questionId")!!.toLong()
+        questionId=intent.getStringExtra(TEACHER_QUESTIONID)!!.toLong()
         viewModel.setQuestionId(questionId)
 
         //answerId
-        answerId=intent.getStringExtra("answerId")?.toLongOrNull() ?: 0
+        answerId=intent.getStringExtra(TEACHER_ANSWERID)?.toLongOrNull() ?: 0
         viewModel.setAnswerId(answerId)
 
         // 뷰 설정
@@ -71,7 +75,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         // 댓글 내용, 이미지 가져오기
         if(purpose == "modify") {
             viewModel._content.value = intent.getStringExtra("answerContent")
-            if(intent.getStringExtra("isImgList").toString()=="true")
+            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true")
                 viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
         }
         // rv 설정
@@ -253,16 +257,15 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
     fun finishUpload() {
         viewModel.uploadPostAnswerLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
                 putExtra("snackBarMsg","답변이 등록되었습니다.")
-                Log.d("answerId", it.answerId.toString())
             }
             startActivity(intent)
         })
 
         viewModel.modifyAnswerLiveData.observe(this, Observer {
             val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
-                putExtra("questionId", viewModel.questionId.value.toString())
+                putExtra(TEACHER_QUESTIONID, viewModel.questionId.value.toString())
                 putExtra("snackBarMsg","답변이 수정되었습니다.")
 
             }
@@ -292,8 +295,8 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()
     }
-    
-    
+
+
     companion object{
         const val TEACHER_TALK="TEACHER_TALK"
     }

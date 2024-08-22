@@ -12,13 +12,17 @@ import com.company.teacherforboss.databinding.FragmentSignupStartBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.company.teacherforboss.signup.fragment.EmailFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.LocalDataSource
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class SignupStartFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupStartBinding
     private val viewModel by activityViewModels<SignupViewModel>()
+    @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +49,7 @@ class SignupStartFragment : Fragment() {
             btn2.isSelected = true
         }
         binding.nextBtn.setOnClickListener(){
-            val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+            val signupType= localDataSource.getSignupType()
 
             if(btn1.isSelected){
                 viewModel.setBossMode()
@@ -64,9 +68,5 @@ class SignupStartFragment : Fragment() {
 
         return binding.root
 
-    }
-    companion object{
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
-        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
     }
 }

@@ -45,17 +45,17 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun providesAuthSerivce(@Auth retrofit: Retrofit):AuthService=
+    fun providesAuthService(@Auth retrofit: Retrofit):AuthService=
         retrofit.create(AuthService::class.java)
 
     @Provides
     @Singleton
-    fun providesMemberSerivce(@Auth retrofit: Retrofit):MemberService=
+    fun providesMemberService(@Auth retrofit: Retrofit):MemberService=
         retrofit.create(MemberService::class.java)
 
     @Provides
     @Singleton
-    fun providesPaymentSerivce(@Auth retrofit: Retrofit): PaymentService =
+    fun providesPaymentService(@Auth retrofit: Retrofit): PaymentService =
         retrofit.create(PaymentService::class.java)
 
     @Provides

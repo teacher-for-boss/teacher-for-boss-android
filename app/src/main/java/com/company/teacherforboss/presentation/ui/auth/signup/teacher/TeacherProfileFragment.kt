@@ -1,6 +1,5 @@
 package com.company.teacherforboss.presentation.ui.auth.signup.boss
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -24,22 +23,33 @@ import com.company.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
-import com.company.teacherforboss.presentation.ui.auth.signup.SignupStartFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PROFILEIMG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.material.chip.Chip
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class TeacherProfileFragment : Fragment(){
 
     private lateinit var binding: FragmentTeacherProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
     private val loginViewModel by activityViewModels<LoginViewModel>()
     val selectedChipList= mutableListOf<String>()
-
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -170,7 +180,7 @@ class TeacherProfileFragment : Fragment(){
             viewModel.profileImg.observe(viewLifecycleOwner,{
                 if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
                     viewModel._keywords.value=selectedChipList
-                    val signupType=LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+                    val signupType=localDataSource.getSignupType()
                     if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
                     else signup()
                 }
@@ -273,19 +283,14 @@ class TeacherProfileFragment : Fragment(){
 
 
     fun getSocialSignupProvidedInfo(){
-        val signupType= LocalDataSource.getSignupType(requireContext(),
-            SignupStartFragment.SIGNUP_TYPE)
+        val signupType= localDataSource.getSignupType()
 
-        if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
-            val activity=activity as SignupActivity
-            val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
-
-            viewModel._name.value=prefs.getString("name", BossProfileFragment.INFO_NULL)
-            viewModel.liveEmail.value=prefs.getString("email", BossProfileFragment.INFO_NULL)
-            viewModel.livePhone.value=prefs.getString("phone", BossProfileFragment.INFO_NULL)
-            viewModel._birthDate.value=prefs.getString("birthDate", BossProfileFragment.INFO_NULL)
-            viewModel._profileImg.value=prefs.getString("profileImg", BossProfileFragment.INFO_NULL)
-            Log.d("s-test",viewModel.name.value.toString())
+        if (signupType != SIGNUP_DEFAULT){
+            viewModel._name.value=localDataSource.getUserInfo(USER_NAME)
+            viewModel.liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
+            viewModel.livePhone.value=localDataSource.getUserInfo(USER_PHONE)
+            viewModel._birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+            viewModel._profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
         }
 
     }
@@ -301,8 +306,8 @@ class TeacherProfileFragment : Fragment(){
     private fun showSplash(){
         //TODO: splash
         val intent = Intent(activity, SignupFinishActivity::class.java)
-        intent.putExtra("nickname",binding.nicknameBox.text.toString())
-        intent.putExtra("role",viewModel.role.value)
+        intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
+        intent.putExtra(USER_ROLE,viewModel.role.value)
         startActivity(intent)
     }
 
@@ -332,11 +337,5 @@ class TeacherProfileFragment : Fragment(){
         viewModel._field.observe(viewLifecycleOwner,dataObserver)
         viewModel._carrer_str.observe(viewLifecycleOwner,dataObserver)
         viewModel._introduction.observe(viewLifecycleOwner,dataObserver)
-    }
-    companion object{
-        const val USER_INFO="USER_INFO"
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
-        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
-        const val DEFAULT_TEACHER_PROFILE_IMG_URL="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_teacher.png"
     }
 }

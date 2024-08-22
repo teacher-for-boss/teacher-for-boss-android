@@ -9,7 +9,10 @@ import com.company.teacherforboss.domain.repository.MyPageRepository
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.repository.SignupRepository
 import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
+import com.company.teacherforboss.domain.usecase.Member.ModifyBossProfileUseCase
+import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
+import com.company.teacherforboss.domain.usecase.Member.TeacherDetailProfileUseCase
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.company.teacherforboss.domain.usecase.SignupUseCase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
@@ -46,6 +49,7 @@ import com.company.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseC
 import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedPostsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
@@ -254,6 +258,15 @@ class UseCaseModule {
 
     @Provides
     @Singleton
+    fun providesProfile(memberRepository: MemberRepository): ProfileUseCase = ProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesMyPageAnsweredQuestionUseCase(myPageRepository: MyPageRepository): MyPageAnsweredQuestionUseCase =
+        MyPageAnsweredQuestionUseCase(myPageRepository)
+
+    @Provides
+    @Singleton
     fun providesBookmarkedQuestionsUseCase(myPageRepository: MyPageRepository): BookmarkedQuestionsUseCase =
         BookmarkedQuestionsUseCase(myPageRepository)
 
@@ -274,7 +287,17 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provides(memberRepository: MemberRepository): ProfileUseCase =
-        ProfileUseCase(memberRepository = memberRepository)
+    fun providesTeacherDetailProfileUseCase(memberRepository: MemberRepository): TeacherDetailProfileUseCase =
+        TeacherDetailProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesModifyTeacherProfile(memberRepository: MemberRepository): ModifyTeacherProfileUseCase =
+        ModifyTeacherProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesModifyBossProfile(memberRepository: MemberRepository): ModifyBossProfileUseCase =
+        ModifyBossProfileUseCase(memberRepository)
 
 }

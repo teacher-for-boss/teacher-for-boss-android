@@ -1,14 +1,14 @@
 package com.company.teacherforboss.di
 
-import com.company.teacherforboss.data.repository.AuthRepositoryImpl
-import com.company.teacherforboss.data.repository.AwsRepositoryImpl
-import com.company.teacherforboss.data.repository.CommunityRepositoryImpl
-import com.company.teacherforboss.data.repository.HomeRepositoryImpl
-import com.company.teacherforboss.data.repository.MemberRepositoryImpl
-import com.company.teacherforboss.data.repository.MyPageRepositoryImpl
-import com.company.teacherforboss.data.repository.PaymentRepositoryImpl
-import com.company.teacherforboss.data.repository.SignupRepositoryImpl
-import com.company.teacherforboss.data.repository.UserRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.AuthRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.AwsRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.CommunityRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.HomeRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.MemberRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.MyPageRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.PaymentRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.SignupRepositoryImpl
+import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.domain.repository.AuthRepository
 import com.company.teacherforboss.domain.repository.AwsReository
 import com.company.teacherforboss.domain.repository.CommunityRepository

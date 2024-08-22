@@ -6,7 +6,7 @@
     <data>
         <variable
             name="modifyTeacherProfileViewModel"
-            type="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyTeacherProfileViewModel" />
+            type="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileViewModel" />
 
     </data>
 
@@ -25,21 +25,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="티쳐에 대하여 소개해주세요"
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <ImageView
                     android:id="@+id/profileImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="25dp"
                     android:background="@drawable/profile_background"
                     android:clipToOutline="true"
                     android:src="@drawable/profile_teacher"
@@ -106,7 +96,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/radius_purple_button"
                     android:backgroundTint="@color/selector_all_btn_background"
-                    android:enabled="@{modifyTeacherProfileViewModel.nicknameCheck}"
+                    android:enabled="false"
                     android:text="중복 확인"
                     android:layout_margin="10dp"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"

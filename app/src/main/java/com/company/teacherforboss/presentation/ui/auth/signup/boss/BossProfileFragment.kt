@@ -1,6 +1,5 @@
 package com.company.teacherforboss.presentation.ui.auth.signup.boss
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -21,16 +20,29 @@ import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-import com.company.teacherforboss.presentation.ui.auth.signup.SignupStartFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PROFILEIMG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.UploadUtil
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class BossProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentBossProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
+    @Inject lateinit var localDataSource: LocalDataSource
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -121,7 +133,7 @@ class BossProfileFragment : Fragment() {
 
             viewModel.profileImg.observe(viewLifecycleOwner,{
                 if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
-                    val signupType= LocalDataSource.getSignupType(requireContext(), SIGNUP_TYPE)
+                    val signupType= localDataSource.getSignupType()
                     if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
                     else signup()
                 }
@@ -193,8 +205,8 @@ class BossProfileFragment : Fragment() {
 
     private fun showSplash(){
         val intent = Intent(activity, SignupFinishActivity::class.java)
-        intent.putExtra("nickname",binding.nicknameBox.text.toString())
-        intent.putExtra("role",viewModel.role.value)
+        intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
+        intent.putExtra(USER_ROLE,viewModel.role.value)
         startActivity(intent)
     }
 
@@ -209,30 +221,16 @@ class BossProfileFragment : Fragment() {
     }
 
     fun getSocialSignupProvidedInfo(){
-        val signupType= LocalDataSource.getSignupType(requireContext(),
-            SignupStartFragment.SIGNUP_TYPE)
+        val signupType= localDataSource.getSignupType()
 
-        if (signupType != SignupStartFragment.SIGNUP_DEFAULT){
-            val activity=activity as SignupActivity
-            val prefs=activity.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
-
-            viewModel._name.value=prefs.getString("name", INFO_NULL)
-            viewModel.liveEmail.value=prefs.getString("email", INFO_NULL)
-            viewModel.livePhone.value=prefs.getString("phone", INFO_NULL)
-            viewModel._birthDate.value=prefs.getString("birthDate", INFO_NULL)
-            viewModel._profileImg.value=prefs.getString("profileImg", INFO_NULL)
-            viewModel._gender.value=prefs.getString("gender", INFO_NULL)?.toInt()
-            Log.d("s-test",viewModel.name.value.toString())
+        if (signupType != SIGNUP_DEFAULT){
+            viewModel._name.value=localDataSource.getUserInfo(USER_NAME)
+            viewModel.liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
+            viewModel.livePhone.value=localDataSource.getUserInfo(USER_PHONE)
+            viewModel._birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+            viewModel._profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
         }
 
-    }
-
-    companion object{
-        const val USER_INFO="USER_INFO"
-        const val INFO_NULL="INFO_NULL"
-        const val SIGNUP_TYPE="SIGNUP_TYPE"
-        const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
-        const val DEFAULT_BOSS_PROFILE_IMG_URL="https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png"
     }
 
 

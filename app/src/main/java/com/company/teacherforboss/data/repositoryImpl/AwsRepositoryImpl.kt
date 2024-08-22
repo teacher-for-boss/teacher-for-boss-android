@@ -1,4 +1,4 @@
-package com.company.teacherforboss.data.repository
+package com.company.teacherforboss.data.repositoryImpl
 
 import com.company.teacherforboss.data.datasource.remote.AwsRemoteDataSource
 import com.company.teacherforboss.domain.model.aws.getPresingedUrlEntity

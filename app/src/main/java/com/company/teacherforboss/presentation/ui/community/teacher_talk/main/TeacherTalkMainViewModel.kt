@@ -11,6 +11,9 @@ import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkQues
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkSearchUseCase
 import com.company.teacherforboss.presentation.ui.community.common.TalkMainViewModel
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_SIZE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_SORTBY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,27 +26,30 @@ class TeacherTalkMainViewModel @Inject constructor(
     val _hasNext=MutableLiveData<Boolean>().apply { value=true }
     val hasNext:LiveData<Boolean> get() = _hasNext
 
-    var _lastQuestionId= MutableLiveData<Long>(0L)
+    var _lastQuestionId= MutableLiveData<Long>(DEFAULT_LASTID)
     val lastQuestionId: LiveData<Long>
         get() = _lastQuestionId
     val categoryList = arrayListOf(
         "전체", "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
     var lastQuestionIdMap= mutableMapOf<String,Long>().apply {
-        categoryList.forEach { put(it,0) }
+        categoryList.forEach { put(it, DEFAULT_LASTID) }
     }
-    var _size= MutableLiveData<Int>(10)
+    var _size= MutableLiveData<Int>(DEFAULT_SIZE)
     val size: LiveData<Int>
         get() = _size
-    var _sortBy= MutableLiveData<String>("latest")
+    var _sortBy= MutableLiveData<String>(DEFAULT_SORTBY)
     val sortBy: LiveData<String>
         get() = _sortBy
-    var _category = MutableLiveData<String>("위생")
+    var _category = MutableLiveData<String>(DEFAULT_CATEGORY)
     val category: LiveData<String>
         get() = _category
 
     var _categoryId = MutableLiveData<Long>(1)
     val categoryId: LiveData<Long> get()=_categoryId
+
+    var _isInitialLoad = MutableLiveData<Boolean>(true)
+    val isInitialLoad: LiveData<Boolean> get() = _isInitialLoad
 
     private val _solved = MutableLiveData<Boolean>()
     val solved: LiveData<Boolean> get() = _solved
@@ -62,14 +68,19 @@ class TeacherTalkMainViewModel @Inject constructor(
     private val _searchTeacherTalkLiveData = MutableLiveData<TeacherTalkQuestionsResponseEntity>()
     val searchTeacherTalkLiveData: LiveData<TeacherTalkQuestionsResponseEntity> get()=_searchTeacherTalkLiveData
 
+    private var isLoading=false
+
     fun getTeacherTalkQuestions(){
+        if(isLoading) return
+
+        isLoading=true
         viewModelScope.launch {
             try{
                 val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId=getLastQuestionId()?:lastQuestionId.value!!,
-                        size=size.value?:10,
-                        sortBy=sortBy.value?:"latest",
+                        lastQuestionId=getLastQuestionId()?:lastQuestionId.value?:DEFAULT_LASTID,
+                        size=size.value?:DEFAULT_SIZE,
+                        sortBy=sortBy.value?: DEFAULT_SORTBY,
                         category = category.value,
                         keyword = null
                     )
@@ -77,6 +88,9 @@ class TeacherTalkMainViewModel @Inject constructor(
                 _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
 
             }catch (ex:Exception){
+
+            }finally {
+                isLoading=false
             }
         }
     }
@@ -86,9 +100,9 @@ class TeacherTalkMainViewModel @Inject constructor(
             try{
                 val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId=getLastQuestionId()?:0L,
-                        size=size.value?:10,
-                        sortBy=sortBy.value?:"latest",
+                        lastQuestionId=getLastQuestionId()?:DEFAULT_LASTID,
+                        size=size.value?:DEFAULT_SIZE,
+                        sortBy=sortBy.value?: DEFAULT_SORTBY,
                         category =changeCategory,
                         keyword = null
                     )
@@ -105,8 +119,8 @@ class TeacherTalkMainViewModel @Inject constructor(
             try {
                 val teacherTalkQuestionsResponseEntity = teacherTalkSearchUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId = getLastQuestionId()?: 0L,
-                        size = size.value?: 10,
+                        lastQuestionId = getLastQuestionId()?: DEFAULT_LASTID,
+                        size = size.value?: DEFAULT_SIZE,
                         sortBy = null,
                         category = null,
                         keyword = keyword.value
@@ -122,30 +136,31 @@ class TeacherTalkMainViewModel @Inject constructor(
     }
 
     fun setCategory(category: String,questionId: Long) {
-        _category.value = category
-        updateQuestionIdMap(questionId)
+        if(_category.value!=category){
+            _category.value = category
+            updateQuestionIdMap(questionId)
+        }
     }
+    fun getCategoryId()=categoryList.indexOf(category.value)
 
     override fun setSortBy(sortBy: String) {
-        Log.d("spinner","?2")
-        var sort=""
-        when(sortBy){
-            "최신순"-> sort="latest"
-            "조회수순"->sort="views"
-            "좋아요순"->sort="likes"
+        if(_sortBy.value!=sortBy){
+            var sort=""
+            when(sortBy){
+                "최신순"-> sort="latest"
+                "조회수순"->sort="views"
+                "좋아요순"->sort="likes"
+            }
+            _sortBy.value=sort
         }
-        _sortBy.value=sort
     }
 
-    fun selectCategoryId(id: Long) {
-        _categoryId.value = id + 1
-    }
     fun updateQuestionIdMap(questionId:Long){
-        lastQuestionIdMap.replace(category.value?:"전체",questionId)
+        lastQuestionIdMap.replace(category.value?: DEFAULT_CATEGORY,questionId)
     }
 
     fun resetLastPostIdMap(postId:Long){
-        lastQuestionIdMap.replace(category.value!!,postId)
+        lastQuestionIdMap.replace(category.value?: DEFAULT_CATEGORY,postId)
     }
 
     fun getLastQuestionId()=lastQuestionIdMap.get(category.value)
@@ -160,11 +175,14 @@ class TeacherTalkMainViewModel @Inject constructor(
 
     fun clearData(){
         _teacherTalkQuestions.value= emptyList()
-        _lastQuestionId.value=0L
+        _lastQuestionId.value=DEFAULT_LASTID
         _hasNext.value=false
     }
 
     fun setKeyword(keyword: String) {
         _keyword.value = keyword
+    }
+    companion object{
+        const val DEFAULT_CATEGORY="전체"
     }
 }

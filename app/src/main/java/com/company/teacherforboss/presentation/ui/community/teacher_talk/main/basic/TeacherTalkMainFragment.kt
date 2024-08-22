@@ -19,24 +19,32 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Cu
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.NewScrollView
+import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.rvAdapterCardTeacher
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TeacherTalkMainFragment :
     BindingFragment<FragmentTeacherTalkMainBinding>(R.layout.fragment_teacher_talk_main) {
 
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
     private lateinit var teacherTalkCardAdapter:TeacherTalkCardAdapter
-    val appContext= GlobalApplication.instance
+
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
-        newScrollView.setBinding(binding)
+        newScrollView.setBinding(binding.teacherTalkWidget2, binding.rvTeacherTalkCard)
 
         binding.viewModel = viewModel
         binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
@@ -77,7 +85,7 @@ class TeacherTalkMainFragment :
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     var presentSortBy = viewModel.sortBy.value
-                    viewModel.resetLastPostIdMap(DEFAULT_LAST_QUESTIOIN_ID)
+                    viewModel.resetLastPostIdMap(DEFAULT_LASTID)
                     when (presentSortBy) {
                         "latest" -> presentSortBy = "최신순"
                         "views" -> presentSortBy = "조회수순"
@@ -90,7 +98,7 @@ class TeacherTalkMainFragment :
             }
 
         //fab
-        val role=LocalDataSource.getUserInfo(appContext,"role")
+        val role=localDataSource.getUserInfo(USER_ROLE)
         if(role=="TEACHER")binding.fabWrite.visibility=View.INVISIBLE
 
         //scrollview
@@ -146,7 +154,7 @@ class TeacherTalkMainFragment :
                 updateQuestionIdMap(lastQuestionId)
                 setHasNext(result.hasNext)
 
-                if(previousLastPostId==DEFAULT_LAST_QUESTIOIN_ID) initQuestionListView(questionList)
+                if(previousLastPostId==DEFAULT_LASTID) initQuestionListView(questionList)
                 else updateQuestions(questionList)
             }
 
@@ -163,13 +171,12 @@ class TeacherTalkMainFragment :
 
     private fun observeCategory() {
         viewModel.category.observe(viewLifecycleOwner, {
-            viewModel.updateQuestionIdMap(DEFAULT_LAST_QUESTIOIN_ID)
+            viewModel.updateQuestionIdMap(DEFAULT_LASTID)
             viewModel.getTeacherTalkQuestions()
         })
     }
 
     private fun updateQuestions(questionList:List<QuestionEntity>) {
-        Log.d("test","update")
         teacherTalkCardAdapter.addMoreCards(questionList)
     }
 
@@ -210,7 +217,4 @@ class TeacherTalkMainFragment :
         }
     }
 
-    companion object{
-        const val DEFAULT_LAST_QUESTIOIN_ID=0L
-    }
 }

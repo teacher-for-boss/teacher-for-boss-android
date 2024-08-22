@@ -15,6 +15,7 @@ import com.company.teacherforboss.domain.model.community.boss.BossTalkUploadPost
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkModifyBodyUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossUploadPostUseCase
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_IMG_FILE_TYPE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -156,7 +157,4 @@ class BossTalkWriteViewModel @Inject constructor(
     }
     fun getFileType()=fileType.value?:DEFAULT_IMG_FILE_TYPE
 
-    companion object{
-        const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
-    }
 }

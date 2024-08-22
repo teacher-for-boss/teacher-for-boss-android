@@ -5,7 +5,6 @@ import com.company.teacherforboss.data.model.request.mypage.RequestBookmarkedPos
 import com.company.teacherforboss.data.model.request.mypage.RequestBookmarkedQuestionsDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedPostsDto
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
-import com.company.teacherforboss.data.model.response.mypage.RequestMyPageAnsweredQuestionDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageAnsweredQuestionDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageCommentedPostsDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageMyPostsDto

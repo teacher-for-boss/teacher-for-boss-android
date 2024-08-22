@@ -81,7 +81,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 startActivity(intent)
             }
             includeMyPageMenuAccountChange.root.setOnClickListener {
-                if (viewModel.getRole() == ROLE_TEACHER) {
+                if (viewModel.role.value == ROLE_TEACHER) {
                     val intent = Intent(context, AccountChangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -96,7 +96,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 navigateToAlarm()
             }
             includeMyPageMenuExchange.root.setOnClickListener{
-                if (viewModel.getRole()== ROLE_TEACHER) {
+                if (viewModel.role.value == ROLE_TEACHER) {
                     val intent = Intent(context, ExchangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -145,13 +145,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
             tvMyPageProfileName.setOnClickListener {
                 Intent(context,TeacherProfileActivity::class.java).apply {
-                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    putExtra(TEACHER_PROFILE_ID,viewModel.memberId.value)
                     startActivity(this)
                 }
             }
             ivMyPageProfile.setOnClickListener {
                 Intent(context,TeacherProfileActivity::class.java).apply {
-                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    putExtra(TEACHER_PROFILE_ID,viewModel.memberId.value)
                     startActivity(this)
                 }
             }
@@ -315,7 +315,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             if(viewModel.role.value == ROLE_TEACHER) {
                 Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
                     putExtra(ROLE, ROLE_TEACHER)
-                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    putExtra(TEACHER_PROFILE_ID,viewModel.memberId.value)
                     startActivity(this)
                 }
             }

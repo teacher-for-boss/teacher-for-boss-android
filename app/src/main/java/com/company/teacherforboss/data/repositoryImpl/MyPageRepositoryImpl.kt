@@ -29,24 +29,27 @@ class MyPageRepositoryImpl @Inject constructor(
             myPageRemoteDataSource.getMyQuestion(myPageMyQuestionRequestEntity.toRequestMyPageMyQuestionDto())
                 .result.toMyPageAnsweredQuestionResponseEntity()
         }.getOrElse { err -> throw err }
-        
-        override suspend fun getBookmarkedQuestions(bookmarkedQuestionsRequestEntity: BookmarkedQuestionsRequestEntity): BookmarkedQuestionsResponseEntity =
+
+    override suspend fun getBookmarkedQuestions(bookmarkedQuestionsRequestEntity: BookmarkedQuestionsRequestEntity): BookmarkedQuestionsResponseEntity =
         runCatching {
-            myPageDataSource.getBookmarkedQuestions(
+            myPageRemoteDataSource.getBookmarkedQuestions(
                 requestBookmarkedQuestionsDto = bookmarkedQuestionsRequestEntity.toRequestBookmarkedQuestionsDto()
             ).result.toBookmarkedQuestionsEntity()
         }.getOrElse { err -> throw err }
 
     override suspend fun getBookmarkedPosts(bookmarkedPostsRequestEntity: BookmarkedPostsRequestEntity): BookmarkedPostsResponseEntity =
         runCatching {
-            myPageDataSource.getBookmarkedPosts(
+            myPageRemoteDataSource.getBookmarkedPosts(
                 requestBookmarkedPostsDto = bookmarkedPostsRequestEntity.toRequestBookmarkedPostsDto()
             ).result.toBookmarkedPostsEntity()
+        }.getOrElse { err -> throw err }
+
     override suspend fun getCommentedPosts(myPageCommentedPostsRequestEntity: MyPageCommentedPostsRequestEntity): MyPagePostsResponseEntity =
         runCatching{
             myPageRemoteDataSource.getCommentedPosts(myPageCommentedPostsRequestEntity.toRequestMyPageCommentedPostsDto())
                 .result.toMyPagePostsResponseEntity()
         }.getOrElse { err -> throw err }
+
     override suspend fun getMyPosts(myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity): MyPagePostsResponseEntity =
         runCatching{
             myPageRemoteDataSource.getMyPosts(myPageMyPostsRequestEntity.toRequestMyPageMyPostsDto())

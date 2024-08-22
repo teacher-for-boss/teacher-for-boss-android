@@ -4,15 +4,12 @@ import com.company.teacherforboss.data.model.request.mypage.RequestBookmarkedPos
 import com.company.teacherforboss.data.model.request.mypage.RequestBookmarkedQuestionsDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedPostsDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
-import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
-import com.company.teacherforboss.data.model.response.mypage.RequestMyPageAnsweredQuestionDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageAnsweredQuestionDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageCommentedPostsDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageMyPostsDto
 import com.company.teacherforboss.data.model.request.mypage.RequestMyPageMyQuestionDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnsweredQuestionDto
 import com.company.teacherforboss.util.base.BaseResponse
-import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseChipInfoDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPagePostsDto
 

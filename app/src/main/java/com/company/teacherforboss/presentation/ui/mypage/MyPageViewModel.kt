@@ -29,7 +29,7 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val bookmarkedQuestionsUseCase: BookmarkedQuestionsUseCase,
-    private val chipInfoUseCase: ChipInfoUseCase
+    private val chipInfoUseCase: ChipInfoUseCase,
     private val bookmarkedPostsUseCase: BookmarkedPostsUseCase
 ) : ViewModel() {
     @Inject lateinit var localDataSource:LocalDataSource
@@ -246,25 +246,27 @@ class MyPageViewModel @Inject constructor(
         _bookmarkedQuestionList.value = emptyList()
         _lastQuestionId.value = 0L
         _hasNextQuestion.value = false
-      
-    fun setRole(role:String){
-        _role.value=role
+
+        fun setRole(role: String) {
+            _role.value = role
+        }
+
+        fun getRole() = role.value
+
+        fun setMemberId(memberId: Long) {
+            _memberId.value = memberId
+            localDataSource.saveUserInfo(TEACHER_PROFILE_ID, memberId.toString())
+        }
+
+        fun getMemberId() = memberId.value
+
+        fun clearData() {
+            _bookmarkedQuestionList.value = emptyList()
+            totalAnsweredQuestion.clear()
+            _isInitializedView.value = false
+            _lastPostId.value = 0L
+            _hasNextQuestion.value = false
+            _hasNextPost.value = false
+        }
     }
-    fun getRole()=role.value
-
-    fun setMemberId(memberId:Long){
-        _memberId.value=memberId
-        localDataSource.saveUserInfo(TEACHER_PROFILE_ID,memberId.toString())
-    }
-
-    fun getMemberId()=memberId.value
-
-    fun clearData(){
-        _bookmarkedQuestion.value= emptyList()
-        totalAnsweredQuestion.clear()
-        _isInitializedView.value=false
-        _lastPostId.value=0L
-        _hasNext.value=false
-    }
-
 }

@@ -59,8 +59,8 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
     }
 
     fun readNotification(){
-        val notifiationId=intent.getStringExtra(NOTIFICATION_ID)?.toLong()
-        viewModel.readNotification(notifiationId!!)
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        viewModel.readNotification(notifiationId)
     }
 
     fun updateNotificationState(){

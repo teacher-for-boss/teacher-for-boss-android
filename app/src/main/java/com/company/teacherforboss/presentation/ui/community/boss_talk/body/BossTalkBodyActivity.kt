@@ -19,6 +19,8 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
@@ -40,6 +42,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBosstalkBodyBinding
     private val viewModel by viewModels<BossTalkBodyViewModel>()
+    private val notificationViewModel by viewModels<NotificationViewModel>()
     private var postId: Long = 0
 
     private var currentOptionButton: View? = null
@@ -80,10 +83,17 @@ class BossTalkBodyActivity : AppCompatActivity() {
         setCommentView()
         // 답글 쓰기
         setRecommentListener()
+        // 알림 읽기
+        readNotification()
 
 //        binding.root.setOnClickListener {
 //            hideOptionMenuIfVisible()
 //        }
+    }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        notificationViewModel.readNotification(notifiationId)
     }
 
     private fun showOptionMenu() {

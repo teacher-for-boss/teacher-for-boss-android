@@ -22,7 +22,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         private const val NOTIFICATION_CHANNEL_ID = "teacherForBoss"
         private const val NOTIFICATION_CHANNEL_NAME = "Notification"
         private const val NOTIFICATION_CHANNEL_DESCRIPTION = "NotificationChannel"
-        const val NOTIFICATION_ID="notification_id"
+        const val NOTIFICATION_ID="notificationId"
         const val INFO="INFO"
 
         const val NOTIFICATIONTYPE="notificationType"
@@ -54,6 +54,8 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         remoteMessage.data.let { data->
             val fullType=data[NOTIFICATIONTYPE]?:""
             var type=fullType.split("_")[0]
+            val notificationId = data[NOTIFICATION_ID]?.toLong() ?: -1L
+
             var dataIdName:String?=null
             var dataId:Long?=null
 
@@ -74,13 +76,13 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
 
             Log.d("FCM Log", "Notification type: $type")
             Log.d("FCM Log", "Notification id: $dataId")
-            showNotification(title,body,type,dataId)
+            showNotification(title,body,type,notificationId,dataId)
         }
 
 
     }
 
-    private fun showNotification(title: String, body: String,type:String,dataId:Long?) {
+    private fun showNotification(title: String, body: String,type:String,notificationId:Long,dataId:Long?) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
@@ -93,6 +95,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
 
         val intent=Intent(this,destinationActivity).apply{
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(NOTIFICATION_ID,notificationId)
             dataId?.let {
                 when(type){
                     QUESTION->putExtra(TEACHER_QUESTIONID,it)

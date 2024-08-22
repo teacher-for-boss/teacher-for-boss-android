@@ -24,6 +24,8 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.Tea
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
+import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
@@ -49,6 +51,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
+    private val notificationViewModel: NotificationViewModel by viewModels()
     private var questionId: Long = 0
     private var categoryName: String = ""
     @Inject
@@ -87,12 +90,20 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         gotoAnswer()
         // 뒤로 가기
         onBackBtnPressed()
+        // 알림 클릭
+        readNotification()
 
         updateLike()
         binding.root.setOnClickListener {
             hideOptionMenuIfVisible()
         }
     }
+
+    fun readNotification(){
+        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        notificationViewModel.readNotification(notifiationId)
+    }
+
 
     fun showOptionMenu() {
         // 더보기 버튼

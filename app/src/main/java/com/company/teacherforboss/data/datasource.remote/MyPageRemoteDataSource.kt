@@ -6,6 +6,8 @@ import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedP
 import com.company.teacherforboss.data.model.response.mypage.ResponseBookmarkedQuestionsDto
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.RequestMyPageAnsweredQuestionDto
+import com.company.teacherforboss.data.model.request.mypage.RequestMyPageAnsweredQuestionDto
+import com.company.teacherforboss.data.model.request.mypage.RequestMyPageMyQuestionDto
 import com.company.teacherforboss.data.model.response.mypage.ResponseMyPageAnsweredQuestionDto
 import com.company.teacherforboss.util.base.BaseResponse
 
@@ -13,5 +15,5 @@ interface MyPageRemoteDataSource {
     suspend fun getBookmarkedQuestions(requestBookmarkedQuestionsDto: RequestBookmarkedQuestionsDto): BaseResponse<ResponseBookmarkedQuestionsDto>
     suspend fun getBookmarkedPosts(requestBookmarkedPostsDto: RequestBookmarkedPostsDto): BaseResponse<ResponseBookmarkedPostsDto>
     suspend fun getAnsweredQuestion(requestMyPageAnsweredQuestionDto: RequestMyPageAnsweredQuestionDto): BaseResponse<ResponseMyPageAnsweredQuestionDto>
-
+    suspend fun getMyQuestion(requestMyPageMyQuestionDto: RequestMyPageMyQuestionDto): BaseResponse<ResponseMyPageAnsweredQuestionDto>
 }

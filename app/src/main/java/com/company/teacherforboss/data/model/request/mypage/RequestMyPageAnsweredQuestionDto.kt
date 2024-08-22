@@ -1,4 +1,4 @@
-package com.company.teacherforboss.data.model.response.mypage
+package com.company.teacherforboss.data.model.request.mypage
 
 import com.google.gson.annotations.SerializedName
 

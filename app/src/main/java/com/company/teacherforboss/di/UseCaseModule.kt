@@ -51,6 +51,7 @@ import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCas
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.MyPageMyQuestionUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -265,6 +266,11 @@ class UseCaseModule {
     fun providesMyPageAnsweredQuestionUseCase(myPageRepository: MyPageRepository): MyPageAnsweredQuestionUseCase =
         MyPageAnsweredQuestionUseCase(myPageRepository)
 
+  @Provides
+    @Singleton
+    fun providesMyPageMyQuestionUseCase(myPageRepository: MyPageRepository): MyPageMyQuestionUseCase =
+        MyPageMyQuestionUseCase(myPageRepository)
+        
     @Provides
     @Singleton
     fun providesBookmarkedQuestionsUseCase(myPageRepository: MyPageRepository): BookmarkedQuestionsUseCase =

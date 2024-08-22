@@ -1,4 +1,4 @@
-package com.company.teacherforboss.data.model.response.mypage
+package com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile
 
 import com.company.teacherforboss.domain.model.common.TeacherProfileDetailEntity
 import com.google.gson.annotations.SerializedName
@@ -8,7 +8,9 @@ data class TeacherDetailProfileResponseDto (
     @SerializedName("profileImg") val profileImg: String,
     @SerializedName("introduction") val introduction: String,
     @SerializedName("phone") val phone: String?,
+    @SerializedName("phoneOpen") val phoneOpen: Boolean,
     @SerializedName("email") val email: String?,
+    @SerializedName("emailOpen") val emailOpen: Boolean,
     @SerializedName("field") val field: String,
     @SerializedName("career") val career: Int,
     @SerializedName("keywords") val keywords: List<String>,
@@ -20,7 +22,9 @@ data class TeacherDetailProfileResponseDto (
         profileImg = profileImg,
         introduction = introduction,
         phone = phone,
+        phoneOpen = phoneOpen,
         email = email,
+        emailOpen = emailOpen,
         field = field,
         career = career,
         keywords = keywords,

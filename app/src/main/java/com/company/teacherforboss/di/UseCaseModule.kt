@@ -13,6 +13,7 @@ import com.company.teacherforboss.domain.usecase.Member.ModifyBossProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.TeacherDetailProfileUseCase
+import com.company.teacherforboss.domain.usecase.Member.TeacherRecentAnswersUseCase
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
 import com.company.teacherforboss.domain.usecase.SignupUseCase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
@@ -48,9 +49,13 @@ import com.company.teacherforboss.domain.usecase.community.teacher.TeacherUpload
 import com.company.teacherforboss.domain.usecase.home.GetBossTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetTeacherTalkPopularPostUseCase
 import com.company.teacherforboss.domain.usecase.home.GetWeeklyBestTeacherUseCase
+import com.company.teacherforboss.domain.usecase.mypage.BookmarkedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.BookmarkedQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.ChipInfoUseCase
+import com.company.teacherforboss.domain.usecase.mypage.MyPageCommentedPostsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.MyPageMyPostsUseCase
+import com.company.teacherforboss.domain.usecase.mypage.MyPageMyQuestionUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -264,11 +269,30 @@ class UseCaseModule {
     @Singleton
     fun providesMyPageAnsweredQuestionUseCase(myPageRepository: MyPageRepository): MyPageAnsweredQuestionUseCase =
         MyPageAnsweredQuestionUseCase(myPageRepository)
+
+  @Provides
+    @Singleton
+    fun providesMyPageMyQuestionUseCase(myPageRepository: MyPageRepository): MyPageMyQuestionUseCase =
+        MyPageMyQuestionUseCase(myPageRepository)
         
     @Provides
     @Singleton
     fun providesBookmarkedQuestionsUseCase(myPageRepository: MyPageRepository): BookmarkedQuestionsUseCase =
         BookmarkedQuestionsUseCase(myPageRepository)
+
+    @Provides
+    @Singleton
+    fun providesBookmarkedPostsUseCase(myPageRepository: MyPageRepository): BookmarkedPostsUseCase =
+        BookmarkedPostsUseCase(myPageRepository)
+    @Provides
+    @Singleton
+    fun providesMyPageCommentedPostsUseCase(myPageRepository: MyPageRepository): MyPageCommentedPostsUseCase =
+        MyPageCommentedPostsUseCase(myPageRepository)
+
+    @Provides
+    @Singleton
+    fun providesMyPageMyPostsUseCase(myPageRepository: MyPageRepository): MyPageMyPostsUseCase =
+        MyPageMyPostsUseCase(myPageRepository)
 
     @Provides
     @Singleton
@@ -284,6 +308,11 @@ class UseCaseModule {
     @Singleton
     fun providesTeacherDetailProfileUseCase(memberRepository: MemberRepository): TeacherDetailProfileUseCase =
         TeacherDetailProfileUseCase(memberRepository)
+
+    @Provides
+    @Singleton
+    fun providesTeacherRecentAnswersUseCase(memberRepository: MemberRepository): TeacherRecentAnswersUseCase =
+        TeacherRecentAnswersUseCase(memberRepository)
 
     @Provides
     @Singleton

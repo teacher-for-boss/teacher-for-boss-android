@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 data class ResponseBookmarkedQuestionsDto (
     @SerializedName("hasNext")
     val hasNext:Boolean,
-    @SerializedName("bookmarkedQuestionsList")
+    @SerializedName("questionList")
     val bookmarkedQuestionsList: ArrayList<BookmarkedQuestionsDto>
 ){
     fun toBookmarkedQuestionsEntity(): BookmarkedQuestionsResponseEntity {

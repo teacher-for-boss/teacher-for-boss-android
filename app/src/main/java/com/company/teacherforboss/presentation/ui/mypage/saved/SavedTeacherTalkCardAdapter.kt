@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemSavedTeacherBinding
+import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -21,7 +22,9 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
 
     private val inflater by lazy { LayoutInflater.from(context) }
-    private var answeredQuestionList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
+    private var bookmarkedQuestionsList: MutableList<BookmarkedQuestionsEntity> = mutableListOf()
+    private var allBookmarkedQuestions: List<BookmarkedQuestionsEntity> = emptyList()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedTeacherTalkCardViewHolder {
         val binding = RvItemSavedTeacherBinding.inflate(inflater, parent, false)
@@ -29,17 +32,26 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: SavedTeacherTalkCardViewHolder, position: Int) {
-        holder.onBind(answeredQuestionList[position])
+        holder.onBind(bookmarkedQuestionsList[position])
     }
 
     override fun getItemCount(): Int {
-        return answeredQuestionList.size
+        return bookmarkedQuestionsList.size
     }
 
-    fun setData(newData: List<BookmarkedQuestionsEntity>) {
-        answeredQuestionList.clear()
-        answeredQuestionList.addAll(newData)
+
+    fun setCardList(cardList: List<BookmarkedQuestionsEntity>) {
+        this.allBookmarkedQuestions=cardList
+        this.bookmarkedQuestionsList = allBookmarkedQuestions.take(10).toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun addMoreCards(newQuestionList:List<BookmarkedQuestionsEntity>) {
+        val currentSize = bookmarkedQuestionsList.size
+        val newItemSize= newQuestionList.size
+        bookmarkedQuestionsList.addAll(newQuestionList)
+        notifyItemRangeInserted(currentSize,newItemSize)
+
     }
 
     inner class SavedTeacherTalkCardViewHolder(private val binding: RvItemSavedTeacherBinding) :
@@ -62,6 +74,8 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
             binding.tvAnsweredQuestionTitle.text = spannable
             binding.tvAnsweredQuestionContent.text = question.content
             binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(question.createdAt)
+            binding.cardCategory.text = question.category
+
 
             if (question.solved) {
                 binding.widgetCardViewStatementSolved.visibility = View.VISIBLE

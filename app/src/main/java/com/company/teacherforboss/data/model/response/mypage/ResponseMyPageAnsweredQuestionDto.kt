@@ -9,13 +9,14 @@ data class ResponseMyPageAnsweredQuestionDto (
     @SerializedName("hasNext")
     val hasNext:Boolean,
     @SerializedName("questionList")
-    val answeredQuestionList: ArrayList<MyPageQuestionDto>
+    val questionList: ArrayList<MyPageQuestionDto>
 ){
     fun toMyPageAnsweredQuestionResponseEntity(): MyPageAnsweredQuestionResponseEntity {
-        val answeredQuestionList = answeredQuestionList.mapTo(ArrayList()) {it.toMyPageQuestionEntity()}
+        val questionList = questionList.mapTo(ArrayList()) {it.toMyPageQuestionEntity()}
+
         return MyPageAnsweredQuestionResponseEntity(
             hasNext = hasNext,
-            answeredQuestionList=answeredQuestionList
+            questionList=questionList
         )
     }
 }

@@ -7,7 +7,7 @@ data class TeacherRecentAnswerListEntity(
         val questionId: Long,
         val questionTitle: String,
         val answer: String,
-        val answerLikeCount: String,
+        val answerLikeCount: Int,
         val answeredAt: String,
     )
 }

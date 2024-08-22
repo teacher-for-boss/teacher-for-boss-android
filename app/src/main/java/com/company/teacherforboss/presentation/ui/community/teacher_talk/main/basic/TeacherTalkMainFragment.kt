@@ -51,6 +51,13 @@ class TeacherTalkMainFragment :
         val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
 
+        // 선택된 카테고리 index로 스크롤
+        if(viewModel.getCategoryId() != -1) {
+            binding.rvTeacherTalkCategory.post {
+                categoryLayoutManager.scrollToPosition(viewModel.getCategoryId())
+            }
+        }
+
         teacherTalkCardAdapter= TeacherTalkCardAdapter(requireContext())
         binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
 

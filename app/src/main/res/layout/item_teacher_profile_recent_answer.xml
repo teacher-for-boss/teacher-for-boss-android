@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="9dp"
-                    android:text="@{teacherRecentAnswer.answerLikeCount}"
+                    android:text="@{String.valueOf(teacherRecentAnswer.answerLikeCount)}"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Caption1"
                     android:textColor="@color/Purple600"
                     app:layout_constraintBottom_toBottomOf="@id/iv_teacher_profile_recent_answer_comment_good"

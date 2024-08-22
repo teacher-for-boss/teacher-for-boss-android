@@ -5,12 +5,13 @@ import com.company.teacherforboss.data.model.request.mypage.ModifyTeacherProfile
 import com.company.teacherforboss.data.model.response.auth.AccountResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ModifyProfileResponseDto
 import com.company.teacherforboss.data.model.response.mypage.ProfileResponseDto
-import com.company.teacherforboss.data.model.response.mypage.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherDetailProfileResponseDto
+import com.company.teacherforboss.data.model.response.mypage.teacher_detail_profile.TeacherRecentAnswersResponseDto
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
-import retrofit2.http.Query
+import retrofit2.http.Path
 
 interface MemberService {
     companion object{
@@ -25,11 +26,16 @@ interface MemberService {
     suspend fun getProfile()
     :BaseResponse<ProfileResponseDto>
 
-    @GET("${MEMBER}/profiles/teacher/detail?")
+    @GET("${MEMBER}/profiles/teacher/{memberId}")
     suspend fun getTeacherDetailProfile(
-        @Query("memberId") memberId: Long?
+        @Path("memberId") memberId: Long
     )
     :BaseResponse<TeacherDetailProfileResponseDto>
+
+    @GET("${MEMBER}/profiles/teacher/{memberId}/recent-answers")
+    suspend fun getTeacherRecentAnswers(
+        @Path("memberId") memberId: Long
+    ):BaseResponse<TeacherRecentAnswersResponseDto>
 
     @PATCH("${MEMBER}/profiles/teacher")
     suspend fun modifyTeacherProfile(

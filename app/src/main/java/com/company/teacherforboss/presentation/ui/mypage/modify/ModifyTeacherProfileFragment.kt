@@ -76,27 +76,37 @@ class ModifyTeacherProfileFragment : Fragment() {
                     // image
                     binding.profileImage.loadCircularImage(it.profileImg)
                     viewModel.setProfileImg(it.profileImg)
+                    viewModel.setInitProfileImg(it.profileImg)
                     // nickname
                     viewModel.setNickname(it.nickname)
-                    viewModel.initialNickname.value = it.nickname
+                    viewModel.setInitNickname(it.nickname)
                     // phone
                     if(!it.phone.isNullOrEmpty()) {
+                        viewModel.setInitPhone(it.phone)
                         viewModel.setPhone(it.phone)
-                        viewModel.setPhoneReveal(true)
-                        binding.switchPhone.isChecked = true
+                        if(it.phoneOpen==true){
+                            binding.switchPhone.isChecked = true
+                            viewModel.setPhoneReveal(true)
+                        }
                     }
                     // email
                     if(!it.email.isNullOrEmpty()) {
                         viewModel.setEmail(it.email)
-                        viewModel.setEmailReveal(true)
-                        binding.switchEmail.isChecked = true
+                        viewModel.setInitEmail(it.email)
+                        if(it.emailOpen==true){
+                            binding.switchEmail.isChecked = true
+                            viewModel.setEmailReveal(true)
+                        }
                     }
                     // field
                     viewModel.setField(it.field)
+                    viewModel.setInitField(it.field)
                     // career
                     viewModel.setCareer(it.career.toString())
+                    viewModel.setInitCareer(it.career.toString())
                     // introduction
                     viewModel.setIntroduction(it.introduction)
+                    viewModel.setInitIntroduction(it.introduction)
                     // keywords
                     val chipList = it.keywords
                     selectedChipList = chipList.toMutableList()
@@ -108,7 +118,11 @@ class ModifyTeacherProfileFragment : Fragment() {
                             checkCnt++
                         }
                     }
+                    viewModel.setInitKeywords(it.keywords)
 
+                    viewModel.setEnableNextState(false)
+                    binding.nextBtn.isEnabled=false
+                    viewModel.setIsInitializedView(true)
                 }
             }
         }
@@ -274,14 +288,17 @@ class ModifyTeacherProfileFragment : Fragment() {
                     Toast.makeText(context, "5개 도달", Toast.LENGTH_SHORT).show()
                 } else {
                     if (isChecked) {
-                        selectedChipList.add(chip.text.toString())
-                        checkCnt++
-                        if (checkCnt == 1) checkFilled()
+                        if(!selectedChipList.contains(chip.text.toString())){
+                            selectedChipList.add(chip.text.toString())
+                            checkCnt++
+                            if (checkCnt == 1) checkFilled()
+                        }
                     } else {
                         selectedChipList.remove(chip.text.toString())
                         checkCnt--
                         if (checkCnt == 0) checkFilled()
                     }
+                    viewModel.setKeywords(selectedChipList)
                 }
             }
         }
@@ -294,33 +311,48 @@ class ModifyTeacherProfileFragment : Fragment() {
         }
     }
 
-    private fun checkFilled() {
-        viewModel.nicknameCheck.observeForever {
-            if (viewModel.nicknameCheck.value == true) {
-                if (!viewModel.phone.value.isNullOrEmpty() &&
-                    !viewModel.email.value.isNullOrEmpty() &&
-                    !viewModel._field.value.isNullOrEmpty() &&
-                    !viewModel._carrer_str.value.isNullOrEmpty() &&
-                    !viewModel._introduction.value.isNullOrEmpty() &&
-                    checkCnt > 0
-                )
-                    viewModel.enableNext.value = true
-                else
-                    viewModel.enableNext.value = false
-            }
-            else
-                viewModel.enableNext.value = false
+    private fun setObserver(){
+        viewModel.isInitializedView.observe(viewLifecycleOwner) { initialized ->
+            if (initialized) observeDataChanges()
         }
     }
 
-    private fun setObserver() {
-        val dataObserver = Observer<String> { _ -> checkFilled() }
+    private fun checkFilled() {
+        viewModel.checkIfModified()
+
+        if (viewModel.nicknameCheck.value == true) {
+            if (!viewModel.phone.value.isNullOrEmpty() &&
+                !viewModel.email.value.isNullOrEmpty() &&
+                !viewModel._field.value.isNullOrEmpty() &&
+                !viewModel._career_str.value.isNullOrEmpty() &&
+                !viewModel._introduction.value.isNullOrEmpty() &&
+                checkCnt > 0 &&
+                viewModel.getIsModified()==true
+            ) viewModel.setEnableNextState(true)
+
+            else
+                viewModel.setEnableNextState(false)
+        }
+        else
+            viewModel.setEnableNextState(false)
+    }
+
+    private fun observeDataChanges() {
+        val dataObserver = Observer<String> {
+            checkFilled()
+        }
         viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
         viewModel.phone.observe(viewLifecycleOwner, dataObserver)
-        viewModel._email.observe(viewLifecycleOwner, dataObserver)
-        viewModel._field.observe(viewLifecycleOwner, dataObserver)
-        viewModel._carrer_str.observe(viewLifecycleOwner, dataObserver)
-        viewModel._introduction.observe(viewLifecycleOwner, dataObserver)
+        viewModel.email.observe(viewLifecycleOwner, dataObserver)
+        viewModel.field.observe(viewLifecycleOwner, dataObserver)
+        viewModel.career_str.observe(viewLifecycleOwner, dataObserver)
+        viewModel.introduction.observe(viewLifecycleOwner, dataObserver)
+
+        // keywords 필드에 대한 Observer
+        val keywordsObserver = Observer<MutableList<String>> {
+            checkFilled()
+        }
+        viewModel.keywords.observe(viewLifecycleOwner, keywordsObserver)
 
         // SwitchCompat 리스너 설정
         binding.switchPhone.setOnCheckedChangeListener { _, isChecked ->

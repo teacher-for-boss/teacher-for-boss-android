@@ -6,15 +6,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemTagWriteBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteViewModel
 
-class rvAdapterTagWrite(private val tagList: ArrayList<String>, private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<rvAdapterTagWrite.ViewHolder>() {
+class rvAdapterTagWrite(
+    private val tagList: ArrayList<String>,
+    private val clickDeleteTag:(Int)->Unit
+): RecyclerView.Adapter<rvAdapterTagWrite.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: RvItemTagWriteBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(tag: String, viewModel: BossTalkWriteViewModel) {
+    inner class ViewHolder(
+        private val binding: RvItemTagWriteBinding
+        ): RecyclerView.ViewHolder(binding.root) {
+        fun bind(tag: String) {
             binding.hashtagName.text = tag
 
             binding.deleteHashtag.setOnClickListener {
                 val position = adapterPosition
-                viewModel.deleteHashTag(position)
+                clickDeleteTag(position)
                 notifyItemRemoved(position)
             }
 
@@ -26,7 +31,7 @@ class rvAdapterTagWrite(private val tagList: ArrayList<String>, private val view
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(tagList[position], viewModel = viewModel)
+        holder.bind(tagList[position])
     }
 
     override fun getItemCount(): Int {

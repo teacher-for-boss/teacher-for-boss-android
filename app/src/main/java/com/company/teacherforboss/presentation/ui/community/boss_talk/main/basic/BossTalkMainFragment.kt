@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.card.BossTalkMainCardAdapter
 import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
@@ -21,6 +22,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.CustomAdapter
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BossTalkMainFragment :
     BindingFragment<FragmentBossTalkMainBinding>(R.layout.fragment_boss_talk_main) {
     private val viewModel by viewModels<BossTalkMainViewModel>()
-    private lateinit var bossTalkCardAdapter: BossTalkMainCardAdapter
+    private val bossTalkCardAdapter: BossTalkMainCardAdapter by lazy { BossTalkMainCardAdapter(::navigateToBossTalkBody) }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -109,9 +111,7 @@ class BossTalkMainFragment :
 
     private fun initPostView(postList: List<PostEntity>){
         // rv
-        bossTalkCardAdapter = BossTalkMainCardAdapter(requireContext())
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
-        binding.rvBossTalkCard.layoutManager = LinearLayoutManager(requireContext())
         bossTalkCardAdapter.setCardList(postList)
 
     }
@@ -184,6 +184,12 @@ class BossTalkMainFragment :
 
     private fun navigateToAlarm(){
         Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+    private fun navigateToBossTalkBody(postId: Long) {
+        Intent(requireContext(), BossTalkBodyActivity::class.java).apply {
+            putExtra(BOSS_POSTID, postId)
             startActivity(this)
         }
     }

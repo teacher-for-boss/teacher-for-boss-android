@@ -41,7 +41,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
     private var questionId:Long=0
     private var answerId: Long=0
-    private lateinit var adapterImage: rvAdapterImageTeacherAnswer
+    private val adapterImage:rvAdapterImageTeacherAnswer by lazy { rvAdapterImageTeacherAnswer(viewModel.imageList,::deleteImage) }
     private var purpose = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,9 +106,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
     fun setRecyclerView() {
         //imageRv
-        adapterImage = rvAdapterImageTeacherAnswer(viewModel.imageList, viewModel)
         binding.rvImage.adapter = adapterImage
-        binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun addListeners() {
@@ -206,6 +204,8 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
         uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
     }
+
+    fun deleteImage(positioin:Int)= viewModel.deleteImage(positioin)
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {

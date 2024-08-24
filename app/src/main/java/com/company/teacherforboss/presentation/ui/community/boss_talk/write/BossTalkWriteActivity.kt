@@ -47,8 +47,8 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
     private lateinit var binding: ActivityBosstalkWriteBinding
     private val viewModel: BossTalkWriteViewModel by viewModels()
 
-    private lateinit var adapterTag: rvAdapterTagWrite
-    private lateinit var adapterImage: rvAdapterImage
+    private val adapterTag:rvAdapterTagWrite by lazy { rvAdapterTagWrite(viewModel.hashTagList,::deleteHashTag) }
+    private val adapterImage: rvAdapterImage by lazy { rvAdapterImage(viewModel.imageList,::deleteImage) }
     private var purpose:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,15 +80,12 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
-        //tagRv
-        adapterTag = rvAdapterTagWrite(viewModel.hashTagList, viewModel)
-        binding.rvHashtag.adapter = adapterTag
-        binding.rvHashtag.layoutManager = layoutManager
 
-        //imageRv
-        adapterImage = rvAdapterImage(viewModel.imageList, viewModel)
-        binding.rvImage.adapter = adapterImage
-        binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        //Rv adapter
+        with(binding){
+            rvHashtag.adapter=adapterTag
+            rvImage.adapter=adapterImage
+        }
 
         //글자수
         setTextLength()
@@ -142,6 +139,8 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
             false
         })
     }
+
+    fun deleteHashTag(position:Int)= viewModel.deleteHashTag(position)
 
     private fun checkAndRequestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -214,6 +213,8 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
         val mimeType: String? = contentResolver.getType(uri)
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
     }
+
+    fun deleteImage(position: Int)= viewModel.deleteImage(position)
 
     fun setTextLength() {
         binding.inputTitle.addTextChangedListener(object: TextWatcher {

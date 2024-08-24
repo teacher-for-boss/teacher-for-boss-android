@@ -6,21 +6,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemImageBinding
-import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteViewModel
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.adapter.rvAdapterImage.ViewHolder
 import com.company.teacherforboss.util.base.BindingImgAdapter
 
-class rvAdapterImage(private val imageList: ArrayList<Uri>,private val viewModel: BossTalkWriteViewModel): RecyclerView.Adapter<ViewHolder>() {
+class rvAdapterImage(
+    private val imageList: ArrayList<Uri>,
+    private val deleteImage:(Int)->Unit
+): RecyclerView.Adapter<ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {
-            fun bind(imagePath: String, viewModel: BossTalkWriteViewModel) {
+            fun bind(imagePath: String) {
                 BindingImgAdapter.bindImgUri(binding.image,Uri.parse(imagePath))
 
                 binding.deleteButton.setOnClickListener {
                     val position = adapterPosition
-                    Log.d("imageDelete", position.toString())
-                    Log.d("imageDelete", "delete전: ${viewModel.imageList.toString()}")
-                    viewModel.deleteImage(position)
-                    Log.d("imageDelete", "delete후: ${viewModel.imageList.toString()}")
+                    deleteImage(position)
                     notifyDataSetChanged()
                 }
             }
@@ -37,6 +36,6 @@ class rvAdapterImage(private val imageList: ArrayList<Uri>,private val viewModel
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(imageList[position].toString(), viewModel = viewModel)
+        holder.bind(imageList[position].toString())
     }
 }

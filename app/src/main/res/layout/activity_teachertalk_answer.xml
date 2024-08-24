@@ -240,6 +240,7 @@
                     app:layout_constraintStart_toEndOf="@id/input_image"
                     app:layout_constraintTop_toTopOf="@id/input_image"
                     android:layout_marginStart="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"/>
 
                 <View

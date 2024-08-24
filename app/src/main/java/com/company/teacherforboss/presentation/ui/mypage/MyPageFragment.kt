@@ -147,17 +147,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 intent.putExtra("role",viewModel.getRole())
                 startActivity(intent)
             }
-//            ivMyPageMenuBarFirst.setOnClickListener {
-//                if (viewModel.getRole() == ROLE_TEACHER) {
-//                    val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
-//                    intent.putExtra("role",viewModel.getRole())
-//                    startActivity(intent)
-//                } else {
-//                    val intent = Intent(context, MyPageTeacherTalkActivity::class.java)
-//                    startActivity(intent)
-//                }
-//
-//            }
+
             includeMyPageMenuSavedPost.root.setOnClickListener{
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)

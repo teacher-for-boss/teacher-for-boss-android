@@ -141,13 +141,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 startActivity(intent)
             }
 
-            // boss - 답변한 질문 글 / teacher - 나의 질문
             ivMyPageMenuBarFirst.setOnClickListener{
                 val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
                 intent.putExtra("role",viewModel.getRole())
                 startActivity(intent)
             }
-
+            // iv_my_page_menu_bar_third
+            // 보스 - 질문권 결제 / 티처 - 환전하기
+            ivMyPageMenuBarThird.setOnClickListener{
+                if (viewModel.getRole() == ROLE_TEACHER) {
+                    val intent = Intent(context, ExchangeActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+            }
             includeMyPageMenuSavedPost.root.setOnClickListener{
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)

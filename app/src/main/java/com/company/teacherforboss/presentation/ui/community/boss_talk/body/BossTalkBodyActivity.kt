@@ -2,9 +2,12 @@ package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -95,21 +98,24 @@ class BossTalkBodyActivity : AppCompatActivity() {
         val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
         notificationViewModel.readNotification(notifiationId)
     }
-
     private fun showOptionMenu() {
         // 더보기 버튼
         binding.btnOption.setOnClickListener {
-            if (viewModel.isMine.value == true) { // 작성자인 경우
-                if (binding.writerOption.visibility == View.GONE) {
-                    binding.writerOption.visibility = View.VISIBLE
-                } else {
-                    binding.writerOption.visibility = View.GONE
-                }
-            } else { // 작성자가 아닌 경우
-                if (binding.nonWriterOption.visibility == View.GONE) {
-                    binding.nonWriterOption.visibility = View.VISIBLE
-                } else {
-                    binding.nonWriterOption.visibility = View.GONE
+            if (binding.writerOption.visibility == View.VISIBLE || binding.nonWriterOption.visibility == View.VISIBLE) {
+                hideOptionMenuIfVisible()
+            } else {
+                if (viewModel.isMine.value == true) { // 작성자인 경우
+                    if (binding.writerOption.visibility == View.GONE) {
+                        binding.writerOption.visibility = View.VISIBLE
+                    } else {
+                        binding.writerOption.visibility = View.GONE
+                    }
+                } else { // 작성자가 아닌 경우
+                    if (binding.nonWriterOption.visibility == View.GONE) {
+                        binding.nonWriterOption.visibility = View.VISIBLE
+                    } else {
+                        binding.nonWriterOption.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -297,25 +303,33 @@ class BossTalkBodyActivity : AppCompatActivity() {
         })
     }
     private fun hideOptionMenuIfVisible() {
-        if (binding.writerOption.visibility == View.VISIBLE) {
-            binding.writerOption.visibility = View.GONE
-        }
-        if (binding.nonWriterOption.visibility == View.VISIBLE) {
-            binding.nonWriterOption.visibility = View.GONE
-        }
+        binding.writerOption.visibility = View.GONE
+        binding.nonWriterOption.visibility = View.GONE
     }
-//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-//        if (ev.action == MotionEvent.ACTION_DOWN) {
-//            val v = currentFocus
-//            if (v != null) {
-//                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.hideSoftInputFromWindow(v.windowToken, 0)
-//                v.clearFocus()
-//            }
-//            hideOptionMenuIfVisible()
-//        }
-//        return super.dispatchTouchEvent(ev)
-//    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v != null) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                v.clearFocus()
+            }
+
+            val btnOptionLocation = IntArray(2)
+            binding.btnOption.getLocationOnScreen(btnOptionLocation)
+            val btnOptionRect = Rect(
+                btnOptionLocation[0],
+                btnOptionLocation[1],
+                btnOptionLocation[0] + binding.btnOption.width,
+                btnOptionLocation[1] + binding.btnOption.height
+            )
+
+            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                hideOptionMenuIfVisible()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
     override fun onBackPressed() {
         finish()

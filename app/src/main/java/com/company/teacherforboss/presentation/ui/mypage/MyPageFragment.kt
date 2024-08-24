@@ -12,6 +12,7 @@ import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileRecentAnswerFragment
 import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
@@ -139,6 +140,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
             }
+
+            // boss - 답변한 질문 글 / teacher - 나의 질문
+            ivMyPageMenuBarFirst.setOnClickListener{
+                val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
+                intent.putExtra("role",viewModel.getRole())
+                startActivity(intent)
+            }
+//            ivMyPageMenuBarFirst.setOnClickListener {
+//                if (viewModel.getRole() == ROLE_TEACHER) {
+//                    val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
+//                    intent.putExtra("role",viewModel.getRole())
+//                    startActivity(intent)
+//                } else {
+//                    val intent = Intent(context, MyPageTeacherTalkActivity::class.java)
+//                    startActivity(intent)
+//                }
+//
+//            }
             includeMyPageMenuSavedPost.root.setOnClickListener{
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
@@ -205,6 +224,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setTeacherChipInfo(data: ChipInfoResponseEntity) {
         with(binding) {
+            tvMyPageMenuBarFirst.text = getString(R.string.my_page_teacher_menu_bar_answer)
             tvMyPageMenuBarFirstCount.text = data.answerCount.toString()
             tvMyPageMenuBarBookmarkCount.text = data.bookmarkCount.toString()
             tvMyPageMenuBarThird.text = getString(

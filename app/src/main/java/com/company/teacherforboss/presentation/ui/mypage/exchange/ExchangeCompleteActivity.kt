@@ -20,10 +20,11 @@ class ExchangeCompleteActivity : AppCompatActivity() {
 
     fun onCheckBtnPressed(){
         binding.btnCheck.setOnClickListener {
-            val intent= Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION","EXCHANGE")
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra("gotoMyPage", "gotoMyPage")
             }
             startActivity(intent)
+            finish()
         }
 
     }

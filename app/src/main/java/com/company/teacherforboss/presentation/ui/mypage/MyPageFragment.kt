@@ -171,6 +171,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 when (userProfileInfoState) {
                     is UiState.Success -> {
                         val profileData = userProfileInfoState.data
+                        viewModel.setMemberId(profileData.memberId)
 
                         viewModel.userChipInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
                             .onEach { chipInfoState ->

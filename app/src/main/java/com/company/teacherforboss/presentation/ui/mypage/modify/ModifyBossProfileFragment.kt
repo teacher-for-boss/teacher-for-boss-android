@@ -16,6 +16,8 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
+import com.company.teacherforboss.MainActivity.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.MainActivity.Companion.MYPAGE
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
@@ -144,6 +146,7 @@ class ModifyBossProfileFragment : Fragment() {
 
             viewModel.modifyBossProfileLiveData.observe(viewLifecycleOwner, Observer {
                 Intent(requireActivity(), MainActivity::class.java).apply {
+                    putExtra(FRAGMENT_DESTINATION,MYPAGE)
                     startActivity(this)
                 }
             })

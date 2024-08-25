@@ -143,19 +143,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
             }
-            if(viewModel.getRole()== ROLE_TEACHER){
-                tvMyPageProfileName.setOnClickListener {
-                    Intent(context,TeacherProfileActivity::class.java).apply {
-                        putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
-                        startActivity(this)
-                    }
-                }
-                ivMyPageProfile.setOnClickListener {
-                    Intent(context,TeacherProfileActivity::class.java).apply {
-                        putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
-                        startActivity(this)
-                    }
-                }
+            tvMyPageProfileName.setOnClickListener {
+                if(viewModel.getRole()== ROLE_TEACHER){
+                Intent(context,TeacherProfileActivity::class.java).apply {
+                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    startActivity(this)
+                } }
+            }
+            ivMyPageProfile.setOnClickListener {
+                if(viewModel.getRole()== ROLE_TEACHER){
+                Intent(context,TeacherProfileActivity::class.java).apply {
+                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    startActivity(this)
+                } }
             }
         }
     }

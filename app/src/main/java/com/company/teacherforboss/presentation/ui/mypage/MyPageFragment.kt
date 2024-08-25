@@ -143,28 +143,27 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
             }
-            tvMyPageProfileName.setOnClickListener {
-                Intent(context,TeacherProfileActivity::class.java).apply {
-                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    startActivity(this)
+            if(viewModel.getRole()== ROLE_TEACHER){
+                tvMyPageProfileName.setOnClickListener {
+                    Intent(context,TeacherProfileActivity::class.java).apply {
+                        putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                        startActivity(this)
+                    }
                 }
-            }
-            ivMyPageProfile.setOnClickListener {
-                Intent(context,TeacherProfileActivity::class.java).apply {
-                    putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    startActivity(this)
+                ivMyPageProfile.setOnClickListener {
+                    Intent(context,TeacherProfileActivity::class.java).apply {
+                        putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
+                        startActivity(this)
+                    }
                 }
             }
         }
     }
 
-    private fun getProfile() {
-        viewModel.getUserProfile()
-    }
+    private fun getProfile() = viewModel.getUserProfile()
 
-    private fun getChipInfo() {
-        viewModel.getUserChipInfo()
-    }
+    private fun getChipInfo() = viewModel.getUserChipInfo()
+
     private fun collectData() {
         viewModel.userProfileInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { userProfileInfoState ->
@@ -172,6 +171,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     is UiState.Success -> {
                         val profileData = userProfileInfoState.data
                         viewModel.setMemberId(profileData.memberId)
+                        viewModel.setRole(profileData.role)
 
                         viewModel.userChipInfoState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
                             .onEach { chipInfoState ->
@@ -184,8 +184,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                                     else -> Unit
                                 }
                             }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-                        viewModel._role.value = profileData.role
                     }
 
                     else -> Unit

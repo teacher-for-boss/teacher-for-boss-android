@@ -367,15 +367,8 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            if (intent.getStringExtra("PREVIOUS_ACTIVITY") == "TeacherTalkSearchActivity") {
-                finish()
-            } else {
-                startActivity(Intent(this, MainActivity::class.java).apply {
-                    putExtra(FRAGMENT_DESTINATION, "TEACHER_TALK")
-                })
-            }
+            finish()
         }
-
     }
 
     fun setTextColor() {

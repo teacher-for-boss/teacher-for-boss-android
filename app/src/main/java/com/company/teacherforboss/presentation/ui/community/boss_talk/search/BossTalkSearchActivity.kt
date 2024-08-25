@@ -2,7 +2,9 @@ package com.company.teacherforboss.presentation.ui.community.boss_talk.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -33,8 +35,9 @@ class BossTalkSearchActivity : AppCompatActivity() {
         viewModel._lastPostId.value = intent.getLongExtra("lastPostId",-1L)
 
         initView()
-        searchKeyword()
         onBackBtnPressed()
+        finishSearchKeyword()
+        addListeners()
     }
 
     override fun onResume() {
@@ -56,12 +59,21 @@ class BossTalkSearchActivity : AppCompatActivity() {
         }
     }
 
-    fun searchKeyword() {
+    fun addListeners() {
         binding.searchBtn.setOnClickListener {
-            viewModel.setKeyword(binding.inputKeyword.text.toString())
+            viewModel.setKeyword(binding.etInputKeyword.text.toString())
             viewModel.searchKeywordBossTalk()
-
-            finishSearchKeyword()
+        }
+        binding.etInputKeyword.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                viewModel.setKeyword(binding.etInputKeyword.text.toString())
+                viewModel.searchKeywordBossTalk()
+                true
+            }
+            else {
+                false
+            }
         }
     }
 
@@ -76,9 +88,7 @@ class BossTalkSearchActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "BOSS_TALK")
-            })
+            finish()
         }
     }
 }

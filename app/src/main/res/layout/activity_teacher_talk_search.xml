@@ -26,7 +26,7 @@
             android:layout_marginTop="25dp" />
 
         <EditText
-            android:id="@+id/input_keyword"
+            android:id="@+id/et_input_keyword"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/background_radius100_white"
@@ -37,23 +37,25 @@
             android:hint="궁금한 키워드"
             android:textColorHint="@color/Gray400"
             android:textSize="12dp"
-            android:paddingHorizontal="18dp" />
+            android:paddingHorizontal="18dp"
+            android:maxLength="30"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/search_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_search"
-            app:layout_constraintEnd_toEndOf="@id/input_keyword"
-            app:layout_constraintTop_toTopOf="@id/input_keyword"
-            app:layout_constraintBottom_toBottomOf="@id/input_keyword"
+            app:layout_constraintEnd_toEndOf="@id/et_input_keyword"
+            app:layout_constraintTop_toTopOf="@id/et_input_keyword"
+            app:layout_constraintBottom_toBottomOf="@id/et_input_keyword"
             android:layout_marginEnd="18dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_teacher_talk_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/input_keyword"
+            app:layout_constraintTop_toBottomOf="@id/et_input_keyword"
             android:layout_marginTop="21dp"
             android:layout_marginHorizontal="25dp"
             android:visibility="visible"

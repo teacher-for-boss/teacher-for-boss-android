@@ -26,6 +26,7 @@ import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBindin
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.chip.Chip
@@ -309,7 +310,7 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     private fun showProfileImageDialog() {
         binding.profileImage.setOnClickListener {
-            val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, viewModel)
+            val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, TEACHER,viewModel)
             dialog.show()
         }
     }

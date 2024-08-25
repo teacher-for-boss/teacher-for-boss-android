@@ -23,6 +23,7 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.view.loadCircularImage
 
@@ -185,7 +186,7 @@ class ModifyBossProfileFragment : Fragment() {
 
     private fun showProfileImageDialog() {
         binding.profileImage.setOnClickListener {
-            val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, viewModel)
+            val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, BOSS,viewModel)
             dialog.show()
         }
     }

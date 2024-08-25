@@ -22,12 +22,14 @@ import com.company.teacherforboss.databinding.DialogProfileImageBinding
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.preloadImage
 import com.company.teacherforboss.util.base.UrlConfig
 
 class ProfileImageDialogModify (
     val activity: ModifyProfileActivity,
+    val role:String,
     private val viewModel: ModifyProfileViewModel,
 ): Dialog(activity){
     private lateinit var binding: DialogProfileImageBinding
@@ -44,7 +46,10 @@ class ProfileImageDialogModify (
         binding=DialogProfileImageBinding.inflate(LayoutInflater.from(context))
 
         var selectedFileList:List<ProfileAnimal>
-        selectedFileList=animalBossFileList
+        when(role){
+            BOSS->selectedFileList=animalBossFileList
+            else->selectedFileList=animalTeacherFileList
+        }
 
         setView(selectedFileList)
         setImgView(selectedFileList)
@@ -142,9 +147,8 @@ class ProfileImageDialogModify (
         binding.finishBtn.setOnClickListener {
             if(viewModel._isUserImgSelected.value==false){ // 디폴트 이미지 선택시
                 clickedMap.forEach { index, bool ->
-                    if(bool==true) selectedIndex=index
+                    if(bool==true)viewModel._profileImg.value= IMG_BASE_URL+profileList[index].fileName
                 }
-                viewModel._profileImg.value= IMG_BASE_URL+profileList[selectedIndex].fileName
             }
             dismiss()
         }

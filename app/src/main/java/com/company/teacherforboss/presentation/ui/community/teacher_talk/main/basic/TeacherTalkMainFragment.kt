@@ -39,6 +39,7 @@ class TeacherTalkMainFragment :
 
     @Inject
     lateinit var localDataSource: LocalDataSource
+    var initialized = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,9 +81,11 @@ class TeacherTalkMainFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.clearData()
+        initialized = false
     }
 
     private fun initView() {
+        if (!initialized) viewModel.getTeacherTalkQuestions()
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
@@ -146,6 +149,7 @@ class TeacherTalkMainFragment :
         Handler(Looper.getMainLooper()).postDelayed({
             binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
         },2000)
+        initialized = true
     }
 
 
@@ -172,14 +176,18 @@ class TeacherTalkMainFragment :
 
     private fun observeSortType() {
         viewModel.sortBy.observe(viewLifecycleOwner, {
-            viewModel.getTeacherTalkQuestions()
+            if(initialized) viewModel.getTeacherTalkQuestions()
+            else {}
         })
     }
 
     private fun observeCategory() {
         viewModel.category.observe(viewLifecycleOwner, {
-            viewModel.updateQuestionIdMap(DEFAULT_LASTID)
-            viewModel.getTeacherTalkQuestions()
+            if (initialized){
+                viewModel.updateQuestionIdMap(DEFAULT_LASTID)
+                viewModel.getTeacherTalkQuestions()
+            }
+            else {}
         })
     }
 

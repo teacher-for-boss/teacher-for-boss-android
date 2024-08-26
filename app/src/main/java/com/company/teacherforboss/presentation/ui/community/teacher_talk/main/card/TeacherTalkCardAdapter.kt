@@ -18,21 +18,19 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class TeacherTalkCardAdapter(context: Context) :
+class TeacherTalkCardAdapter(
+    private val clickItem: (Long) -> Unit) :
     RecyclerView.Adapter<TeacherTalkCardAdapter.TeacherTalkMainCardViewHolder>() {
-    private val inflater by lazy { LayoutInflater.from(context) }
 
     private var teacherTalkCardList: MutableList<QuestionEntity> = mutableListOf()
-    private var allTeacherTalkCard: List<QuestionEntity> = emptyList()
-    private val context=context
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TeacherTalkMainCardViewHolder {
-        val binding = ItemTeacherTalkCardBinding.inflate(inflater, parent, false)
-        return TeacherTalkMainCardViewHolder(binding)
-    }
+    ): TeacherTalkMainCardViewHolder=TeacherTalkMainCardViewHolder(
+        binding = ItemTeacherTalkCardBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+        clickItem = clickItem
+    )
 
     override fun onBindViewHolder(holder: TeacherTalkMainCardViewHolder, position: Int) {
         holder.onBind(teacherTalkCardList[position])
@@ -43,8 +41,7 @@ class TeacherTalkCardAdapter(context: Context) :
     }
 
     fun setCardList(cardList: List<QuestionEntity>) {
-        this.allTeacherTalkCard = cardList
-        this.teacherTalkCardList = allTeacherTalkCard.take(10).toMutableList()
+        this.teacherTalkCardList = cardList.take(10).toMutableList()
         notifyDataSetChanged()
     }
 
@@ -57,7 +54,7 @@ class TeacherTalkCardAdapter(context: Context) :
         }
     }
 
-    inner class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBinding) :
+    inner class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBinding,clickItem: (Long) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(teacherTalkCard: QuestionEntity) {
@@ -74,18 +71,20 @@ class TeacherTalkCardAdapter(context: Context) :
             spannable.setSpan(colorSpanQ, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannable.setSpan(colorSpanRest, 2, questionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            binding.tvAnsweredQuestionTitle.text = spannable
-            binding.tvAnsweredQuestionContent.text = teacherTalkCard.content
-            binding.tvTeacherTalkBookmarkCount.text = teacherTalkCard.bookmarkCount.toString()
-            binding.tvTeacherTalkLikeCount.text = teacherTalkCard.likeCount.toString()
-            binding.tvTeacherTalkAnswerCount.text = teacherTalkCard.answerCount.toString()
-            binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(teacherTalkCard.createdAt)
+            with(binding){
+                tvAnsweredQuestionTitle.text = spannable
+                tvAnsweredQuestionContent.text = teacherTalkCard.content
+                tvTeacherTalkBookmarkCount.text = teacherTalkCard.bookmarkCount.toString()
+                tvTeacherTalkLikeCount.text = teacherTalkCard.likeCount.toString()
+                tvTeacherTalkAnswerCount.text = teacherTalkCard.answerCount.toString()
+                tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(teacherTalkCard.createdAt)
 
-            binding.icTeacherTalkBookmark.isSelected = teacherTalkCard.bookmarked
-            binding.tvTeacherTalkBookmarkCount.isSelected = teacherTalkCard.bookmarked
+                icTeacherTalkBookmark.isSelected = teacherTalkCard.bookmarked
+                tvTeacherTalkBookmarkCount.isSelected = teacherTalkCard.bookmarked
 
-            binding.icTeacherTalkLike.isSelected = teacherTalkCard.liked
-            binding.tvTeacherTalkLikeCount.isSelected = teacherTalkCard.liked
+                icTeacherTalkLike.isSelected = teacherTalkCard.liked
+                tvTeacherTalkLikeCount.isSelected = teacherTalkCard.liked
+            }
 
             if(teacherTalkCard.solved) {
                 binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
@@ -97,10 +96,7 @@ class TeacherTalkCardAdapter(context: Context) :
 
             // 상세 글 이동
             binding.root.setOnClickListener {
-                val intent= Intent(context, TeacherTalkBodyActivity::class.java).apply{
-                    putExtra(TEACHER_QUESTIONID,teacherTalkCard.questionId)
-                }
-                context.startActivity(intent)
+                clickItem(teacherTalkCard.questionId)
             }
 
         }

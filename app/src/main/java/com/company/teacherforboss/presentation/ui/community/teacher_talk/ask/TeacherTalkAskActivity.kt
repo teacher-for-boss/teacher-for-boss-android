@@ -51,9 +51,9 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
     private lateinit var binding: ActivityTeachertalkAskBinding
     private val viewModel: TeacherTalkAskViewModel by viewModels()
 
-    private lateinit var adapterTag: rvAdapterTagTeacher
-    private lateinit var adapterImage: rvAdapterImageTeacherAsk
-    private lateinit var adapterCategory: rvAdapterCategory
+    private val adapterTag:rvAdapterTagTeacher by lazy { rvAdapterTagTeacher(viewModel.hashTagList,::deleteHashTag) }
+    private val adapterImage: rvAdapterImageTeacherAsk by lazy { rvAdapterImageTeacherAsk(viewModel.imageList,::deleteImage) }
+    private val adapterCategory:rvAdapterCategory by lazy { rvAdapterCategory(viewModel.categoryList,categoryIndex,::selectCategory) }
     private var purpose: String=""
     private var categoryIndex = 0
 
@@ -101,19 +101,13 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
-        //tagRv
-        adapterTag = rvAdapterTagTeacher(viewModel.hashTagList, viewModel)
-        binding.rvHashtag.adapter = adapterTag
-        binding.rvHashtag.layoutManager = layoutManager
 
-        //imageRv
-        adapterImage = rvAdapterImageTeacherAsk(viewModel.imageList, viewModel)
-        binding.rvImage.adapter = adapterImage
-        binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        with(binding){
+            rvHashtag.adapter = adapterTag
+            rvImage.adapter = adapterImage
+            rvCategory.adapter = adapterCategory
+        }
 
-        //categoryRv
-        adapterCategory = rvAdapterCategory(viewModel.categoryList, viewModel, categoryIndex)
-        binding.rvCategory.adapter = adapterCategory
         val categoryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvCategory.layoutManager = categoryLayoutManager
 
@@ -140,6 +134,8 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             checkAndRequestPermissions()
         }
     }
+
+    fun selectCategory(positioin:Long) = viewModel.selectCategoryId(positioin)
 
     fun inputHashtag() {
         //스페이스바 입력 막기
@@ -187,6 +183,9 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             false
         })
     }
+
+    fun deleteHashTag(position: Int)=viewModel.deleteHashTag(position)
+
     private fun checkAndRequestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
@@ -393,6 +392,8 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
         uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
     }
+
+    fun deleteImage(position:Int) = viewModel.deleteImage(position)
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {

@@ -16,12 +16,16 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
+import com.company.teacherforboss.MainActivity.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.MainActivity.Companion.MYPAGE
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
-import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
+import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
-import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
+import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 
 class ModifyBossProfileFragment : Fragment() {
@@ -48,7 +52,6 @@ class ModifyBossProfileFragment : Fragment() {
         checkNickname()
 
         modifyTeacherProfile()
-        observeProfile()
         showProfileImageDialog()
         setObserver()
 
@@ -57,6 +60,8 @@ class ModifyBossProfileFragment : Fragment() {
     private fun initLayout() {
         binding.profileImage.loadCircularImage(viewModel.profileImg.value!!)
         viewModel.initialNickname.value = viewModel.nickname.value.toString()
+
+        observeProfile()
     }
 
     private fun setNicknameTextWatcher() {
@@ -144,6 +149,7 @@ class ModifyBossProfileFragment : Fragment() {
 
             viewModel.modifyBossProfileLiveData.observe(viewLifecycleOwner, Observer {
                 Intent(requireActivity(), MainActivity::class.java).apply {
+                    putExtra(FRAGMENT_DESTINATION,MYPAGE)
                     startActivity(this)
                 }
             })
@@ -151,39 +157,42 @@ class ModifyBossProfileFragment : Fragment() {
     }
 
     private fun observeProfile() {
-        viewModel.isUserImgSelected.observe(viewLifecycleOwner,{bool->
-            Log.d("profile","user img selected")
-            if (bool==true){
-                // TODO: url 변경 반영
-//                lifecycleScope.launch {
-//                viewModel.getPresignedUrlList(type="profile",id=1L, imgCnt = 1)
-//                }
-
-                Glide.with(this)
-                    .load(viewModel.profileImgUri.value)
-                    .fitCenter()
-                    .apply(RequestOptions().override(80,80))
-                    .into(binding.profileImage)
+        // 디폴트 이미지
+        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+            defaultImgUrl?.let {
+                viewModel.setIsUserImgSelected(false)
+                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
             }
         })
 
-        viewModel.isDefaultImgSelected.observe(viewLifecycleOwner, { bool ->
-            if (bool == true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        // 사용자 갤러리 이미지
+        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
+            viewModel.setIsUserImgSelected(true)
+            imgUri?.let {
+                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            }
         })
 
-        viewModel.profileImg.observe(viewLifecycleOwner, { bool ->
-            binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        // presigned url
+        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+            uploadImgtoS3()
         })
 
-        viewModel.profileImgUri.observe(viewLifecycleOwner, {
-            if (it != null) BindingImgAdapter.bindProfileImgUri(requireContext(), binding.profileImage, it)
-        })
+    }
+
+    private fun uploadImgtoS3(){
+        val uploadUtil=UploadUtil(requireContext())
+        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
     }
 
     private fun showProfileImageDialog() {
         binding.profileImage.setOnClickListener {
-            val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, viewModel)
-            dialog.show()
+            val activity = requireActivity() as? ModifyProfileActivity
+            val dialog = ProfileImageModifyDialogFragment(BOSS) {
+                activity?.checkAndRequestPermissions()
+            }
+
+            dialog.show(parentFragmentManager, MODIFY_PROFILE_IMAGE_DIALOG)
         }
     }
 

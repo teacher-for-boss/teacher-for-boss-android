@@ -15,6 +15,7 @@ class ConstsUtils {
         const val USER_BIRTHDATE="USER_BIRTHDATE"
         const val USER_PROFILEIMG="USER_NAMEUSER_PROFILEIMG"
         const val USER_GENDER="USER_GENDER"
+        const val SIGNUP_PROFILE_IMAGE_DIALOG="SIGNUP_PROFILE_IMAGE_DIALOG"
 
         // 이미지
         const val DEFAULT_IMG_FILE_TYPE="image/jpeg"
@@ -36,9 +37,11 @@ class ConstsUtils {
         const val DEFAULT_ID=-1L
 
         // 보스톡
+        const val BOSS="BOSS"
         const val BOSS_POSTID="postId"
 
         // 티처톡
+        const val TEACHER="TEACHER"
         const val TEACHER_QUESTIONID="questionId"
         const val TEACHER_ANSWERID="answerId"
         const val TEACHER_CATAEGORYNAME="categoryName"
@@ -49,5 +52,8 @@ class ConstsUtils {
 
         // 티처 프로필 정보
         const val TEACHER_PROFILE_ID = "teacherProfileId"
+
+        // 프로필 수정
+        const val MODIFY_PROFILE_IMAGE_DIALOG="MODIFY_PROFILE_IMAGE_DIALOG"
     }
 }

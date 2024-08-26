@@ -12,25 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemBossTalkCardBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
-import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class BossTalkMainCardAdapter(context: Context) :
+class BossTalkMainCardAdapter(
+    private val clickItem: (Long) -> Unit
+) :
     RecyclerView.Adapter<BossTalkMainCardAdapter.BossTalkMainCardViewHolder>() {
-    private val inflater by lazy { LayoutInflater.from(context) }
 
     private var bossTalkCardList: MutableList<PostEntity> = mutableListOf()
-    private var allBossTalkMainCard: List<PostEntity> = emptyList()
-    private val context=context
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BossTalkMainCardViewHolder {
-        val binding = ItemBossTalkCardBinding.inflate(inflater, parent, false)
-        return BossTalkMainCardViewHolder(binding)
-    }
+    ): BossTalkMainCardViewHolder =BossTalkMainCardViewHolder(
+        ItemBossTalkCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
 
     override fun onBindViewHolder(holder: BossTalkMainCardViewHolder, position: Int) {
         holder.onBind(bossTalkCardList[position])
@@ -40,8 +36,7 @@ class BossTalkMainCardAdapter(context: Context) :
 
 
     fun setCardList(cardList: List<PostEntity>) {
-        this.allBossTalkMainCard = cardList
-        this.bossTalkCardList = allBossTalkMainCard.take(10).toMutableList()
+        this.bossTalkCardList = cardList.take(10).toMutableList()
         notifyDataSetChanged()
     }
 
@@ -54,7 +49,9 @@ class BossTalkMainCardAdapter(context: Context) :
         }
     }
 
-    inner class BossTalkMainCardViewHolder(private val binding: ItemBossTalkCardBinding) :
+    inner class BossTalkMainCardViewHolder(
+        private val binding: ItemBossTalkCardBinding,
+        ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(bossTalkCard: PostEntity) {
@@ -71,25 +68,24 @@ class BossTalkMainCardAdapter(context: Context) :
             spannable.setSpan(colorSpanQ, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannable.setSpan(colorSpanRest, 2, questionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            binding.tvBossTalkTitle.text = spannable
-            binding.tvBossTalkContent.text = bossTalkCard.content
-            binding.tvBossTalkBookmarkCount.text = bossTalkCard.bookmarkCount.toString()
-            binding.tvBossTalkLikeCount.text = bossTalkCard.likeCount.toString()
-            binding.tvBossTalkCommentCount.text = bossTalkCard.commentCount.toString()
-            binding.tvBossTalkDate.text = LocalDateFormatter.extractDate(bossTalkCard.createdAt)
+            with(binding){
+                tvBossTalkTitle.text = spannable
+                tvBossTalkContent.text = bossTalkCard.content
+                tvBossTalkBookmarkCount.text = bossTalkCard.bookmarkCount.toString()
+                tvBossTalkLikeCount.text = bossTalkCard.likeCount.toString()
+                tvBossTalkCommentCount.text = bossTalkCard.commentCount.toString()
+                tvBossTalkDate.text = LocalDateFormatter.extractDate(bossTalkCard.createdAt)
 
-            binding.icBossTalkBookmark.isSelected = bossTalkCard.bookmarked
-            binding.tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmarked
+                icBossTalkBookmark.isSelected = bossTalkCard.bookmarked
+                tvBossTalkBookmarkCount.isSelected = bossTalkCard.bookmarked
 
-            binding.icBossTalkLike.isSelected = bossTalkCard.liked
-            binding.tvBossTalkLikeCount.isSelected = bossTalkCard.liked
+                icBossTalkLike.isSelected = bossTalkCard.liked
+                tvBossTalkLikeCount.isSelected = bossTalkCard.liked
 
-            // 상세 글 이동
-            binding.root.setOnClickListener {
-                val intent=Intent(context,BossTalkBodyActivity::class.java).apply{
-                    putExtra(BOSS_POSTID,bossTalkCard.postId)
+                root.setOnClickListener{
+                    clickItem(bossTalkCard.postId)
                 }
-                context.startActivity(intent)
+
             }
 
         }

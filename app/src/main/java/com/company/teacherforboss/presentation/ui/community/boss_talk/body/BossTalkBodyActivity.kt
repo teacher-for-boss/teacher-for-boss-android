@@ -239,6 +239,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 bodyTitle.text = it.title
                 bodyBody.text = it.content
                 userNickname.text = it.memberInfo.toMemberDto().name
+                profileLevel.text = it.memberInfo.toMemberDto().level
                 date.text = LocalDateFormatter.extractDate(it.createdAt)
             }
 

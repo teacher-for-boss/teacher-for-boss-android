@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.ActivityMyPageTeacherTalkBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
-import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
-import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -36,6 +34,8 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         viewModel.clearData()
+        setAdapter(emptyList<MyPageQuestionEntity>().toMutableList())
+        getQuestions()
     }
 
     fun initLayout() {
@@ -55,24 +55,18 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
                 when (answeredQuestionState) {
                     is UiState.Success -> {
                             val previousLastQuestionId = viewModel.lastQuestionId.value
-                            questionList = answeredQuestionState.data.questionList
-                            viewModel.setQuestionList(questionList)
                             viewModel.apply {
                                 setHasNext(answeredQuestionState.data.hasNext)
                                 setQuestionList(answeredQuestionState.data.questionList)
                                 setLastQuestionId(answeredQuestionState.data.questionList.last().questionId)
                             }
                             if(previousLastQuestionId == 0L){
-                                adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!.toMutableList())
-                                binding.rvMyPageQuestion.adapter = adapter
+                                setAdapter(viewModel.questionList.value!!.toMutableList())
                             }
                             else{
                                 adapter.addMoreCards(viewModel.questionList.value!!)
                             }
-
-
                     }
-
                     else -> Unit
                 }
             }.launchIn(this.lifecycleScope)
@@ -90,8 +84,7 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
                             setLastQuestionId(myQuestionState.data.questionList.last().questionId)
                         }
                         if(previousLastQuestionId == 0L){
-                            adapter = rvAdapterMyPageQuestion(this, viewModel.questionList.value!!.toMutableList())
-                            binding.rvMyPageQuestion.adapter = adapter
+                            setAdapter(viewModel.questionList.value!!.toMutableList())
                         }
                         else{
                             adapter.addMoreCards(viewModel.questionList.value!!)
@@ -115,16 +108,18 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
 
                 // 로딩 중이 아니고, 마지막 아이템이 화면에 보이면 추가 데이터 로드
                 if (viewModel.hasNext.value == true
-                    && lastVisibleItemPosition == totalItemCount - 1) {
-                    if (intent.getStringExtra("role") == "TEACHER") {
-                        viewModel.getAnsweredQuestion()
-                    }
-                    else {
-                        viewModel.getMyQuestion()
-                    }
-                }
+                    && lastVisibleItemPosition == totalItemCount - 1) getQuestions()
             }
         })
+    }
+
+    fun getQuestions() {
+        if (intent.getStringExtra("role") == "TEACHER") viewModel.getAnsweredQuestion()
+        else viewModel.getMyQuestion()
+    }
+    fun setAdapter(questionList: MutableList<MyPageQuestionEntity>){
+        adapter = rvAdapterMyPageQuestion(this, questionList)
+        binding.rvMyPageQuestion.adapter = adapter
     }
 
     fun onBackBtnPressed() {

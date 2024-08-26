@@ -367,7 +367,15 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            finish()
+            if(intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_TALK_ASK_ACTIVITY ||
+                intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_TALK_ANSWER_ACTIVITY) {
+                Intent(this, MainActivity::class.java).apply {
+                    putExtra(FRAGMENT_DESTINATION, TEACHER_TALK)
+                    startActivity(this)
+                }
+            } else {
+                finish()
+            }
         }
     }
 
@@ -391,5 +399,13 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
     fun showSnackBar(msg: String) {
         val customSnackbar = CustomSnackBar.make(binding.root, msg, 2000)
         customSnackbar.show()
+    }
+
+    companion object {
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
+        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
+        const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
+        const val TEACHER_TALK = "TEACHER_TALK"
     }
 }

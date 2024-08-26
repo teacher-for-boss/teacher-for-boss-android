@@ -78,7 +78,7 @@ class BossTalkSearchActivity : AppCompatActivity() {
     }
 
     fun finishSearchKeyword() {
-        viewModel.getBossTalkPostLiveData.observe(this, Observer {
+        viewModel.searchBossTalkLiveData.observe(this, Observer {
             hasNext = it.hasNext
             postList = it.postList
 

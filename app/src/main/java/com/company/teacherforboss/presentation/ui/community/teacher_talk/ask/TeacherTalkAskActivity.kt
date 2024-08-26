@@ -366,19 +366,21 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
     fun finishUploadPost() {
         viewModel.uploadPostLiveData.observe(this, Observer {
-            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
+            Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, it.questionId)
+                putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
                 putExtra("snackBarMsg","질문이 등록되었습니다.")
+                startActivity(this)
             }
-            startActivity(intent)
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
-            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
+            Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, it.questionId)
+                putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
                 putExtra("snackBarMsg","질문이 수정되었습니다.")
+                startActivity(this)
             }
-            startActivity(intent)
         })
     }
 
@@ -418,6 +420,8 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
 
     companion object{
         const val TEACHER_TALK="TEACHER_TALK"
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
     }
 
 }

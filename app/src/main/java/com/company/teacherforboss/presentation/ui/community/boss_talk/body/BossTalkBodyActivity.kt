@@ -319,7 +319,14 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            finish()
+            if(intent.getStringExtra(PREVIOUS_ACTIVITY) == BOSS_TALK_WRITE_ACTIVITY) {
+                Intent(this, MainActivity::class.java).apply {
+                    putExtra(FRAGMENT_DESTINATION, BOSS_TALK)
+                    startActivity(this)
+                }
+            } else {
+                finish()
+            }
         }
     }
     fun showSnackBar(msg:String){
@@ -327,4 +334,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         customSnackbar.show()
     }
 
+    companion object {
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
+        const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
+        const val BOSS_TALK = "BOSS_TALK"
+    }
 }

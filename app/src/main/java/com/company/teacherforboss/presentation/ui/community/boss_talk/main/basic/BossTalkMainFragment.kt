@@ -49,7 +49,7 @@ class BossTalkMainFragment :
         getPosts()
         observeSortType()
         addListeners()
-
+        finishSearch()
     }
 
     private fun initView(){
@@ -159,8 +159,6 @@ class BossTalkMainFragment :
         binding.ivSearch.setOnClickListener {
             viewModel.setKeyword(binding.etSearchView.text.toString())
             viewModel.searchKeywordBossTalk()
-
-            finishSearch()
         }
         binding.ivAlarmBtn.setOnClickListener {
             navigateToAlarm()
@@ -179,7 +177,7 @@ class BossTalkMainFragment :
     }
 
     private fun finishSearch() {
-        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.searchBossTalkLiveData.observe(viewLifecycleOwner, Observer {
             Intent(requireContext(), BossTalkSearchActivity::class.java).apply {
                 putExtra("hasNext", it.hasNext)
                 putExtra("postList", it.postList)

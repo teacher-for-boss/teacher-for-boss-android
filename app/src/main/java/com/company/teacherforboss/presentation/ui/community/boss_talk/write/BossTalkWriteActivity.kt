@@ -342,20 +342,22 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
 
     fun finishUpload(){
         viewModel.uploadPostLiveData.observe(this, Observer {
-            val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
+            Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra(BOSS_POSTID,it.postId)
+                putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
                 putExtra("snackBarMsg","게시글이 등록되었습니다.")
+                startActivity(this)
 
             }
-            startActivity(intent)
         })
 
         viewModel.modifyPostLiveData.observe(this, Observer {
-            val intent=Intent(this,BossTalkBodyActivity::class.java).apply {
+            Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra(BOSS_POSTID,it.postId)
+                putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
                 putExtra("snackBarMsg","게시글이 수정되었습니다.")
+                startActivity(this)
             }
-            startActivity(intent)
         })
     }
 
@@ -385,6 +387,8 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
 
     companion object{
         const val BOSS_TALK="BOSS_TALK"
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
         const val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
     }
 }

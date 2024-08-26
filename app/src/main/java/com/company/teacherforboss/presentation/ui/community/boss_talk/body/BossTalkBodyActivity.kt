@@ -304,21 +304,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
             binding.nonWriterOption.visibility = View.GONE
         }
     }
-//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-//        if (ev.action == MotionEvent.ACTION_DOWN) {
-//            val v = currentFocus
-//            if (v != null) {
-//                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.hideSoftInputFromWindow(v.windowToken, 0)
-//                v.clearFocus()
-//            }
-//            hideOptionMenuIfVisible()
-//        }
-//        return super.dispatchTouchEvent(ev)
-//    }
 
-    override fun onBackPressed() {
-        finish()
+//    override fun onBackPressed() {
+//        finish()
         // TODO: 얘는 여기 말고 나중에 Activity 새로 부르는 코드에 추가해주세요 여기서는 finish()만 하는게 로직상 맞아서요!
         /*val options = ActivityOptionsCompat.makeCustomAnimation(
             this,
@@ -326,17 +314,18 @@ class BossTalkBodyActivity : AppCompatActivity() {
             android.R.anim.fade_out // 현재 Activity의 애니메이션
         )
         startActivity(intent, options.toBundle())*/
-    }
+//    }
 
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            if (intent.getStringExtra("PREVIOUS_ACTIVITY") == "BossTalkSearchActivity") {
-                finish()
+            if(intent.getStringExtra(PREVIOUS_ACTIVITY) == BOSS_TALK_WRITE_ACTIVITY) {
+                Intent(this, MainActivity::class.java).apply {
+                    putExtra(FRAGMENT_DESTINATION, BOSS_TALK)
+                    startActivity(this)
+                }
             } else {
-                startActivity(Intent(this, MainActivity::class.java).apply {
-                    putExtra(FRAGMENT_DESTINATION, "BOSS_TALK")
-                })
+                finish()
             }
         }
     }
@@ -345,4 +334,10 @@ class BossTalkBodyActivity : AppCompatActivity() {
         customSnackbar.show()
     }
 
+    companion object {
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
+        const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
+        const val BOSS_TALK = "BOSS_TALK"
+    }
 }

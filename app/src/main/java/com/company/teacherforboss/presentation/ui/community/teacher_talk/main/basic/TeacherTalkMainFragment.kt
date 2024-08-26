@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -197,6 +199,17 @@ class TeacherTalkMainFragment :
         }
         binding.ivAlarmBtn.setOnClickListener {
             navigateToAlarm()
+        }
+        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                viewModel.setKeyword(binding.etSearchView.text.toString())
+                viewModel.searchKeywordTeacherTalk()
+                true
+            }
+            else {
+                false
+            }
         }
     }
 

@@ -36,11 +36,10 @@ class rvAdapterCardTeacher(private val context: Context, private val questionLis
 
             // 질문 상세보기
             binding.root.setOnClickListener {
-                val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
-                    putExtra("PREVIOUS_ACTIVITY", "TeacherTalkSearchActivity")
+                Intent(context, TeacherTalkBodyActivity::class.java).apply {
                     putExtra("questionId", question.questionId)
+                    context.startActivity(this)
                 }
-                context.startActivity(intent)
             }
         }
 

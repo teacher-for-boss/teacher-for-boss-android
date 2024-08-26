@@ -27,11 +27,16 @@ class rvAdapterMyPageQuestion(
 
                 if(question.solved) {
                     widgetCardViewStatementSolved.visibility = View.VISIBLE
+                    widgetCardViewStatementNotSolved.visibility = View.GONE
+
                     Glide.with(root.context)
                         .load(question.selectedTeacher)
                         .into(ivSelectedTeacher)
                 }
-                else widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+                else {
+                    widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+                    widgetCardViewStatementSolved.visibility = View.GONE
+                }
 
                 root.setOnClickListener {
                     val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
@@ -47,7 +52,6 @@ class rvAdapterMyPageQuestion(
         val newItemSize= newQuestionList.size
         questionList.addAll(newQuestionList)
         notifyItemRangeInserted(currentSize,newItemSize)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

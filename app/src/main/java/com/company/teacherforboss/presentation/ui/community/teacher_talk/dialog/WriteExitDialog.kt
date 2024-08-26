@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -14,7 +15,12 @@ interface WriteExitDialogListener{
     fun onExitBtnClicked()
 }
 
-class WriteExitDialog(context: Context,val type:String,val purpose:String,val listener: WriteExitDialogListener): Dialog(context) {
+class WriteExitDialog(
+    private val activity: Activity,
+    val type:String,
+    val purpose:String,
+    val listener: WriteExitDialogListener
+): Dialog(activity) {
     private lateinit var binding: DialogWriteExitBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +37,7 @@ class WriteExitDialog(context: Context,val type:String,val purpose:String,val li
 
         binding.exitBtn.setOnClickListener {
             if(purpose=="write"){
-                val intent=Intent(context,MainActivity::class.java).apply {
-                    putExtra("FRAGMENT_DESTINATION",type.toString())
-                }
-                context.startActivity(intent)
+                activity.finish()
             }
             else{
                 listener.onExitBtnClicked()

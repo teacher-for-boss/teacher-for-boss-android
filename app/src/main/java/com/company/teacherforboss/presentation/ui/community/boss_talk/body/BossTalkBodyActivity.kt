@@ -315,6 +315,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 v.clearFocus()
             }
 
+            // btnOption 영역의 터치 이벤트 처리
             val btnOptionLocation = IntArray(2)
             binding.btnOption.getLocationOnScreen(btnOptionLocation)
             val btnOptionRect = Rect(
@@ -324,8 +325,24 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 btnOptionLocation[1] + binding.btnOption.height
             )
 
+            // 댓글 영역에 대한 터치 이벤트가 발생했는지 확인
+            val rvCommentLocation = IntArray(2)
+            binding.rvComment.getLocationOnScreen(rvCommentLocation)
+            val rvCommentRect = Rect(
+                rvCommentLocation[0],
+                rvCommentLocation[1],
+                rvCommentLocation[0] + binding.rvComment.width,
+                rvCommentLocation[1] + binding.rvComment.height
+            )
+
+            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
             if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
                 hideOptionMenuIfVisible()
+            }
+
+            // 댓글 영역의 터치 이벤트를 확인하고, 부모로 이벤트 전달
+            if (rvCommentRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                binding.rvComment.dispatchTouchEvent(ev)
             }
         }
         return super.dispatchTouchEvent(ev)

@@ -37,6 +37,9 @@ class rvAdapterCommentBoss(
                 if (it != "") BindingImgAdapter.bindImage(binding.userImage, it)
             }
 
+            // 유저 레벨
+            binding.profileLevel.text = comment.memberInfo.level
+
             // 날짜
             binding.createdAt.text = LocalDateFormatter.extractDate(comment.createdAt)
 

@@ -2,7 +2,9 @@ package com.company.teacherforboss.presentation.ui.community.teacher_talk.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 
@@ -36,7 +38,8 @@ class TeacherTalkSearchActivity : AppCompatActivity() {
 
         initView()
         onBackBtnPressed()
-        searchKeyword()
+        finishSearchKeyword()
+        addListeners()
     }
 
     override fun onResume() {
@@ -59,12 +62,21 @@ class TeacherTalkSearchActivity : AppCompatActivity() {
         }
     }
 
-    fun searchKeyword() {
+    fun addListeners() {
         binding.searchBtn.setOnClickListener {
-            viewModel.setKeyword(binding.inputKeyword.text.toString())
+            viewModel.setKeyword(binding.etInputKeyword.text.toString())
             viewModel.searchKeywordTeacherTalk()
-
-            finishSearchKeyword()
+        }
+        binding.etInputKeyword.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                viewModel.setKeyword(binding.etInputKeyword.text.toString())
+                viewModel.searchKeywordTeacherTalk()
+                true
+            }
+            else {
+                false
+            }
         }
     }
 
@@ -79,10 +91,7 @@ class TeacherTalkSearchActivity : AppCompatActivity() {
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION", "TEACHER_TALK")
-            })
+            finish()
         }
     }
-
 }

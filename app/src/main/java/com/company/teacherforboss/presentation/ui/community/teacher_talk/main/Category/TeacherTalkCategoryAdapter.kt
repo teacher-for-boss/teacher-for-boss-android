@@ -12,16 +12,15 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Te
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 
 class TeacherTalkCategoryAdapter(
-    private val context: Context,
     private val categoryList: ArrayList<String>,
-    private val viewModel: TeacherTalkMainViewModel
+    private val initCategoryPosition:Int,
+    private val clickCategory:(String)->Unit
 ) : RecyclerView.Adapter<TeacherTalkCategoryAdapter.ViewHolder>() {
-    private val inflater by lazy { LayoutInflater.from(context) }
     var selectedItemPosition = DEFAULT_TAG_POSITION
     var previousItemPosition = RecyclerView.NO_POSITION
 
     init {
-        selectedItemPosition=viewModel.getCategoryId()
+        selectedItemPosition=initCategoryPosition
     }
 
     inner class ViewHolder(private val binding: ItemTeacherTalkCategoryBinding) :
@@ -32,8 +31,7 @@ class TeacherTalkCategoryAdapter(
                 selectedItemPosition = adapterPosition
 
                 val selectedCategory = categoryList[selectedItemPosition]
-                viewModel.setCategory(selectedCategory,DEFAULT_LASTID)
-
+                clickCategory(selectedCategory)
                 notifyItemChanged(previousItemPosition)
                 notifyItemChanged(selectedItemPosition)
             }
@@ -59,10 +57,9 @@ class TeacherTalkCategoryAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TeacherTalkCategoryAdapter.ViewHolder {
-        val binding = ItemTeacherTalkCategoryBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
-    }
+    ): TeacherTalkCategoryAdapter.ViewHolder= ViewHolder(
+        ItemTeacherTalkCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
 
     override fun onBindViewHolder(holder: TeacherTalkCategoryAdapter.ViewHolder, position: Int) {
         holder.bind(categoryList[position], position)

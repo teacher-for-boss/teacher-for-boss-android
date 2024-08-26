@@ -6,15 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemTagWriteBinding
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskViewModel
 
-class rvAdapterTagTeacher (private val tagList: ArrayList<String>, private val viewModel: TeacherTalkAskViewModel): RecyclerView.Adapter<rvAdapterTagTeacher.ViewHolder>() {
+class rvAdapterTagTeacher (
+    private val tagList: ArrayList<String>,
+    private val deleteTag:(Int)->Unit
+): RecyclerView.Adapter<rvAdapterTagTeacher.ViewHolder>() {
 
     inner class ViewHolder(private val binding: RvItemTagWriteBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(tag: String, viewModel: TeacherTalkAskViewModel) {
+        fun bind(tag: String) {
             binding.hashtagName.text = tag
 
             binding.deleteHashtag.setOnClickListener {
                 val position = adapterPosition
-                viewModel.deleteHashTag(position)
+                deleteTag(position)
                 notifyItemRemoved(position)
             }
         }
@@ -25,7 +28,7 @@ class rvAdapterTagTeacher (private val tagList: ArrayList<String>, private val v
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(tagList[position], viewModel = viewModel)
+        holder.bind(tagList[position])
     }
 
     override fun getItemCount(): Int {

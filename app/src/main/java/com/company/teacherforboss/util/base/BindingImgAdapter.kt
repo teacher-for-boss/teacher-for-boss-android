@@ -36,6 +36,7 @@ object BindingImgAdapter {
         Glide.with(imageView.context)
             .load(url)
             .fitCenter()
+            .centerCrop()
             .apply(RequestOptions()
                 .override(80,80)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -43,8 +44,8 @@ object BindingImgAdapter {
             .into(imageView)
     }
 
-    fun bindProfileImgUri(context: Context,imageView: ImageView,uri: Uri){
-        Glide.with(context)
+    fun bindProfileImgUri(imageView: ImageView,uri: Uri){
+        Glide.with(imageView.context)
             .load(uri)
             .fitCenter()
             .centerCrop()

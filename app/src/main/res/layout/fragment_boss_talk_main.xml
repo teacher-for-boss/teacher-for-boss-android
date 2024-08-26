@@ -69,6 +69,8 @@
                             android:paddingHorizontal="18dp"
                             android:paddingVertical="8dp"
                             android:textSize="12sp"
+                            android:maxLength="30"
+                            android:singleLine="true"
                             app:layout_constraintEnd_toStartOf="@id/iv_search"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"

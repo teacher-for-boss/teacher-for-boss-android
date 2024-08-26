@@ -8,8 +8,6 @@ import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionRequ
 import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageMyQuestionRequestEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
-import com.company.teacherforboss.domain.model.payment.BankAccountChangeRequestEntity
-import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
 import com.company.teacherforboss.domain.usecase.mypage.MyPageAnsweredQuestionUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyQuestionUseCase
 import com.company.teacherforboss.util.base.ConstsUtils
@@ -85,6 +83,7 @@ class MyPageQuestionViewModel @Inject constructor(
                 _answeredQuestionState.value=UiState.Error(ex.message)
             }finally {
                 isLoading = false
+                _answeredQuestionState.value = UiState.Empty
             }
         }
     }
@@ -106,6 +105,7 @@ class MyPageQuestionViewModel @Inject constructor(
                 _myQuestionState.value=UiState.Error(ex.message)
             }finally {
                 isLoading = false
+                _myQuestionState.value = UiState.Empty
             }
         }
     }

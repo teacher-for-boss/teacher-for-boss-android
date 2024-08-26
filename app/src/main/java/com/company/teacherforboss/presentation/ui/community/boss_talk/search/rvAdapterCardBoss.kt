@@ -29,11 +29,10 @@ class rvAdapterCardBoss(private val context: Context, private val postList: List
 
             // 본문 상세보기
             binding.root.setOnClickListener {
-                val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
-                    putExtra("PREVIOUS_ACTIVITY", "BossTalkSearchActivity")
+                Intent(context, BossTalkBodyActivity::class.java).apply {
                     putExtra("postId", post.postId)
+                    context.startActivity(this)
                 }
-                context.startActivity(intent)
             }
         }
     }

@@ -41,7 +41,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
     private var questionId:Long=0
     private var answerId: Long=0
-    private lateinit var adapterImage: rvAdapterImageTeacherAnswer
+    private val adapterImage:rvAdapterImageTeacherAnswer by lazy { rvAdapterImageTeacherAnswer(viewModel.imageList,::deleteImage) }
     private var purpose = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,9 +106,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
     fun setRecyclerView() {
         //imageRv
-        adapterImage = rvAdapterImageTeacherAnswer(viewModel.imageList, viewModel)
         binding.rvImage.adapter = adapterImage
-        binding.rvImage.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun addListeners() {
@@ -207,6 +205,8 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
         uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
     }
 
+    fun deleteImage(positioin:Int)= viewModel.deleteImage(positioin)
+
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
             val dialog = WriteExitDialog(this,TEACHER_TALK,purpose,this)
@@ -256,20 +256,21 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
     fun finishUpload() {
         viewModel.uploadPostAnswerLiveData.observe(this, Observer {
-            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
+            Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
+                putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
                 putExtra("snackBarMsg","답변이 등록되었습니다.")
+                startActivity(this)
             }
-            startActivity(intent)
         })
 
         viewModel.modifyAnswerLiveData.observe(this, Observer {
-            val intent = Intent(this, TeacherTalkBodyActivity::class.java).apply {
+            Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
+                putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
                 putExtra("snackBarMsg","답변이 수정되었습니다.")
-
+                startActivity(this)
             }
-            startActivity(intent)
         })
     }
 
@@ -299,5 +300,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
     companion object{
         const val TEACHER_TALK="TEACHER_TALK"
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
     }
 }

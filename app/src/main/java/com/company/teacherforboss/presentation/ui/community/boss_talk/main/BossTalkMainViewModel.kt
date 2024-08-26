@@ -54,6 +54,9 @@ class BossTalkMainViewModel @Inject constructor(
     val getBossTalkPostLiveData:LiveData<BossTalkPostsResponseEntity>
         get() = _getBossTalkPostLiveData
 
+    private val _searchBossTalkLiveData = MutableLiveData<BossTalkPostsResponseEntity>()
+    val searchBossTalkLiveData: LiveData<BossTalkPostsResponseEntity> get() = _searchBossTalkLiveData
+
     var _bossTalkPosts=MutableLiveData<List<PostEntity>>()
     val bossTalkPosts:LiveData<List<PostEntity>> =_bossTalkPosts
 
@@ -87,7 +90,7 @@ class BossTalkMainViewModel @Inject constructor(
                         keyword =keyword.value
                     )
                 )
-                _getBossTalkPostLiveData.value=bossTalkPostsResponseEntity
+                _searchBossTalkLiveData.value=bossTalkPostsResponseEntity
 
             }catch (ex:Exception){
             }

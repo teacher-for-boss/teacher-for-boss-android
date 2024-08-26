@@ -10,11 +10,14 @@ import com.company.teacherforboss.data.model.request.signup.NicknameRequest
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.data.model.response.signup.NicknameResponse
 import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
+import com.company.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyBossProfileRequestEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyProfileResponseEntity
 import com.company.teacherforboss.domain.model.mypage.ModifyTeacherProfileRequestEntity
 import com.company.teacherforboss.domain.usecase.Member.ModifyBossProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.ModifyTeacherProfileUseCase
+import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_IMG_FILE_TYPE
 import com.company.teacherforboss.util.base.ErrorUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ModifyProfileViewModel @Inject constructor(
     private val modifyTeacherProfileUseCase: ModifyTeacherProfileUseCase,
-    private val modifyBossProfileUseCase: ModifyBossProfileUseCase
+    private val modifyBossProfileUseCase: ModifyBossProfileUseCase,
+    private val presignedUrlUseCase:PresignedUrlUseCase
 ): ViewModel() {
 
     var _nickname= MutableLiveData<String>("")
@@ -43,11 +47,6 @@ class ModifyProfileViewModel @Inject constructor(
         get()=_email
 
     // boss 변수들
-    var _isDefaultImgSelected= MutableLiveData<Boolean>(false)
-    val isDefaultImgSelected: LiveData<Boolean>
-        get() = _isDefaultImgSelected
-
-
     var _isUserImgSelected= MutableLiveData<Boolean>(false)
     val isUserImgSelected: LiveData<Boolean>
         get() = _isUserImgSelected
@@ -62,6 +61,9 @@ class ModifyProfileViewModel @Inject constructor(
 
     val _profilePresignedUrl= MutableLiveData<String>()
     val profilePresignedUrl: LiveData<String> =_profilePresignedUrl
+
+    var _fileType = MutableLiveData<String>("")
+    val fileType: LiveData<String> get()=_fileType
 
     var _keywords=MutableLiveData<MutableList<String>>()
     val keywords:LiveData<MutableList<String>>
@@ -117,28 +119,10 @@ class ModifyProfileViewModel @Inject constructor(
     private val _modifyBossProfileLiveData = MutableLiveData<ModifyProfileResponseEntity>()
     val modifyBossProfileLiveData: LiveData<ModifyProfileResponseEntity> get() = _modifyBossProfileLiveData
 
-//    var initialNickname = MutableLiveData<String>()
-
     init {
         nickname.observeForever {
             _nicknameCount.value = "${it.length}/10"
-//            validateFields()
         }
-//        _phone.observeForever {
-//            validateFields()
-//        }
-//        _email.observeForever {
-//            validateFields()
-//        }
-//        _field.observeForever {
-//            validateFields()
-//        }
-//        _carrer_str.observeForever {
-//            validateFields()
-//        }
-//        _introduction.observeForever {
-//            validateFields()
-//        }
     }
     fun setPhoneReveal(reveal: Boolean) {
         _phoneReveal.value = reveal
@@ -153,6 +137,9 @@ class ModifyProfileViewModel @Inject constructor(
     }
     fun getIsInitializedView()=isInitializedView.value?:false
 
+    fun setIsUserImgSelected(bool:Boolean){_isUserImgSelected.value=bool}
+
+    fun getIsUserImgSelected()=isUserImgSelected.value
 
     fun nicknameUser() {
         nicknameResult.value = BaseResponse.Loading()
@@ -177,6 +164,11 @@ class ModifyProfileViewModel @Inject constructor(
     }
 
     fun modifyTeacherProfile() {
+        var finalProfileImg=""
+        if (isUserImgSelected.value==true){
+            getFilteredPresingedUrl()?.let { finalProfileImg=it }
+        }else finalProfileImg=profileImg.value!!
+
         viewModelScope.launch {
             try {
                 val modifyTeacherProfileResponseEntity = modifyTeacherProfileUseCase(
@@ -190,7 +182,7 @@ class ModifyProfileViewModel @Inject constructor(
                         career = CareerToInt(),
                         introduction = introduction.value!!,
                         keywords = keywords.value!!,
-                        profileImg = profileImg.value!!
+                        profileImg = finalProfileImg
                     )
                 )
                 _modifyTeacherProfileLiveData.value = modifyTeacherProfileResponseEntity
@@ -199,18 +191,45 @@ class ModifyProfileViewModel @Inject constructor(
     }
 
     fun modifyBossProfile() {
+        var finalProfileImg=""
+        if (isUserImgSelected.value==true){
+            getFilteredPresingedUrl()?.let { finalProfileImg=it }
+        }else finalProfileImg=profileImg.value!!
+
         viewModelScope.launch {
             try {
                 val modifyBossProfileResponseEntity = modifyBossProfileUseCase(
                     ModifyBossProfileRequestEntity(
                         nickname = nickname.value!!,
-                        profileImg = profileImg.value!!
+                        profileImg = finalProfileImg
                     )
                 )
                 _modifyBossProfileLiveData.value = modifyBossProfileResponseEntity
             } catch (ex:Exception) {}
         }
     }
+
+    fun getPresignedUrlList(){
+        viewModelScope.launch {
+            try{
+                val presignedUrlListEntity= presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = null,
+                        lastIndex=0,
+                        imageCount = 1,
+                        origin="profiles"
+                    )
+                )
+                _profilePresignedUrl.value=presignedUrlListEntity.presignedUrlList[0]
+            }catch (ex:Exception){
+                throw ex
+            }
+        }
+    }
+
+    fun getPresignedUrl()=profilePresignedUrl.value?:""
+
+    fun getFilteredPresingedUrl()= profilePresignedUrl.value?.substringBefore(("?"))
 
     private fun validateFields() {
         _enableNext.value = !(_nickname.value.isNullOrEmpty() ||
@@ -253,6 +272,17 @@ class ModifyProfileViewModel @Inject constructor(
         _enableNext.value=state
     }
     fun getEnableNextState()=enableNext.value
+
+    fun setFileType(fileType:String){
+        if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
+        else _fileType.value="image/"+fileType
+    }
+    fun getFileType()=fileType.value?: DEFAULT_IMG_FILE_TYPE
+
+    fun setUserImageUri(imgUri:Uri){
+        _profileImgUri.value=imgUri
+    }
+    fun getUserImageUri() = profileImgUri.value?:null
 
     // set init
     fun setInitNickname(nickname: String) {

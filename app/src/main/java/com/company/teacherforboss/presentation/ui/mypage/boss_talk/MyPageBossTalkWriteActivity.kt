@@ -37,6 +37,8 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         viewModel.clearData()
+        setAdapter(emptyList<MyPagePostEntity>().toMutableList())
+        getPosts()
     }
 
     fun initLayout() {
@@ -61,8 +63,7 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
                             setLastPostId(commentedPostsState.data.postList.last().postId)
                         }
                         if(previousLastPostId == 0L){
-                            adapter = rvAdapterBoss(this, viewModel.postList.value!!.toMutableList())
-                            binding.rvMyBossTalkWrite.adapter = adapter
+                            setAdapter(viewModel.postList.value!!.toMutableList())
                         }
                         else{
                             adapter.addMoreCards(viewModel.postList.value!!)
@@ -85,8 +86,7 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
                             setLastPostId(myPostsState.data.postList.last().postId)
                         }
                         if(previousLastPostId == 0L){
-                            adapter = rvAdapterBoss(this, viewModel.postList.value!!.toMutableList())
-                            binding.rvMyBossTalkWrite.adapter = adapter
+                            setAdapter(viewModel.postList.value!!.toMutableList())
                         }
                         else{
                             adapter.addMoreCards(viewModel.postList.value!!)
@@ -109,16 +109,21 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
 
                 // 로딩 중이 아니고, 마지막 아이템이 화면에 보이면 추가 데이터 로드
                 if (viewModel.hasNext.value == true
-                    && lastVisibleItemPosition == totalItemCount - 1) {
-                    if(intent.getStringExtra(ROLE_BOSS) == BOSS_TALK_WRITE_POST) {
-                        viewModel.getMyPosts()
-                    } else {
-                        viewModel.getCommentedPosts()
-                    }
-                }
+                    && lastVisibleItemPosition == totalItemCount - 1) { getPosts() }
             }
 
         })
+    }
+    fun getPosts(){
+        viewModel.apply {
+            if(intent.getStringExtra(ROLE_BOSS) == BOSS_TALK_WRITE_POST) getMyPosts()
+            else getCommentedPosts()
+        }
+
+    }
+    fun setAdapter(postList: MutableList<MyPagePostEntity>){
+        adapter = rvAdapterBoss(this, postList)
+        binding.rvMyBossTalkWrite.adapter = adapter
     }
 
     fun onBackBtnPressed() {

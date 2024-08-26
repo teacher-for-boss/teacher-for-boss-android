@@ -176,6 +176,8 @@ class TeacherTalkMainViewModel @Inject constructor(
     fun clearData(){
         _teacherTalkQuestions.value= emptyList()
         _lastQuestionId.value=DEFAULT_LASTID
+        lastQuestionIdMap.apply {categoryList.forEach { put(it, DEFAULT_LASTID) }}
+
         _hasNext.value=false
     }
 

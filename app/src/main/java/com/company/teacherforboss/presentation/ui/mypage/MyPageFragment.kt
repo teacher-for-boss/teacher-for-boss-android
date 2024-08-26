@@ -104,10 +104,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     startActivity(intent)
                 }
             }
-            includeMyPageMenuExchange.root.setOnClickListener{
-                val intent = Intent(context, ExchangeActivity::class.java)
-                startActivity(intent)
-            }
 
             includeMyPageMenuBossTalkWrittenPost.root.setOnClickListener {
                 Intent(context, MyPageBossTalkWriteActivity::class.java).apply {

@@ -29,7 +29,7 @@ class BusinessVerifyFailFragment : Fragment() {
     private fun addListeners(){
         binding.btnNextSignup.setOnClickListener {
             val activity = activity as SignupActivity
-            activity.fragmentManager.popBackStack()
+            activity.supportFragmentManager.popBackStack()
             viewModel.minusCurrentPage()
         }
         binding.problemText.setOnClickListener(){

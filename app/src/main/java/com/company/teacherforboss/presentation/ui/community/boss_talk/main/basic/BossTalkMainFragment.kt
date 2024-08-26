@@ -45,7 +45,7 @@ class BossTalkMainFragment :
         val newScrollView = binding.svBossTalkMain as NewScrollView
         newScrollView.setBinding(binding.bossTalkWidget1, binding.rvBossTalkCard)
 
-        binding.viewModel=viewModel
+        binding.viewModel = viewModel
 
         initView()
         getPosts()
@@ -54,32 +54,34 @@ class BossTalkMainFragment :
         finishSearch()
     }
 
-    private fun initView(){
+    private fun initView() {
 
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
         binding.spinnerDropdown.adapter = adapter
 
-        binding.spinnerDropdown.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                var presentSortBy=viewModel.sortBy.value
-                viewModel.resetLastPostIdMap(presentSortBy!!, DEFAULT_LASTID)
-                when(presentSortBy){
-                    "latest"-> presentSortBy="최신순"
-                    "views"->presentSortBy="조회수순"
-                    "likes"->presentSortBy="좋아요순"
-                }
-                if(presentSortBy!=items[p2]) viewModel.setSortBy(items[p2])
+        binding.spinnerDropdown.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    var presentSortBy = viewModel.sortBy.value
+                    viewModel.resetLastPostIdMap(presentSortBy!!, DEFAULT_LASTID)
+                    when (presentSortBy) {
+                        "latest" -> presentSortBy = "최신순"
+                        "views" -> presentSortBy = "조회수순"
+                        "likes" -> presentSortBy = "좋아요순"
+                    }
+                    if (presentSortBy != items[p2]) viewModel.setSortBy(items[p2])
 
 //                val selectedItem=items[p2]
 //                adapter.updateItems(selectedItem) // TODO: 선택 항목 업데이트
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
 
             }
-
-        }
 
         //scrollview
         binding.svBossTalkMain.run {
@@ -111,7 +113,7 @@ class BossTalkMainFragment :
 
     }
 
-    private fun initPostView(postList: List<PostEntity>){
+    private fun initPostView(postList: List<PostEntity>) {
         // rv
         binding.rvBossTalkCard.adapter = bossTalkCardAdapter
         bossTalkCardAdapter.setCardList(postList)
@@ -119,22 +121,22 @@ class BossTalkMainFragment :
     }
 
 
-    private fun getPosts(){
-        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner,{result->
-            val postList=result.postList
+    private fun getPosts() {
+        viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner, { result ->
+            val postList = result.postList
             viewModel.apply {
                 setBossTalkPosts(postList)
                 totalBossTalkPosts.add(postList)
 
-                val previoustLastPostId=getLastPostId()
-                val lastPostId=postList.get(postList.lastIndex).postId
+                val previoustLastPostId = getLastPostId()
+                val lastPostId = postList.get(postList.lastIndex).postId
 
                 updateLastPostIdMap(lastPostId)
                 // 더 불러오기
                 setHasNext(result.hasNext)
-                if(result.hasNext==false) binding.btnMoreCard.visibility=View.INVISIBLE
+                if (result.hasNext == false) binding.btnMoreCard.visibility = View.INVISIBLE
 
-                if(previoustLastPostId== DEFAULT_LASTID) initPostView(postList)
+                if (previoustLastPostId == DEFAULT_LASTID) initPostView(postList)
                 else updatePosts(postList)
 
             }
@@ -142,37 +144,40 @@ class BossTalkMainFragment :
 
 
     }
-    private fun observeSortType(){
-        viewModel.sortBy.observe(viewLifecycleOwner,{
+
+    private fun observeSortType() {
+        viewModel.sortBy.observe(viewLifecycleOwner, {
             viewModel.getBossTalkPosts()
         })
     }
 
-    private fun updatePosts(postList:List<PostEntity>){
+    private fun updatePosts(postList: List<PostEntity>) {
         bossTalkCardAdapter.addMoreCards(postList)
     }
 
-    private fun addListeners(){
-    binding.fabWrite.setOnClickListener {
-        gotoBossTalkWrite()
-    }
-    binding.ivSearch.setOnClickListener {
-        viewModel.setKeyword(binding.etSearchView.text.toString())
-        viewModel.searchKeywordBossTalk()
-    }
-    binding.ivAlarmBtn.setOnClickListener {
-        navigateToAlarm()
-    }
-    binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
-        if (actionId == EditorInfo.IME_ACTION_DONE ||
-            event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+    private fun addListeners() {
+        binding.fabWrite.setOnClickListener {
+            gotoBossTalkWrite()
+        }
+        binding.ivSearch.setOnClickListener {
             viewModel.setKeyword(binding.etSearchView.text.toString())
             viewModel.searchKeywordBossTalk()
-            true
         }
-        else {
-            false
+        binding.ivAlarmBtn.setOnClickListener {
+            navigateToAlarm()
         }
+        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
+            ) {
+                viewModel.setKeyword(binding.etSearchView.text.toString())
+                viewModel.searchKeywordBossTalk()
+                true
+            } else {
+                false
+            }
+        }
+
     }
     private fun performSearch() {
         viewModel._keyword.value = binding.etSearchView.text.toString()
@@ -180,6 +185,7 @@ class BossTalkMainFragment :
 
         finishSearch()
     }
+
     private fun finishSearch() {
         viewModel.searchBossTalkLiveData.observe(viewLifecycleOwner, Observer {
             Intent(requireContext(), BossTalkSearchActivity::class.java).apply {
@@ -192,16 +198,18 @@ class BossTalkMainFragment :
             }
         })
     }
-    private fun gotoBossTalkWrite(){
-        val intent=Intent(requireContext(),BossTalkWriteActivity::class.java)
+
+    private fun gotoBossTalkWrite() {
+        val intent = Intent(requireContext(), BossTalkWriteActivity::class.java)
         startActivity(intent)
     }
 
-    private fun navigateToAlarm(){
+    private fun navigateToAlarm() {
         Intent(requireContext(), NotificationActivity::class.java).apply {
             startActivity(this)
         }
     }
+
     private fun navigateToBossTalkBody(postId: Long) {
         Intent(requireContext(), BossTalkBodyActivity::class.java).apply {
             putExtra(BOSS_POSTID, postId)
@@ -209,10 +217,16 @@ class BossTalkMainFragment :
         }
     }
 
-}
 
-class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.right = horizontalSpaceWidth
+    class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) :
+        RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.right = horizontalSpaceWidth
+        }
     }
 }

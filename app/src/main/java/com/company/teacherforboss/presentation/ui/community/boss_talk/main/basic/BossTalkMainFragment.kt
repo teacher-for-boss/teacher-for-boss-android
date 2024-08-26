@@ -4,7 +4,9 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -155,16 +157,28 @@ class BossTalkMainFragment :
             gotoBossTalkWrite()
         }
         binding.ivSearch.setOnClickListener {
-            viewModel._keyword.value=binding.etSearchView.text.toString()
-            viewModel.searchKeywordBossTalk()
-
-            finishSearch()
+            performSearch()
         }
+
+        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || event?.keyCode == KeyEvent.KEYCODE_ENTER) {
+                performSearch()
+                true
+            } else {
+                false
+            }
+        }
+
         binding.ivAlarmBtn.setOnClickListener {
             navigateToAlarm()
         }
     }
+    private fun performSearch() {
+        viewModel._keyword.value = binding.etSearchView.text.toString()
+        viewModel.searchKeywordBossTalk()
 
+        finishSearch()
+    }
     private fun finishSearch() {
         viewModel.getBossTalkPostLiveData.observe(viewLifecycleOwner, Observer {
             Intent(requireContext(), BossTalkSearchActivity::class.java).apply {

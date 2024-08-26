@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
+import com.company.teacherforboss.presentation.FullscreenImageActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
@@ -267,6 +268,14 @@ class BossTalkBodyActivity : AppCompatActivity() {
 
             // 본문 업로드된 이미지
             if (it.imageUrlList.isNotEmpty()) viewModel.imgUrlList = it.imageUrlList
+            binding.vpImgSlider.setOnClickListener {
+                val selectedImageUrl = viewModel.imgUrlList[0]
+
+                val intent = Intent(it.context, FullscreenImageActivity::class.java).apply {
+                    putExtra("IMAGE_URL", selectedImageUrl)
+                }
+                it.context.startActivity(intent)
+            }
 
             // 프로필 이미지
             if (it.memberInfo.toMemberDto().profileImg != null) BindingImgAdapter.bindImage(

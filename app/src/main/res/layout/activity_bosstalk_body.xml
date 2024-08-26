@@ -87,7 +87,7 @@
                     android:id="@+id/user_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2131231232"
+                    android:text=""
                     android:textColor="@color/Gray700"
                     android:textSize="10dp"
                     app:layout_constraintTop_toTopOf="@id/profile_image"

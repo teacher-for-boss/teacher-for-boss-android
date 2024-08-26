@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemRecommentBossBinding
 import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterRecommentBoss(
@@ -37,6 +39,21 @@ class rvAdapterRecommentBoss(
 
             // 레벨
             binding.profileLevel.text = comment.memberInfo.level
+
+            // 프로필 클릭 시 상세 프로필 이동
+            binding.userImage.setOnClickListener {
+                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
+                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    itemView.context.startActivity(this)
+                }
+            }
+            binding.userName.setOnClickListener {
+                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
+                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    itemView.context.startActivity(this)
+                }
+            }
+
             // 날짜
             binding.createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
 

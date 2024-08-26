@@ -17,15 +17,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
@@ -74,6 +78,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
         setBodyView()
         // 더보기 메뉴 보여주기
         showOptionMenu()
+        // 클릭 리스너
+        addListners()
         // 질문 좋아요, 저장
         likeAndBookmark()
         // 수정, 삭제, 신고
@@ -92,6 +98,22 @@ class BossTalkBodyActivity : AppCompatActivity() {
 //        binding.root.setOnClickListener {
 //            hideOptionMenuIfVisible()
 //        }
+    }
+
+    fun addListners() {
+        binding.profileImage.setOnClickListener{
+            Intent(this, TeacherProfileActivity::class.java).apply {
+                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                startActivity(this)
+            }
+        }
+        binding.userNickname.setOnClickListener {
+            Intent(this, TeacherProfileActivity::class.java).apply {
+                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                startActivity(this)
+            }
+        }
+
     }
 
     fun readNotification(){

@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentBossBinding
 import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentBoss(
@@ -36,6 +38,21 @@ class rvAdapterCommentBoss(
             member.profileImg?.let {
                 if (it != "") BindingImgAdapter.bindImage(binding.userImage, it)
             }
+
+            // 프로필 클릭 시 상세 프로필 이동
+            binding.userImage.setOnClickListener {
+                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
+                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    itemView.context.startActivity(this)
+                }
+            }
+            binding.userName.setOnClickListener {
+                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
+                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                    itemView.context.startActivity(this)
+                }
+            }
+
 
             // 유저 레벨
             binding.profileLevel.text = comment.memberInfo.level

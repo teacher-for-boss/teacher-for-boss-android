@@ -60,7 +60,7 @@ class ProfileImageDialog (
     private fun observeProfileImg(){
         viewModel.profileImgUri.observe(activity, Observer { uri ->
             uri?.let {
-                BindingImgAdapter.bindProfileImgUri(context,binding.profileImage,viewModel.profileImgUri.value!!)
+                BindingImgAdapter.bindProfileImgUri(binding.profileImage,viewModel.profileImgUri.value!!)
             }
         })
     }

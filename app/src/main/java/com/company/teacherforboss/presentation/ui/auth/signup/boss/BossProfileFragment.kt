@@ -16,13 +16,11 @@ import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentBossProfileBinding
-import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
@@ -211,8 +209,8 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun showProfileImageDialog() {
-        val dialog=ProfileImageDialogFragment()
-        dialog.show(parentFragmentManager,SIGNUP_PROFILE_IMAGE_DIALOG)
+//        val dialog=ProfileImageDialogFragment()
+//        dialog.show(parentFragmentManager,SIGNUP_PROFILE_IMAGE_DIALOG)
     }
 
     fun showToast(msg:String){

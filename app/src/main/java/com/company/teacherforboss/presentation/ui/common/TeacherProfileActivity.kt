@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.common
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
@@ -27,7 +29,6 @@ class TeacherProfileActivity :
         super.onCreate(savedInstanceState)
 
         initLayout()
-        addListeners()
         collectData()
     }
 
@@ -96,6 +97,9 @@ class TeacherProfileActivity :
                 )
             }
             tvTeacherProfileMenuFix.setOnClickListener {
+                Intent(this@TeacherProfileActivity,ModifyProfileActivity::class.java).apply {
+                    putExtra(TEACHER_PROFILE_ID,viewModel.getMembeerId())
+                }
                 // TODO 프로필 수정 Activity로 이동
             }
 
@@ -134,6 +138,7 @@ class TeacherProfileActivity :
                         } else {
                             View.GONE
                         }
+                    addListeners()
                 }
             }
         }

@@ -51,6 +51,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 replaceFragment(TeacherTalkMainFragment())
                 setSelectedMenu(R.id.menu_teacher_talk)
             }
+            if(intent.getStringExtra("gotoBossTalk") == "gotoBossTalk") {
+                replaceFragment(BossTalkMainFragment())
+                setSelectedMenu(R.id.menu_boss_talk)
+            }
             if(intent.getStringExtra("gotoMyPage") == "gotoMyPage") {
                 replaceFragment(MyPageFragment())
                 binding.bnvTeacherForBoss.selectedItemId = R.id.menu_my_page
@@ -105,10 +109,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_teacher_for_boss, fragment)
-            //.addToBackStack(null)  // 프래그먼트 전환을 백스택에 추가
-            .commit()
-        Log.d("MainActivity", "Fragment replaced with: ${fragment::class.java.simpleName}")
-
+            .commitNowAllowingStateLoss()
     }
 
     private fun setFragment(){

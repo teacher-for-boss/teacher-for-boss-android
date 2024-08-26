@@ -51,17 +51,17 @@
 
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.login.LoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
 
         </activity>
-  
+
         <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity"
             android:exported="false"
@@ -78,6 +78,10 @@
             android:name="com.company.teacherforboss.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"
@@ -145,6 +149,12 @@
             android:exported="false"
             >
         </activity>
+
+        <activity
+            android:name="com.company.teacherforboss.presentation.FullscreenImageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true"

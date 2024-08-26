@@ -153,29 +153,33 @@ class BossTalkMainFragment :
     }
 
     private fun addListeners(){
-        binding.fabWrite.setOnClickListener {
-            gotoBossTalkWrite()
-        }
-        binding.ivSearch.setOnClickListener {
+    binding.fabWrite.setOnClickListener {
+        gotoBossTalkWrite()
+    }
+    binding.ivSearch.setOnClickListener {
+        viewModel.setKeyword(binding.etSearchView.text.toString())
+        viewModel.searchKeywordBossTalk()
+    }
+    binding.ivAlarmBtn.setOnClickListener {
+        navigateToAlarm()
+    }
+    binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
+        if (actionId == EditorInfo.IME_ACTION_DONE ||
+            event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
             viewModel.setKeyword(binding.etSearchView.text.toString())
             viewModel.searchKeywordBossTalk()
+            true
         }
-        binding.ivAlarmBtn.setOnClickListener {
-            navigateToAlarm()
-        }
-        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                viewModel.setKeyword(binding.etSearchView.text.toString())
-                viewModel.searchKeywordBossTalk()
-                true
-            }
-            else {
-                false
-            }
+        else {
+            false
         }
     }
+    private fun performSearch() {
+        viewModel._keyword.value = binding.etSearchView.text.toString()
+        viewModel.searchKeywordBossTalk()
 
+        finishSearch()
+    }
     private fun finishSearch() {
         viewModel.searchBossTalkLiveData.observe(viewLifecycleOwner, Observer {
             Intent(requireContext(), BossTalkSearchActivity::class.java).apply {

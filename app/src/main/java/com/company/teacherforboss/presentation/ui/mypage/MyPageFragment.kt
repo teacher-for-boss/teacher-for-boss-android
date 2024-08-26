@@ -12,6 +12,7 @@ import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileRecentAnswerFragment
 import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
@@ -135,6 +136,25 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
             }
+
+            ivMyPageMenuBarFirst.setOnClickListener{
+                val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
+                intent.putExtra("role",viewModel.getRole())
+                startActivity(intent)
+            }
+            // iv_my_page_menu_bar_third
+            // 보스 - 질문권 결제 / 티처 - 환전하기
+            ivMyPageMenuBarThird.setOnClickListener{
+                if (viewModel.getRole() == ROLE_TEACHER) {
+                    val intent = Intent(context, ExchangeActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+            }
             includeMyPageMenuSavedPost.root.setOnClickListener{
                 val intent = Intent(context,SavedTalkActivity::class.java)
                 startActivity(intent)
@@ -200,6 +220,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setTeacherChipInfo(data: ChipInfoResponseEntity) {
         with(binding) {
+            tvMyPageMenuBarFirst.text = getString(R.string.my_page_teacher_menu_bar_answer)
             tvMyPageMenuBarFirstCount.text = data.answerCount.toString()
             tvMyPageMenuBarBookmarkCount.text = data.bookmarkCount.toString()
             tvMyPageMenuBarThird.text = getString(

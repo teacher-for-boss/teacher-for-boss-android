@@ -38,6 +38,19 @@ class ModifyProfileViewModel @Inject constructor(
     val nicknameCount: LiveData<String>
         get()=_nicknameCount
 
+    var _field= MutableLiveData<String>("")
+    val field: LiveData<String> get() = _field
+
+    private var _categoryCount = MutableLiveData<String>("0/20")
+    val categoryCount: LiveData<String> get() = _categoryCount
+
+    var _introduction = MutableLiveData<String>("")
+    val introduction: LiveData<String> get() = _introduction
+
+    private var _introduceCount = MutableLiveData<String>("0/40")
+
+    val introduceCount: LiveData<String> get() = _introduceCount
+
     var _phone= MutableLiveData<String>("")
     val phone: LiveData<String>
         get()=_phone
@@ -70,14 +83,6 @@ class ModifyProfileViewModel @Inject constructor(
         get() = _keywords
 
     // 피봇 이후 회원가입 변수들
-    var _field=MutableLiveData<String>("")
-    val field:LiveData<String>
-        get() = _field
-
-    var _introduction=MutableLiveData<String>("")
-    val introduction:LiveData<String>
-        get() = _introduction
-
     var _enableNext = MutableLiveData<Boolean>(false)
     val enableNext:LiveData<Boolean>
         get() = _enableNext
@@ -120,6 +125,12 @@ class ModifyProfileViewModel @Inject constructor(
     val modifyBossProfileLiveData: LiveData<ModifyProfileResponseEntity> get() = _modifyBossProfileLiveData
 
     init {
+        field.observeForever {
+            _categoryCount.value = "${it.length}/20"
+        }
+        introduction.observeForever {
+            _introduceCount.value = "${it.length}/40"
+        }
         nickname.observeForever {
             _nicknameCount.value = "${it.length}/10"
         }

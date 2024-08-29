@@ -10,6 +10,6 @@ import com.company.teacherforboss.domain.model.payment.TeacherPointResponseEntit
 interface PaymentRepository {
     suspend fun getBankAccount(): Result<BankAccountResponseEntity>
     suspend fun changeBankAccount(bankAccountChangeRequestEntity: BankAccountChangeRequestEntity): BankAccountChangeResponseEntity
-    suspend fun exchange(exchangeRequestEntity: ExchangeRequestEntity):ExchangeResponseEntity
+    suspend fun exchange(exchangeRequestEntity: ExchangeRequestEntity): Result<ExchangeResponseEntity>
     suspend fun getTeacherPoint(): Result<TeacherPointResponseEntity>
 }

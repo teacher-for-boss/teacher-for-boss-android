@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -17,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
-import com.company.teacherforboss.presentation.FullscreenImageActivity
+import com.company.teacherforboss.presentation.FullScreenImageActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
@@ -267,7 +268,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
             binding.vpImgSlider.setOnClickListener {
                 val selectedImageUrl = viewModel.imgUrlList[0]
 
-                val intent = Intent(it.context, FullscreenImageActivity::class.java).apply {
+                val intent = Intent(it.context, FullScreenImageActivity::class.java).apply {
                     putExtra("IMAGE_URL", selectedImageUrl)
                 }
                 it.context.startActivity(intent)

@@ -40,19 +40,18 @@ class rvAdapterCommentBoss(
             }
 
             // 프로필 클릭 시 상세 프로필 이동
-            binding.userImage.setOnClickListener {
-                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    itemView.context.startActivity(this)
+            viewModel.memberInfo.observe(lifecycleOwner, Observer { memberInfo ->
+                val clickListener = View.OnClickListener {
+                    if (memberInfo.role == "TEACHER") {
+                        Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
+                            putExtra(ConstsUtils.TEACHER_PROFILE_ID, memberInfo.memberId)
+                            binding.root.context.startActivity(this)
+                        }
+                    }
                 }
-            }
-            binding.userName.setOnClickListener {
-                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    itemView.context.startActivity(this)
-                }
-            }
-
+                binding.userImage.setOnClickListener(clickListener)
+                binding.userName.setOnClickListener(clickListener)
+            })
 
             // 유저 레벨
             binding.profileLevel.text = comment.memberInfo.level

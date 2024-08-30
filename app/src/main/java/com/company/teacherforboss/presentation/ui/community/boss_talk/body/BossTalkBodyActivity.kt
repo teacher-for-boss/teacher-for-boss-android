@@ -24,15 +24,12 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
-import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
-import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
@@ -80,7 +77,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         // 더보기 메뉴 보여주기
         showOptionMenu()
         // 클릭 리스너
-        addListners()
+        addListeners()
         // 질문 좋아요, 저장
         likeAndBookmark()
         // 수정, 삭제, 신고
@@ -101,20 +98,19 @@ class BossTalkBodyActivity : AppCompatActivity() {
 //        }
     }
 
-    fun addListners() {
-        binding.profileImage.setOnClickListener{
-            Intent(this, TeacherProfileActivity::class.java).apply {
-                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                startActivity(this)
+    fun addListeners() {
+        viewModel.memberInfo.observe(this, Observer { memberInfo ->
+            val clickListener = View.OnClickListener {
+                if (memberInfo.role == "TEACHER") {
+                    Intent(this, TeacherProfileActivity::class.java).apply {
+                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, memberInfo.memberId)
+                        startActivity(this)
+                    }
+                }
             }
-        }
-        binding.userNickname.setOnClickListener {
-            Intent(this, TeacherProfileActivity::class.java).apply {
-                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                startActivity(this)
-            }
-        }
-
+            binding.profileImage.setOnClickListener(clickListener)
+            binding.userNickname.setOnClickListener(clickListener)
+        })
     }
 
     fun readNotification(){
@@ -412,6 +408,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     companion object {
         const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
         const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
+        const val ROLE_TEACHER = "ROLE_TEACHER"
         const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
         const val BOSS_TALK = "BOSS_TALK"
     }

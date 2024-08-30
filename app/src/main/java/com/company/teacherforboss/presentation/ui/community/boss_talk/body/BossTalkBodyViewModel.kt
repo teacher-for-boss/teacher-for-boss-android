@@ -8,6 +8,7 @@ import com.company.teacherforboss.domain.model.community.BossTalkCommentListResp
 import com.company.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
 import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.domain.model.community.MemberEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentDeleteResponseEntity
@@ -40,6 +41,9 @@ class BossTalkBodyViewModel @Inject constructor(
     private val bossTalkDeletePostUseCase: BossTalkDeletePostUseCase,
     private val bossTalkCommentDeleteUseCase: BossTalkCommentDeleteUseCase
 ): ViewModel() {
+    private val _role = MutableLiveData<String>("")
+    val role: LiveData<String>
+        get() = _role
     private var _postCommentLiveData=MutableLiveData<BossTalkCommentResponseEntity>()
     val postCommentLiveData:LiveData<BossTalkCommentResponseEntity> get() = _postCommentLiveData
 
@@ -96,20 +100,24 @@ class BossTalkBodyViewModel @Inject constructor(
 
     val _memberId=MutableLiveData<Long>(-1L)
     val memberId: LiveData<Long> get()=_memberId
+
+    private val _memberInfo = MutableLiveData<MemberEntity>()
+    val memberInfo: LiveData<MemberEntity> get() = _memberInfo
+
     fun getMemberId() = memberId.value
 
-    fun getBossTalkBody(postId:Long){
+    fun getBossTalkBody(postId: Long) {
         viewModelScope.launch {
-            try{
-                val bossTalkBodyResponseEntity=bossTalkBodyUseCase(
-                    BossTalkRequestEntity(postId=postId)
+            try {
+                val bossTalkBodyResponseEntity = bossTalkBodyUseCase(
+                    BossTalkRequestEntity(postId = postId)
                 )
-                _bossTalkBodyLiveData.value=bossTalkBodyResponseEntity
-            }catch (ex:Exception){
+                _bossTalkBodyLiveData.value = bossTalkBodyResponseEntity
+                _memberInfo.value = bossTalkBodyResponseEntity.memberInfo.toMemberDto().toMemberEntity()
+            } catch (ex: Exception) {
                 throw ex
             }
         }
-
     }
 
     fun postLike(){
@@ -275,6 +283,12 @@ class BossTalkBodyViewModel @Inject constructor(
     fun setCommentId(id: Long) {
         _commnetId.value = id
     }
+
+    fun setRole(role: String) {
+        _role.value = role
+    }
+
+    fun getRole() = role.value
 
     fun setTagList(tagList:ArrayList<String>){
         _tagList.value=tagList

@@ -87,6 +87,11 @@ class NewScrollView @JvmOverloads constructor(
     private fun adjustRecyclerViewHeight() {
         recyclerView?.apply {
             post {
+                if (width == 0 || height == 0) {
+                    postDelayed({ adjustRecyclerViewHeight() }, 50)
+                    return@post
+                }
+
                 val adapter = adapter ?: return@post
                 val itemViewTypeHeights = mutableMapOf<Int, Int>()
                 var totalHeight = 0
@@ -113,7 +118,7 @@ class NewScrollView @JvmOverloads constructor(
                 }
 
                 val params = layoutParams
-                params.height = totalHeight + (adapter.itemCount * itemDecorationHeight)
+                params.height = totalHeight + itemDecorationHeight
                 layoutParams = params
             }
         }

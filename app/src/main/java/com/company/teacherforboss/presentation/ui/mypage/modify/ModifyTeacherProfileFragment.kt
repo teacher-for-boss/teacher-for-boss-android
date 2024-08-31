@@ -90,6 +90,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                         if(it.phoneOpen==true){
                             binding.switchPhone.isChecked = true
                             viewModel.setPhoneReveal(true)
+                            viewModel.setInitPhoneOpen(true)
                         }
                     }
                     // email
@@ -99,6 +100,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                         if(it.emailOpen==true){
                             binding.switchEmail.isChecked = true
                             viewModel.setEmailReveal(true)
+                            viewModel.setInitEmailOpen(true)
                         }
                     }
                     // field
@@ -328,25 +330,57 @@ class ModifyTeacherProfileFragment : Fragment() {
     private fun checkFilled() {
         viewModel.checkIfModified()
 
-        if (viewModel.nicknameCheck.value == true) {
+        if(viewModel.nicknameCheck.value==false) viewModel.setEnableNextState(false)
+
+        // 이메일, 휴대폰 모두 공개
+        if(viewModel.emailReveal.value==true && viewModel.phoneReveal.value== true){
             if (!viewModel.phone.value.isNullOrEmpty() &&
                 !viewModel.email.value.isNullOrEmpty() &&
                 !viewModel._field.value.isNullOrEmpty() &&
                 !viewModel._career_str.value.isNullOrEmpty() &&
                 !viewModel._introduction.value.isNullOrEmpty() &&
                 checkCnt > 0 &&
+                viewModel.getIsModified()==true) viewModel.setEnableNextState(true)
+            else viewModel.setEnableNextState(false)
+        }
+        // 이메일 공개, 휴대폰 비공개
+        else if(viewModel.emailReveal.value==true && viewModel.phoneReveal.value== false){
+            if (!viewModel.email.value.isNullOrEmpty() &&
+                !viewModel._field.value.isNullOrEmpty() &&
+                !viewModel._career_str.value.isNullOrEmpty() &&
+                !viewModel._introduction.value.isNullOrEmpty() &&
+                checkCnt > 0 &&
                 viewModel.getIsModified()==true
             ) viewModel.setEnableNextState(true)
-
-            else
-                viewModel.setEnableNextState(false)
+            else viewModel.setEnableNextState(false)
         }
-        else
-            viewModel.setEnableNextState(false)
+        // 이메일 비공개, 휴대폰 공개
+        else if(viewModel.emailReveal.value==false && viewModel.phoneReveal.value== true){
+            if (!viewModel.phone.value.isNullOrEmpty() &&
+                !viewModel._field.value.isNullOrEmpty() &&
+                !viewModel._career_str.value.isNullOrEmpty() &&
+                !viewModel._introduction.value.isNullOrEmpty() &&
+                checkCnt > 0 &&
+                viewModel.getIsModified()==true
+            ) viewModel.setEnableNextState(true)
+            else viewModel.setEnableNextState(false)
+        }
+        else {
+            if (!viewModel._field.value.isNullOrEmpty() &&
+                !viewModel._career_str.value.isNullOrEmpty() &&
+                !viewModel._introduction.value.isNullOrEmpty() &&
+                checkCnt > 0 &&
+                viewModel.getIsModified()==true
+            ) viewModel.setEnableNextState(true)
+            else viewModel.setEnableNextState(false)
+        }
     }
 
     private fun observeDataChanges() {
         val dataObserver = Observer<String> {
+            checkFilled()
+        }
+        val isOpenObserver=Observer<Boolean>{
             checkFilled()
         }
         viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
@@ -355,6 +389,8 @@ class ModifyTeacherProfileFragment : Fragment() {
         viewModel.field.observe(viewLifecycleOwner, dataObserver)
         viewModel.career_str.observe(viewLifecycleOwner, dataObserver)
         viewModel.introduction.observe(viewLifecycleOwner, dataObserver)
+        viewModel.emailReveal.observe(viewLifecycleOwner, isOpenObserver)
+        viewModel.phoneReveal.observe(viewLifecycleOwner, isOpenObserver)
 
         // keywords 필드에 대한 Observer
         val keywordsObserver = Observer<MutableList<String>> {

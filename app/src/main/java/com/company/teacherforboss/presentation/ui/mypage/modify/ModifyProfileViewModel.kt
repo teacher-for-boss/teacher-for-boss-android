@@ -106,6 +106,8 @@ class ModifyProfileViewModel @Inject constructor(
     val initialCareer = MutableLiveData<String>("")
     val initialIntroduction = MutableLiveData<String>("")
     val initialKeywords = MutableLiveData<List<String>>()
+    val initEmailOpen=MutableLiveData<Boolean>(false)
+    val initPhoneOpen=MutableLiveData<Boolean>(false)
 
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
 
@@ -309,6 +311,12 @@ class ModifyProfileViewModel @Inject constructor(
     fun setInitKeywords(keywordList: List<String>) {
         initialKeywords.value = keywordList
     }
+    fun setInitEmailOpen(isOpened:Boolean){
+        initEmailOpen.value=isOpened
+    }
+    fun setInitPhoneOpen(isOpened: Boolean){
+        initPhoneOpen.value=isOpened
+    }
 
     val isModified = MediatorLiveData<Boolean>().apply {
         value=false
@@ -320,6 +328,8 @@ class ModifyProfileViewModel @Inject constructor(
         addSource(_career_str) { checkIfModified() }
         addSource(_introduction) { checkIfModified() }
         addSource(_keywords) { checkIfModified() }
+        addSource(_phoneReveal){checkIfModified()}
+        addSource(_emailReveal){checkIfModified()}
     }
 
     fun getIsModified()=isModified.value?:false
@@ -341,6 +351,10 @@ class ModifyProfileViewModel @Inject constructor(
         val initialIntroductionValue = initialIntroduction.value ?: ""
         val currentKeywords = keywords.value ?: mutableListOf()
         val initialKeywordsValue = initialKeywords.value ?: mutableListOf()
+        val initEmailOpen=initEmailOpen.value?:false
+        val currentEmailOpen=emailReveal.value
+        val initPhoneOpen=initPhoneOpen.value?:false
+        val currentPhoneOpen=phoneReveal.value
 
         // 키워드 리스트를 내용으로 비교
         val keywordsModified = currentKeywords.size != initialKeywordsValue.size ||
@@ -353,6 +367,8 @@ class ModifyProfileViewModel @Inject constructor(
                 currentField != initialFieldValue ||
                 currentCareerStr != initialCareerValue ||
                 currentIntroduction != initialIntroductionValue ||
+                currentEmailOpen != initEmailOpen ||
+                currentPhoneOpen != initPhoneOpen ||
                 keywordsModified
 
         isModified.value = modified

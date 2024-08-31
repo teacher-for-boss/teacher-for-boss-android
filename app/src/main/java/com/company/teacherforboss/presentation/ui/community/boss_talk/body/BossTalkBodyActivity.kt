@@ -288,19 +288,19 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     private fun setCommentView() {
-        viewModel.getCommentListLiveData.observe(this, Observer {
-            if (it.commentList.isNotEmpty()) {
-                viewModel.setCommentListValue(it.commentList)
+        viewModel.getCommentListLiveData.observe(this, Observer { commentListResponse ->
+            if (commentListResponse.commentList.isNotEmpty()) {
+                viewModel.setCommentListValue(commentListResponse.commentList)
 
-                // 댓글 개수
-                binding.commentNumber.text = getString(R.string.comment_cnt, it.commentList.size)
+                // 댓글 개수 설정
+                binding.commentNumber.text = getString(R.string.comment_cnt, commentListResponse.commentList.size)
 
-                // 댓글 rv
-                binding.rvComment.adapter = rvAdapterCommentBoss(
-                    this,
-                    this,
-                    viewModel.getCommentListValue(),
-                    viewModel
+                // rvAdapterCommentBoss 어댑터 설정
+                val adapter = rvAdapterCommentBoss(
+                    lifecycleOwner = this,
+                    context = this,
+                    commentList = viewModel.getCommentListValue(),
+                    viewModel = viewModel
                 ) { btnOption ->
                     // 옵션 버튼 클릭 콜백 처리
                     if (currentOptionButton != null && currentOptionButton != btnOption) {
@@ -308,14 +308,36 @@ class BossTalkBodyActivity : AppCompatActivity() {
                     }
                     currentOptionButton = btnOption
                 }
-                binding.rvComment.layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+                // dispatchTouchEvent를 어댑터에 전달
+                adapter.setDispatchTouchEventListener { ev ->
+                    handleTouchEvent(ev)
+                }
+
+                // RecyclerView 설정
+                binding.rvComment.adapter = adapter
+                binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             }
         })
+    }
+    private fun handleTouchEvent(ev: MotionEvent): Boolean {
+        if (currentOptionButton != null && ev.action == MotionEvent.ACTION_DOWN) {
+            val optionButtonLocation = IntArray(2)
+            currentOptionButton?.getLocationOnScreen(optionButtonLocation)
+            val optionButtonRect = Rect(
+                optionButtonLocation[0],
+                optionButtonLocation[1],
+                optionButtonLocation[0] + currentOptionButton!!.width,
+                optionButtonLocation[1] + currentOptionButton!!.height
+            )
 
-        viewModel.deleteCommentLiveData.observe(this, Observer {
-            viewModel.getCommentList()
-        })
+            if (!optionButtonRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                currentOptionButton?.visibility = View.GONE
+                currentOptionButton = null
+                return true // 이벤트 처리됨을 알림
+            }
+        }
+        return false
     }
 
     private fun observePostComment() {
@@ -334,7 +356,13 @@ class BossTalkBodyActivity : AppCompatActivity() {
     private fun hideOptionMenuIfVisible() {
         binding.writerOption.visibility = View.GONE
         binding.nonWriterOption.visibility = View.GONE
+
+        val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
+        adapter?.currentOptionMenu?.visibility = View.GONE
+        adapter?.currentOptionMenu = null
     }
+
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus

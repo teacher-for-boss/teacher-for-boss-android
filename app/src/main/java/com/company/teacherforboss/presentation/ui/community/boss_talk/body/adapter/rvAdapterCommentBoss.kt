@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -28,6 +29,10 @@ class rvAdapterCommentBoss(
     private val viewModel: BossTalkBodyViewModel,
     private val optionClickListener: (View) -> Unit
 ) : RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
+
+    private var dispatchTouchEvent: ((MotionEvent) -> Boolean)? = null
+    var currentOptionMenu: View? = null
+
 
     inner class ViewHolder(private val binding: RvItemCommentBossBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
@@ -72,19 +77,33 @@ class rvAdapterCommentBoss(
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
-            //더보기 버튼 보여주기
+            // 더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
-                optionClickListener(binding.btnOption)
-                if (comment.isMine) {  // 댓글 작성자인 경우
-                    if(binding.deleteBtn.visibility == View.GONE) binding.deleteBtn.visibility = View.VISIBLE
-                    else binding.deleteBtn.visibility = View.GONE
+                currentOptionMenu?.let {
+                    it.visibility = View.GONE
                 }
-                else {  // 댓글 작성자 아닌 경우
-                    if (binding.reportBtn.visibility == View.GONE) {
-                        binding.reportBtn.visibility = View.VISIBLE
+
+                if (comment.isMine) {
+                    binding.deleteBtn.visibility = if (binding.deleteBtn.visibility == View.GONE) {
+                        currentOptionMenu = binding.deleteBtn
+                        View.VISIBLE
                     } else {
-                        binding.reportBtn.visibility = View.GONE
+                        currentOptionMenu = null
+                        View.GONE
                     }
+                } else {
+                    binding.reportBtn.visibility = if (binding.reportBtn.visibility == View.GONE) {
+                        currentOptionMenu = binding.reportBtn
+                        View.VISIBLE
+                    } else {
+                        currentOptionMenu = null
+                        View.GONE
+                    }
+                }
+
+                // 터치 이벤트 처리
+                binding.root.setOnTouchListener { _, event ->
+                    dispatchTouchEvent?.invoke(event) ?: false
                 }
             }
 
@@ -176,4 +195,7 @@ class rvAdapterCommentBoss(
         holder.bind(commentList[position], viewModel = viewModel)
     }
 
+    fun setDispatchTouchEventListener(listener: (MotionEvent) -> Boolean) {
+        this.dispatchTouchEvent = listener
+    }
 }

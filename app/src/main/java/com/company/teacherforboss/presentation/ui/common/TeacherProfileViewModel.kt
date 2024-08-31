@@ -63,4 +63,5 @@ class TeacherProfileViewModel @Inject constructor(
     fun setMemberId(id: Long) {
         _memberId.value = id
     }
+    fun getMembeerId()=memberId.value
 }

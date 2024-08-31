@@ -61,7 +61,7 @@
             </intent-filter>
 
         </activity>
-  
+
         <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity"
             android:exported="false"
@@ -76,7 +76,7 @@
 
         <activity
             android:name="com.company.teacherforboss.MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         </activity>
         <activity
@@ -145,6 +145,12 @@
             android:exported="false"
             >
         </activity>
+
+        <activity
+            android:name="com.company.teacherforboss.presentation.FullscreenImageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true"

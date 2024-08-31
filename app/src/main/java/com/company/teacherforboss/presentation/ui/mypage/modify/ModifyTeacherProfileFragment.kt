@@ -22,12 +22,15 @@ import com.company.teacherforboss.MainActivity.Companion.MYPAGE
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
-import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogModify
+import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
-import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ModifyTeacherProfileFragment : Fragment() {
@@ -61,7 +64,6 @@ class ModifyTeacherProfileFragment : Fragment() {
         chipListener()
 
         modifyTeacherProfile()
-        observeProfile()
         setObserver()
         showProfileImageDialog()
 
@@ -126,6 +128,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                 }
             }
         }
+        observeProfile()
     }
 
     private fun setPhoneTextWatcher() {
@@ -252,33 +255,42 @@ class ModifyTeacherProfileFragment : Fragment() {
     }
 
     private fun observeProfile() {
-        viewModel.isUserImgSelected.observe(viewLifecycleOwner,{bool->
-            Log.d("profile","user img selected")
-            if (bool==true){
-                // TODO: url 변경 반영
-//                lifecycleScope.launch {
-//                viewModel.getPresignedUrlList(type="profile",id=1L, imgCnt = 1)
-//                }
-
-                Glide.with(this)
-                    .load(viewModel.profileImgUri.value)
-                    .fitCenter()
-                    .apply(RequestOptions().override(80,80))
-                    .into(binding.profileImage)
+        // 디폴트 이미지
+        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+            defaultImgUrl?.let {
+                viewModel.setIsUserImgSelected(false)
+                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
             }
         })
 
-        viewModel.isDefaultImgSelected.observe(viewLifecycleOwner, { bool ->
-            if (bool == true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        // 사용자 갤러리 이미지
+        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
+            viewModel.setIsUserImgSelected(true)
+            imgUri?.let {
+                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            }
         })
 
-        viewModel.profileImg.observe(viewLifecycleOwner, { bool ->
-            binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+        // presigned url
+        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+            uploadImgtoS3()
         })
 
-        viewModel.profileImgUri.observe(viewLifecycleOwner, {
-            if (it != null) BindingImgAdapter.bindProfileImgUri(requireContext(), binding.profileImage, it)
-        })
+    }
+    private fun uploadImgtoS3(){
+        val uploadUtil= UploadUtil(requireContext())
+        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
+    }
+
+    private fun showProfileImageDialog() {
+        binding.profileImage.setOnClickListener {
+            val activity = requireActivity() as? ModifyProfileActivity
+            val dialog = ProfileImageModifyDialogFragment(TEACHER) {
+                activity?.checkAndRequestPermissions()
+            }
+
+            dialog.show(parentFragmentManager, MODIFY_PROFILE_IMAGE_DIALOG)
+        }
     }
 
     private fun chipListener() {
@@ -308,12 +320,6 @@ class ModifyTeacherProfileFragment : Fragment() {
         }
     }
 
-    private fun showProfileImageDialog() {
-        binding.profileImage.setOnClickListener {
-            val dialog = ProfileImageDialogModify(requireActivity() as ModifyProfileActivity, viewModel)
-            dialog.show()
-        }
-    }
 
     private fun setObserver(){
         viewModel.isInitializedView.observe(viewLifecycleOwner) { initialized ->

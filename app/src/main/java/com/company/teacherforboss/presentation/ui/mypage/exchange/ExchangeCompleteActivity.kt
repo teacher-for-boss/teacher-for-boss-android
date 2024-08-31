@@ -18,13 +18,13 @@ class ExchangeCompleteActivity : AppCompatActivity() {
         onCheckBtnPressed()
     }
 
-    fun onCheckBtnPressed(){
+    fun onCheckBtnPressed() {
         binding.btnCheck.setOnClickListener {
-            val intent= Intent(this, MainActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION","EXCHANGE")
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
             startActivity(intent)
+            finish()
         }
-
     }
 }

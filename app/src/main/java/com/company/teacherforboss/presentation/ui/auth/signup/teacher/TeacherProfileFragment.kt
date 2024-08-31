@@ -20,7 +20,6 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginViewModel
-import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
@@ -242,7 +241,7 @@ class TeacherProfileFragment : Fragment(){
         })
 
         viewModel.profileImgUri.observe(viewLifecycleOwner,{
-            if(it!=null) BindingImgAdapter.bindProfileImgUri(requireContext(),binding.profileImage,it)
+            if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
         })
     }
 
@@ -314,8 +313,8 @@ class TeacherProfileFragment : Fragment(){
 
     private fun showProfileImageDialog() {
         val activity=activity as SignupActivity
-        val dialog = ProfileImageDialog(activity,viewModel)
-        dialog.show()
+//        val dialog = ProfileImageDialog(activity,viewModel)
+//        dialog.show()
     }
     private fun checkPattern(string: String, regex: Regex){
         if(regex.containsMatchIn(string)){

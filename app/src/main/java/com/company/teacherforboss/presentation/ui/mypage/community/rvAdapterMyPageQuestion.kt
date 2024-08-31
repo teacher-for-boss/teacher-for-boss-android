@@ -7,13 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.company.teacherforboss.databinding.RvItemExchangeHistoryBinding
 import com.company.teacherforboss.databinding.RvItemMyPageQuestionCardBinding
-import com.company.teacherforboss.domain.model.mypage.MyPageAnsweredQuestionResponseEntity
-import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
-import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterMyPageQuestion(
@@ -22,7 +18,7 @@ class rvAdapterMyPageQuestion(
 ) : RecyclerView.Adapter<rvAdapterMyPageQuestion.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemMyPageQuestionCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind (question: MyPageQuestionEntity){
-            binding.apply {
+            with(binding) {
                 tvMyPageQuestionTitle.text = question.title
                 tvMyPageQuestionBody.text = question.content
                 tvMyPageQuestionDate.text = question.createdAt
@@ -31,11 +27,16 @@ class rvAdapterMyPageQuestion(
 
                 if(question.solved) {
                     widgetCardViewStatementSolved.visibility = View.VISIBLE
+                    widgetCardViewStatementNotSolved.visibility = View.GONE
+
                     Glide.with(root.context)
                         .load(question.selectedTeacher)
                         .into(ivSelectedTeacher)
                 }
-                else widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+                else {
+                    widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+                    widgetCardViewStatementSolved.visibility = View.GONE
+                }
 
                 root.setOnClickListener {
                     val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
@@ -51,7 +52,6 @@ class rvAdapterMyPageQuestion(
         val newItemSize= newQuestionList.size
         questionList.addAll(newQuestionList)
         notifyItemRangeInserted(currentSize,newItemSize)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

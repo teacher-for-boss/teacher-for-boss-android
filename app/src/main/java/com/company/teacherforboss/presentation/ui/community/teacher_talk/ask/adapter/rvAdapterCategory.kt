@@ -10,8 +10,10 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCategoryBinding
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskViewModel
 
-class rvAdapterCategory(private val categoryList: ArrayList<String>,
-    private val viewModel: TeacherTalkAskViewModel, private var selectedItemPosition: Int = DEFAULT_TAG_POSITION
+class rvAdapterCategory(
+    private val categoryList: ArrayList<String>,
+    private var selectedItemPosition: Int,
+    private val selectCategory:(Long)->Unit,
 ): RecyclerView.Adapter<rvAdapterCategory.ViewHolder>(){
 
     var previousItemPosition = RecyclerView.NO_POSITION
@@ -23,7 +25,7 @@ class rvAdapterCategory(private val categoryList: ArrayList<String>,
                 previousItemPosition = selectedItemPosition
                 selectedItemPosition = adapterPosition
 
-                viewModel.selectCategoryId(selectedItemPosition.toLong())
+                selectCategory(selectedItemPosition.toLong())
 
                 Log.d("cagtegory", selectedItemPosition.toString())
 

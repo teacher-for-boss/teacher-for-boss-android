@@ -2,9 +2,12 @@ package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,15 +17,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
+import com.company.teacherforboss.presentation.FullscreenImageActivity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
@@ -71,6 +79,8 @@ class BossTalkBodyActivity : AppCompatActivity() {
         setBodyView()
         // 더보기 메뉴 보여주기
         showOptionMenu()
+        // 클릭 리스너
+        addListners()
         // 질문 좋아요, 저장
         likeAndBookmark()
         // 수정, 삭제, 신고
@@ -91,25 +101,44 @@ class BossTalkBodyActivity : AppCompatActivity() {
 //        }
     }
 
+    fun addListners() {
+        binding.profileImage.setOnClickListener{
+            Intent(this, TeacherProfileActivity::class.java).apply {
+                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                startActivity(this)
+            }
+        }
+        binding.userNickname.setOnClickListener {
+            Intent(this, TeacherProfileActivity::class.java).apply {
+                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
+                startActivity(this)
+            }
+        }
+
+    }
+
     fun readNotification(){
         val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
         notificationViewModel.readNotification(notifiationId)
     }
-
     private fun showOptionMenu() {
         // 더보기 버튼
         binding.btnOption.setOnClickListener {
-            if (viewModel.isMine.value == true) { // 작성자인 경우
-                if (binding.writerOption.visibility == View.GONE) {
-                    binding.writerOption.visibility = View.VISIBLE
-                } else {
-                    binding.writerOption.visibility = View.GONE
-                }
-            } else { // 작성자가 아닌 경우
-                if (binding.nonWriterOption.visibility == View.GONE) {
-                    binding.nonWriterOption.visibility = View.VISIBLE
-                } else {
-                    binding.nonWriterOption.visibility = View.GONE
+            if (binding.writerOption.visibility == View.VISIBLE || binding.nonWriterOption.visibility == View.VISIBLE) {
+                hideOptionMenuIfVisible()
+            } else {
+                if (viewModel.isMine.value == true) { // 작성자인 경우
+                    if (binding.writerOption.visibility == View.GONE) {
+                        binding.writerOption.visibility = View.VISIBLE
+                    } else {
+                        binding.writerOption.visibility = View.GONE
+                    }
+                } else { // 작성자가 아닌 경우
+                    if (binding.nonWriterOption.visibility == View.GONE) {
+                        binding.nonWriterOption.visibility = View.VISIBLE
+                    } else {
+                        binding.nonWriterOption.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -233,11 +262,20 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 bodyTitle.text = it.title
                 bodyBody.text = it.content
                 userNickname.text = it.memberInfo.toMemberDto().name
+                profileLevel.text = it.memberInfo.toMemberDto().level
                 date.text = LocalDateFormatter.extractDate(it.createdAt)
             }
 
             // 본문 업로드된 이미지
             if (it.imageUrlList.isNotEmpty()) viewModel.imgUrlList = it.imageUrlList
+            binding.vpImgSlider.setOnClickListener {
+                val selectedImageUrl = viewModel.imgUrlList[0]
+
+                val intent = Intent(it.context, FullscreenImageActivity::class.java).apply {
+                    putExtra("IMAGE_URL", selectedImageUrl)
+                }
+                it.context.startActivity(intent)
+            }
 
             // 프로필 이미지
             if (it.memberInfo.toMemberDto().profileImg != null) BindingImgAdapter.bindImage(
@@ -297,12 +335,49 @@ class BossTalkBodyActivity : AppCompatActivity() {
         })
     }
     private fun hideOptionMenuIfVisible() {
-        if (binding.writerOption.visibility == View.VISIBLE) {
-            binding.writerOption.visibility = View.GONE
+        binding.writerOption.visibility = View.GONE
+        binding.nonWriterOption.visibility = View.GONE
+    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v != null) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                v.clearFocus()
+            }
+
+            // btnOption 영역의 터치 이벤트 처리
+            val btnOptionLocation = IntArray(2)
+            binding.btnOption.getLocationOnScreen(btnOptionLocation)
+            val btnOptionRect = Rect(
+                btnOptionLocation[0],
+                btnOptionLocation[1],
+                btnOptionLocation[0] + binding.btnOption.width,
+                btnOptionLocation[1] + binding.btnOption.height
+            )
+
+            // 댓글 영역에 대한 터치 이벤트가 발생했는지 확인
+            val rvCommentLocation = IntArray(2)
+            binding.rvComment.getLocationOnScreen(rvCommentLocation)
+            val rvCommentRect = Rect(
+                rvCommentLocation[0],
+                rvCommentLocation[1],
+                rvCommentLocation[0] + binding.rvComment.width,
+                rvCommentLocation[1] + binding.rvComment.height
+            )
+
+            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
+            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                hideOptionMenuIfVisible()
+            }
+
+            // 댓글 영역의 터치 이벤트를 확인하고, 부모로 이벤트 전달
+            if (rvCommentRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                binding.rvComment.dispatchTouchEvent(ev)
+            }
         }
-        if (binding.nonWriterOption.visibility == View.VISIBLE) {
-            binding.nonWriterOption.visibility = View.GONE
-        }
+        return super.dispatchTouchEvent(ev)
     }
 
 //    override fun onBackPressed() {

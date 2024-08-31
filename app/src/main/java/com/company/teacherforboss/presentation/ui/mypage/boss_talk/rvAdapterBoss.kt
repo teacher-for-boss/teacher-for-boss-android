@@ -20,24 +20,26 @@ class rvAdapterBoss(
         fun bind(context: Context, post: MyPagePostEntity) {
 
             // init View
-            binding.title.text = post.title
-            binding.content.text = post.content
-            binding.date.text = LocalDateFormatter.extractDate2(post.createdAt)
+            with(binding){
+                title.text = post.title
+                content.text = post.content
+                date.text = LocalDateFormatter.extractDate2(post.createdAt)
 
-            binding.commentCount.text = post.commentCount.toString()
-            binding.likeCount.text = post.likeCount.toString()
-            binding.bookmarkCount.text = post.bookmarkCount.toString()
+                commentCount.text = post.commentCount.toString()
+                likeCount.text = post.likeCount.toString()
+                bookmarkCount.text = post.bookmarkCount.toString()
 
-            if (post.liked) binding.likeIv.isSelected = true
-            if (post.bookmarked) binding.bookmarkIv.isSelected = true
+                if (post.liked) likeIv.isSelected = true
+                if (post.bookmarked) bookmarkIv.isSelected = true
 
-            // 본문 상세보기
-            binding.root.setOnClickListener {
-                val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
-                    putExtra("PREVIOUS_ACTIVITY", "BossTalkSearchActivity")
-                    putExtra("postId", post.postId)
+                // 본문 상세보기
+                root.setOnClickListener {
+                    val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
+                        putExtra("PREVIOUS_ACTIVITY", "BossTalkSearchActivity")
+                        putExtra("postId", post.postId)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
             }
         }
     }

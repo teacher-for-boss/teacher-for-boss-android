@@ -94,6 +94,10 @@ class BossTalkBodyViewModel @Inject constructor(
     private var _deleteCommentLiveData = MutableLiveData<BossTalkCommentDeleteResponseEntity>()
     val deleteCommentLiveData: LiveData<BossTalkCommentDeleteResponseEntity> get() = _deleteCommentLiveData
 
+    val _memberId=MutableLiveData<Long>(-1L)
+    val memberId: LiveData<Long> get()=_memberId
+    fun getMemberId() = memberId.value
+
     fun getBossTalkBody(postId:Long){
         viewModelScope.launch {
             try{

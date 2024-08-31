@@ -7,14 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemImageBinding
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerViewModel
 
-class rvAdapterImageTeacherAnswer (private val imageList: ArrayList<Uri>, private val viewModel: TeacherTalkAnswerViewModel): RecyclerView.Adapter<rvAdapterImageTeacherAnswer.ViewHolder>() {
+class rvAdapterImageTeacherAnswer (
+    private val imageList: ArrayList<Uri>,
+    private val deleteImg:(Int)->Unit,
+): RecyclerView.Adapter<rvAdapterImageTeacherAnswer.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(imagePath: Uri, viewModel: TeacherTalkAnswerViewModel) {
+        fun bind(imagePath: Uri) {
             binding.image.setImageURI(Uri.parse(imagePath.toString()))
 
             binding.deleteButton.setOnClickListener {
                 val position = adapterPosition
-                viewModel.deleteImage(position)
+                deleteImg(position)
                 notifyDataSetChanged()
             }
         }
@@ -31,6 +34,6 @@ class rvAdapterImageTeacherAnswer (private val imageList: ArrayList<Uri>, privat
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(imageList[position], viewModel = viewModel)
+        holder.bind(imageList[position])
     }
 }

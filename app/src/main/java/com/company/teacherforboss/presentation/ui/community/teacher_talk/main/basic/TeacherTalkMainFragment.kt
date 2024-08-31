@@ -22,11 +22,13 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.Category.TeacherTalkCategoryAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.card.TeacherTalkCardAdapter
 import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.rvAdapterCardTeacher
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,10 +39,12 @@ class TeacherTalkMainFragment :
     BindingFragment<FragmentTeacherTalkMainBinding>(R.layout.fragment_teacher_talk_main) {
 
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
-    private lateinit var teacherTalkCardAdapter:TeacherTalkCardAdapter
+    private val teacherTalkCardAdapter:TeacherTalkCardAdapter by lazy { TeacherTalkCardAdapter(::navigateToTeacherTalkBody) }
+    private val teacherTalkCategoryAdapter:TeacherTalkCategoryAdapter by lazy { TeacherTalkCategoryAdapter(viewModel.categoryList,viewModel.getCategoryId(),::changeCategory) }
 
     @Inject
     lateinit var localDataSource: LocalDataSource
+    var initialized = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,9 +53,14 @@ class TeacherTalkMainFragment :
         newScrollView.setBinding(binding.teacherTalkWidget2, binding.rvTeacherTalkCard)
 
         binding.viewModel = viewModel
-        binding.rvTeacherTalkCategory.adapter = TeacherTalkCategoryAdapter(requireContext(), viewModel.categoryList, viewModel)
+
         val categoryLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTeacherTalkCategory.layoutManager = categoryLayoutManager
+
+        with(binding){
+            rvTeacherTalkCard.adapter = teacherTalkCardAdapter
+            rvTeacherTalkCategory.adapter = teacherTalkCategoryAdapter
+            rvTeacherTalkCategory.layoutManager = categoryLayoutManager
+        }
 
         // 선택된 카테고리 index로 스크롤
         if(viewModel.getCategoryId() != -1) {
@@ -59,9 +68,6 @@ class TeacherTalkMainFragment :
                 categoryLayoutManager.scrollToPosition(viewModel.getCategoryId())
             }
         }
-
-        teacherTalkCardAdapter= TeacherTalkCardAdapter(requireContext())
-        binding.rvTeacherTalkCard.adapter = teacherTalkCardAdapter
 
         initView()
         getQuestions()
@@ -82,9 +88,11 @@ class TeacherTalkMainFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.clearData()
+        initialized = false
     }
 
     private fun initView() {
+        if (!initialized) viewModel.getTeacherTalkQuestions()
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
@@ -136,7 +144,6 @@ class TeacherTalkMainFragment :
     }
 
     private fun initQuestionListView(questionList: List<QuestionEntity>){
-        Log.d("test","init")
         // rv
         teacherTalkCardAdapter.setCardList(questionList)
         teacherTalkCardAdapter.notifyDataSetChanged()
@@ -148,6 +155,7 @@ class TeacherTalkMainFragment :
         Handler(Looper.getMainLooper()).postDelayed({
             binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
         },2000)
+        initialized = true
     }
 
 
@@ -174,19 +182,27 @@ class TeacherTalkMainFragment :
 
     private fun observeSortType() {
         viewModel.sortBy.observe(viewLifecycleOwner, {
-            viewModel.getTeacherTalkQuestions()
+            if(initialized) viewModel.getTeacherTalkQuestions()
+            else {}
         })
     }
 
     private fun observeCategory() {
         viewModel.category.observe(viewLifecycleOwner, {
-            viewModel.updateQuestionIdMap(DEFAULT_LASTID)
-            viewModel.getTeacherTalkQuestions()
+            if (initialized){
+                viewModel.updateQuestionIdMap(DEFAULT_LASTID)
+                viewModel.getTeacherTalkQuestions()
+            }
+            else {}
         })
     }
 
     private fun updateQuestions(questionList:List<QuestionEntity>) {
         teacherTalkCardAdapter.addMoreCards(questionList)
+    }
+
+    fun changeCategory(categoryName:String){
+        viewModel.setCategory(categoryName, DEFAULT_LASTID)
     }
 
     private fun addListeners() {
@@ -233,6 +249,12 @@ class TeacherTalkMainFragment :
 
     private fun navigateToAlarm(){
         Intent(requireContext(), NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+    private fun navigateToTeacherTalkBody(questionId:Long){
+        Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply{
+            putExtra(TEACHER_QUESTIONID,questionId)
             startActivity(this)
         }
     }

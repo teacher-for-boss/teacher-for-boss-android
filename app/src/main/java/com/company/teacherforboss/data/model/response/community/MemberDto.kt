@@ -13,7 +13,7 @@ data class MemberDto(
     @SerializedName("level")
     val level: String?,
     @SerializedName("role")
-    val role:String
+    val role:String?
 ){
     fun toMemberEntity()= MemberEntity(
         memberId=memberId,

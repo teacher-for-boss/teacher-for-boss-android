@@ -7,7 +7,7 @@ data class MemberEntity(
     val name: String,
     val profileImg: String?,
     val level: String?,
-    val role: String
+    val role: String?
 ) : Member {
     override fun toMemberDto() = MemberDto(
         memberId = memberId,

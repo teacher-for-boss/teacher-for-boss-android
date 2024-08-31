@@ -59,8 +59,10 @@ class ModifyBossProfileFragment : Fragment() {
 
     private fun initLayout() {
         binding.profileImage.loadCircularImage(viewModel.profileImg.value!!)
-        viewModel.initialNickname.value = viewModel.nickname.value.toString()
 
+        viewModel.setInitNickname(viewModel.nickname.value.toString())
+        viewModel.setInitProfileImg(viewModel.profileImg.value.toString())
+        viewModel.setNicknameCheck(true)
         observeProfile()
     }
 
@@ -87,11 +89,11 @@ class ModifyBossProfileFragment : Fragment() {
                     binding.veryInfo.visibility = View.INVISIBLE
                     if(viewModel.initialNickname.value != it.toString()) {
                         binding.nicknameVerifyBtn.isEnabled = true
-                        viewModel._nicknameCheck.value = false
+                        viewModel.setNicknameCheck(false)
                     }
                     else {
                         binding.nicknameVerifyBtn.isEnabled = false
-                        viewModel._nicknameCheck.value = true
+                        viewModel.setNicknameCheck(true)
                     }
                     viewModel.setNickname(filtered)
                 }
@@ -112,7 +114,7 @@ class ModifyBossProfileFragment : Fragment() {
                     setTextColor(errorColor)
                     text = "특수문자 제외 10자 이내로 작성해주세요."
                 }
-                viewModel._nicknameCheck.value = false
+                viewModel.setNicknameCheck(false)
             } else viewModel.nicknameUser()
         }
 
@@ -126,7 +128,7 @@ class ModifyBossProfileFragment : Fragment() {
                         setTextColor(successColor)
                         text = "사용 가능한 닉네임입니다."
                     }
-                    viewModel._nicknameCheck.value = true
+                    viewModel.setNicknameCheck(true)
                 }
                 is BaseResponse.Error -> {
                     binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
@@ -135,7 +137,7 @@ class ModifyBossProfileFragment : Fragment() {
                         setTextColor(errorColor)
                         text = "사용할 수 없는 닉네임입니다."
                     }
-                    viewModel._nicknameCheck.value = false
+                    viewModel.setNicknameCheck(false)
                 }
                 else -> {}
             }
@@ -197,17 +199,20 @@ class ModifyBossProfileFragment : Fragment() {
     }
 
     private fun checkFilled() {
-        viewModel.nicknameCheck.observeForever {
-            if (viewModel.nicknameCheck.value == true)
-                viewModel.setEnableNextState(true)
-            else
-                viewModel.setEnableNextState(false)
+        if(viewModel.getNicknameCheck()==true &&
+            (viewModel.initialNickname.value!=viewModel.nickname.value ||
+            viewModel.initialProfileImg.value!=viewModel.profileImg.value)
+        ){ viewModel.setEnableNextState(true)
+        }
+        else {viewModel.setEnableNextState(false)
         }
     }
 
     private fun setObserver() {
         val dataObserver = Observer<String> { _ -> checkFilled() }
+        val isCheckedObserver = Observer<Boolean> { _ -> checkFilled() }
         viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
+        viewModel.nicknameCheck.observe(viewLifecycleOwner,isCheckedObserver)
     }
 
 }

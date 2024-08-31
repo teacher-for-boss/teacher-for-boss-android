@@ -133,6 +133,10 @@ class ModifyProfileViewModel @Inject constructor(
     fun setEmailReveal(reveal: Boolean) {
         _emailReveal.value = reveal
     }
+    fun setNicknameCheck(isChecked:Boolean){
+        _nicknameCheck.value=isChecked
+    }
+    fun getNicknameCheck()=nicknameCheck.value
 
     fun setIsInitializedView(isInitializedState:Boolean){
         _isInitializedView.value=isInitializedState

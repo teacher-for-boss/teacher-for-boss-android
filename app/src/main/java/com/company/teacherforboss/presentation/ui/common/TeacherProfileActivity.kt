@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.common
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
+import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
@@ -27,7 +29,6 @@ class TeacherProfileActivity :
         super.onCreate(savedInstanceState)
 
         initLayout()
-        addListeners()
         collectData()
     }
 
@@ -96,7 +97,12 @@ class TeacherProfileActivity :
                 )
             }
             tvTeacherProfileMenuFix.setOnClickListener {
-                // TODO 프로필 수정 Activity로 이동
+                Intent(this@TeacherProfileActivity, ModifyProfileActivity::class.java).apply {
+                    putExtra(ROLE, ROLE_TEACHER)
+                    putExtra(TEACHER_PROFILE_ID, viewModel.memberId.value)
+                    putExtra(PREVIOUS_ACTIVITY, TEACHER_PROFILE_ACTIVITY)
+                    startActivity(this)
+                }
             }
 
             root.setOnClickListener { layoutTeacherProfileMenu.visibility = View.GONE }
@@ -116,24 +122,28 @@ class TeacherProfileActivity :
 
     private fun collectData() {
         lifecycleScope.launch {
-            viewModel.teacherProfileDetail.collect {
-                it?.let {
-                    binding.teacherProfileDetailEntity = viewModel.teacherProfileDetail.value
-                    binding.ivTeacherProfileImg.loadCircularImage(viewModel.teacherProfileDetail.value!!.profileImg)
+            viewModel.teacherProfileDetail.collect { TeacherProfileDetailEntity ->
+                TeacherProfileDetailEntity?.let {
+                    with(binding) {
+                        teacherProfileDetailEntity = viewModel.teacherProfileDetail.value
+                        ivTeacherProfileImg.loadCircularImage(viewModel.teacherProfileDetail.value!!.profileImg)
 
-                    binding.tvTeacherProfileEmail.visibility =
-                        if (!viewModel.teacherProfileDetail.value?.email.isNullOrBlank()) {
-                            View.VISIBLE
-                        } else {
-                            View.GONE
-                        }
+                        tvTeacherProfileEmail.visibility =
+                            if (!viewModel.teacherProfileDetail.value?.email.isNullOrBlank()) {
+                                View.VISIBLE
+                            } else {
+                                View.GONE
+                            }
 
-                    binding.tvTeacherProfilePhone.visibility =
-                        if (!viewModel.teacherProfileDetail.value?.phone.isNullOrBlank()) {
-                            View.VISIBLE
-                        } else {
-                            View.GONE
-                        }
+                        tvTeacherProfilePhone.visibility =
+                            if (!viewModel.teacherProfileDetail.value?.phone.isNullOrBlank()) {
+                                View.VISIBLE
+                            } else {
+                                View.GONE
+                            }
+                    }
+
+                    addListeners()
                 }
             }
         }
@@ -143,5 +153,9 @@ class TeacherProfileActivity :
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"
+        private const val ROLE = "ROLE"
+        private const val ROLE_TEACHER = "TEACHER"
+        private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
 }

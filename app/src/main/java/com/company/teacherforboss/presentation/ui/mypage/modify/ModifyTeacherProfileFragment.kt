@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
+import com.company.teacherforboss.MainActivity.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.MainActivity.Companion.MYPAGE
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
@@ -27,7 +28,6 @@ import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.chip.Chip
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ModifyTeacherProfileFragment : Fragment() {
@@ -239,8 +239,13 @@ class ModifyTeacherProfileFragment : Fragment() {
             viewModel.modifyTeacherProfile()
 
             viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-                Intent(requireActivity(), MainActivity::class.java).apply {
-                    startActivity(this)
+                if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
+                    Intent(context, MainActivity::class.java).apply {
+                        putExtra(FRAGMENT_DESTINATION, MYPAGE)
+                        startActivity(this)
+                    }
+                } else {
+                    requireActivity().finish()
                 }
             })
         }
@@ -285,7 +290,6 @@ class ModifyTeacherProfileFragment : Fragment() {
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked && checkCnt >= maxSelectedChip) {
                     chip.isChecked = false
-                    Toast.makeText(context, "5개 도달", Toast.LENGTH_SHORT).show()
                 } else {
                     if (isChecked) {
                         if(!selectedChipList.contains(chip.text.toString())){
@@ -362,6 +366,11 @@ class ModifyTeacherProfileFragment : Fragment() {
         binding.switchEmail.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setEmailReveal(isChecked)
         }
+    }
+
+    companion object {
+        private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
 
 }

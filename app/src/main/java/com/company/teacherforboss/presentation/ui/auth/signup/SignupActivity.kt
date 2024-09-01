@@ -253,19 +253,7 @@ class SignupActivity: AppCompatActivity() {
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
 
-    /*override fun onBackPressed() {
-        if (backPressedOnce) {
-            finishAffinity()
-            return
-            super.onBackPressed()
-        }
 
-        this.backPressedOnce = true
-        Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-
-        // 2초 내에 다시 뒤로가기 버튼을 누르지 않으면 backPressedOnce 값을 false로 되돌림
-        exitHandler.postDelayed(resetBackPressed, 2000)
-    }*/
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (backPressedOnce) {
@@ -282,6 +270,8 @@ class SignupActivity: AppCompatActivity() {
         val imm: InputMethodManager =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        //텍스트 박스 포커스 해제
+        currentFocus?.clearFocus()
         return super.dispatchTouchEvent(ev)
     }
 

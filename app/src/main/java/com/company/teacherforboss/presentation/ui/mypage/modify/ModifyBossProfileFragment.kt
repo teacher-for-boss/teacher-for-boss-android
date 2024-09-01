@@ -71,23 +71,18 @@ class ModifyBossProfileFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
                     binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup)
-                    val filtered = it.toString().filter { char ->
-                        char.isLetterOrDigit() || char in "가-힣ㄱ-ㅎㅏ-ㅣ"
-                    }
-
-                    if (filtered != it.toString()) {
-                        binding.nicknameBox.removeTextChangedListener(this)
-                        binding.nicknameBox.apply {
-                            setText(filtered)
-                            setSelection(filtered.length)
-                        }
-                        binding.nicknameBox.addTextChangedListener(this)
-                    }
+                    val filtered = it.toString()
 
                     binding.veryInfo.visibility = View.INVISIBLE
-                    if(viewModel.initialNickname.value != it.toString()) {
-                        binding.nicknameVerifyBtn.isEnabled = true
-                        viewModel._nicknameCheck.value = false
+                    if(viewModel.initialNickname.value != filtered) {
+                        if (filtered.isEmpty()){
+                            binding.nicknameVerifyBtn.isEnabled = false
+                            viewModel._nicknameCheck.value = false
+                        }
+                        else{
+                            binding.nicknameVerifyBtn.isEnabled = true
+                            viewModel._nicknameCheck.value = false
+                        }
                     }
                     else {
                         binding.nicknameVerifyBtn.isEnabled = false

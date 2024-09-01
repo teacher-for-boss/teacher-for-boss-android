@@ -53,9 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginVertical="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:background="@drawable/selector_signup"
             android:hint="닉네임을 입력해주세요"
@@ -78,7 +76,7 @@
             android:text="@={modifyBossProfileViewModel._nicknameCount}"
             app:layout_constraintTop_toTopOf="@id/nicknameVerifyBtn"
             app:layout_constraintBottom_toBottomOf="@id/nicknameVerifyBtn"
-            app:layout_constraintEnd_toStartOf="@id/nicknameVerifyBtn"/>
+            app:layout_constraintEnd_toEndOf="@id/nicknameBox"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/nicknameVerifyBtn"

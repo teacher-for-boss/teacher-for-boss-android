@@ -83,13 +83,8 @@ class SignupViewModel @Inject constructor(
     val fileType: LiveData<String> get()=_fileType
 
     // boss 변수들
-    var _isDefaultImgSelected=MutableLiveData<Boolean>(false)
-    val isDefaultImgSelected:LiveData<Boolean>
-        get() = _isDefaultImgSelected
-
-
     var _isUserImgSelected=MutableLiveData<Boolean>(false)
-    val isUserImgSelectd:LiveData<Boolean>
+    val isUserImgSelected:LiveData<Boolean>
         get() = _isUserImgSelected
 
     var _profileImg=MutableLiveData<String>(DEFAULT_PROFILE_IMG_URL)
@@ -211,7 +206,7 @@ class SignupViewModel @Inject constructor(
         get() = _isEmailVerified_str
 
     //이메일인증 여부 boolean ->data binding
-    var _isEmailVerified= MutableLiveData<Boolean>(false) //TODO
+    var _isEmailVerified= MutableLiveData<Boolean>(true) //TODO
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
@@ -224,9 +219,31 @@ class SignupViewModel @Inject constructor(
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(false) //TODO
+    var _isPhoneVerified=MutableLiveData<Boolean>(true) //TODO
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
+
+    // image
+    fun setUserImageUri(imgUri:Uri){
+        _profileImgUri.value=imgUri
+    }
+    fun getUserImageUri() = profileImgUri.value?:null
+
+    fun setIsUserImgSelected(bool:Boolean){_isUserImgSelected.value=bool}
+
+    fun getIsUserImgSelected()=isUserImgSelected.value
+
+    fun getPresignedUrl()=profilePresignedUrl.value?:""
+
+    fun getFilteredPresingedUrl()= profilePresignedUrl.value?.substringBefore(("?"))
+
+    var _isInitializedDialog=MutableLiveData<Boolean>(false)
+    val isInitializedDialog:LiveData<Boolean> get() = _isInitializedDialog
+
+    fun setIsInitializedDialog(isInitializedState:Boolean){
+        _isInitializedDialog.value=isInitializedState
+    }
+    fun getIsInitializedDialog()=isInitializedDialog.value?:false
 
     //pw체크
 
@@ -318,6 +335,11 @@ class SignupViewModel @Inject constructor(
         signupResult.value = BaseResponse.Loading()
         val emptyKeywords= listOf<String>("null1","null2")
 
+        var finalProfileImg=""
+        if (isUserImgSelected.value==true){
+            getFilteredPresingedUrl()?.let { finalProfileImg=it }
+        }else finalProfileImg=profileImg.value!!
+
         viewModelScope.launch {
             // boss
             if(role.value==1){
@@ -335,7 +357,8 @@ class SignupViewModel @Inject constructor(
                         phone = phone.value.toString(),
                         emailAuthId = emailAuthId.value!!,//이메일인증식별자,
                         phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
-                        profileImg=profileImg.value?:"null",
+//                        profileImg=profileImg.value?:"null",
+                        profileImg=finalProfileImg,
                         agreementUsage = agreementUsage.value!!,
                         agreementInfo=agreementInfo.value!!,
                         agreementAge=agreementAge.value!!,
@@ -590,18 +613,18 @@ class SignupViewModel @Inject constructor(
     private val _presignedUrlListLiveData = MutableLiveData <presignedUrlListEntity> ()
     val presignedUrlLiveData : LiveData<presignedUrlListEntity> = _presignedUrlListLiveData
 
-    fun getPresignedUrlList(uuid:String?,lastIndex:Int,imgCnt:Int,origin:String){
+    fun getPresignedUrlList(){
         viewModelScope.launch {
             try{
                 val presignedUrlListEntity= presignedUrlUseCase(
                     getPresingedUrlEntity(
-                        uuid = uuid,
-                        lastIndex=lastIndex,
-                        imageCount = imgCnt,
-                        origin=origin
+                        uuid = null,
+                        lastIndex=0,
+                        imageCount = 1,
+                        origin="profiles"
                     )
                 )
-                _presignedUrlListLiveData.value=presignedUrlListEntity
+                _profilePresignedUrl.value=presignedUrlListEntity.presignedUrlList[0]
             }catch (ex:Exception){
                 throw ex
             }

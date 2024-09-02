@@ -16,11 +16,14 @@ import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentBossProfileBinding
+import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogFragment
+import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
@@ -121,7 +124,7 @@ class BossProfileFragment : Fragment() {
         }
 
         binding.nextBtn.setOnClickListener {
-            viewModel.getPresignedUrlList(null,0,1,"profiles")
+            viewModel.getPresignedUrlList()
 
             viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
                 viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
@@ -138,20 +141,6 @@ class BossProfileFragment : Fragment() {
             })
 
         }
-    }
-
-    private fun observeProfile(){
-        viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-            if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-        })
-
-        viewModel.profileImg.observe(viewLifecycleOwner,{it->
-            binding.profileImage.loadImageFromUrl(it)
-        })
-
-        viewModel.profileImgUri.observe(viewLifecycleOwner,{
-            if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
-        })
     }
 
     private fun signup(){
@@ -193,12 +182,32 @@ class BossProfileFragment : Fragment() {
     }
 
 
-    private fun uploadImgtoS3(){
-        val url=viewModel.profilePresignedUrl.value?:return
-        val imgUri=viewModel.profileImgUri.value?:return
-        val uploadUtil=UploadUtil(requireActivity())
+    private fun observeProfile() {
+        // 디폴트 이미지
+        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+            defaultImgUrl?.let {
+                viewModel.setIsUserImgSelected(false)
+                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+            }
+        })
 
-        uploadUtil.uploadProfileImage(url,imgUri,viewModel.getFileType())
+        // 사용자 갤러리 이미지
+        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
+            viewModel.setIsUserImgSelected(true)
+            imgUri?.let {
+                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            }
+        })
+
+        // presigned url
+        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+            uploadImgtoS3()
+        })
+
+    }
+    private fun uploadImgtoS3(){
+        val uploadUtil=UploadUtil(requireContext())
+        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
     }
 
     private fun showSplash(){
@@ -209,8 +218,13 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun showProfileImageDialog() {
-//        val dialog=ProfileImageDialogFragment()
-//        dialog.show(parentFragmentManager,SIGNUP_PROFILE_IMAGE_DIALOG)
+        binding.profileImage.setOnClickListener {
+            val activity = requireActivity() as? SignupActivity
+            val dialog = ProfileImageDialogFragment {
+                activity?.checkAndRequestPermissions()
+            }
+            dialog.show(parentFragmentManager, SIGNUP_PROFILE_IMAGE_DIALOG)
+        }
     }
 
     fun showToast(msg:String){

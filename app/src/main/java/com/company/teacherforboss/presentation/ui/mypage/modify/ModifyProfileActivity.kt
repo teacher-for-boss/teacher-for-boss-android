@@ -137,6 +137,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                 }
             }
             if (imageUri != null) {
+                viewModel.setIsUserImgSelected(true)
                 viewModel.setUserImageUri(imageUri)
                 viewModel.getPresignedUrlList()
             }

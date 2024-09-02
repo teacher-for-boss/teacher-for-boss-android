@@ -55,8 +55,8 @@ class ModifyProfileViewModel @Inject constructor(
     val profileImg: LiveData<String>
         get() = _profileImg
 
-    var _profileImgUri= MutableLiveData<Uri>(null)
-    val profileImgUri: LiveData<Uri>
+    var _profileImgUri= MutableLiveData<Uri?>(null)
+    val profileImgUri: LiveData<Uri?>
         get() = _profileImgUri
 
     val _profilePresignedUrl= MutableLiveData<String>()
@@ -98,6 +98,7 @@ class ModifyProfileViewModel @Inject constructor(
     val isInitializedView:LiveData<Boolean> get() = _isInitializedView
 
     // 사용자 초기 프로필 데이터
+    val initialProfileUri = MutableLiveData<Uri>(null)
     val initialProfileImg = MutableLiveData<String>("")
     val initialNickname = MutableLiveData<String>("")
     val initialPhone = MutableLiveData<String>("")
@@ -297,6 +298,9 @@ class ModifyProfileViewModel @Inject constructor(
     fun setInitProfileImg(img: String) {
         initialProfileImg.value = img
     }
+    fun setInitProfileUri(uri:Uri){
+        initialProfileUri.value=uri
+    }
     fun setInitPhone(phone: String) {
         initialPhone.value = phone
     }
@@ -341,6 +345,8 @@ class ModifyProfileViewModel @Inject constructor(
     fun checkIfModified() {
         val currentProfileImg = profileImg.value ?: ""
         val initialProfileImgValue = initialProfileImg.value ?: ""
+        val currentProfileUri=profileImgUri.value.toString()
+        val initProfileUri=initialProfileUri.value.toString()
         val currentNickname = nickname.value ?: ""
         val initialNicknameValue = initialNickname.value ?: ""
         val currentPhone = phone.value ?: ""
@@ -365,6 +371,7 @@ class ModifyProfileViewModel @Inject constructor(
                 currentKeywords.sorted() != initialKeywordsValue.sorted()
 
         val modified = currentProfileImg != initialProfileImgValue ||
+                currentProfileUri != initProfileUri ||
                 currentNickname != initialNicknameValue ||
                 currentPhone != initialPhoneValue ||
                 currentEmail != initialEmailValue ||

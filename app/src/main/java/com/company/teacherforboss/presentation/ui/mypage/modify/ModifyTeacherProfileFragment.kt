@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -264,8 +265,8 @@ class ModifyTeacherProfileFragment : Fragment() {
 
         // 사용자 갤러리 이미지
         viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            viewModel.setIsUserImgSelected(true)
             imgUri?.let {
+                viewModel.setIsUserImgSelected(true)
                 BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
             }
         })
@@ -383,6 +384,10 @@ class ModifyTeacherProfileFragment : Fragment() {
         val isOpenObserver=Observer<Boolean>{
             checkFilled()
         }
+        val uriObserver=Observer<Uri?>{uri->
+            uri?.let { checkFilled() }
+        }
+        viewModel.profileImgUri.observe(viewLifecycleOwner,uriObserver)
         viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
         viewModel.phone.observe(viewLifecycleOwner, dataObserver)
         viewModel.email.observe(viewLifecycleOwner, dataObserver)

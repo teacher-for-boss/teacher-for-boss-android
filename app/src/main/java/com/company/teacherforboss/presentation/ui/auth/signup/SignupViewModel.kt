@@ -79,6 +79,10 @@ class SignupViewModel @Inject constructor(
     val nickname: LiveData<String>
         get()=_nickname
 
+    var _nicknameCount= MutableLiveData<String>("0/10")
+    val nicknameCount: LiveData<String>
+        get()=_nicknameCount
+
     var _fileType = MutableLiveData<String>("")
     val fileType: LiveData<String> get()=_fileType
 
@@ -272,6 +276,11 @@ class SignupViewModel @Inject constructor(
         val pattern=Pattern.compile("^\\d{3}-\\d{2}-\\d{5}$")
         _businessNumCheck.value=pattern.matcher(businessNum.value.toString()).matches()
         Log.d("bn",businessNumCheck.value.toString())
+    }
+    init {
+        nickname.observeForever {
+            _nicknameCount.value = "${it.length}/10"
+        }
     }
 
 

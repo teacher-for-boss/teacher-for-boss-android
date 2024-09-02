@@ -56,8 +56,8 @@
             app:layout_constraintTop_toBottomOf="@+id/profileImage" />
 
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/nicknameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -68,28 +68,44 @@
 
             <EditText
                 android:id="@+id/nicknameBox"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/selector_signup"
                 android:hint="닉네임을 입력해주세요"
                 android:padding="12dp"
+                android:maxLength="10"
                 android:text="@={signupViewModel._nickname}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                android:textColorHint="@color/Gray400" />
+                android:textColorHint="@color/Gray400"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/nicknameVerifyBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_nickname_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@={signupViewModel._nicknameCount}"
+                app:layout_constraintTop_toTopOf="@id/nicknameBox"
+                app:layout_constraintBottom_toBottomOf="@id/nicknameBox"
+                app:layout_constraintEnd_toEndOf="@id/nicknameBox"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/nicknameVerifyBtn"
-                android:layout_width="76dp"
+                android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
                 android:background="@drawable/radius_purple_button"
                 android:backgroundTint="@color/selector_all_btn_background"
                 android:enabled="false"
                 android:text="중복 확인"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/radius_purple_button"
@@ -111,7 +127,7 @@
             android:text=""
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/nicknameLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

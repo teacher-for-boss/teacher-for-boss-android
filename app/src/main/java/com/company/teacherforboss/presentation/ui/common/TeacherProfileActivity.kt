@@ -99,8 +99,9 @@ class TeacherProfileActivity :
             tvTeacherProfileMenuFix.setOnClickListener {
                 Intent(this@TeacherProfileActivity,ModifyProfileActivity::class.java).apply {
                     putExtra(TEACHER_PROFILE_ID,viewModel.getMembeerId())
+                    putExtra(ROLE, ROLE_TEACHER)
+                    startActivity(this)
                 }
-                // TODO 프로필 수정 Activity로 이동
             }
 
             root.setOnClickListener { layoutTeacherProfileMenu.visibility = View.GONE }
@@ -126,14 +127,14 @@ class TeacherProfileActivity :
                     binding.ivTeacherProfileImg.loadCircularImage(viewModel.teacherProfileDetail.value!!.profileImg)
 
                     binding.tvTeacherProfileEmail.visibility =
-                        if (!viewModel.teacherProfileDetail.value?.email.isNullOrBlank()) {
+                        if (viewModel.teacherProfileDetail.value?.emailOpen==true) {
                             View.VISIBLE
                         } else {
                             View.GONE
                         }
 
                     binding.tvTeacherProfilePhone.visibility =
-                        if (!viewModel.teacherProfileDetail.value?.phone.isNullOrBlank()) {
+                        if (viewModel.teacherProfileDetail.value?.phoneOpen==true) {
                             View.VISIBLE
                         } else {
                             View.GONE
@@ -145,6 +146,8 @@ class TeacherProfileActivity :
     }
 
     companion object {
+        private const val ROLE = "ROLE"
+        private const val ROLE_TEACHER = "TEACHER"
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"

@@ -30,10 +30,6 @@ class AppSignatureHelper(context: Context) : ContextWrapper(context) {
             // Get all package signatures for the current package
             val packageName = packageName
             val packageManager = packageManager
-//            val signatures: Array<Signature> = packageManager.getPackageInfo(
-//                packageName,
-//                PackageManager.GET_SIGNATURES
-//            ).signatures
 
             val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 // Android 9 (API level 28) 이상에서는 GET_SIGNING_CERTIFICATES를 사용

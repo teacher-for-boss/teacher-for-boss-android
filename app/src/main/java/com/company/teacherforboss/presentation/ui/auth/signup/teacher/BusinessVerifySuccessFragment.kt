@@ -18,7 +18,6 @@ class BusinessVerifySuccessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentBusinessVerifySuccessBinding.inflate(inflater, container, false)
-
         addListeners()
 
         return binding.root
@@ -29,6 +28,5 @@ class BusinessVerifySuccessFragment : Fragment() {
             val activity = activity as SignupActivity
             activity.gotoNextFragment(AccountFragment())
         }
-
     }
 }

@@ -93,20 +93,6 @@ class SignupActivity: AppCompatActivity() {
         collectData()
         localDataSource.saveSignupType(SIGNUP_DEFAULT)
 
-//        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
-//        binding.signupViewModel=viewModel
-
-        //receiver 등록
-//        val smsReceiver = MySMSReceiver()
-//        registerReceiver(smsReceiver, smsReceiver.doFilter())
-//
-//        val helper = AppSignatureHelper(getApplication())
-//        val hash = helper.getAppSignatures()?.get(0)
-//        Log.d("hash test",hash.toString())
-
-//        val otpReceiver=AuthOtpReceiver.OtpReceiveListener.g
-//        registerReceiver(otpReceiver,otpReceiver.doFilter())
-
         // pivot 이전 경로
         fragmentManager
             .beginTransaction()
@@ -252,7 +238,6 @@ class SignupActivity: AppCompatActivity() {
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
-
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {

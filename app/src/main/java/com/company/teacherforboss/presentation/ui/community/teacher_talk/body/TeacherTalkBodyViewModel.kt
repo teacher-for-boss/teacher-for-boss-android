@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.teacherforboss.domain.model.community.MemberEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerLikeRequestEntity
@@ -44,6 +45,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherLikeUseCase: TeacherTalkLikeUseCase,
     private val teacherTalkAnsUseCase: TeacherTalkAnsUseCase
 ): ViewModel() {
+    private val _role = MutableLiveData<String>("")
+    val role: LiveData<String>
+        get() = _role
 
     private var _postAnswerLiveData=MutableLiveData<TeacherTalkAnswerResponseEntity>()
     val postAnswerLiveData:LiveData<TeacherTalkAnswerResponseEntity> get() = _postAnswerLiveData
@@ -109,6 +113,11 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     private val commentLikeLiveDataMap = mutableMapOf<Long, MutableLiveData<TeacherTalkAnswerLikeResponseEntity>>()
 
+    val _memberId=MutableLiveData<Long>(-1L)
+    val memberId: LiveData<Long> get()=_memberId
+
+    private val _memberInfo = MutableLiveData<MemberEntity>()
+    val memberInfo: LiveData<MemberEntity> get() = _memberInfo
     fun getTeacherTalkBody(postId:Long){
         viewModelScope.launch {
             try{
@@ -116,6 +125,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
                     TeacherTalkRequestEntity(questionId = postId)
                 )
                 _teacherTalkBodyLiveData.value=teacherTalkBodyResponseEntity
+                _memberInfo.value = teacherTalkBodyResponseEntity.memberInfo.toMemberDto().toMemberEntity()
             }catch (ex:Exception){
                 throw ex
             }

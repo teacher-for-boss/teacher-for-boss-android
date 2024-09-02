@@ -57,6 +57,7 @@
             android:layout_weight="1"
             android:background="@drawable/selector_signup"
             android:hint="닉네임을 입력해주세요"
+            android:inputType="text"
             android:imeOptions="actionDone"
             android:maxLength="10"
             android:padding="12dp"

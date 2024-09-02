@@ -25,19 +25,14 @@ class BusinessInfoFragment : Fragment(){
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     private fun addListeners() {
         binding.btnNextSignup.setOnClickListener {
             val activity = activity as SignupActivity
             activity.gotoNextFragment(BusinessFragment())
-
         }
-
-
     }
 }

@@ -6,12 +6,14 @@ data class MemberEntity(
     val memberId: Long,
     val name: String,
     val profileImg: String?,
-    val level: String?
+    val level: String?,
+    val role: String?
 ) : Member {
     override fun toMemberDto() = MemberDto(
         memberId = memberId,
         name = name,
         profileImg = profileImg,
-        level = level
+        level = level,
+        role = role
     )
 }

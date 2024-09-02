@@ -3,8 +3,10 @@ package com.company.teacherforboss.presentation.ui.community.boss_talk.body.adap
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -29,6 +31,9 @@ class rvAdapterCommentBoss(
     private val optionClickListener: (View) -> Unit
 ) : RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
 
+    private var dispatchTouchEvent: ((MotionEvent) -> Boolean)? = null
+    var currentOptionMenu: View? = null
+
     inner class ViewHolder(private val binding: RvItemCommentBossBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
 
@@ -36,23 +41,23 @@ class rvAdapterCommentBoss(
             val member = comment.memberInfo
             binding.userName.text = member.name
             member.profileImg?.let {
-                if (it != "") BindingImgAdapter.bindImage(binding.userImage, it)
+                if (it.isNotEmpty()) {
+                    BindingImgAdapter.bindImage(binding.userImage, it)
+                }
             }
 
             // 프로필 클릭 시 상세 프로필 이동
-            binding.userImage.setOnClickListener {
-                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    itemView.context.startActivity(this)
-                }
-            }
-            binding.userName.setOnClickListener {
-                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    itemView.context.startActivity(this)
+            val clickListener = View.OnClickListener {
+                if (member.role == "TEACHER") {
+                    Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
+                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
+                        binding.root.context.startActivity(this)
+                    }
                 }
             }
 
+            binding.userImage.setOnClickListener(clickListener)
+            binding.userName.setOnClickListener(clickListener)
 
             // 유저 레벨
             binding.profileLevel.text = comment.memberInfo.level
@@ -73,19 +78,33 @@ class rvAdapterCommentBoss(
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
 
-            //더보기 버튼 보여주기
+            // 더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
-                optionClickListener(binding.btnOption)
-                if (comment.isMine) {  // 댓글 작성자인 경우
-                    if(binding.deleteBtn.visibility == View.GONE) binding.deleteBtn.visibility = View.VISIBLE
-                    else binding.deleteBtn.visibility = View.GONE
+                currentOptionMenu?.let {
+                    it.visibility = View.GONE
                 }
-                else {  // 댓글 작성자 아닌 경우
-                    if (binding.reportBtn.visibility == View.GONE) {
-                        binding.reportBtn.visibility = View.VISIBLE
+
+                if (comment.isMine) {
+                    binding.deleteBtn.visibility = if (binding.deleteBtn.visibility == View.GONE) {
+                        currentOptionMenu = binding.deleteBtn
+                        View.VISIBLE
                     } else {
-                        binding.reportBtn.visibility = View.GONE
+                        currentOptionMenu = null
+                        View.GONE
                     }
+                } else {
+                    binding.reportBtn.visibility = if (binding.reportBtn.visibility == View.GONE) {
+                        currentOptionMenu = binding.reportBtn
+                        View.VISIBLE
+                    } else {
+                        currentOptionMenu = null
+                        View.GONE
+                    }
+                }
+
+                // 터치 이벤트 처리
+                binding.root.setOnTouchListener { _, event ->
+                    dispatchTouchEvent?.invoke(event) ?: false
                 }
             }
 
@@ -159,6 +178,21 @@ class rvAdapterCommentBoss(
                 viewModel.setParentId(comment.commentId)
             }
         }
+
+        fun getBtnOptionRect(): Rect? {
+            return if (binding.btnOption.visibility == View.VISIBLE) {
+                val btnOptionLocation = IntArray(2)
+                binding.btnOption.getLocationOnScreen(btnOptionLocation)
+                Rect(
+                    btnOptionLocation[0],
+                    btnOptionLocation[1],
+                    btnOptionLocation[0] + binding.btnOption.width,
+                    btnOptionLocation[1] + binding.btnOption.height
+                )
+            } else {
+                null
+            }
+        }
     }
 
     override fun onCreateViewHolder(
@@ -177,4 +211,7 @@ class rvAdapterCommentBoss(
         holder.bind(commentList[position], viewModel = viewModel)
     }
 
+    fun setDispatchTouchEventListener(listener: (MotionEvent) -> Boolean) {
+        this.dispatchTouchEvent = listener
+    }
 }

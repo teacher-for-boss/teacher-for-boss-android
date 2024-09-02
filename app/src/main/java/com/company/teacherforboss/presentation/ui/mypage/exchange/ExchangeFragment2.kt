@@ -9,13 +9,21 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.room.InvalidationTracker
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchange2Binding
+import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
 import com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity
 import com.company.teacherforboss.presentation.ui.mypage.ManageAccountFragment
 import com.company.teacherforboss.presentation.ui.mypage.ManageSocialAccountFragment
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.view.UiState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class ExchangeFragment2 : Fragment() {
 
@@ -40,8 +48,6 @@ class ExchangeFragment2 : Fragment() {
         changeAccountInfo()
         setupObservers()
         setupClickListeners()
-
-
     }
 
     override fun onDestroyView() {
@@ -57,10 +63,6 @@ class ExchangeFragment2 : Fragment() {
         }
     }
 
-    fun getAccountInfo() {
-
-    }
-
     private fun setupClickListeners() {
         binding.btnExchangeApply.setOnClickListener {
             val points = viewModel.tpValue.value?.toIntOrNull() ?: 0
@@ -68,6 +70,22 @@ class ExchangeFragment2 : Fragment() {
             if (!isValidPoints(points)) return@setOnClickListener
 
             viewModel.applyExchange(points)
+
+            lifecycleScope.launch {
+                viewModel.getExchangeUiState.flowWithLifecycle(lifecycle)
+                    .onEach { getExchangeUiState ->
+                        when(getExchangeUiState) {
+                            is UiState.Loading -> { showSnackBar("환전 중입니다.") }
+                            is UiState.Success -> {
+
+                            }
+                            is UiState.Error -> {
+                                showSnackBar("환전 중 오류가 발생했습니다: ${getExchangeUiState.message}")
+                            }
+                            else -> Unit
+                        }
+                    }.launchIn(lifecycleScope)
+            }
         }
 
         binding.tvChangeInfo.setOnClickListener {
@@ -91,17 +109,23 @@ class ExchangeFragment2 : Fragment() {
     private fun isValidPoints(points: Int): Boolean {
         return when {
             points < 550 -> {
-                Toast.makeText(requireContext(), "최소 550tp 이상 교환할 수 있습니다.", Toast.LENGTH_SHORT)
-                    .show()
+                processError("최소 550tp 이상 교환할 수 있습니다.")
                 false
             }
 
             points % 100 != 0 -> {
-                Toast.makeText(requireContext(), "100tp 단위로 교환할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                processError("100tp 단위로 교환할 수 있습니다.")
                 false
             }
-
             else -> true
         }
+    }
+
+    fun processError(msg:String){
+        showSnackBar(msg)
+    }
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,4000)
+        customSnackbar.show()
     }
 }

@@ -44,7 +44,6 @@ class BossProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boss_profile, container, false)
 
         binding.signupViewModel=viewModel
@@ -148,16 +147,42 @@ class BossProfileFragment : Fragment() {
         })
     }
 
-    private fun observeProfile(){
-        viewModel.apply {
-            isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-                if(bool==true) binding.profileImage.loadImageFromUrl(profileImg.value!!)
-            })
 
+    private fun addListeners(){
+        with(binding) {
+            profileImage.setOnClickListener(){
+                showProfileImageDialog()
+            }
+            nextBtn.setOnClickListener {
+                with(viewModel) {
+                    getPresignedUrlList(null,0,1,"profiles")
+
+                    presignedUrlLiveData.observe(viewLifecycleOwner,{
+                        viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                        viewModel.setProfileUserImg()
+                        uploadImgtoS3()
+                    })
+
+                    profileImg.observe(viewLifecycleOwner,{
+                        if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
+                            val signupType= localDataSource.getSignupType()
+                            if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                            else signup()
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    private fun observeProfile(){
+        with(viewModel){
+            isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
+                if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+            })
             profileImg.observe(viewLifecycleOwner,{it->
                 binding.profileImage.loadImageFromUrl(it)
             })
-
             profileImgUri.observe(viewLifecycleOwner,{
                 if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
             })
@@ -214,8 +239,7 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun showProfileImageDialog() {
-//        val dialog=ProfileImageDialogFragment()
-//        dialog.show(parentFragmentManager,SIGNUP_PROFILE_IMAGE_DIALOG)
+
     }
     private fun setColor(result: String): Int {
         return when (result) {
@@ -233,7 +257,8 @@ class BossProfileFragment : Fragment() {
         val signupType= localDataSource.getSignupType()
 
         if (signupType != SIGNUP_DEFAULT){
-            viewModel.apply {
+
+            with(viewModel) {
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)

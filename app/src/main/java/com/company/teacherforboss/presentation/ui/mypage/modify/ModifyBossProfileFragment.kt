@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -55,7 +56,7 @@ class ModifyBossProfileFragment : Fragment() {
         modifyTeacherProfile()
         showProfileImageDialog()
         setObserver()
-
+        setupEditTextListeners()
     }
 
     private fun initLayout() {
@@ -222,5 +223,14 @@ class ModifyBossProfileFragment : Fragment() {
         viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
         viewModel.nicknameCheck.observe(viewLifecycleOwner,isCheckedObserver)
     }
-
+    private fun setupEditTextListeners() {
+        binding.nicknameBox.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    binding.nicknameBox.clearFocus()
+                    true
+                } else {
+                    false
+                }
+            }
+    }
 }

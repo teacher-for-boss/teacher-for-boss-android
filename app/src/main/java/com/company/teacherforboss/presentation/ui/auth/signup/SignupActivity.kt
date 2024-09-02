@@ -59,10 +59,6 @@ class SignupActivity: AppCompatActivity() {
         collectData()
         localDataSource.saveSignupType(SIGNUP_DEFAULT)
 
-//        binding=DataBindingUtil.setContentView(this,R.layout.activity_signup)
-//        binding.signupViewModel=viewModel
-
-        // pivot 이전 경로
         fragmentManager
             .beginTransaction()
             .add(R.id.fragment_container, SignupStartFragment())
@@ -256,20 +252,6 @@ class SignupActivity: AppCompatActivity() {
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
-
-    /*override fun onBackPressed() {
-        if (backPressedOnce) {
-            finishAffinity()
-            return
-            super.onBackPressed()
-        }
-
-        this.backPressedOnce = true
-        Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-
-        // 2초 내에 다시 뒤로가기 버튼을 누르지 않으면 backPressedOnce 값을 false로 되돌림
-        exitHandler.postDelayed(resetBackPressed, 2000)
-    }*/
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (backPressedOnce) {

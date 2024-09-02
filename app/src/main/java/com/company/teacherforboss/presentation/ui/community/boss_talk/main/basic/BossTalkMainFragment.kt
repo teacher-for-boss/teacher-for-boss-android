@@ -177,26 +177,38 @@ class BossTalkMainFragment :
                 false
             }
         }
+        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
+            ) {
+                viewModel.setKeyword(binding.etSearchView.text.toString())
+                viewModel.searchKeywordBossTalk()
+                true
+            } else {
+                false
+            }
+        }
 
     }
+
     private fun performSearch() {
-        viewModel._keyword.value = binding.etSearchView.text.toString()
+        viewModel.setKeyword(binding.etSearchView.text.toString())
         viewModel.searchKeywordBossTalk()
 
         finishSearch()
     }
 
     private fun finishSearch() {
-        viewModel.searchBossTalkLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.searchBossTalkLiveData.observe(viewLifecycleOwner) { searchResult ->
             Intent(requireContext(), BossTalkSearchActivity::class.java).apply {
-                putExtra("hasNext", it.hasNext)
-                putExtra("postList", it.postList)
+                putExtra("hasNext", searchResult.hasNext)
+                putExtra("postList", searchResult.postList)
                 putExtra("lastPostId", viewModel.getLastPostId())
                 putExtra("keyword", binding.etSearchView.text.toString())
-            }.also {
-                startActivity(it)
+            }.also { intent ->
+                startActivity(intent)
             }
-        })
+        }
     }
 
     private fun gotoBossTalkWrite() {
@@ -216,7 +228,6 @@ class BossTalkMainFragment :
             startActivity(this)
         }
     }
-
 
     class HorizontalSpaceItemDecoration(private val horizontalSpaceWidth: Int) :
         RecyclerView.ItemDecoration() {

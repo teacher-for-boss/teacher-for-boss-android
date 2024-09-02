@@ -48,7 +48,6 @@ class BossProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boss_profile, container, false)
 
         binding.signupViewModel=viewModel
@@ -235,11 +234,13 @@ class BossProfileFragment : Fragment() {
         val signupType= localDataSource.getSignupType()
 
         if (signupType != SIGNUP_DEFAULT){
-            viewModel._name.value=localDataSource.getUserInfo(USER_NAME)
-            viewModel.liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
-            viewModel.livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-            viewModel._birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-            viewModel._profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+            with(viewModel) {
+                _name.value=localDataSource.getUserInfo(USER_NAME)
+                liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
+                livePhone.value=localDataSource.getUserInfo(USER_PHONE)
+                _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+            }
         }
 
     }

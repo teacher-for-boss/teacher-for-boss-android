@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentAgreementBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
@@ -61,58 +62,57 @@ class AgreementFragment : BottomSheetDialogFragment() {
         //위의 두 리스트 합친것
         val combinedList=agreementList.zip(otherCheckboxes)
 
-
-        binding.allCheckbox.setOnClickListener {
-            for(checkBox in otherCheckboxes) {
-                checkBox.isChecked = binding.allCheckbox.isChecked
+        with(binding) {
+            allCheckbox.setOnClickListener {
+                for(checkBox in otherCheckboxes) {
+                    checkBox.isChecked = binding.allCheckbox.isChecked
+                }
             }
-        }
-
-        binding.agreementCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
-            if(!isChecked) {
-                binding.allCheckbox.isChecked = false
+            agreementCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
+                if(!isChecked) {
+                    binding.allCheckbox.isChecked = false
+                }
+                else {
+                    if(isAllAgree(otherCheckboxes)) {
+                        binding.allCheckbox.isChecked = true
+                    }
+                }
             }
-            else {
-                if(isAllAgree(otherCheckboxes)) {
-                    binding.allCheckbox.isChecked = true
+            personalInformationCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
+                if(!isChecked) {
+                    binding.allCheckbox.isChecked = false
+                }
+                else {
+                    if(isAllAgree(otherCheckboxes)) {
+                        binding.allCheckbox.isChecked = true
+                    }
+                }
+            }
+            locationServiceCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
+                if(!isChecked) {
+                    binding.allCheckbox.isChecked = false
+                }
+                else {
+                    if(isAllAgree(otherCheckboxes)) {
+                        binding.allCheckbox.isChecked = true
+                    }
+                }
+            }
+            ageCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
+                if(!isChecked) {
+                    binding.allCheckbox.isChecked = false
+                }
+                else {
+                    if(isAllAgree(otherCheckboxes)) {
+                        binding.allCheckbox.isChecked = true
+                    }
                 }
             }
         }
-        binding.personalInformationCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
-            if(!isChecked) {
-                binding.allCheckbox.isChecked = false
-            }
-            else {
-                if(isAllAgree(otherCheckboxes)) {
-                    binding.allCheckbox.isChecked = true
-                }
-            }
-        }
-        binding.locationServiceCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
-            if(!isChecked) {
-                binding.allCheckbox.isChecked = false
-            }
-            else {
-                if(isAllAgree(otherCheckboxes)) {
-                    binding.allCheckbox.isChecked = true
-                }
-            }
-        }
-        binding.ageCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            binding.finishBtn.isEnabled = isVitalAgree(vitalCheckboxes)
-            if(!isChecked) {
-                binding.allCheckbox.isChecked = false
-            }
-            else {
-                if(isAllAgree(otherCheckboxes)) {
-                    binding.allCheckbox.isChecked = true
-                }
-            }
-        }
-
 
         //혜택정보 수신 동의
         var benefitInfo = binding.benefitInformationCheckbox
@@ -161,26 +161,21 @@ class AgreementFragment : BottomSheetDialogFragment() {
         }
 
         val activity=activity as SignupActivity
-        //약관 전체보기
         binding.agreementMore.setOnClickListener {
             val bottomSheetDialog= AgreementMoreFragment()
-            //bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
             bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
         binding.personalInformationMore.setOnClickListener {
             val bottomSheetDialog= PersonalInfoMoreFragment()
-            //bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
             bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
         binding.locationServiceMore.setOnClickListener {
             val bottomSheetDialog= LocationServiceMoreFragment()
-            //bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, AppBottomSheetDialogTheme)
             bottomSheetDialog.show(activity.supportFragmentManager,"agreement")
         }
 
         binding.finishBtn.setOnClickListener {
             val activity=activity as SignupActivity
-            //체크된 agreemet 확인
             combinedList.forEach{(livedata,checkbox)->
                 if(checkbox.isChecked==true){
                     livedata.value="T"
@@ -194,8 +189,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
             else if(viewModel.role.value==2){
                 activity.gotoNextFragment(TeacherProfileFragment())
             }
-
-            // 화면 이동 시 다이얼로그 종료
             dismiss()
         }
 
@@ -206,7 +199,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
         for(checkBox in otherCheckboxes) {
             if(!checkBox.isChecked) isAgree = false
         }
-
         return isAgree
     }
     fun isVitalAgree(vitalCheckboxes: Array<CheckBox>): Boolean {
@@ -214,7 +206,6 @@ class AgreementFragment : BottomSheetDialogFragment() {
         for(checkBox in vitalCheckboxes) {
             if(!checkBox.isChecked) isAgree = false
         }
-
         return isAgree
     }
 

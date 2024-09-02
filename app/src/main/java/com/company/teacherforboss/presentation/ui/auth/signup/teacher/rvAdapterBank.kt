@@ -15,8 +15,6 @@ class rvAdapterBank(
     private val signupViewModel: SignupViewModel,
     private val activity: SignupActivity,
     private val parentFragmentManager: FragmentManager,
-
-
     ): RecyclerView.Adapter<rvAdapterBank.ViewHolder>() {
 
     class ViewHolder(binding: RvItemBankBinding): RecyclerView.ViewHolder(binding.root) {

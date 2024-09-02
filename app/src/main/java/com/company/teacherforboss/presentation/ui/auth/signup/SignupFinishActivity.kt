@@ -37,16 +37,10 @@ class SignupFinishActivity : AppCompatActivity() {
 
         initView(role)
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent=Intent(this,LoginActivity::class.java).apply {
-//                putExtra(FRAGMENT_DESTINATION, HOME)
-            }
+            val intent=Intent(this,LoginActivity::class.java).apply { }
             startActivity(intent)
             finish()
         }, 2000)
-
-
-
-
     }
     fun initView(int:Int?){
         val nickname = intent.getStringExtra(USER_NICKNAME)?: ""

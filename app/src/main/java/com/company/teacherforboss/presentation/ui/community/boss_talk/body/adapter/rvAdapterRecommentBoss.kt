@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -27,6 +28,9 @@ class rvAdapterRecommentBoss(
     private val viewModel: BossTalkBodyViewModel
 ): RecyclerView.Adapter<rvAdapterRecommentBoss.ViewHolder>() {
 
+    private var dispatchTouchEvent: ((MotionEvent) -> Boolean)? = null
+    var currentOptionMenu: View? = null
+
     inner class ViewHolder(private val binding: RvItemRecommentBossBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity) {
 
@@ -41,18 +45,18 @@ class rvAdapterRecommentBoss(
             binding.profileLevel.text = comment.memberInfo.level
 
             // 프로필 클릭 시 상세 프로필 이동
-            binding.userImage.setOnClickListener {
-                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    itemView.context.startActivity(this)
+            val clickListener = View.OnClickListener {
+                if (member.role == "TEACHER") {
+                    Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
+                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
+                        binding.root.context.startActivity(this)
+                    }
                 }
             }
-            binding.userName.setOnClickListener {
-                Intent(itemView.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                    itemView.context.startActivity(this)
-                }
-            }
+
+            binding.userImage.setOnClickListener(clickListener)
+            binding.userName.setOnClickListener(clickListener)
+
 
             // 날짜
             binding.createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
@@ -66,15 +70,31 @@ class rvAdapterRecommentBoss(
 
             // 더보기 버튼 보여주기
             binding.btnOption.setOnClickListener {
-                if(comment.isMine) {  // 댓글 작성자인 경우
-                    if(binding.deleteBtn.visibility == View.GONE) binding.deleteBtn.visibility = View.VISIBLE
-                    else binding.deleteBtn.visibility = View.GONE
-                } else {  // 댓글 작성자 아닌 경우
-                    if (binding.reportBtn.visibility == View.GONE) {
-                        binding.reportBtn.visibility = View.VISIBLE
+                currentOptionMenu?.let {
+                    it.visibility = View.GONE
+                }
+
+                if (comment.isMine) {
+                    binding.deleteBtn.visibility = if (binding.deleteBtn.visibility == View.GONE) {
+                        currentOptionMenu = binding.deleteBtn
+                        View.VISIBLE
                     } else {
-                        binding.reportBtn.visibility = View.GONE
+                        currentOptionMenu = null
+                        View.GONE
                     }
+                } else {
+                    binding.reportBtn.visibility = if (binding.reportBtn.visibility == View.GONE) {
+                        currentOptionMenu = binding.reportBtn
+                        View.VISIBLE
+                    } else {
+                        currentOptionMenu = null
+                        View.GONE
+                    }
+                }
+
+                // 터치 이벤트 처리
+                binding.root.setOnTouchListener { _, event ->
+                    dispatchTouchEvent?.invoke(event) ?: false
                 }
             }
 
@@ -158,4 +178,7 @@ class rvAdapterRecommentBoss(
         holder.bind(commentList[position])
     }
 
+    fun setDispatchTouchEventListener(listener: (MotionEvent) -> Boolean) {
+        this.dispatchTouchEvent = listener
+    }
 }

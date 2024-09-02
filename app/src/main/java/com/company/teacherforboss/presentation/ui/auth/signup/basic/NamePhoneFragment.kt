@@ -47,20 +47,6 @@ class NamePhoneFragment : Fragment() {
             activity.gotoNextFragment(GenderBirthFragment())
         }
 
-        //폰 인증 api email과 동일하게 구현하기
-        //viewModel에 phone, isPhoneVerified 추가
-
-        //휴대폰 반응형(-) 추가
-        /*viewModel.livePhone1.observe(viewLifecycleOwner, Observer {
-            if (it.length==3){
-                binding.phoneNumBox2.requestFocus()
-            }
-        })
-        viewModel.livePhone2.observe(viewLifecycleOwner, Observer {
-            if (it.length==4){
-                binding.phoneNumBox3.requestFocus()
-            }
-        })*/
         viewModel.phone.observe(viewLifecycleOwner){
             viewModel.phone_validation()
             if(viewModel.phone.value.isNullOrEmpty()){
@@ -77,10 +63,6 @@ class NamePhoneFragment : Fragment() {
             binding.veryInfo.visibility=View.VISIBLE
 
             if(viewModel.phone_check.value==true){
-                /*binding.phoneCodeBox.visibility=View.VISIBLE
-                binding.timeOverText.visibility=View.VISIBLE
-
-                viewModel.startTimer()*/
                 viewModel.phoneUser(hash.toString())
             }
 
@@ -101,12 +83,6 @@ class NamePhoneFragment : Fragment() {
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
-                    /*if(it.msg=="이미 가입된 전화번호입니다."){
-                        binding.veryInfo.text="이미 가입된 전화번호입니다."
-                    }
-                    else{
-                        showToast("error"+it.msg)
-                    }*/
                     binding.veryInfo.text="인증번호가 발송되었습니다."
                     binding.phoneVerifyBtn.isEnabled = false
                     binding.inputPhoneCode.visibility=View.VISIBLE
@@ -129,7 +105,6 @@ class NamePhoneFragment : Fragment() {
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-//                    viewModel.setPhoneVerifiedStatus(it.data?.isSuccess!!&&it.data?.result?.checked!!)
                     if(it.data?.isSuccess!!&&it.data?.result?.checked!!){
                         viewModel._isPhoneVerified_str.value="T"
                         viewModel._isPhoneVerified.value=true
@@ -137,9 +112,6 @@ class NamePhoneFragment : Fragment() {
                         binding.phoneConfirmBtn.isEnabled = false
                     }
                     binding.checkVery.visibility=View.VISIBLE
-//                    var tempPhoneMap = mutableMapOf<String, LiveData<Boolean>>()
-//                    tempPhoneMap[phone]=viewModel.isPhoneVerified
-                    //viewModel.confirmedPhone.postValue(tempPhoneMap)
                 }
                 is BaseResponse.Error->{
                     viewModel._isPhoneVerified_str.value="F"
@@ -156,9 +128,6 @@ class NamePhoneFragment : Fragment() {
                 binding.phoneCodeBox.text.clear()
             }
         }
-
-
-
         return binding.root
     }
     fun processError(msg:String?){

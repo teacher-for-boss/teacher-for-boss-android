@@ -82,26 +82,23 @@ class GenderBirthFragment : Fragment() {
             }
         }
 
-        binding.yearPicker.apply {
-            minValue = 1940
-            maxValue = 2024
-            value = 1980
+        with(binding) {
+            yearPicker.apply {
+                minValue = 1940
+                maxValue = 2024
+                value = 1980
+            }
+            monthPicker.apply {
+                minValue = 1
+                maxValue = 12
+                value = 1
+            }
+            dayPicker.apply {
+                minValue = 1
+                maxValue = 31
+                value = 15
+            }
         }
-
-        binding.monthPicker.apply {
-            minValue = 1
-            maxValue = 12
-            value = 1
-        }
-
-        binding.dayPicker.apply {
-            minValue = 1
-            maxValue = 31
-            value = 15
-        }
-
-
-
         return binding.root
 
     }

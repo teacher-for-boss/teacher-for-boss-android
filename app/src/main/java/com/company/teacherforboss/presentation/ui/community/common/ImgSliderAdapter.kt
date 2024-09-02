@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.community.common
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.ItemImgSliderBinding
@@ -15,6 +16,11 @@ class ImgSliderAdapter(
         }
     }
 
+    private var onItemClickListener: ((View, Int) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (View, Int) -> Unit) {
+        onItemClickListener = listener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view=ItemImgSliderBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(view)
@@ -25,5 +31,9 @@ class ImgSliderAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(imgUrlList[position])
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(it, position)
+        }
     }
+
 }

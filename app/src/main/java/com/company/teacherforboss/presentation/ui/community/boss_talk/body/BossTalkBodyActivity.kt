@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -17,22 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
-import com.company.teacherforboss.presentation.FullscreenImageActivity
+import com.company.teacherforboss.presentation.FullScreenImageActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterRecommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
-import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
-import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
@@ -58,7 +57,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_body)
-
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
         transaction.addToBackStack(null)
@@ -80,7 +78,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         // 더보기 메뉴 보여주기
         showOptionMenu()
         // 클릭 리스너
-        addListners()
+        addListeners()
         // 질문 좋아요, 저장
         likeAndBookmark()
         // 수정, 삭제, 신고
@@ -101,20 +99,19 @@ class BossTalkBodyActivity : AppCompatActivity() {
 //        }
     }
 
-    fun addListners() {
-        binding.profileImage.setOnClickListener{
-            Intent(this, TeacherProfileActivity::class.java).apply {
-                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                startActivity(this)
+    fun addListeners() {
+        viewModel.memberInfo.observe(this, Observer { memberInfo ->
+            val clickListener = View.OnClickListener {
+                if (memberInfo.role == "TEACHER") {
+                    Intent(this, TeacherProfileActivity::class.java).apply {
+                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, memberInfo.memberId)
+                        startActivity(this)
+                    }
+                }
             }
-        }
-        binding.userNickname.setOnClickListener {
-            Intent(this, TeacherProfileActivity::class.java).apply {
-                putExtra(ConstsUtils.TEACHER_PROFILE_ID,viewModel.getMemberId())
-                startActivity(this)
-            }
-        }
-
+            binding.profileImage.setOnClickListener(clickListener)
+            binding.userNickname.setOnClickListener(clickListener)
+        })
     }
 
     fun readNotification(){
@@ -271,7 +268,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
             binding.vpImgSlider.setOnClickListener {
                 val selectedImageUrl = viewModel.imgUrlList[0]
 
-                val intent = Intent(it.context, FullscreenImageActivity::class.java).apply {
+                val intent = Intent(it.context, FullScreenImageActivity::class.java).apply {
                     putExtra("IMAGE_URL", selectedImageUrl)
                 }
                 it.context.startActivity(intent)
@@ -291,19 +288,19 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     private fun setCommentView() {
-        viewModel.getCommentListLiveData.observe(this, Observer {
-            if (it.commentList.isNotEmpty()) {
-                viewModel.setCommentListValue(it.commentList)
+        viewModel.getCommentListLiveData.observe(this, Observer { commentListResponse ->
+            if (commentListResponse.commentList.isNotEmpty()) {
+                viewModel.setCommentListValue(commentListResponse.commentList)
 
-                // 댓글 개수
-                binding.commentNumber.text = getString(R.string.comment_cnt, it.commentList.size)
+                // 댓글 개수 설정
+                binding.commentNumber.text = getString(R.string.comment_cnt, commentListResponse.commentList.size)
 
-                // 댓글 rv
-                binding.rvComment.adapter = rvAdapterCommentBoss(
-                    this,
-                    this,
-                    viewModel.getCommentListValue(),
-                    viewModel
+                // rvAdapterCommentBoss 어댑터 설정
+                val adapter = rvAdapterCommentBoss(
+                    lifecycleOwner = this,
+                    context = this,
+                    commentList = viewModel.getCommentListValue(),
+                    viewModel = viewModel
                 ) { btnOption ->
                     // 옵션 버튼 클릭 콜백 처리
                     if (currentOptionButton != null && currentOptionButton != btnOption) {
@@ -311,14 +308,36 @@ class BossTalkBodyActivity : AppCompatActivity() {
                     }
                     currentOptionButton = btnOption
                 }
-                binding.rvComment.layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+                // dispatchTouchEvent를 어댑터에 전달
+                adapter.setDispatchTouchEventListener { ev ->
+                    handleTouchEvent(ev)
+                }
+
+                // RecyclerView 설정
+                binding.rvComment.adapter = adapter
+                binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             }
         })
+    }
+    private fun handleTouchEvent(ev: MotionEvent): Boolean {
+        if (currentOptionButton != null && ev.action == MotionEvent.ACTION_DOWN) {
+            val optionButtonLocation = IntArray(2)
+            currentOptionButton?.getLocationOnScreen(optionButtonLocation)
+            val optionButtonRect = Rect(
+                optionButtonLocation[0],
+                optionButtonLocation[1],
+                optionButtonLocation[0] + currentOptionButton!!.width,
+                optionButtonLocation[1] + currentOptionButton!!.height
+            )
 
-        viewModel.deleteCommentLiveData.observe(this, Observer {
-            viewModel.getCommentList()
-        })
+            if (!optionButtonRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                currentOptionButton?.visibility = View.GONE
+                currentOptionButton = null
+                return true // 이벤트 처리됨을 알림
+            }
+        }
+        return false
     }
 
     private fun observePostComment() {
@@ -337,7 +356,13 @@ class BossTalkBodyActivity : AppCompatActivity() {
     private fun hideOptionMenuIfVisible() {
         binding.writerOption.visibility = View.GONE
         binding.nonWriterOption.visibility = View.GONE
+
+        val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
+        adapter?.currentOptionMenu?.visibility = View.GONE
+        adapter?.currentOptionMenu = null
     }
+
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
@@ -357,25 +382,31 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 btnOptionLocation[1] + binding.btnOption.height
             )
 
-            // 댓글 영역에 대한 터치 이벤트가 발생했는지 확인
-            val rvCommentLocation = IntArray(2)
-            binding.rvComment.getLocationOnScreen(rvCommentLocation)
-            val rvCommentRect = Rect(
-                rvCommentLocation[0],
-                rvCommentLocation[1],
-                rvCommentLocation[0] + binding.rvComment.width,
-                rvCommentLocation[1] + binding.rvComment.height
-            )
+            // 리사이클러뷰의 각 아이템의 btnOption 영역 처리
+            val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
+            var isInAnyBtnOption = false
 
-            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
-            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                hideOptionMenuIfVisible()
+            adapter?.let {
+                for (i in 0 until adapter.itemCount) {
+                    val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentBoss.ViewHolder
+                    val itemBtnOptionRect = viewHolder?.getBtnOptionRect()
+                    if (itemBtnOptionRect != null && itemBtnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                        isInAnyBtnOption = true
+                        break
+                    }
+                }
             }
+
+            hideOptionMenuIfVisible()
+//            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
+//            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+//                hideOptionMenuIfVisible()
+//            }
+//            else if (!isInAnyBtnOption)
+//                hideOptionMenuIfVisible()
 
             // 댓글 영역의 터치 이벤트를 확인하고, 부모로 이벤트 전달
-            if (rvCommentRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                binding.rvComment.dispatchTouchEvent(ev)
-            }
+            binding.rvComment.dispatchTouchEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }
@@ -412,6 +443,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     companion object {
         const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
         const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
+        const val ROLE_TEACHER = "ROLE_TEACHER"
         const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
         const val BOSS_TALK = "BOSS_TALK"
     }

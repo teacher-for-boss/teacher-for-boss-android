@@ -44,12 +44,11 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
-//                if (member.role == "TEACHER") {
-//
-//                }
-                Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
-                    putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
-                    binding.root.context.startActivity(this)
+                if (member.role == "TEACHER") {
+                    Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
+                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
+                        binding.root.context.startActivity(this)
+                    }
                 }
             }
 

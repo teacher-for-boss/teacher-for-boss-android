@@ -27,18 +27,19 @@ class BusinessVerifyFailFragment : Fragment() {
     }
 
     private fun addListeners(){
-        binding.btnNextSignup.setOnClickListener {
-            val activity = activity as SignupActivity
-            activity.supportFragmentManager.popBackStack()
-            viewModel.minusCurrentPage()
+        with(binding) {
+            btnNextSignup.setOnClickListener {
+                val activity = activity as SignupActivity
+                activity.supportFragmentManager.popBackStack()
+                viewModel.minusCurrentPage()
+            }
+            problemText.setOnClickListener(){
+                val url = "https://docs.google.com/forms/d/e/1FAIpQLScvoVxh-1jlqyKhVKiFS4pZDhk-GtYbZOHKh4KJHveutN2TYw/viewform" // 여기에 원하는 URL을 입력하세요.
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                startActivity(intent)
+            }
         }
-        binding.problemText.setOnClickListener(){
-            val url = "https://docs.google.com/forms/d/e/1FAIpQLScvoVxh-1jlqyKhVKiFS4pZDhk-GtYbZOHKh4KJHveutN2TYw/viewform" // 여기에 원하는 URL을 입력하세요.
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            startActivity(intent)
-        }
-
     }
 
 }

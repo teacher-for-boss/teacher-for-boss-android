@@ -82,7 +82,6 @@ class EmailFragment : Fragment() {
                 else -> {}
             }
         }
-
         //이메일 코드 입력 후 확인 버튼
         binding.emailConfirmBtn.setOnClickListener {
             emailCode=binding.emailCodeBox.text.toString()
@@ -130,18 +129,19 @@ class EmailFragment : Fragment() {
                 else -> {}
             }
         }
-        binding.timeOverText.setOnClickListener{
-            if (viewModel.timeOverState.value == true){
-                viewModel.emailUser()
-                binding.emailCodeBox.text.clear()
+        with(binding) {
+            timeOverText.setOnClickListener{
+                if (viewModel.timeOverState.value == true){
+                    viewModel.emailUser()
+                    binding.emailCodeBox.text.clear()
+                }
+            }
+            nextBtn.setOnClickListener {
+                viewModel.plusCurrentPage()
+                activity.gotoNextFragment(PasswordFragment())
             }
         }
 
-        // next btn
-        binding.nextBtn.setOnClickListener {
-            viewModel.plusCurrentPage()
-            activity.gotoNextFragment(PasswordFragment())
-        }
         return binding.root
 
     }

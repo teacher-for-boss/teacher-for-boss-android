@@ -21,6 +21,7 @@ import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
 import com.company.teacherforboss.presentation.FullScreenImageActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterRecommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
@@ -56,7 +57,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_body)
-
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
         transaction.addToBackStack(null)
@@ -382,25 +382,31 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 btnOptionLocation[1] + binding.btnOption.height
             )
 
-            // 댓글 영역에 대한 터치 이벤트가 발생했는지 확인
-            val rvCommentLocation = IntArray(2)
-            binding.rvComment.getLocationOnScreen(rvCommentLocation)
-            val rvCommentRect = Rect(
-                rvCommentLocation[0],
-                rvCommentLocation[1],
-                rvCommentLocation[0] + binding.rvComment.width,
-                rvCommentLocation[1] + binding.rvComment.height
-            )
+            // 리사이클러뷰의 각 아이템의 btnOption 영역 처리
+            val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
+            var isInAnyBtnOption = false
 
-            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
-            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                hideOptionMenuIfVisible()
+            adapter?.let {
+                for (i in 0 until adapter.itemCount) {
+                    val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentBoss.ViewHolder
+                    val itemBtnOptionRect = viewHolder?.getBtnOptionRect()
+                    if (itemBtnOptionRect != null && itemBtnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                        isInAnyBtnOption = true
+                        break
+                    }
+                }
             }
+
+            hideOptionMenuIfVisible()
+//            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
+//            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+//                hideOptionMenuIfVisible()
+//            }
+//            else if (!isInAnyBtnOption)
+//                hideOptionMenuIfVisible()
 
             // 댓글 영역의 터치 이벤트를 확인하고, 부모로 이벤트 전달
-            if (rvCommentRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                binding.rvComment.dispatchTouchEvent(ev)
-            }
+            binding.rvComment.dispatchTouchEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }

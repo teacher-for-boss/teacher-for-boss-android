@@ -3,6 +3,7 @@ package com.company.teacherforboss.presentation.ui.community.boss_talk.body.adap
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -32,7 +33,6 @@ class rvAdapterCommentBoss(
 
     private var dispatchTouchEvent: ((MotionEvent) -> Boolean)? = null
     var currentOptionMenu: View? = null
-
 
     inner class ViewHolder(private val binding: RvItemCommentBossBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
@@ -175,6 +175,21 @@ class rvAdapterCommentBoss(
             binding.writeRecommentBtn.setOnClickListener {
                 viewModel.isRecommentClicked.value = Unit
                 viewModel.setParentId(comment.commentId)
+            }
+        }
+
+        fun getBtnOptionRect(): Rect? {
+            return if (binding.btnOption.visibility == View.VISIBLE) {
+                val btnOptionLocation = IntArray(2)
+                binding.btnOption.getLocationOnScreen(btnOptionLocation)
+                Rect(
+                    btnOptionLocation[0],
+                    btnOptionLocation[1],
+                    btnOptionLocation[0] + binding.btnOption.width,
+                    btnOptionLocation[1] + binding.btnOption.height
+                )
+            } else {
+                null
             }
         }
     }

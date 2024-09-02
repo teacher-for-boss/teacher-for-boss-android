@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentTeacherBinding
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
+import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
@@ -39,6 +41,21 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
             member.profileImg?.let {
                 if(it!="") BindingImgAdapter.bindImage(binding.userImage, it)
             }
+
+            // 프로필 클릭 시 상세 프로필 이동
+            val clickListener = View.OnClickListener {
+//                if (member.role == "TEACHER") {
+//
+//                }
+                Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
+                    putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
+                    binding.root.context.startActivity(this)
+                }
+            }
+
+            binding.userImage.setOnClickListener(clickListener)
+            binding.userName.setOnClickListener(clickListener)
+
 
             // 날짜
             binding.createdAt.text = LocalDateFormatter.extractDate(answer.createdAt)

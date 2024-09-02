@@ -41,22 +41,23 @@ class rvAdapterCommentBoss(
             val member = comment.memberInfo
             binding.userName.text = member.name
             member.profileImg?.let {
-                if (it != "") BindingImgAdapter.bindImage(binding.userImage, it)
+                if (it.isNotEmpty()) {
+                    BindingImgAdapter.bindImage(binding.userImage, it)
+                }
             }
 
             // 프로필 클릭 시 상세 프로필 이동
-            viewModel.memberInfo.observe(lifecycleOwner, Observer { memberInfo ->
-                val clickListener = View.OnClickListener {
-                    if (memberInfo.role == "TEACHER") {
-                        Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
-                            putExtra(ConstsUtils.TEACHER_PROFILE_ID, memberInfo.memberId)
-                            binding.root.context.startActivity(this)
-                        }
+            val clickListener = View.OnClickListener {
+                if (member.role == "TEACHER") {
+                    Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
+                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
+                        binding.root.context.startActivity(this)
                     }
                 }
-                binding.userImage.setOnClickListener(clickListener)
-                binding.userName.setOnClickListener(clickListener)
-            })
+            }
+
+            binding.userImage.setOnClickListener(clickListener)
+            binding.userName.setOnClickListener(clickListener)
 
             // 유저 레벨
             binding.profileLevel.text = comment.memberInfo.level

@@ -72,19 +72,18 @@ class TeacherProfileFragment : Fragment(){
         observeProfile()
         setObserver()
 
-        binding.profileImage.setOnClickListener(){
-            showProfileImageDialog()
-        }
-
-
-        binding.nicknameVerifyBtn.setOnClickListener {
-            val nicknameText = binding.nicknameBox.text.toString()
-            viewModel.validateNickname(nicknameText)
-        }
-
-        binding.nicknameVerifyBtn.setOnClickListener {
-            val nicknameText = binding.nicknameBox.text.toString()
-            viewModel.validateNickname(nicknameText)
+        with(binding){
+            profileImage.setOnClickListener(){
+                showProfileImageDialog()
+            }
+            nicknameVerifyBtn.setOnClickListener {
+                val nicknameText = binding.nicknameBox.text.toString()
+                viewModel.validateNickname(nicknameText)
+            }
+            nicknameVerifyBtn.setOnClickListener {
+                val nicknameText = binding.nicknameBox.text.toString()
+                viewModel.validateNickname(nicknameText)
+            }
         }
 
         viewModel.nicknameCheck.observe(viewLifecycleOwner, Observer { isValid ->
@@ -111,9 +110,6 @@ class TeacherProfileFragment : Fragment(){
             Log.d("profile","user img selected")
             if (bool==true){
                 // TODO: url 변경 반영
-//                lifecycleScope.launch {
-//                viewModel.getPresignedUrlList(type="profile",id=1L, imgCnt = 1)
-//                }
 
                 Glide.with(this)
                     .load(viewModel.profileImgUri.value)
@@ -143,9 +139,6 @@ class TeacherProfileFragment : Fragment(){
                     veryInfo.setTextColor(errorColor)
                     veryInfo.text = "사용할 수 없는 닉네임입니다."
                     viewModel.nicknameCheck.value = false
-
-
-
                 }
                 else -> {}
             }
@@ -164,12 +157,10 @@ class TeacherProfileFragment : Fragment(){
         })
 
         return binding.root
-
     }
 
     private fun addListeners(){
         binding.nextBtn.setOnClickListener {
-
             viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
                 viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
                 viewModel.setProfileUserImg()
@@ -184,8 +175,6 @@ class TeacherProfileFragment : Fragment(){
                     else signup()
                 }
             })
-
-
         }
     }
 
@@ -232,17 +221,17 @@ class TeacherProfileFragment : Fragment(){
     }
 
     private fun observeProfile(){
-        viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-            if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-        })
-
-        viewModel.profileImg.observe(viewLifecycleOwner,{bool->
-            binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-        })
-
-        viewModel.profileImgUri.observe(viewLifecycleOwner,{
-            if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
-        })
+        with(viewModel) {
+            isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
+                if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+            })
+            profileImg.observe(viewLifecycleOwner,{bool->
+                binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+            })
+            profileImgUri.observe(viewLifecycleOwner,{
+                if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
+            })
+        }
     }
 
     var checkCnt = 0
@@ -253,12 +242,6 @@ class TeacherProfileFragment : Fragment(){
         for(i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as Chip
             chip.setOnCheckedChangeListener { buttonView,isChecked->
-
-                //checkedChipIds.size 이부분이 isChecked랑 동기화가 안돼서 카운트 변수 따로 만들었습니다
-
-                //val selectedChipCnt=chipGroup.checkedChipIds.size
-
-
                 //최대 개수 도달
                 if(isChecked && checkCnt>=maxSelectedChip){
                     chip.isChecked = false
@@ -285,13 +268,14 @@ class TeacherProfileFragment : Fragment(){
         val signupType= localDataSource.getSignupType()
 
         if (signupType != SIGNUP_DEFAULT){
-            viewModel._name.value=localDataSource.getUserInfo(USER_NAME)
-            viewModel.liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
-            viewModel.livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-            viewModel._birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-            viewModel._profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+            with(viewModel){
+                _name.value=localDataSource.getUserInfo(USER_NAME)
+                liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
+                livePhone.value=localDataSource.getUserInfo(USER_PHONE)
+                _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+            }
         }
-
     }
 
     private fun uploadImgtoS3(){
@@ -313,8 +297,6 @@ class TeacherProfileFragment : Fragment(){
 
     private fun showProfileImageDialog() {
         val activity=activity as SignupActivity
-//        val dialog = ProfileImageDialog(activity,viewModel)
-//        dialog.show()
     }
     private fun checkPattern(string: String, regex: Regex){
         if(regex.containsMatchIn(string)){

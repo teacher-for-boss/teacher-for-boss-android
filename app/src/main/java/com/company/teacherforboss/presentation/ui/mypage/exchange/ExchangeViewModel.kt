@@ -42,6 +42,9 @@ class ExchangeViewModel @Inject constructor(
     private val _getTeacherPointState: MutableStateFlow<UiState<TeacherPointResponseEntity>> = MutableStateFlow(UiState.Empty)
     val getTeacherPointState get() = _getTeacherPointState.asStateFlow()
 
+    private val _getExchangeUiState: MutableStateFlow<UiState<ExchangeResponseEntity>> = MutableStateFlow(UiState.Empty)
+    val getExchangeUiState get() = _getExchangeUiState.asStateFlow()
+
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> get() = _userName
 
@@ -92,17 +95,22 @@ class ExchangeViewModel @Inject constructor(
 
     fun applyExchange(points: Int) {
         viewModelScope.launch {
-            try {
-                val request = ExchangeRequestEntity(points = points)
-                val response = exchangeUseCase(request)
-                _exchangeResult.postValue(response)
-            } catch (e: Exception) {
-                // Handle the exception
+            val request = ExchangeRequestEntity(points = points)
+            _getExchangeUiState.value = UiState.Loading
+            exchangeUseCase(request).onSuccess { exchangeResponse ->
+                _exchangeResult.postValue(exchangeResponse)
+                _getExchangeUiState.value = UiState.Success(exchangeResponse)
+            }.onFailure { throwable ->
+                _getExchangeUiState.value = UiState.Error(throwable.message)
             }
         }
     }
 
-    fun updateTeacherPoint(point: Int) {
+    fun updateGetExchangeUiState(data: ExchangeResponseEntity) {
+        _getExchangeUiState.value = UiState.Success(data)
+    }
+
+    private fun updateTeacherPoint(point: Int) {
         _currentTeacherPoint.value = point
     }
 

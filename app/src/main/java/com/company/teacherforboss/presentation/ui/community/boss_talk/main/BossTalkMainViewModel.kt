@@ -43,7 +43,7 @@ class BossTalkMainViewModel @Inject constructor(
     var _sortBy=MutableLiveData<String>(DEFAULT_SORTBY)
     val sortBy:LiveData<String>
         get() = _sortBy
-    var _keyword=MutableLiveData<String>("")
+    private var _keyword=MutableLiveData<String>("")
     val keyword:LiveData<String>
         get() = _keyword
 
@@ -133,5 +133,4 @@ class BossTalkMainViewModel @Inject constructor(
     fun setKeyword(keyword: String) {
         _keyword.value = keyword
     }
-
 }

@@ -8,7 +8,6 @@ import javax.inject.Inject
 class ExchangeUseCase @Inject constructor(
     private val paymentRepository: PaymentRepository
 ) {
-    suspend operator fun invoke(exchangeRequestEntity: ExchangeRequestEntity): ExchangeResponseEntity {
-        return paymentRepository.exchange(exchangeRequestEntity)
-    }
+    suspend operator fun invoke(exchangeRequestEntity: ExchangeRequestEntity): Result<ExchangeResponseEntity> =
+        paymentRepository.exchange(exchangeRequestEntity)
 }

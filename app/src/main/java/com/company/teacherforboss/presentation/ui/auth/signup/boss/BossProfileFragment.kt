@@ -63,44 +63,6 @@ class BossProfileFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun addListeners(){
-        with(binding){
-            //root.setOnClickListener() {nicknameBox.clearFocus()}
-            nicknameVerifyBtn.setOnClickListener(){
-                val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
-                if (nicknamePattern.containsMatchIn(nicknameBox.text)
-                    || viewModel.nickname.value!!.length > 10){
-                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                    veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(setColor(ERROR))
-                    veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
-                    nicknameVerifyBtn.isEnabled = false
-                }
-                else viewModel.nicknameUser()
-            }
-            profileImage.setOnClickListener(){
-                showProfileImageDialog()
-            }
-
-            nextBtn.setOnClickListener {
-                viewModel.getPresignedUrlList(null,0,1,"profiles")
-
-                viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
-                    viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
-                    viewModel.setProfileUserImg()
-                    uploadImgtoS3()
-                })
-
-                viewModel.profileImg.observe(viewLifecycleOwner,{
-                    if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
-                        val signupType= localDataSource.getSignupType()
-                        if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
-                        else signup()
-                    }
-                })
-            }
-        }
-    }
     private fun observeNickname(){
         viewModel.nicknameResult.observe(viewLifecycleOwner){
             when(it){
@@ -149,7 +111,42 @@ class BossProfileFragment : Fragment() {
 
 
     private fun addListeners(){
+
         with(binding) {
+            //root.setOnClickListener() {nicknameBox.clearFocus()}
+            nicknameVerifyBtn.setOnClickListener(){
+                val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
+                if (nicknamePattern.containsMatchIn(nicknameBox.text)
+                    || viewModel.nickname.value!!.length > 10){
+                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                    veryInfo.visibility = View.VISIBLE
+                    veryInfo.setTextColor(setColor(ERROR))
+                    veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
+                    nicknameVerifyBtn.isEnabled = false
+                }
+                else viewModel.nicknameUser()
+            }
+            profileImage.setOnClickListener(){
+                showProfileImageDialog()
+            }
+
+            nextBtn.setOnClickListener {
+                viewModel.getPresignedUrlList(null,0,1,"profiles")
+
+                viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                    viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                    viewModel.setProfileUserImg()
+                    uploadImgtoS3()
+                })
+
+                viewModel.profileImg.observe(viewLifecycleOwner,{
+                    if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
+                        val signupType= localDataSource.getSignupType()
+                        if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                        else signup()
+                    }
+                })
+            }
             profileImage.setOnClickListener(){
                 showProfileImageDialog()
             }

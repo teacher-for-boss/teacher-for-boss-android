@@ -38,7 +38,9 @@
                 android:id="@+id/rv_bank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/blank"/>
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/blank" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

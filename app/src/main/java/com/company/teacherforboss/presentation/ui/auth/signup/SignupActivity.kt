@@ -238,6 +238,7 @@ class SignupActivity: AppCompatActivity() {
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (backPressedOnce) {
@@ -254,6 +255,8 @@ class SignupActivity: AppCompatActivity() {
         val imm: InputMethodManager =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        //텍스트 박스 포커스 해제
+        currentFocus?.clearFocus()
         return super.dispatchTouchEvent(ev)
     }
 

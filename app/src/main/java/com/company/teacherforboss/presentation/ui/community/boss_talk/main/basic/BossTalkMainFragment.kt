@@ -177,6 +177,18 @@ class BossTalkMainFragment :
                 false
             }
         }
+        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
+            ) {
+                viewModel.setKeyword(binding.etSearchView.text.toString())
+                viewModel.searchKeywordBossTalk()
+                true
+            } else {
+                false
+            }
+        }
+
     }
 
     private fun performSearch() {

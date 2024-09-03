@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.mypage.account
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,16 +35,31 @@ class AccountViewModel @Inject constructor(
     val etInputName: LiveData<String>
         get() = _etInputName
 
-    var enableNext = MutableLiveData<Boolean>(false)
+    private var initialBank: String = ""
+    private var initialAccount: String = ""
+    private var initialName: String = ""
+
+    private val _isChanged = MediatorLiveData<Boolean>().apply {
+        value = false
+
+        addSource(_chosenBank) { value = hasChanged() }
+        addSource(_etInputAccount) { value = hasChanged() }
+        addSource(_etInputName) { value = hasChanged() }
+    }
+    val isChanged: LiveData<Boolean> get() = _isChanged
+
+    var _enableNext = MutableLiveData<Boolean>(false)
+    val enableNext: LiveData<Boolean> get() = _enableNext
 
     init {
         _chosenBank.observeForever { validateFields() }
         _etInputAccount.observeForever { validateFields() }
         _etInputName.observeForever { validateFields() }
+        _isChanged.observeForever { validateFields() }
     }
 
     private fun validateFields() {
-        enableNext.value = !(_chosenBank.value.isNullOrEmpty() ||
+        _enableNext.value = (isChanged.value == true) && !(_chosenBank.value.isNullOrEmpty() ||
                 _etInputAccount.value.isNullOrEmpty() ||
                 _etInputName.value.isNullOrEmpty())
     }
@@ -86,5 +102,17 @@ class AccountViewModel @Inject constructor(
 
             }catch (ex:Exception){_bankAccountChangeState.value=UiState.Error(ex.message)}
         }
+    }
+
+    private fun hasChanged(): Boolean {
+        return (_chosenBank.value != initialBank ||
+                _etInputAccount.value != initialAccount ||
+                _etInputName.value != initialName)
+    }
+
+    fun setInit() {
+        initialBank = chosenBank.value.toString()
+        initialAccount = etInputAccount.value.toString()
+        initialName = etInputName.value.toString()
     }
 }

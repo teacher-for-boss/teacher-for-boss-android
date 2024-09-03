@@ -52,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_check_account2"
             app:layout_constraintStart_toStartOf="@id/tv_check_account2" />
 
-        <TextView
+        <EditText
             android:id="@+id/chosen_bank"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,6 +61,7 @@
             android:textSize="14sp"
             android:inputType="number"
             android:text="@={accountViewModel._chosenBank}"
+            android:textColor="@color/Gray700"
             android:paddingHorizontal="10dp"
             android:hint="클릭하여 은행을 선택해주세요"
             android:textColorHint="@color/gray_02"
@@ -69,7 +70,9 @@
             android:fontFamily="@font/pretendard_light"
             app:layout_constraintTop_toBottomOf="@id/tv_choose_bank"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:focusable="false"
+            android:clickable="true" />
 
         <TextView
             android:id="@+id/tv_input_account"
@@ -96,6 +99,7 @@
             android:textColorHint="@color/gray_02"
             android:hint="@string/hint_input_account"
             android:text="@={accountViewModel._etInputAccount}"
+            android:textColor="@color/Gray700"
             android:layout_marginTop="8dp"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/pretendard_light"
@@ -127,6 +131,7 @@
             android:paddingHorizontal="10dp"
             android:hint="@string/hint_input_name"
             android:text="@={accountViewModel._etInputName}"
+            android:textColor="@color/Gray700"
             android:textColorHint="@color/gray_02"
             android:layout_marginTop="8dp"
             android:layout_marginHorizontal="16dp"
@@ -139,10 +144,10 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_complete"
-            android:background="@drawable/radius_purple_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/Purple600"
+            android:background="@drawable/radius_purple_button"
+            android:backgroundTint="@color/selector_all_btn_background"
             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
             android:textColor="@color/white"
             android:text="@string/account_complete"

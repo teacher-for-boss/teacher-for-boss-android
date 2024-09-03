@@ -395,6 +395,111 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
+                        android:text="열성적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="성실한"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="꼼꼼한"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="전략적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="분석적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="논리적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="실용적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="효율적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="창의적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="감각적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="첵임감 있는"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="리더십 있는"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="전문적인"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="의사소통이 뛰어난"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="정직한"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/TeacherProfileKeywordUnSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="친절한"/>
 
                     <com.google.android.material.chip.Chip
@@ -402,50 +507,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="솔직한"/>
+                        android:text="긍정적인"/>
 
                     <com.google.android.material.chip.Chip
                         style="@style/TeacherProfileKeywordUnSelected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="현실"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/TeacherProfileKeywordUnSelected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="논리적"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/TeacherProfileKeywordUnSelected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="전문성"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/TeacherProfileKeywordUnSelected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="방향제시"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/TeacherProfileKeywordUnSelected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="준비성"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/TeacherProfileKeywordUnSelected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="꿀팁"/>
-
+                        android:text="유연한"/>
 
                 </com.google.android.material.chip.ChipGroup>
 

@@ -249,6 +249,16 @@ class ModifyTeacherProfileFragment : Fragment() {
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
 
+//             viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+//                 if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
+//                     Intent(context, MainActivity::class.java).apply {
+//                         putExtra(FRAGMENT_DESTINATION, MYPAGE)
+//                         startActivity(this)
+//                     }
+//                 } else {
+//                     requireActivity().finish()
+//                 }
+//             })
             with(viewModel){
                 setKeywords(selectedChipList)
                 modifyTeacherProfile()
@@ -261,7 +271,6 @@ class ModifyTeacherProfileFragment : Fragment() {
                 })
 
             }
-
         }
     }
 
@@ -317,7 +326,6 @@ class ModifyTeacherProfileFragment : Fragment() {
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked && checkCnt >= maxSelectedChip) {
                     chip.isChecked = false
-                    Toast.makeText(context, "5개 도달", Toast.LENGTH_SHORT).show()
                 } else {
                     if (isChecked) {
                         if(!selectedChipList.contains(chip.text.toString())){
@@ -434,6 +442,7 @@ class ModifyTeacherProfileFragment : Fragment() {
             viewModel.setEmailReveal(isChecked)
         }
     }
+    
     private fun setupEditTextListeners() {
         with(binding) {
             listOf(etPhone, nicknameBox, etEmail, categoryBox, careerBox, introduceBox).forEach { editText ->
@@ -447,5 +456,10 @@ class ModifyTeacherProfileFragment : Fragment() {
                 }
             }
         }
+    }
+    
+    companion object {
+        private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
 }

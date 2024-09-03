@@ -39,6 +39,10 @@ class SavedTeacherTalkFragment :
         super.onDestroyView()
         viewModel.clearQuestionData()
     }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getBookmarkedPosts()
+    }
     private fun initView() {
         bookmarkedQuestionsAdapter = SavedTeacherTalkCardAdapter(requireContext())
         binding.rvCard.apply {

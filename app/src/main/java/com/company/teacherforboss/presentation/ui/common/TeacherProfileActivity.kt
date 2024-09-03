@@ -142,7 +142,6 @@ class TeacherProfileActivity :
                                 View.GONE
                             }
                     }
-
                     addListeners()
                 }
             }
@@ -150,6 +149,8 @@ class TeacherProfileActivity :
     }
 
     companion object {
+        private const val ROLE = "ROLE"
+        private const val ROLE_TEACHER = "TEACHER"
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"

@@ -115,7 +115,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar("갤러리 접근 권한이 필요합니다.")
+                showSnackBar(getString(R.string.image_request_permission))
             }
         }
     }
@@ -133,11 +133,12 @@ class ModifyProfileActivity : AppCompatActivity() {
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 5) {
-                    showSnackBar("5MB 이하의 이미지만 첨부 가능합니다.")
+                    showSnackBar(getString(R.string.image_dialog_file_size_5MB))
                     return
                 }
             }
             if (imageUri != null) {
+                viewModel.setIsUserImgSelected(true)
                 viewModel.setUserImageUri(imageUri)
                 viewModel.getPresignedUrlList()
             }

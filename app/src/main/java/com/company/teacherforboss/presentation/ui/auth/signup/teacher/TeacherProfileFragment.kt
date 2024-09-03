@@ -20,12 +20,14 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginViewModel
+import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
@@ -106,11 +108,8 @@ class TeacherProfileFragment : Fragment(){
             }
         })
 
-        viewModel.isUserImgSelectd.observe(viewLifecycleOwner,{bool->
-            Log.d("profile","user img selected")
+        viewModel.isUserImgSelected.observe(viewLifecycleOwner,{bool->
             if (bool==true){
-                // TODO: url 변경 반영
-
                 Glide.with(this)
                     .load(viewModel.profileImgUri.value)
                     .fitCenter()
@@ -219,21 +218,7 @@ class TeacherProfileFragment : Fragment(){
         }
 
     }
-
-    private fun observeProfile(){
-        with(viewModel) {
-            isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-                if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-            })
-            profileImg.observe(viewLifecycleOwner,{bool->
-                binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-            })
-            profileImgUri.observe(viewLifecycleOwner,{
-                if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
-            })
-        }
-    }
-
+    
     var checkCnt = 0
     private fun chipListener(){
         val maxSelectedChip=5
@@ -278,12 +263,33 @@ class TeacherProfileFragment : Fragment(){
         }
     }
 
-    private fun uploadImgtoS3(){
-        val url=viewModel.profilePresignedUrl.value?:return
-        val imgUri=viewModel.profileImgUri.value?:return
-        val uploadUtil=UploadUtil(requireActivity())
+    private fun observeProfile() {
+        // 디폴트 이미지
+        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+            defaultImgUrl?.let {
+                viewModel.setIsUserImgSelected(false)
+                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+            }
+        })
 
-        uploadUtil.uploadProfileImage(url,imgUri,viewModel.getFileType())
+        // 사용자 갤러리 이미지
+        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
+            viewModel.setIsUserImgSelected(true)
+            imgUri?.let {
+                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            }
+        })
+
+        // presigned url
+        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+            uploadImgtoS3()
+        })
+
+    }
+
+    private fun uploadImgtoS3(){
+        val uploadUtil=UploadUtil(requireContext())
+        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
     }
 
     private fun showSplash(){
@@ -296,8 +302,15 @@ class TeacherProfileFragment : Fragment(){
 
 
     private fun showProfileImageDialog() {
-        val activity=activity as SignupActivity
+        binding.profileImage.setOnClickListener {
+            val activity = requireActivity() as? SignupActivity
+            val dialog = ProfileImageDialogFragment {
+                activity?.checkAndRequestPermissions()
+            }
+            dialog.show(parentFragmentManager, SIGNUP_PROFILE_IMAGE_DIALOG)
+        }
     }
+    
     private fun checkPattern(string: String, regex: Regex){
         if(regex.containsMatchIn(string)){
             }

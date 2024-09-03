@@ -275,4 +275,8 @@
     <string name="notification_type_event">이벤트</string>ㅅ
     <string name="notification_type_exchange">환전신청완료</string>
 
+    <!-- 이미지   -->
+
+    <string name="image_dialog_file_size_5MB">5MB 이하의 이미지만 첨부 가능합니다.</string>
+    <string name="image_request_permission">갤러리 접근 권한이 필요합니다.</string>
 </resources>

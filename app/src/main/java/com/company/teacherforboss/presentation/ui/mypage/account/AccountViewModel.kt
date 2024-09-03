@@ -48,7 +48,7 @@ class AccountViewModel @Inject constructor(
     }
     val isChanged: LiveData<Boolean> get() = _isChanged
 
-    var _enableNext = MutableLiveData<Boolean>(false)
+    private var _enableNext = MutableLiveData<Boolean>(false)
     val enableNext: LiveData<Boolean> get() = _enableNext
 
     init {

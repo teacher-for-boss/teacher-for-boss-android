@@ -248,28 +248,20 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
-
-//             viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-//                 if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
-//                     Intent(context, MainActivity::class.java).apply {
-//                         putExtra(FRAGMENT_DESTINATION, MYPAGE)
-//                         startActivity(this)
-//                     }
-//                 } else {
-//                     requireActivity().finish()
-//                 }
-//             })
             with(viewModel){
                 setKeywords(selectedChipList)
                 modifyTeacherProfile()
 
                 modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-                    Intent(requireActivity(), MainActivity::class.java).apply {
-                        putExtra(FRAGMENT_DESTINATION, MYPAGE)
-                        startActivity(this)
+                    if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
+                        Intent(context, MainActivity::class.java).apply {
+                            putExtra(FRAGMENT_DESTINATION, MYPAGE)
+                            startActivity(this)
+                        }
+                    } else {
+                        requireActivity().finish()
                     }
                 })
-
             }
         }
     }

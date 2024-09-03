@@ -154,8 +154,6 @@ class TeacherProfileActivity :
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"
-        private const val ROLE = "ROLE"
-        private const val ROLE_TEACHER = "TEACHER"
         private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
         private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }

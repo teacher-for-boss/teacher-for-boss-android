@@ -24,10 +24,6 @@ class PasswordFragment : Fragment() {
     var show_pwEnter: Boolean = false
     var show_PwReEnter: Boolean = false
 
-    //pw check 정규식
-    val num_regex:Regex=Regex("[0-9]+")
-    val eng_regex:Regex=Regex("[a-zA-z]+")
-    val special_regex:Regex= Regex("[^a-zA-Z0-9가-힣]+")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,45 +57,45 @@ class PasswordFragment : Fragment() {
 
 
         val activity=activity as SignupActivity
-        binding.nextBtn.setOnClickListener {
-            if(viewModel.all_check.value==false) showToast("비밀번호 조건을 충족시키지 않습니다")
-            else if(viewModel.rePw_check.value==false) showToast("재입력한 비밀번호가 일치하지 않습니다.")
-            else {
-                activity.gotoNextFragment(NamePhoneFragment())
+        with (binding) {
+            nextBtn.setOnClickListener {
+                if(viewModel.all_check.value==false) showToast("비밀번호 조건을 충족시키지 않습니다")
+                else if(viewModel.rePw_check.value==false) showToast("재입력한 비밀번호가 일치하지 않습니다.")
+                else {
+                    activity.gotoNextFragment(NamePhoneFragment())
+                }
+            }
+
+            //비밀번호 입력
+            pwEyeClosed.setOnClickListener{
+                show_pwEnter = true  //비밀번호가 보임
+                binding.pwEyeClosed.visibility = View.GONE
+                binding.pwEyeOpen.visibility = View.VISIBLE
+                updatePasswordInputType()
+            }
+            pwEyeOpen.setOnClickListener {
+                show_pwEnter = false
+                binding.pwEyeOpen.visibility = View.GONE
+                binding.pwEyeClosed.visibility = View.VISIBLE
+                updatePasswordInputType()
+            }
+
+            //비밀번호 재입력
+            rePwEyeClosed.setOnClickListener {
+                show_PwReEnter = true
+                binding.rePwEyeClosed.visibility = View.GONE
+                binding.rePwEyeOpen.visibility = View.VISIBLE
+                updatePasswordInputType()
+            }
+            rePwEyeOpen.setOnClickListener {
+                show_PwReEnter = false
+                binding.rePwEyeOpen.visibility = View.GONE
+                binding.rePwEyeClosed.visibility = View.VISIBLE
+                updatePasswordInputType()
             }
         }
 
-        //비밀번호 입력
-        binding.pwEyeClosed.setOnClickListener{
-            show_pwEnter = true  //비밀번호가 보임
-            binding.pwEyeClosed.visibility = View.GONE
-            binding.pwEyeOpen.visibility = View.VISIBLE
-            updatePasswordInputType()
-        }
-        binding.pwEyeOpen.setOnClickListener {
-            show_pwEnter = false
-            binding.pwEyeOpen.visibility = View.GONE
-            binding.pwEyeClosed.visibility = View.VISIBLE
-            updatePasswordInputType()
-        }
-
-        //비밀번호 재입력
-        binding.rePwEyeClosed.setOnClickListener {
-            show_PwReEnter = true
-            binding.rePwEyeClosed.visibility = View.GONE
-            binding.rePwEyeOpen.visibility = View.VISIBLE
-            updatePasswordInputType()
-        }
-        binding.rePwEyeOpen.setOnClickListener {
-            show_PwReEnter = false
-            binding.rePwEyeOpen.visibility = View.GONE
-            binding.rePwEyeClosed.visibility = View.VISIBLE
-            updatePasswordInputType()
-        }
-
-
         return binding.root
-
     }
 
     private fun checkNextButtonActivation() {

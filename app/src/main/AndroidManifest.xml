@@ -147,7 +147,7 @@
         </activity>
 
         <activity
-            android:name="com.company.teacherforboss.presentation.FullscreenImageActivity"
+            android:name="com.company.teacherforboss.presentation.FullScreenImageActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 

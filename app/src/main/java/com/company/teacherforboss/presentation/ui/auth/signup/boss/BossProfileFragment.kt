@@ -40,118 +40,150 @@ class BossProfileFragment : Fragment() {
     private lateinit var binding: FragmentBossProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
     @Inject lateinit var localDataSource: LocalDataSource
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boss_profile, container, false)
 
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
-        val nicknameBox = binding.nicknameBox
-        val veryInfo = binding.veryInfo
-        val successcolor = ContextCompat.getColor(requireContext(), R.color.success)
-        val errorcolor = ContextCompat.getColor(requireContext(), R.color.error)
-
         getSocialSignupProvidedInfo()
         addListeners()
+        observeNickname()
         observeProfile()
 
-        binding.nicknameVerifyBtn.setOnClickListener(){
-            val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
-            if (nicknamePattern.containsMatchIn(binding.nicknameBox.text)){
-                nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                veryInfo.visibility = View.VISIBLE
-                veryInfo.setTextColor(errorcolor)
-                veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
-                binding.nicknameVerifyBtn.isEnabled = false
-            }
-            else viewModel.nicknameUser()
-        }
+        return binding.root
+    }
 
+    override fun onDestroyView() {
+        viewModel._nickname.value = ""
+        viewModel.nicknameResult.value = BaseResponse.Loading()
+        super.onDestroyView()
+    }
+
+    private fun observeNickname(){
         viewModel.nicknameResult.observe(viewLifecycleOwner){
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-
                     //viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
-                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
-                    veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(successcolor)
-                    veryInfo.text = "사용 가능한 닉네임입니다."
-                    binding.nicknameVerifyBtn.isEnabled = false
-                    binding.nextBtn.isEnabled = true
-
+                    with(binding){
+                        nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
+                        veryInfo.visibility = View.VISIBLE
+                        veryInfo.setTextColor(setColor(SUCCESS))
+                        veryInfo.text = "사용 가능한 닉네임입니다."
+                        nicknameVerifyBtn.isEnabled = false
+                        nextBtn.isEnabled = true
+                    }
                 }
                 is BaseResponse.Error->{
-
-                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                    veryInfo.visibility = View.VISIBLE
-                    veryInfo.setTextColor(errorcolor)
-                    veryInfo.text = "사용할 수 없는 닉네임입니다."
-                    binding.nicknameVerifyBtn.isEnabled = false
-
+                    with(binding){
+                        nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                        veryInfo.visibility = View.VISIBLE
+                        veryInfo.setTextColor(setColor(ERROR))
+                        veryInfo.text = "사용할 수 없는 닉네임입니다."
+                        nicknameVerifyBtn.isEnabled = false
+                    }
                 }
                 else -> {}
             }
         }
 
 
-        nicknameBox.addTextChangedListener(object : TextWatcher {
+        binding.nicknameBox.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                nicknameBox.setBackgroundResource(R.drawable.selector_signup)
-                veryInfo.visibility = View.INVISIBLE
-                binding.nicknameVerifyBtn.isEnabled = true
-                binding.nextBtn.isEnabled = false
+                with(binding){
+                    nicknameBox.setBackgroundResource(R.drawable.selector_signup)
+                    veryInfo.visibility = View.INVISIBLE
+                    nextBtn.isEnabled = false
+                    if (viewModel.nickname.value!!.isEmpty()){
+                        nicknameVerifyBtn.isEnabled = false
+                    }
+                    else nicknameVerifyBtn.isEnabled = true
+                }
             }
         })
-
-        return binding.root
-
     }
 
+
     private fun addListeners(){
-        binding.profileImage.setOnClickListener(){
-            showProfileImageDialog()
-        }
 
-        binding.nextBtn.setOnClickListener {
-            viewModel.getPresignedUrlList(null,0,1,"profiles")
-
-            viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
-                viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
-                viewModel.setProfileUserImg()
-                uploadImgtoS3()
-            })
-
-            viewModel.profileImg.observe(viewLifecycleOwner,{
-                if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
-                    val signupType= localDataSource.getSignupType()
-                    if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
-                    else signup()
+        with(binding) {
+            //root.setOnClickListener() {nicknameBox.clearFocus()}
+            nicknameVerifyBtn.setOnClickListener(){
+                val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
+                if (nicknamePattern.containsMatchIn(nicknameBox.text)
+                    || viewModel.nickname.value!!.length > 10){
+                    nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                    veryInfo.visibility = View.VISIBLE
+                    veryInfo.setTextColor(setColor(ERROR))
+                    veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
+                    nicknameVerifyBtn.isEnabled = false
                 }
-            })
+                else viewModel.nicknameUser()
+            }
+            profileImage.setOnClickListener(){
+                showProfileImageDialog()
+            }
 
+            nextBtn.setOnClickListener {
+                viewModel.getPresignedUrlList(null,0,1,"profiles")
+
+                viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                    viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                    viewModel.setProfileUserImg()
+                    uploadImgtoS3()
+                })
+
+                viewModel.profileImg.observe(viewLifecycleOwner,{
+                    if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
+                        val signupType= localDataSource.getSignupType()
+                        if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                        else signup()
+                    }
+                })
+            }
+            profileImage.setOnClickListener(){
+                showProfileImageDialog()
+            }
+            nextBtn.setOnClickListener {
+                with(viewModel) {
+                    getPresignedUrlList(null,0,1,"profiles")
+
+                    presignedUrlLiveData.observe(viewLifecycleOwner,{
+                        viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                        viewModel.setProfileUserImg()
+                        uploadImgtoS3()
+                    })
+
+                    profileImg.observe(viewLifecycleOwner,{
+                        if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
+                            val signupType= localDataSource.getSignupType()
+                            if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                            else signup()
+                        }
+                    })
+                }
+            }
         }
     }
 
     private fun observeProfile(){
-        viewModel.isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
-            if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
-        })
-
-        viewModel.profileImg.observe(viewLifecycleOwner,{it->
-            binding.profileImage.loadImageFromUrl(it)
-        })
-
-        viewModel.profileImgUri.observe(viewLifecycleOwner,{
-            if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
-        })
+        with(viewModel){
+            isDefaultImgSelected.observe(viewLifecycleOwner,{bool->
+                if(bool==true) binding.profileImage.loadImageFromUrl(viewModel.profileImg.value!!)
+            })
+            profileImg.observe(viewLifecycleOwner,{it->
+                binding.profileImage.loadImageFromUrl(it)
+            })
+            profileImgUri.observe(viewLifecycleOwner,{
+                if(it!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage,it)
+            })
+        }
     }
 
     private fun signup(){
@@ -166,11 +198,9 @@ class BossProfileFragment : Fragment() {
                 is BaseResponse.Error->{
                     showSplash()
                 }
-
                 else -> {}
             }
         }
-
     }
 
     private fun socialSignup(type:String){
@@ -183,13 +213,10 @@ class BossProfileFragment : Fragment() {
                 }
                 is BaseResponse.Error->{
                     showSplash()
-
                 }
-
                 else -> {}
             }
         }
-
     }
 
 
@@ -209,8 +236,14 @@ class BossProfileFragment : Fragment() {
     }
 
     private fun showProfileImageDialog() {
-//        val dialog=ProfileImageDialogFragment()
-//        dialog.show(parentFragmentManager,SIGNUP_PROFILE_IMAGE_DIALOG)
+
+    }
+    private fun setColor(result: String): Int {
+        return when (result) {
+            SUCCESS -> ContextCompat.getColor(requireContext(), R.color.success)
+            ERROR -> ContextCompat.getColor(requireContext(), R.color.error)
+            else -> 0
+        }
     }
 
     fun showToast(msg:String){
@@ -221,14 +254,18 @@ class BossProfileFragment : Fragment() {
         val signupType= localDataSource.getSignupType()
 
         if (signupType != SIGNUP_DEFAULT){
-            viewModel._name.value=localDataSource.getUserInfo(USER_NAME)
-            viewModel.liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
-            viewModel.livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-            viewModel._birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-            viewModel._profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+
+            with(viewModel) {
+                _name.value=localDataSource.getUserInfo(USER_NAME)
+                liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
+                livePhone.value=localDataSource.getUserInfo(USER_PHONE)
+                _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+            }
         }
-
     }
-
-
+    companion object {
+        const val SUCCESS = "success"
+        const val ERROR = "error"
+    }
 }

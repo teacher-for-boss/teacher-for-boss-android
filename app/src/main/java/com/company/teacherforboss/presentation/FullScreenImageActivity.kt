@@ -1,27 +1,27 @@
 package com.company.teacherforboss.presentation
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.company.teacherforboss.databinding.ActivityFullScreenImageBinding
+import com.company.teacherforboss.R
 
-class FullscreenImageActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityFullScreenImageBinding
+class FullScreenImageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_full_screen_image)
 
         val imageUrl = intent.getStringExtra("IMAGE_URL")
-
-        imageUrl?.let {
-            Glide.with(this).load(it).into(binding.fullScreenImageView)
+        if (imageUrl != null) {
+            // Use Glide or any other library to load the image into the ImageView
+            Glide.with(this)
+                .load(imageUrl)
+                .into(findViewById(R.id.image_full))
         }
 
-        binding.fullScreenImageView.setOnClickListener {
-            finish() // 이미지를 클릭하면 전체화면 액티비티를 종료합니다.
+        findViewById<ImageView>(R.id.image_full).setOnClickListener {
+            supportFinishAfterTransition()
         }
     }
 }

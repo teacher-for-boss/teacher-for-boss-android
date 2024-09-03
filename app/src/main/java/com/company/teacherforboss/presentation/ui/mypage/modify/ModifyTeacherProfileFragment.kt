@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -66,7 +68,7 @@ class ModifyTeacherProfileFragment : Fragment() {
         modifyTeacherProfile()
         setObserver()
         showProfileImageDialog()
-
+        setupEditTextListeners()
     }
 
     private fun initLayout() {
@@ -373,10 +375,24 @@ class ModifyTeacherProfileFragment : Fragment() {
             viewModel.setEmailReveal(isChecked)
         }
     }
-
+    
+    private fun setupEditTextListeners() {
+        with(binding) {
+            listOf(etPhone, nicknameBox, etEmail, categoryBox, careerBox, introduceBox).forEach { editText ->
+                editText.setOnEditorActionListener { _, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        editText.clearFocus()
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        }
+    }
+    
     companion object {
         private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
         private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
-
 }

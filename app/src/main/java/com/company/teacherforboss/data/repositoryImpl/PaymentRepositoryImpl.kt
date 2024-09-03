@@ -23,11 +23,11 @@ class PaymentRepositoryImpl @Inject constructor(
                 .result.toBankAccountResponseEntity()
         }.getOrElse { err -> throw err }
 
-    override suspend fun exchange(exchangeRequestEntity: ExchangeRequestEntity): ExchangeResponseEntity =
+    override suspend fun exchange(exchangeRequestEntity: ExchangeRequestEntity): Result<ExchangeResponseEntity> =
         runCatching {
             paymentRemoteDataSource.exchange(requestExchangeDto = exchangeRequestEntity.toRequestExchangeDto())
                 .result.toExchangeResponseEntity()
-        }.getOrElse { err -> throw err }
+        }
 
     override suspend fun getTeacherPoint() :Result<TeacherPointResponseEntity> =
         runCatching {

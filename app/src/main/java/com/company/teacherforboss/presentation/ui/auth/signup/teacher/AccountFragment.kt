@@ -45,18 +45,19 @@ class AccountFragment : Fragment() {
         val activity = activity as SignupActivity
         val signupType= localDataSource.getSignupType()
 
-        binding.btnNextSignup.setOnClickListener {
-            // 소셜로그인으로 회원가입 시
-            if (signupType!= SIGNUP_DEFAULT) activity.gotoNextFragment(TeacherProfileFragment())
-            else  activity.gotoNextFragment(EmailFragment())
+        with(binding) {
+            btnNextSignup.setOnClickListener {
+                // 소셜로그인으로 회원가입 시
+                if (signupType!= SIGNUP_DEFAULT) activity.gotoNextFragment(TeacherProfileFragment())
+                else  activity.gotoNextFragment(EmailFragment())
+            }
+            bank.setOnClickListener {
+                val transaction=parentFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container,BankFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
         }
-        binding.bank.setOnClickListener {
-            val transaction=parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container,BankFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
     }
     private fun checkFilled() {
         if (!viewModel._bank.value.isNullOrEmpty() &&
@@ -67,9 +68,10 @@ class AccountFragment : Fragment() {
     }
     private fun setObserver(){
         val dataObserver = Observer<String>{ _ -> checkFilled() }
-        viewModel._bank.observe(viewLifecycleOwner,dataObserver)
-        viewModel._accountNum.observe(viewLifecycleOwner,dataObserver)
-        viewModel._accountHoler.observe(viewLifecycleOwner,dataObserver)
+        with(viewModel){
+            _bank.observe(viewLifecycleOwner,dataObserver)
+            _accountNum.observe(viewLifecycleOwner,dataObserver)
+            _accountHoler.observe(viewLifecycleOwner,dataObserver)
+        }
     }
-
 }

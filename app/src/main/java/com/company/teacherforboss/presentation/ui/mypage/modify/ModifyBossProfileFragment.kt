@@ -61,11 +61,13 @@ class ModifyBossProfileFragment : Fragment() {
 
     private fun initLayout() {
         binding.profileImage.loadCircularImage(viewModel.profileImg.value!!)
+        with(viewModel){
+            setInitNickname(nickname.value.toString())
+            setInitProfileImg(profileImg.value.toString())
+            setEnableNextState(false)
+            setNicknameCheck(true)
+        }
 
-        viewModel.setInitNickname(viewModel.nickname.value.toString())
-        viewModel.setInitProfileImg(viewModel.profileImg.value.toString())
-        viewModel.setEnableNextState(false)
-        viewModel.setNicknameCheck(true)
         observeProfile()
     }
 
@@ -80,21 +82,25 @@ class ModifyBossProfileFragment : Fragment() {
 
                     binding.veryInfo.visibility = View.INVISIBLE
 
-                    if(viewModel.initialNickname.value != filtered) {
-                        if (filtered.isEmpty()){
+                    with(viewModel){
+                        if(initialNickname.value != filtered) {
+                            if (filtered.isEmpty()){
+                                binding.nicknameVerifyBtn.isEnabled = false
+                                _nicknameCheck.value = false
+                            }
+                            else{
+                                binding.nicknameVerifyBtn.isEnabled = true
+                                _nicknameCheck.value = false
+                            }
+                        }
+                        else {
                             binding.nicknameVerifyBtn.isEnabled = false
-                            viewModel._nicknameCheck.value = false
+                            setNicknameCheck(true)
                         }
-                        else{
-                            binding.nicknameVerifyBtn.isEnabled = true
-                            viewModel._nicknameCheck.value = false
-                        }
+                        setNickname(filtered)
+
                     }
-                    else {
-                        binding.nicknameVerifyBtn.isEnabled = false
-                        viewModel.setNicknameCheck(true)
-                    }
-                    viewModel.setNickname(filtered)
+
                 }
             }
         })
@@ -158,26 +164,30 @@ class ModifyBossProfileFragment : Fragment() {
     }
 
     private fun observeProfile() {
-        // 디폴트 이미지
-        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
-            defaultImgUrl?.let {
-                viewModel.setIsUserImgSelected(false)
-                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
-            }
-        })
+        with(viewModel){
+            // 디폴트 이미지
+            profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+                defaultImgUrl?.let {
+                    setIsUserImgSelected(false)
+                    BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+                }
+            })
 
-        // 사용자 갤러리 이미지
-        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            imgUri?.let {
-                viewModel.setIsUserImgSelected(true)
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
-            }
-        })
+            // 사용자 갤러리 이미지
+            profileImgUri.observe(viewLifecycleOwner, { imgUri->
+                imgUri?.let {
+                    setIsUserImgSelected(true)
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
+            })
 
-        // presigned url
-        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
-            uploadImgtoS3()
-        })
+            // presigned url
+            profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+                uploadImgtoS3()
+            })
+
+        }
+
 
     }
 
@@ -198,15 +208,19 @@ class ModifyBossProfileFragment : Fragment() {
     }
 
     private fun checkFilled() {
-       if(viewModel.nicknameCheck.value==false) viewModel.setEnableNextState(false)
-        if(viewModel.getNicknameCheck()==true &&
-            (viewModel.initialNickname.value!=viewModel.nickname.value ||
-                    viewModel.initialProfileImg.value!=viewModel.profileImg.value ||
-                    viewModel.initialProfileUri.value.toString()!=viewModel.profileImgUri.value.toString())
-        ){ viewModel.setEnableNextState(true)
+        with(viewModel){
+            if(nicknameCheck.value==false) setEnableNextState(false)
+            if(getNicknameCheck()==true &&
+                (initialNickname.value!=nickname.value ||
+                        initialProfileImg.value!=profileImg.value ||
+                        initialProfileUri.value.toString()!=profileImgUri.value.toString())
+            ){ setEnableNextState(true)
+            }
+            else {setEnableNextState(false)
+            }
+
         }
-        else {viewModel.setEnableNextState(false)
-        }
+
     }
 
     private fun setObserver() {
@@ -215,9 +229,11 @@ class ModifyBossProfileFragment : Fragment() {
         val uriObserver=Observer<Uri?>{ uri->
             uri?.let { checkFilled() }
         }
-        viewModel.profileImgUri.observe(viewLifecycleOwner,uriObserver)
-        viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
-        viewModel.nicknameCheck.observe(viewLifecycleOwner,isCheckedObserver)
+        with(viewModel){
+            profileImgUri.observe(viewLifecycleOwner,uriObserver)
+            profileImg.observe(viewLifecycleOwner, dataObserver)
+            nicknameCheck.observe(viewLifecycleOwner,isCheckedObserver)
+        }
     }
     private fun setupEditTextListeners() {
         binding.nicknameBox.setOnEditorActionListener { _, actionId, _ ->

@@ -78,42 +78,51 @@ class ModifyTeacherProfileFragment : Fragment() {
         lifecycleScope.launch {
             detailProfileViewModel.teacherProfileDetail.collect {
                 it?.let {
-                    // image
-                    binding.profileImage.loadCircularImage(it.profileImg)
-                    viewModel.setProfileImg(it.profileImg)
-                    viewModel.setInitProfileImg(it.profileImg)
-                    // nickname
-                    viewModel.setNickname(it.nickname)
-                    viewModel.setInitNickname(it.nickname)
-                    // phone
-                    if(!it.phone.isNullOrEmpty()) {
-                        viewModel.setInitPhone(it.phone)
-                        viewModel.setPhone(it.phone)
-                        if(it.phoneOpen==true){
-                            binding.switchPhone.isChecked = true
-                            viewModel.setPhoneReveal(true)
-                            viewModel.setInitPhoneOpen(true)
+                    with(viewModel){
+                        // image
+                        binding.profileImage.loadCircularImage(it.profileImg)
+                        setProfileImg(it.profileImg)
+                        setInitProfileImg(it.profileImg)
+                        // nickname
+                        setNickname(it.nickname)
+                        setInitNickname(it.nickname)
+                        // phone
+                        if(!it.phone.isNullOrEmpty()) {
+                            setInitPhone(it.phone)
+                            setPhone(it.phone)
+                            if(it.phoneOpen==true){
+                                binding.switchPhone.isChecked = true
+                                setPhoneReveal(true)
+                                setInitPhoneOpen(true)
+                            }
                         }
-                    }
-                    // email
-                    if(!it.email.isNullOrEmpty()) {
-                        viewModel.setEmail(it.email)
-                        viewModel.setInitEmail(it.email)
-                        if(it.emailOpen==true){
-                            binding.switchEmail.isChecked = true
-                            viewModel.setEmailReveal(true)
-                            viewModel.setInitEmailOpen(true)
+                        // email
+                        if(!it.email.isNullOrEmpty()) {
+                            setEmail(it.email)
+                            setInitEmail(it.email)
+                            if(it.emailOpen==true){
+                                binding.switchEmail.isChecked = true
+                                setEmailReveal(true)
+                                setInitEmailOpen(true)
+                            }
                         }
+                        // field
+                        setField(it.field)
+                        setInitField(it.field)
+                        // career
+                        setCareer(it.career.toString())
+                        setInitCareer(it.career.toString())
+                        // introduction
+                        setIntroduction(it.introduction)
+                        setInitIntroduction(it.introduction)
+
+                        setInitKeywords(it.keywords)
+
+                        setEnableNextState(false)
+//                        binding.nextBtn.isEnabled=false
+                        setIsInitializedView(true)
                     }
-                    // field
-                    viewModel.setField(it.field)
-                    viewModel.setInitField(it.field)
-                    // career
-                    viewModel.setCareer(it.career.toString())
-                    viewModel.setInitCareer(it.career.toString())
-                    // introduction
-                    viewModel.setIntroduction(it.introduction)
-                    viewModel.setInitIntroduction(it.introduction)
+
                     // keywords
                     val chipList = it.keywords
                     selectedChipList = chipList.toMutableList()
@@ -125,11 +134,7 @@ class ModifyTeacherProfileFragment : Fragment() {
                             checkCnt++
                         }
                     }
-                    viewModel.setInitKeywords(it.keywords)
 
-                    viewModel.setEnableNextState(false)
-                    binding.nextBtn.isEnabled=false
-                    viewModel.setIsInitializedView(true)
                 }
             }
         }
@@ -243,39 +248,48 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
-            viewModel.setKeywords(selectedChipList)
-            viewModel.modifyTeacherProfile()
 
-            viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-                Intent(requireActivity(), MainActivity::class.java).apply {
-                    putExtra(FRAGMENT_DESTINATION, MYPAGE)
-                    startActivity(this)
-                }
-            })
+            with(viewModel){
+                setKeywords(selectedChipList)
+                modifyTeacherProfile()
+
+                modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+                    Intent(requireActivity(), MainActivity::class.java).apply {
+                        putExtra(FRAGMENT_DESTINATION, MYPAGE)
+                        startActivity(this)
+                    }
+                })
+
+            }
+
         }
     }
 
     private fun observeProfile() {
-        // 디폴트 이미지
-        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
-            defaultImgUrl?.let {
-                viewModel.setIsUserImgSelected(false)
-                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
-            }
-        })
+        with(viewModel){
+            // 디폴트 이미지
+            profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+                defaultImgUrl?.let {
+                    setIsUserImgSelected(false)
+                    BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+                }
+            })
 
-        // 사용자 갤러리 이미지
-        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            imgUri?.let {
-                viewModel.setIsUserImgSelected(true)
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
-            }
-        })
+            // 사용자 갤러리 이미지
+            profileImgUri.observe(viewLifecycleOwner, { imgUri->
+                imgUri?.let {
+                    setIsUserImgSelected(true)
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
+            })
 
-        // presigned url
-        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
-            uploadImgtoS3()
-        })
+            // presigned url
+            profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+                uploadImgtoS3()
+            })
+
+        }
+
 
     }
     private fun uploadImgtoS3(){
@@ -330,52 +344,57 @@ class ModifyTeacherProfileFragment : Fragment() {
     }
 
     private fun checkFilled() {
-        viewModel.checkIfModified()
+        with(viewModel) {
+            checkIfModified()
 
-        if(viewModel.nicknameCheck.value==false) viewModel.setEnableNextState(false)
+            if(nicknameCheck.value==false) setEnableNextState(false)
 
-        // 이메일, 휴대폰 모두 공개
-        if(viewModel.emailReveal.value==true && viewModel.phoneReveal.value== true){
-            if (!viewModel.phone.value.isNullOrEmpty() &&
-                !viewModel.email.value.isNullOrEmpty() &&
-                !viewModel._field.value.isNullOrEmpty() &&
-                !viewModel._career_str.value.isNullOrEmpty() &&
-                !viewModel._introduction.value.isNullOrEmpty() &&
-                checkCnt > 0 &&
-                viewModel.getIsModified()==true) viewModel.setEnableNextState(true)
-            else viewModel.setEnableNextState(false)
+            // 이메일, 휴대폰 모두 공개
+            if(emailReveal.value==true && phoneReveal.value== true){
+                if (!phone.value.isNullOrEmpty() &&
+                    !email.value.isNullOrEmpty() &&
+                    !_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+            // 이메일 공개, 휴대폰 비공개
+            else if(emailReveal.value==true && phoneReveal.value== false){
+                if (!email.value.isNullOrEmpty() &&
+                    !_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true
+                ) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+            // 이메일 비공개, 휴대폰 공개
+            else if(emailReveal.value==false && phoneReveal.value== true){
+                if (!phone.value.isNullOrEmpty() &&
+                    !_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true
+                ) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+            else {
+                if (!_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true
+                ) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+
         }
-        // 이메일 공개, 휴대폰 비공개
-        else if(viewModel.emailReveal.value==true && viewModel.phoneReveal.value== false){
-            if (!viewModel.email.value.isNullOrEmpty() &&
-                !viewModel._field.value.isNullOrEmpty() &&
-                !viewModel._career_str.value.isNullOrEmpty() &&
-                !viewModel._introduction.value.isNullOrEmpty() &&
-                checkCnt > 0 &&
-                viewModel.getIsModified()==true
-            ) viewModel.setEnableNextState(true)
-            else viewModel.setEnableNextState(false)
-        }
-        // 이메일 비공개, 휴대폰 공개
-        else if(viewModel.emailReveal.value==false && viewModel.phoneReveal.value== true){
-            if (!viewModel.phone.value.isNullOrEmpty() &&
-                !viewModel._field.value.isNullOrEmpty() &&
-                !viewModel._career_str.value.isNullOrEmpty() &&
-                !viewModel._introduction.value.isNullOrEmpty() &&
-                checkCnt > 0 &&
-                viewModel.getIsModified()==true
-            ) viewModel.setEnableNextState(true)
-            else viewModel.setEnableNextState(false)
-        }
-        else {
-            if (!viewModel._field.value.isNullOrEmpty() &&
-                !viewModel._career_str.value.isNullOrEmpty() &&
-                !viewModel._introduction.value.isNullOrEmpty() &&
-                checkCnt > 0 &&
-                viewModel.getIsModified()==true
-            ) viewModel.setEnableNextState(true)
-            else viewModel.setEnableNextState(false)
-        }
+
+
     }
 
     private fun observeDataChanges() {
@@ -388,15 +407,17 @@ class ModifyTeacherProfileFragment : Fragment() {
         val uriObserver=Observer<Uri?>{uri->
             uri?.let { checkFilled() }
         }
-        viewModel.profileImgUri.observe(viewLifecycleOwner,uriObserver)
-        viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
-        viewModel.phone.observe(viewLifecycleOwner, dataObserver)
-        viewModel.email.observe(viewLifecycleOwner, dataObserver)
-        viewModel.field.observe(viewLifecycleOwner, dataObserver)
-        viewModel.career_str.observe(viewLifecycleOwner, dataObserver)
-        viewModel.introduction.observe(viewLifecycleOwner, dataObserver)
-        viewModel.emailReveal.observe(viewLifecycleOwner, isOpenObserver)
-        viewModel.phoneReveal.observe(viewLifecycleOwner, isOpenObserver)
+        with(viewModel){
+            profileImgUri.observe(viewLifecycleOwner,uriObserver)
+            profileImg.observe(viewLifecycleOwner, dataObserver)
+            phone.observe(viewLifecycleOwner, dataObserver)
+            email.observe(viewLifecycleOwner, dataObserver)
+            field.observe(viewLifecycleOwner, dataObserver)
+            career_str.observe(viewLifecycleOwner, dataObserver)
+            introduction.observe(viewLifecycleOwner, dataObserver)
+            emailReveal.observe(viewLifecycleOwner, isOpenObserver)
+            phoneReveal.observe(viewLifecycleOwner, isOpenObserver)
+        }
 
         // keywords 필드에 대한 Observer
         val keywordsObserver = Observer<MutableList<String>> {

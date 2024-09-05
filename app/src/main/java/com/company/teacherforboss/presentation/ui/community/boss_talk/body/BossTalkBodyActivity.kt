@@ -6,11 +6,13 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -203,33 +205,52 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     private fun likeAndBookmark() {
-        // 질문 좋아요
+        viewModel.isLike.observe(this, Observer { updateLikeUI(it) })
+        viewModel.isBookmark.observe(this, Observer { updateBookmarkUI(it) })
+
         binding.like.setOnClickListener {
             viewModel.postLike()
         }
-        viewModel.isLike.observe(this, Observer { isLike ->
-            if (isLike) {
-                binding.likeIv.setImageResource(R.drawable.community_like_on)
-                binding.likeTv.setTextColor(Color.parseColor("#5F5CE8"))
-            } else {
-                binding.likeIv.setImageResource(R.drawable.community_like)
-                binding.likeTv.setTextColor(Color.parseColor("#8490A0"))
-            }
-        })
 
-        // 질문 저장하기
         binding.bookmark.setOnClickListener {
             viewModel.postBookmark()
         }
-        viewModel.isBookmark.observe(this, Observer { isBookmark ->
-            if (isBookmark) {
-                binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)
-                binding.bookmarkTv.setTextColor(Color.parseColor("#5F5CE8"))
-            } else {
-                binding.bookmarkIv.setImageResource(R.drawable.community_bookmark)
-                binding.bookmarkTv.setTextColor(Color.parseColor("#8490A0"))
-            }
-        })
+    }
+
+    private fun updateLikeUI(isLike: Boolean?) {
+        val likeCount = viewModel.bossTalkBodyLiveData.value?.likeCount ?: 0
+
+        if (likeCount > 0) {
+            binding.likeTv.text = getString(R.string.like_any, "${likeCount}개")
+        } else {
+            binding.likeTv.text = getString(R.string.like)
+        }
+
+        if (isLike == true) {
+            binding.likeIv.setImageResource(R.drawable.community_like_on)
+            binding.likeTv.setTextColor(ContextCompat.getColor(this, R.color.Purple600))
+        } else {
+            binding.likeIv.setImageResource(R.drawable.community_like)
+            binding.likeTv.setTextColor(ContextCompat.getColor(this, R.color.Gray400))
+        }
+    }
+
+    private fun updateBookmarkUI(isBookmark: Boolean?) {
+        val bookmarkCount = viewModel.bossTalkBodyLiveData.value?.bookmarkCount ?: 0
+
+        if (bookmarkCount > 0) {
+            binding.bookmarkTv.text = getString(R.string.bookmark_any, "${bookmarkCount}개")
+        } else {
+            binding.bookmarkTv.text = getString(R.string.bookmark)
+        }
+
+        if (isBookmark == true) {
+            binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)
+            binding.bookmarkTv.setTextColor(ContextCompat.getColor(this, R.color.Purple600))
+        } else {
+            binding.bookmarkIv.setImageResource(R.drawable.community_bookmark)
+            binding.bookmarkTv.setTextColor(ContextCompat.getColor(this, R.color.Gray400))
+        }
     }
 
     private fun getBossTalkBody() {
@@ -240,48 +261,37 @@ class BossTalkBodyActivity : AppCompatActivity() {
     }
 
     private fun setBodyView() {
-        viewModel.bossTalkBodyLiveData.observe(this, Observer {
-            // 해시태그
-            if (it.hashtagList.isNotEmpty()) viewModel.setTagList(it.hashtagList as ArrayList<String>)
+        viewModel.bossTalkBodyLiveData.observe(this, Observer { body ->
+            if (body.hashtagList.isNotEmpty()) viewModel.setTagList(body.hashtagList as ArrayList<String>)
 
-            // 좋아요, 북마크
-            if (it.liked) {
-                viewModel.clickLikeBtn()
-                binding.likeTv.text = "좋아요 ${it.likeCount}개"
-            }
-            if (it.bookmarked) {
-                viewModel.clickBookmarkBtn()
-                binding.bookmarkTv.text = "저장 ${it.bookmarkCount}개"
-            }
+            updateLikeUI(body.liked)
+            updateBookmarkUI(body.bookmarked)
 
-            // 본문 글
             with(binding) {
-                bodyTitle.text = it.title
-                bodyBody.text = it.content
-                userNickname.text = it.memberInfo.toMemberDto().name
-                profileLevel.text = it.memberInfo.toMemberDto().level
-                date.text = LocalDateFormatter.extractDate(it.createdAt)
+                bodyTitle.text = body.title
+                bodyBody.text = body.content
+                userNickname.text = body.memberInfo.toMemberDto().name
+                profileLevel.text = body.memberInfo.toMemberDto().level
+                date.text = LocalDateFormatter.extractDate(body.createdAt)
             }
 
-            // 본문 업로드된 이미지
-            if (it.imageUrlList.isNotEmpty()) viewModel.imgUrlList = it.imageUrlList
+            if (body.imageUrlList.isNotEmpty()) {
+                viewModel.imgUrlList = body.imageUrlList
+            }
+
             binding.vpImgSlider.setOnClickListener {
                 val selectedImageUrl = viewModel.imgUrlList[0]
-
                 val intent = Intent(it.context, FullScreenImageActivity::class.java).apply {
                     putExtra("IMAGE_URL", selectedImageUrl)
                 }
                 it.context.startActivity(intent)
             }
 
-            // 프로필 이미지
-            if (it.memberInfo.toMemberDto().profileImg != null) BindingImgAdapter.bindImage(
-                binding.profileImage,
-                it.memberInfo.toMemberDto().profileImg!!
-            )
+            if (body.memberInfo.toMemberDto().profileImg != null) {
+                BindingImgAdapter.bindImage(binding.profileImage, body.memberInfo.toMemberDto().profileImg!!)
+            }
 
-            // 사용자 본인 작성 여부
-            viewModel._isMine.value = it.isMine
+            viewModel._isMine.value = body.isMine
 
             setRecyclerView()
         })
@@ -292,29 +302,24 @@ class BossTalkBodyActivity : AppCompatActivity() {
             if (commentListResponse.commentList.isNotEmpty()) {
                 viewModel.setCommentListValue(commentListResponse.commentList)
 
-                // 댓글 개수 설정
                 binding.commentNumber.text = getString(R.string.comment_cnt, commentListResponse.commentList.size)
 
-                // rvAdapterCommentBoss 어댑터 설정
                 val adapter = rvAdapterCommentBoss(
                     lifecycleOwner = this,
                     context = this,
                     commentList = viewModel.getCommentListValue(),
                     viewModel = viewModel
                 ) { btnOption ->
-                    // 옵션 버튼 클릭 콜백 처리
                     if (currentOptionButton != null && currentOptionButton != btnOption) {
                         currentOptionButton?.visibility = View.GONE
                     }
                     currentOptionButton = btnOption
                 }
 
-                // dispatchTouchEvent를 어댑터에 전달
                 adapter.setDispatchTouchEventListener { ev ->
                     handleTouchEvent(ev)
                 }
 
-                // RecyclerView 설정
                 binding.rvComment.adapter = adapter
                 binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             }
@@ -334,7 +339,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
             if (!optionButtonRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
                 currentOptionButton?.visibility = View.GONE
                 currentOptionButton = null
-                return true // 이벤트 처리됨을 알림
+                return true
             }
         }
         return false

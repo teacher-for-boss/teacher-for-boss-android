@@ -381,7 +381,6 @@ class ModifyTeacherProfileFragment : Fragment() {
             listOf(etPhone, nicknameBox, etEmail, categoryBox, careerBox, introduceBox).forEach { editText ->
                 editText.setOnEditorActionListener { _, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        // 키보드를 숨깁니다.
                         imm.hideSoftInputFromWindow(editText.windowToken, 0)
                         true
                     } else {

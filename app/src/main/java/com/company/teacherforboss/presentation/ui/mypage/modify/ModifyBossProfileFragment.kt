@@ -216,7 +216,6 @@ class ModifyBossProfileFragment : Fragment() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         binding.nicknameBox.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                // 키보드를 숨깁니다.
                 imm.hideSoftInputFromWindow(binding.nicknameBox.windowToken, 0)
                 true
             } else {

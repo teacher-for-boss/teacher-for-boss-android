@@ -21,6 +21,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_IMG_FI
 import com.company.teacherforboss.util.base.ErrorUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -248,6 +249,16 @@ class ModifyProfileViewModel @Inject constructor(
     fun getPresignedUrl()=profilePresignedUrl.value?:""
 
     fun getFilteredPresingedUrl()= profilePresignedUrl.value?.substringBefore(("?"))
+
+    fun phone_validation(): Boolean {
+        val pattern= Pattern.compile("010\\d{3,4}\\d{4}")
+        return pattern.matcher(phone.value.toString()).matches()
+    }
+
+    fun email_validation(): Boolean {
+        val pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+        return pattern.matcher(email.value.toString()).matches()
+    }
 
     private fun validateFields() {
         _enableNext.value = !(_nickname.value.isNullOrEmpty() ||

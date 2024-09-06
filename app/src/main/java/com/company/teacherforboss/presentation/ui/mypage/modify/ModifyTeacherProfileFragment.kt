@@ -27,6 +27,7 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
@@ -242,26 +243,53 @@ class ModifyTeacherProfileFragment : Fragment() {
 
     }
 
+    private fun checkPhoneAndEmail(): Boolean {
+        if(viewModel.phoneReveal.value == true) {
+            if(!viewModel.phone_validation()) {
+                CustomSnackBar.make(binding.root, "전화번호는 10 ~ 11 자리의 숫자만 입력 가능합니다.", 2000).show()
+                return false
+            } else {
+                if(viewModel.emailReveal.value == true) {
+                    if(!viewModel.email_validation()) {
+                        CustomSnackBar.make(binding.root, "이메일 형식이 아닙니다.", 2000).show()
+                        return false
+                    }
+                }
+            }
+        }
+        else {
+            if(viewModel.emailReveal.value == true) {
+                if(!viewModel.email_validation()) {
+                    CustomSnackBar.make(binding.root, "이메일 형식이 아닙니다.", 2000).show()
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
     private fun getTeacherDetailProfile() {
         detailProfileViewModel.getTeacherDetailProfile()
     }
 
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
-            with(viewModel){
-                setKeywords(selectedChipList)
-                modifyTeacherProfile()
+            if(checkPhoneAndEmail()) {
+                with(viewModel){
+                    setKeywords(selectedChipList)
+                    modifyTeacherProfile()
 
-                modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-                    if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
-                        Intent(context, MainActivity::class.java).apply {
-                            putExtra(FRAGMENT_DESTINATION, MYPAGE)
-                            startActivity(this)
+                    modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+                        if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
+                            Intent(context, MainActivity::class.java).apply {
+                                putExtra(FRAGMENT_DESTINATION, MYPAGE)
+                                startActivity(this)
+                            }
+                        } else {
+                            requireActivity().finish()
                         }
-                    } else {
-                        requireActivity().finish()
-                    }
-                })
+                    })
+                }
             }
         }
     }

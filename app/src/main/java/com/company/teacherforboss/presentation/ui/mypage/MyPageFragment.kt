@@ -12,7 +12,6 @@ import com.company.teacherforboss.domain.model.mypage.ChipInfoResponseEntity
 import com.company.teacherforboss.domain.model.mypage.MyPageProfileEntity
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
-import com.company.teacherforboss.presentation.ui.common.TeacherProfileRecentAnswerFragment
 import com.company.teacherforboss.presentation.ui.mypage.boss_talk.MyPageBossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.mypage.community.MyPageTeacherTalkActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AccountChangeActivity
@@ -44,6 +43,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         addListeners()
         collectData()
         gotoModifyActivity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getProfile()
+        collectData()
     }
 
     private fun initLayout(profile: MyPageProfileEntity, chipData: ChipInfoResponseEntity) {
@@ -249,10 +255,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setTeacherProfileLayoutByAPI(data: MyPageProfileEntity) {
         binding.apply {
-            tvMyPageProfileName.text = getString(
+            viewModel.setNickname(getString(
                 R.string.my_page_teacher_name,
                 data.nickname,
-            )
+            ))
             tvMyPageLevel.text = data.teacherInfo!!.level
             tvMyPageLevelInfo.text =
                 if (data.teacherInfo!!.leftAnswerCount == 0) {
@@ -267,10 +273,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setBossProfileLayoutByAPI(data: MyPageProfileEntity) {
-        binding.tvMyPageProfileName.text = getString(
-            R.string.my_page_boss_name,
+        viewModel.setNickname(getString(
+            R.string.my_page_teacher_name,
             data.nickname,
-        )
+        ))
     }
 
     private fun setTeacherMenuBarLayout() {

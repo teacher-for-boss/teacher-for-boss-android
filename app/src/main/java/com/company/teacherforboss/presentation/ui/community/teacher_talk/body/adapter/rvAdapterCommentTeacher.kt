@@ -179,7 +179,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                     val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner)
                     dialog.show()
                 } else {
-                    showSnackBar("채택된 글의 답변은 삭제할 수 없습니다.")
+                    CustomSnackBar.make(binding.root, context.getString(R.string.community_cannot_delete_answer), 2000).show()
                     hideOptionMenuIfVisible()
                 }
 
@@ -210,7 +210,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                     }
                     context.startActivity(intent)
                 } else {
-                    showSnackBar("채택된 글의 답변은 수정할 수 없습니다.")
+                    CustomSnackBar.make(binding.root, context.getString(R.string.community_cannot_modify_answer), 2000).show()
                     hideOptionMenuIfVisible()
                 }
             }
@@ -220,11 +220,6 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
                 context.startActivity(intent)
             }
-        }
-
-        private fun showSnackBar(msg: String) {
-            val customSnackbar = CustomSnackBar.make(binding.root, msg, 2000)
-            customSnackbar.show()
         }
 
         private fun hideOptionMenuIfVisible() {

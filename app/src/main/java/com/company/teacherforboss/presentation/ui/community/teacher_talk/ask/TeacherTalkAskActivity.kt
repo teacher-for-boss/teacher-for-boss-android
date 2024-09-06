@@ -145,7 +145,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
                 if (lastChar == ' ')
-                    showSnackBar("해시태그는 스페이스바 입력이 불가능합니다.")
+                    CustomSnackBar(binding.root, getString(R.string.community_hashtag_input_space), 2000).show()
             }
             override fun afterTextChanged(editable: Editable?) {
                 editable?.let {
@@ -174,7 +174,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
                         binding.inputHashtag.text.clear()
                     }
                     else {
-                        showSnackBar("해시태그는 5개까지 입력 가능합니다.")
+                        CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_number), 2000).show()
                     }
                 }
 
@@ -203,7 +203,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             gallery.type = "image/*"
             startActivityForResult(gallery, 100)
         } else {
-            showSnackBar("세장까지만 업로드 가능합니다.")
+            CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
         }
     }
 
@@ -213,7 +213,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar("갤러리 접근 권한이 필요합니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -231,7 +231,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
                 viewModel.setFileType(extension?:"jpeg")
                 Log.d("image extension",extension.toString())
                 if(fileSizeInMB > 10) {
-                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
+                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_10MB), 2000).show()
                     return
                 }
             }
@@ -332,7 +332,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                showSnackBar("제목과 본문을 작성해야 등록할 수 있습니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.community_input_title_body), 2000).show()
             }
             else uploadPost()
         }
@@ -400,11 +400,6 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             val dialog = WriteExitDialog(this, TEACHER_TALK,purpose,this)
             dialog.show()
         }
-    }
-
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {

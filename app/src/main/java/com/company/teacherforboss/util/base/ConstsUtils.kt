@@ -55,5 +55,8 @@ class ConstsUtils {
 
         // 프로필 수정
         const val MODIFY_PROFILE_IMAGE_DIALOG="MODIFY_PROFILE_IMAGE_DIALOG"
+
+        // 스낵바
+        const val SNACK_BAR_MSG = "snackBarMsg"
     }
 }

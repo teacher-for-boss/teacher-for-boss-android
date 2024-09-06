@@ -28,12 +28,12 @@ import com.company.teacherforboss.presentation.ui.notification.NotificationViewM
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
@@ -65,9 +65,9 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
         viewModel.setQuestionId(questionId)
 
-        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg != null) {
-            showSnackBar(snackBarMsg)
+            CustomSnackBar.make(binding.root, snackBarMsg, 2000).show()
         }
 
         // 서버 api 요청
@@ -394,11 +394,6 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         )
 
         title.text = spannableString
-    }
-
-    fun showSnackBar(msg: String) {
-        val customSnackbar = CustomSnackBar.make(binding.root, msg, 2000)
-        customSnackbar.show()
     }
 
     companion object {

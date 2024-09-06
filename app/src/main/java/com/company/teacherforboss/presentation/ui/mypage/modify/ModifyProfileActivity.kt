@@ -1,7 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,8 +24,6 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ModifyProfileActivity : AppCompatActivity() {
@@ -115,7 +112,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar(getString(R.string.image_request_permission))
+                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -133,7 +130,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 5) {
-                    showSnackBar(getString(R.string.image_dialog_file_size_5MB))
+                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_5MB), 2000).show()
                     return
                 }
             }
@@ -143,11 +140,6 @@ class ModifyProfileActivity : AppCompatActivity() {
                 viewModel.getPresignedUrlList()
             }
         }
-    }
-
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
     }
 
     companion object {

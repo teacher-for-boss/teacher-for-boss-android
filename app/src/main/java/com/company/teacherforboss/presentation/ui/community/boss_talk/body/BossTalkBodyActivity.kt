@@ -1,6 +1,5 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -21,7 +20,6 @@ import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
 import com.company.teacherforboss.presentation.FullScreenImageActivity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
-import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterRecommentBoss
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
@@ -37,6 +35,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -66,9 +65,9 @@ class BossTalkBodyActivity : AppCompatActivity() {
         postId = intent.getLongExtra(BOSS_POSTID,-1L)
         viewModel.setPostId(postId)
 
-        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg!=null){
-            showSnackBar(snackBarMsg)
+            CustomSnackBar.make(binding.root, snackBarMsg, 2000).show()
         }
 
         // 서버 api 요청
@@ -434,10 +433,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
     }
 
     companion object {

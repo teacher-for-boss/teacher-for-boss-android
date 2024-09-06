@@ -24,7 +24,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.signup.SignupResponse
 import com.company.teacherforboss.databinding.ActivitySignupBinding
@@ -38,7 +37,6 @@ import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -158,7 +156,7 @@ class SignupActivity: AppCompatActivity() {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar(getString(R.string.image_dialog_file_size_5MB))
+                CustomSnackBar(binding.root, getString(R.string.image_dialog_file_size_5MB), 2000).show()
             }
         }
     }
@@ -176,7 +174,7 @@ class SignupActivity: AppCompatActivity() {
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 5) {
-                    showSnackBar(getString(R.string.image_request_permission))
+                    CustomSnackBar(binding.root, getString(R.string.image_request_permission), 2000).show()
                     return
                 }
             }
@@ -259,7 +257,7 @@ class SignupActivity: AppCompatActivity() {
                 finishAffinity()
             } else {
                 backPressedOnce = true
-                Toast.makeText(this@SignupActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                CustomSnackBar.make(binding.root, getString(R.string.exit_warning), 2000).show()
                 exitHandler.postDelayed(resetBackPressed, 2000)
             }
         }
@@ -272,11 +270,6 @@ class SignupActivity: AppCompatActivity() {
         //텍스트 박스 포커스 해제
         currentFocus?.clearFocus()
         return super.dispatchTouchEvent(ev)
-    }
-
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
     }
 
     companion object{

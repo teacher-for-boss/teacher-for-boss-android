@@ -14,12 +14,32 @@
     <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
     <string name="naver_client_secret">tazdlVePfj</string>
 
+    <!-- find info-->
+    <string name="find_email">이메일 찾기</string>
+    <string name="find_pw">비밀번호 찾기</string>
+
+    <!-- verify password-->
+    <string name="format_pw_false">비밀번호 조건을 충족시키지 않습니다.</string>
+    <string name="format_re_pw_false">재입력한 비밀번호가 일치하지 않습니다.</string>
+
+    <!-- verify nickname-->
+    <string name="nickname_input">닉네임을 입력해주세요.</string>
+    <string name="verify_nickname">특수문자 제외 10자 이내로 작성해주세요.</string>
+    <string name="nickname_available">사용 가능한 닉네임입니다</string>
+    <string name="nickname_unavailable">사용할 수 없는 닉네임입니다.</string>
+
     <!-- verify email,phone-->
+    <string name="verify_email_info">해당 메일로 인증 번호가 발송되었습니다.</string>
+    <string name="verify_phone_info">인증번호가 발송되었습니다.</string>
     <string name="verified_true">인증되었습니다.</string>
     <string name="verified_false">인증번호가 올바르지 않습니다.</string>
 
     <string name="format_true">올바른 형식입니다</string>
     <string name="format_false">올바르지 않은 형식입니다</string>
+
+    <string name="verify_phone">전화번호는 10 ~ 11 자리의 숫자만 입력 가능합니다.</string>
+    <string name="verify_email">이메일 형식이 아닙니다.</string>
+    <string name="email_unavailable">이미 가입된 이메일 주소입니다.</string>
 
     <!--timer    -->
     <string name="timeover_true">"인증번호 다시 받기"</string>
@@ -32,6 +52,7 @@
     <string name="string_menu_my_page">마이페이지</string>
 
     <!-- teacher_talk -->
+    <string name="tv_teacher_talk">티처톡</string>
     <string name="tv_question_pay_btn"><u>보유티포 NNTP</u></string>
     <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
     <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
@@ -39,6 +60,7 @@
     <string name="more_card">게시물 더 불러오기</string>
 
     <!-- boss_talk -->
+    <string name="tv_boss_talk">보스톡</string>
     <string name="tv_boss_talk_1"><b>자유롭게 이야기를 나눠요.</b></string>
     <string name="tv_boss_talk_2">보스 talk</string>
 
@@ -129,6 +151,19 @@
     <string name="community_cannot_delete_answer">채택된 글의 답변은 삭제할 수 없습니다.</string>
     <string name="community_cannot_modify_answer">채택된 글의 답변은 수정할 수 없습니다.</string>
     <string name="community_input_length_100">100자 이상 작성해주세요.</string>
+    <string name="community_input_comment">댓글을 입력해주세요.</string>
+
+    <string name="community_post_uploaded">게시글이 등록되었습니다.</string>
+    <string name="community_post_modified">게시글이 수정되었습니다.</string>
+    <string name="community_post_deleted">게시글이 삭제되었습니다.</string>
+
+    <string name="community_question_uploaded">질문이 등록되었습니다.</string>
+    <string name="community_question_modified">질문이 수정되었습니다.</string>
+    <string name="community_question_deleted">질문이 삭제되었습니다.</string>
+
+    <string name="community_answer_uploaded">답변이 등록되었습니다.</string>
+    <string name="community_answer_modified">답변이 수정되었습니다.</string>
+
 
     <!-- my page -->
     <string name="modify_teacher_profile_title">프로필 수정</string>
@@ -290,9 +325,9 @@
     <string name="notification_type_exchange">환전신청완료</string>
 
     <!-- 이미지   -->
-
     <string name="image_dialog_file_size_5MB">5MB 이하의 이미지만 첨부 가능합니다.</string>
     <string name="image_dialog_file_size_10MB">10MB 이하의 이미지만 첨부 가능합니다.</string>
     <string name="image_request_permission">갤러리 접근 권한이 필요합니다.</string>
     <string name="image_input_number">세장까지만 업로드 가능합니다.</string>
+
 </resources>

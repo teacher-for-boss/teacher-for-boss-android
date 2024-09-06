@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemMyPageQuestionCardBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.company.teacherforboss.util.view.loadCircularImage
 
@@ -38,7 +39,7 @@ class rvAdapterMyPageQuestion(
 
                 root.setOnClickListener {
                     Intent(context, TeacherTalkBodyActivity::class.java).apply {
-                        putExtra("questionId", question.questionId)
+                        putExtra(TEACHER_QUESTIONID, question.questionId)
                         context.startActivity(this)
                     }
                 }

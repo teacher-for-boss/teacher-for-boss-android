@@ -73,7 +73,7 @@ class NamePhoneFragment : Fragment() {
             when(it) {
                 is BaseResponse.Loading->{}
                 is BaseResponse.Success->{
-                    binding.veryInfo.text="인증번호가 발송되었습니다."
+                    binding.veryInfo.text = getString(R.string.verify_phone_info)
                     binding.phoneVerifyBtn.isEnabled = false
                     binding.inputPhoneCode.visibility=View.VISIBLE
                     binding.timeOverText.visibility=View.VISIBLE
@@ -83,7 +83,7 @@ class NamePhoneFragment : Fragment() {
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
-                    binding.veryInfo.text="인증번호가 발송되었습니다."
+                    binding.veryInfo.text = getString(R.string.verify_phone_info)
                     binding.phoneVerifyBtn.isEnabled = false
                     binding.inputPhoneCode.visibility=View.VISIBLE
                     binding.timeOverText.visibility=View.VISIBLE

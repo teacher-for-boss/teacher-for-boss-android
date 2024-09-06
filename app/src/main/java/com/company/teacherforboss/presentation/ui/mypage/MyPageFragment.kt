@@ -21,6 +21,11 @@ import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistor
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.LOGOUT_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_LEVEL_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
@@ -57,7 +62,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         viewModel.setProfileImg(profile.profileImg)
         viewModel.setNickname(profile.nickname)
         val role = profile.role
-        if (role == ROLE_TEACHER) {
+        if (role == TEACHER) {
             setTeacherMenuLayout()
             setTeacherMenuBarLayout()
             setTeacherProfileLayoutByAPI(profile)
@@ -88,7 +93,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 startActivity(intent)
             }
             includeMyPageMenuAccountChange.root.setOnClickListener {
-                if (viewModel.getRole() == ROLE_TEACHER) {
+                if (viewModel.getRole() == TEACHER) {
                     val intent = Intent(context, AccountChangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -103,7 +108,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 navigateToAlarm()
             }
             includeMyPageMenuExchange.root.setOnClickListener{
-                if (viewModel.getRole() == ROLE_TEACHER) {
+                if (viewModel.getRole() == TEACHER) {
                     val intent = Intent(context, ExchangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -114,14 +119,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
             includeMyPageMenuBossTalkWrittenPost.root.setOnClickListener {
                 Intent(context, MyPageBossTalkWriteActivity::class.java).apply {
-                    putExtra(ROLE_BOSS, BOSS_TALK_WRITE_POST)
+                    putExtra(BOSS, BOSS_TALK_WRITE_POST)
                     startActivity(this)
                 }
             }
 
             includeMyPageMenuBossTalkCommentPost.root.setOnClickListener {
                 Intent(context, MyPageBossTalkWriteActivity::class.java).apply {
-                    putExtra(ROLE_BOSS, BOSS_TALK_COMMENT_POST)
+                    putExtra(BOSS, BOSS_TALK_COMMENT_POST)
                     startActivity(this)
                 }
             }
@@ -145,13 +150,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
             ivMyPageMenuBarFirst.setOnClickListener{
                 val intent = Intent(context,MyPageTeacherTalkActivity::class.java)
-                intent.putExtra("role",viewModel.getRole())
+                intent.putExtra(ROLE, viewModel.getRole())
                 startActivity(intent)
             }
             // iv_my_page_menu_bar_third
             // 보스 - 질문권 결제 / 티처 - 환전하기
             ivMyPageMenuBarThird.setOnClickListener{
-                if (viewModel.getRole() == ROLE_TEACHER) {
+                if (viewModel.getRole() == TEACHER) {
                     val intent = Intent(context, ExchangeActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -166,14 +171,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 startActivity(intent)
             }
             tvMyPageProfileName.setOnClickListener {
-                if(viewModel.getRole()== ROLE_TEACHER){
+                if(viewModel.getRole()== TEACHER){
                 Intent(context,TeacherProfileActivity::class.java).apply {
                     putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
                     startActivity(this)
                 } }
             }
             ivMyPageProfile.setOnClickListener {
-                if(viewModel.getRole()== ROLE_TEACHER){
+                if(viewModel.getRole()== TEACHER){
                 Intent(context,TeacherProfileActivity::class.java).apply {
                     putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
                     startActivity(this)
@@ -334,16 +339,16 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun gotoModifyActivity() {
         binding.layoutMyPageProfileFix.setOnClickListener {
-            if(viewModel.role.value == ROLE_TEACHER) {
+            if(viewModel.role.value == TEACHER) {
                 Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
-                    putExtra(ROLE, ROLE_TEACHER)
+                    putExtra(ROLE, TEACHER)
                     putExtra(TEACHER_PROFILE_ID,viewModel.getMemberId())
                     startActivity(this)
                 }
             }
             else {
                 Intent(requireActivity(), ModifyProfileActivity::class.java).apply {
-                    putExtra(ROLE, ROLE_BOSS)
+                    putExtra(ROLE, BOSS)
                     putExtra(NICKNAME, viewModel.nickname.value)
                     putExtra(PROFILE_IMG, viewModel.profileImg.value)
                     startActivity(this)
@@ -363,11 +368,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             "https://docs.google.com/forms/d/e/1FAIpQLScvoVxh-1jlqyKhVKiFS4pZDhk-GtYbZOHKh4KJHveutN2TYw/viewform"
         private const val TERMS_WEB_LINK =
             "https://beautiful-pharaoh-385.notion.site/3f2236a9632b4edca4b7a0175308f43b?pvs=4"
-        private const val LOGOUT_DIALOG = "logoutModal"
-        const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
-        private const val ROLE = "ROLE"
-        private const val ROLE_TEACHER = "TEACHER"
-        private const val ROLE_BOSS = "BOSS"
         private const val NICKNAME = "nickname"
         private const val PROFILE_IMG = "profileImg"
         private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"

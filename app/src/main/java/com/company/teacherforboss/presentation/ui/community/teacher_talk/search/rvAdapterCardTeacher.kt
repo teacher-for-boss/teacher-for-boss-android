@@ -14,6 +14,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemTeacherSearchCardBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCardTeacher(private val context: Context, private val questionList: List<QuestionEntity>
@@ -37,7 +38,7 @@ class rvAdapterCardTeacher(private val context: Context, private val questionLis
             // 질문 상세보기
             binding.root.setOnClickListener {
                 Intent(context, TeacherTalkBodyActivity::class.java).apply {
-                    putExtra("questionId", question.questionId)
+                    putExtra(TEACHER_QUESTIONID, question.questionId)
                     context.startActivity(this)
                 }
             }

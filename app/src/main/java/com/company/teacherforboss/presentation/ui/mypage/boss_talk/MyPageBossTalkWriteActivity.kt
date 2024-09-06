@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityMyPageBossWriteBinding
 import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -42,11 +43,11 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
     }
 
     fun initLayout() {
-        if(intent.getStringExtra(ROLE_BOSS) == BOSS_TALK_WRITE_POST) {
-            binding.includeMyPagePostTopAppBar.title = "보스톡 - 작성한 게시글"
+        if(intent.getStringExtra(BOSS) == BOSS_TALK_WRITE_POST) {
+            binding.includeMyPagePostTopAppBar.title = getString(R.string.my_page_menu_boss_talk_written_post)
             viewModel.getMyPosts()
         } else {
-            binding.includeMyPagePostTopAppBar.title = "보스톡 - 댓글 단 게시글"
+            binding.includeMyPagePostTopAppBar.title = getString(R.string.my_page_menu_boss_talk_comment_post)
             viewModel.getCommentedPosts()
 
         }
@@ -116,7 +117,7 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
     }
     fun getPosts(){
         viewModel.apply {
-            if(intent.getStringExtra(ROLE_BOSS) == BOSS_TALK_WRITE_POST) getMyPosts()
+            if(intent.getStringExtra(BOSS) == BOSS_TALK_WRITE_POST) getMyPosts()
             else getCommentedPosts()
         }
 
@@ -133,8 +134,6 @@ class MyPageBossTalkWriteActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val ROLE_BOSS = "BOSS"
-        private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"
-        private const val BOSS_TALK_COMMENT_POST = "bossTalkCommentPost"
+       private const val BOSS_TALK_WRITE_POST = "bossTalkWritePost"
     }
 }

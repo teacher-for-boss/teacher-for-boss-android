@@ -21,7 +21,10 @@ import com.company.teacherforboss.databinding.ActivityModifyProfileBinding
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity.Companion.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,13 +40,13 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         // Fragment 초기화
         val role = intent.getStringExtra(ROLE)
-        if(role == ROLE_TEACHER) {
+        if(role == TEACHER) {
             detailProfileViewModel.setMemberId(intent.getLongExtra(TEACHER_PROFILE_ID,DEFAULT_ID))
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ModifyTeacherProfileFragment())
                 .commit()
         }
-        else if(role == ROLE_BOSS) {
+        else if(role == BOSS) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ModifyBossProfileFragment())
                 .commit()
@@ -143,9 +146,6 @@ class ModifyProfileActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val ROLE = "ROLE"
-        private const val ROLE_TEACHER = "TEACHER"
-        private const val ROLE_BOSS = "BOSS"
         private const val NICKNAME = "nickname"
         private const val PROFILE_IMG = "profileImg"
     }

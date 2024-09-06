@@ -20,7 +20,12 @@ import com.company.teacherforboss.presentation.ui.notification.NotificationViewM
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.HOME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,23 +49,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null) {
-            if(intent.getStringExtra("gotoTeacherTalk") == "gotoTeacherTalk") {
-                replaceFragment(TeacherTalkMainFragment())
-                setSelectedMenu(R.id.menu_teacher_talk)
-            }
-            if(intent.getStringExtra("gotoBossTalk") == "gotoBossTalk") {
-                replaceFragment(BossTalkMainFragment())
-                setSelectedMenu(R.id.menu_boss_talk)
-            }
-            if(intent.getStringExtra("gotoMyPage") == "gotoMyPage") {
-                replaceFragment(MyPageFragment())
-                binding.bnvTeacherForBoss.selectedItemId = R.id.menu_my_page
-            }
-            else {
-                replaceFragment(HomeFragment())
-            }
-        }
+        if (savedInstanceState == null) replaceFragment(HomeFragment())
+
         clickBottomNavigation()
         setFragment()
         askNotificationPermission()
@@ -169,13 +159,5 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
         }
 
-    }
-
-    companion object{
-        const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
-        const val HOME="HOME"
-        const val BOSS_TALK="BOSS_TALK"
-        const val TEACHER_TALK="TEACHER_TALK"
-        const val MYPAGE="MYPAGE"
     }
 }

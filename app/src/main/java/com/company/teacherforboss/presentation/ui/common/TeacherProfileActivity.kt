@@ -8,10 +8,14 @@ import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
-import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_LEVEL_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.loadCircularImage
@@ -87,7 +91,7 @@ class TeacherProfileActivity :
             layoutTeacherProfileLevel.setOnClickListener {
                 DialogTeacherLevelFragment().show(
                     supportFragmentManager,
-                    MyPageFragment.TEACHER_LEVEL_DIALOG,
+                    TEACHER_LEVEL_DIALOG,
                 )
             }
 
@@ -98,7 +102,7 @@ class TeacherProfileActivity :
             }
             tvTeacherProfileMenuFix.setOnClickListener {
                 Intent(this@TeacherProfileActivity, ModifyProfileActivity::class.java).apply {
-                    putExtra(ROLE, ROLE_TEACHER)
+                    putExtra(ROLE, TEACHER)
                     putExtra(TEACHER_PROFILE_ID, viewModel.memberId.value)
                     putExtra(PREVIOUS_ACTIVITY, TEACHER_PROFILE_ACTIVITY)
                     startActivity(this)
@@ -149,12 +153,8 @@ class TeacherProfileActivity :
     }
 
     companion object {
-        private const val ROLE = "ROLE"
-        private const val ROLE_TEACHER = "TEACHER"
         private const val DEFAULT_TAB_POSITION = 0
         private const val RECENT_ANSWER_TAB_POSITION = 1
         private const val REPORT_WEB_LINK = "https://forms.gle/3Tr8cfAoWC2949aMA"
-        private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemBossSearchCardBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCardBoss(private val context: Context, private val postList: List<PostEntity>
@@ -30,7 +31,7 @@ class rvAdapterCardBoss(private val context: Context, private val postList: List
             // 본문 상세보기
             binding.root.setOnClickListener {
                 Intent(context, BossTalkBodyActivity::class.java).apply {
-                    putExtra("postId", post.postId)
+                    putExtra(BOSS_POSTID, post.postId)
                     context.startActivity(this)
                 }
             }

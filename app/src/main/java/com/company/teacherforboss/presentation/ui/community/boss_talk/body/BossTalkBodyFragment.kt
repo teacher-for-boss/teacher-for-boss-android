@@ -4,10 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBosstalkBodyBinding
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
 
 class BossTalkBodyFragment : BindingFragment<FragmentBosstalkBodyBinding>(R.layout.fragment_bosstalk_body) {
@@ -44,7 +44,7 @@ class BossTalkBodyFragment : BindingFragment<FragmentBosstalkBodyBinding>(R.layo
                 hideCommentKeyboard()
                 binding.commentInput.text.clear()
             } else {
-                Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                CustomSnackBar.make(binding.root, getString(R.string.community_input_comment), 2000).show()
             }
         }
     }

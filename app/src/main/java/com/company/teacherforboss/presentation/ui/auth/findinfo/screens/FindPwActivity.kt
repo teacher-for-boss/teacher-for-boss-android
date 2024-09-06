@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityFindPwBinding
 import com.company.teacherforboss.presentation.ui.auth.findinfo.viewPagerAdapter
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,8 +86,8 @@ class FindPwActivity : AppCompatActivity() {
         viewPager.adapter=viewPagerAdapter(navHostFragmentList,this)
 
         TabLayoutMediator(tabLayout,viewPager){tab,position->
-            if(position==0) tab.text="이메일 찾기"
-            else if(position==1) tab.text="비밀번호 찾기"
+            if(position==0) tab.text = getString(R.string.find_email)
+            else if(position==1) tab.text = getString(R.string.find_pw)
         }.attach()
 
 
@@ -115,7 +115,7 @@ class FindPwActivity : AppCompatActivity() {
                 finishAffinity()
             } else {
                 backPressedOnce = true
-                Toast.makeText(this@FindPwActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                CustomSnackBar.make(binding.root, getString(R.string.exit_warning), 2000).show()
                 exitHandler.postDelayed(resetBackPressed, 2000)
             }
         }

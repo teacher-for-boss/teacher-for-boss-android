@@ -33,8 +33,12 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK_WRITE_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -345,7 +349,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
             Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra(BOSS_POSTID,it.postId)
                 putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
-                putExtra("snackBarMsg","게시글이 등록되었습니다.")
+                putExtra("snackBarMsg",getString(R.string.community_post_uploaded))
                 startActivity(this)
 
             }
@@ -355,7 +359,7 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
             Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra(BOSS_POSTID,it.postId)
                 putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
-                putExtra("snackBarMsg","게시글이 수정되었습니다.")
+                putExtra(SNACK_BAR_MSG,getString(R.string.community_post_modified))
                 startActivity(this)
             }
         })
@@ -381,9 +385,6 @@ class BossTalkWriteActivity : AppCompatActivity(),WriteExitDialogListener {
     }
 
     companion object{
-        const val BOSS_TALK="BOSS_TALK"
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
         const val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
     }
 }

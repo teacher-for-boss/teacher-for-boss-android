@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,18 +14,16 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
-import com.company.teacherforboss.MainActivity.Companion.FRAGMENT_DESTINATION
-import com.company.teacherforboss.MainActivity.Companion.MYPAGE
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 
@@ -117,7 +114,7 @@ class ModifyBossProfileFragment : Fragment() {
                 binding.veryInfo.apply {
                     visibility = View.VISIBLE
                     setTextColor(errorColor)
-                    text = "특수문자 제외 10자 이내로 작성해주세요."
+                    text = getString(R.string.verify_nickname)
                 }
                 viewModel.setNicknameCheck(false)
             } else viewModel.nicknameUser()
@@ -131,7 +128,7 @@ class ModifyBossProfileFragment : Fragment() {
                     binding.veryInfo.apply {
                         visibility = View.VISIBLE
                         setTextColor(successColor)
-                        text = "사용 가능한 닉네임입니다."
+                        text = getString(R.string.nickname_available)
                     }
                     viewModel.setNicknameCheck(true)
                 }
@@ -140,7 +137,7 @@ class ModifyBossProfileFragment : Fragment() {
                     binding.veryInfo.apply {
                         visibility = View.VISIBLE
                         setTextColor(errorColor)
-                        text = "사용할 수 없는 닉네임입니다."
+                        text = getString(R.string.nickname_unavailable)
                     }
                     viewModel.setNicknameCheck(false)
                 }

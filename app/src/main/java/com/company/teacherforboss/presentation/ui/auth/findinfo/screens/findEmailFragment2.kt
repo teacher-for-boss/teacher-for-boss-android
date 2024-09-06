@@ -44,12 +44,4 @@ class findEmailFragment2 : Fragment() {
             navController.navigate(R.id.action_findEmailFragment2_to_loginActivity)
         }
     }
-
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
-    fun showToast(msg:String){
-        Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
-    }
-
 }

@@ -28,14 +28,20 @@ import com.company.teacherforboss.presentation.ui.notification.NotificationViewM
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -293,7 +299,7 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
 
                 // 보스인 경우 답변작성하기 버튼 invisible
                 val role= localDataSource.getUserInfo(USER_ROLE)
-                if(role=="BOSS")binding.answerBtn.visibility=View.GONE
+                if(role==BOSS)binding.answerBtn.visibility=View.GONE
 
             },
         )
@@ -394,13 +400,5 @@ class TeacherTalkBodyActivity : AppCompatActivity() {
         )
 
         title.text = spannableString
-    }
-
-    companion object {
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
-        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
-        const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
-        const val TEACHER_TALK = "TEACHER_TALK"
     }
 }

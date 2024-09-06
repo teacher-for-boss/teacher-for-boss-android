@@ -7,8 +7,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityMyPageTeacherTalkBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -39,12 +42,12 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
     }
 
     fun initLayout() {
-        if (intent.getStringExtra("role") == "TEACHER") {
-            binding.includeMyPageQuestionTopAppBar.title = "티쳐톡 - 답변한 질문글"
+        if (intent.getStringExtra(ROLE) == TEACHER) {
+            binding.includeMyPageQuestionTopAppBar.title = getString(R.string.my_page_menu_teacher_talk_answered_post)
             viewModel.getAnsweredQuestion()
         }
         else {
-            binding.includeMyPageQuestionTopAppBar.title = "티쳐톡 - 나의 질문"
+            binding.includeMyPageQuestionTopAppBar.title = getString(R.string.my_page_menu_teacher_talk_question_post)
             viewModel.getMyQuestion()
         }
     }
@@ -114,7 +117,7 @@ class MyPageTeacherTalkActivity : AppCompatActivity() {
     }
 
     fun getQuestions() {
-        if (intent.getStringExtra("role") == "TEACHER") viewModel.getAnsweredQuestion()
+        if (intent.getStringExtra(ROLE) == TEACHER) viewModel.getAnsweredQuestion()
         else viewModel.getMyQuestion()
     }
     fun setAdapter(questionList: MutableList<MyPageQuestionEntity>){

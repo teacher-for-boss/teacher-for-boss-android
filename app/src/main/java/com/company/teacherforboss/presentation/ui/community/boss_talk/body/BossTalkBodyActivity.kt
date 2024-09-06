@@ -30,12 +30,17 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK_WRITE_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -101,7 +106,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
     fun addListeners() {
         viewModel.memberInfo.observe(this, Observer { memberInfo ->
             val clickListener = View.OnClickListener {
-                if (memberInfo.role == "TEACHER") {
+                if (memberInfo.role == TEACHER) {
                     Intent(this, TeacherProfileActivity::class.java).apply {
                         putExtra(ConstsUtils.TEACHER_PROFILE_ID, memberInfo.memberId)
                         startActivity(this)
@@ -433,13 +438,5 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-
-    companion object {
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
-        const val ROLE_TEACHER = "ROLE_TEACHER"
-        const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
-        const val BOSS_TALK = "BOSS_TALK"
     }
 }

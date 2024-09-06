@@ -28,8 +28,12 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_ANSWERID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
 import com.company.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -258,7 +262,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
-                putExtra("snackBarMsg","답변이 등록되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_uploaded))
                 startActivity(this)
             }
         })
@@ -267,7 +271,7 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
-                putExtra("snackBarMsg","답변이 수정되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_modified))
                 startActivity(this)
             }
         })
@@ -289,11 +293,5 @@ class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
 
         //최대글자수 지정
         binding.inputAnswer.filters = arrayOf(InputFilter.LengthFilter(5000))
-    }
-
-    companion object{
-        const val TEACHER_TALK="TEACHER_TALK"
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
     }
 }

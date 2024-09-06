@@ -37,8 +37,12 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -368,7 +372,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
-                putExtra("snackBarMsg","질문이 등록되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_question_uploaded))
                 startActivity(this)
             }
         })
@@ -377,7 +381,7 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
-                putExtra("snackBarMsg","질문이 수정되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_question_modified))
                 startActivity(this)
             }
         })
@@ -413,11 +417,4 @@ class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
         onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
-
-    companion object{
-        const val TEACHER_TALK="TEACHER_TALK"
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
-    }
-
 }

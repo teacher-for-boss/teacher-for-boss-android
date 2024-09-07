@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -31,6 +32,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
@@ -47,18 +49,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BossTalkBodyActivity : AppCompatActivity() {
+class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layout.activity_bosstalk_body) {
 
-    private lateinit var binding: ActivityBosstalkBodyBinding
     private val viewModel by viewModels<BossTalkBodyViewModel>()
     private val notificationViewModel by viewModels<NotificationViewModel>()
+
     private var postId: Long = 0
 
     private var currentOptionButton: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_bosstalk_body)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.comment_fragment, BossTalkBodyFragment())
         transaction.addToBackStack(null)
@@ -366,7 +367,6 @@ class BossTalkBodyActivity : AppCompatActivity() {
         adapter?.currentOptionMenu?.visibility = View.GONE
         adapter?.currentOptionMenu = null
     }
-
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {

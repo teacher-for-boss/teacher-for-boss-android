@@ -129,14 +129,14 @@ class TeacherProfileActivity :
                         ivTeacherProfileImg.loadCircularImage(viewModel.teacherProfileDetail.value!!.profileImg)
 
                         tvTeacherProfileEmail.visibility =
-                            if (!viewModel.teacherProfileDetail.value?.email.isNullOrBlank()) {
+                            if (viewModel.teacherProfileDetail.value?.emailOpen==true) {
                                 View.VISIBLE
                             } else {
                                 View.GONE
                             }
 
                         tvTeacherProfilePhone.visibility =
-                            if (!viewModel.teacherProfileDetail.value?.phone.isNullOrBlank()) {
+                            if (viewModel.teacherProfileDetail.value?.phoneOpen==true) {
                                 View.VISIBLE
                             } else {
                                 View.GONE

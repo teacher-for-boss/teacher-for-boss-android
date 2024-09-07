@@ -17,6 +17,7 @@ import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileVie
 import com.company.teacherforboss.util.base.BindingDialogFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UrlConfig
 
 class ProfileImageModifyDialogFragment(
@@ -78,7 +79,7 @@ class ProfileImageModifyDialogFragment(
     }
 
     private fun <T : ProfileAnimal> setImgView(profileList: List<T>) {
-        BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value!!)
+        binding.profileImage.loadImageFromUrlCoil(viewModel.profileImg.value!!)
 
         val bindingImgList = listOf(
             binding.p1, binding.p2, binding.p3, binding.p4, binding.p5, binding.p6,
@@ -88,7 +89,7 @@ class ProfileImageModifyDialogFragment(
         bindingImgList.forEachIndexed { index, imageView ->
             val fileName = profileList[index].fileName
             val url = "${IMG_BASE_URL}${fileName}"
-            BindingImgAdapter.bindProfileImgUrl(imageView, url)
+            imageView.loadImageFromUrlCoil(url)
 
             clickedMap[index] = false // clickedMap 초기화
             imageView.setOnClickListener {

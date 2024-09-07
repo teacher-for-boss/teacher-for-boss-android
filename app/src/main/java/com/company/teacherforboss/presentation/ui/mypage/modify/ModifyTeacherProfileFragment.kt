@@ -32,6 +32,8 @@ import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.chip.Chip
@@ -81,7 +83,7 @@ class ModifyTeacherProfileFragment : Fragment() {
             detailProfileViewModel.teacherProfileDetail.collect {
                 it?.let {
                     // image
-                    binding.profileImage.loadCircularImage(it.profileImg)
+                    binding.profileImage.loadImageFromUrlCoil(it.profileImg)
                     viewModel.setProfileImg(it.profileImg)
                     viewModel.setInitProfileImg(it.profileImg)
                     // nickname

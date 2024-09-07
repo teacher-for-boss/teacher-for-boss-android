@@ -183,6 +183,8 @@ dependencies {
 
     // glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
+
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))

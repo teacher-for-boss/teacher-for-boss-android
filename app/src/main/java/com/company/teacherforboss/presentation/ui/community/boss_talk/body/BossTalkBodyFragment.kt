@@ -23,13 +23,12 @@ class BossTalkBodyFragment : BindingFragment<FragmentBosstalkBodyBinding>(R.layo
     fun focusCommentText(){
         binding.recommentIv.visibility=View.VISIBLE
         binding.commentInput.requestFocus()
-        val imm = requireActivity().getSystemService(Context. INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.commentInput,InputMethodManager.SHOW_IMPLICIT)
+
+        (activity as BossTalkBodyActivity).showKeyboard(binding.commentInput)
     }
 
     fun hideCommentKeyboard(){
-        val imm = requireActivity().getSystemService(Context. INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        (activity as BossTalkBodyActivity).hideKeyboard()
     }
 
 

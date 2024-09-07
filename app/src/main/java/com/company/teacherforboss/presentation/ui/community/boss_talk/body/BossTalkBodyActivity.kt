@@ -1,6 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
-import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -422,6 +422,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
         startActivity(intent, options.toBundle())*/
 //    }
 
+    fun showKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {

@@ -89,13 +89,7 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (backPressedOnce) {
-                finishAffinity()
-            } else {
-                backPressedOnce = true
-                Toast.makeText(this@NotificationActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-                exitHandler.postDelayed(resetBackPressed, 2000)
-            }
+            finish()
         }
     }
 

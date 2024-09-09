@@ -1,10 +1,12 @@
 package com.company.teacherforboss.presentation.ui.community.common
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.ItemImgSliderBinding
+import com.company.teacherforboss.presentation.FullScreenImageActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 
 class ImgSliderAdapter(
@@ -32,7 +34,13 @@ class ImgSliderAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(imgUrlList[position])
         holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(it, position)
+            //onItemClickListener?.invoke(it, position)
+            val selectedImageUrl = imgUrlList[position]
+
+            val intent = Intent(it.context, FullScreenImageActivity::class.java).apply {
+                putExtra("IMAGE_URL", selectedImageUrl)
+            }
+            it.context.startActivity(intent)
         }
     }
 

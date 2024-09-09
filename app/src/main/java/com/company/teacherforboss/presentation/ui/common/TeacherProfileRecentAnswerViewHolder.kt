@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.common
 
 import android.content.Context
+import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemTeacherProfileRecentAnswerBinding
 import com.company.teacherforboss.domain.model.common.TeacherRecentAnswerListEntity.TeacherRecentAnswer
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 
 class TeacherProfileRecentAnswerViewHolder(
     private val binding: ItemTeacherProfileRecentAnswerBinding,
@@ -54,6 +57,13 @@ class TeacherProfileRecentAnswerViewHolder(
                     END_SPAN_POSITION,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
                 )
+            }
+
+            root.setOnClickListener {
+                Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                    putExtra(TEACHER_QUESTIONID, item.questionId)
+                    context.startActivity(this)
+                }
             }
         }
     }

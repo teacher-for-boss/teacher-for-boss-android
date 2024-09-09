@@ -1,9 +1,11 @@
 package com.company.teacherforboss.presentation.ui.auth.signup
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -16,10 +18,10 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
@@ -28,6 +30,8 @@ import com.company.teacherforboss.data.model.response.signup.SignupResponse
 import com.company.teacherforboss.databinding.ActivitySignupBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity.Companion.REQUEST_CODE_READ_EXTERNAL_STORAGE
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.google.android.gms.auth.api.phone.SmsRetriever
@@ -45,44 +49,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
     private val fragmentManager:FragmentManager=supportFragmentManager
     @Inject lateinit var localDataSource: LocalDataSource
 
-    // 갤러리 오픈
-    val requestPermissionLauncher:ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted->
-            if(isGranted){
-                openGallery()
-            }
-        }
-
-    // 갤러리 사진 설정
-    val pickImageLauncher:ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-            if(result.resultCode== RESULT_OK){
-                val data:Intent?=result.data
-                data?.data?.let {
-                    val fileSizeInBytes = getImageSize(it)
-                    val fileSizeInMB = fileSizeInBytes / (512.0 * 512.0)
-                    Log.d("imageSize", fileSizeInMB.toString())
-                    val extension=getImageExtension(it)
-                    viewModel.setFileType(extension?:"jpeg")
-
-                    if(fileSizeInMB > 10) {
-                        Toast.makeText(this, "5MB 이하의 이미지만 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        lifecycleScope.launch {
-                            updateImgUri(it)
-                        }
-                    }
-                }
-            }
-        }
-
-    private fun getImageExtension(uri: Uri): String? {
-        val mimeType: String? = contentResolver.getType(uri)
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySignupBinding.inflate(layoutInflater)
@@ -93,7 +59,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         collectData()
         localDataSource.saveSignupType(SIGNUP_DEFAULT)
 
-        // pivot 이전 경로
         fragmentManager
             .beginTransaction()
             .add(R.id.fragment_container, SignupStartFragment())
@@ -106,7 +71,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         with(binding.progressbarSignup){
             min= DEFAULT_PROGRESSBAR
             max= TEACHER_FRAGMENT_SZIE
-            //TODO: boss와 분기처리, boss 회원 가입시 progress bar 다시 init
         }
 
     }
@@ -156,9 +120,71 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         transaction.commit()
     }
 
-    fun openGallery(){
+    private fun getImageSize(uri: Uri): Long {
+        var size: Long = 0
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        cursor?.let {
+            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+            it.moveToFirst()
+            size = it.getLong(sizeIndex)
+            it.close()
+        }
+
+        return size
+    }
+    private fun getImageExtension(uri: Uri): String? {
+        val mimeType: String? = contentResolver.getType(uri)
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+    }
+
+    fun checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+        } else {
+            openGallery()
+        }
+    }
+
+    private fun openGallery() {
         val gallery=Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        pickImageLauncher.launch(gallery)
+        gallery.type = "image/*"
+        startActivityForResult(gallery, 100)
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                openGallery()
+            } else {
+                showSnackBar(getString(R.string.image_dialog_file_size_5MB))
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK && requestCode == 100) {
+            val imageUri = data?.data
+
+            imageUri?.let {
+                val fileSizeInBytes = getImageSize(it)
+                val fileSizeInMB = fileSizeInBytes / (512.0 * 512.0)
+                Log.d("imageSize", fileSizeInMB.toString())
+                val extension=getImageExtension(it)
+                viewModel.setFileType(extension?:"jpeg")
+
+                if(fileSizeInMB > 5) {
+                    showSnackBar(getString(R.string.image_request_permission))
+                    return
+                }
+            }
+            if (imageUri != null) {
+                viewModel.setUserImageUri(imageUri)
+                viewModel.getPresignedUrlList()
+            }
+        }
     }
 
 
@@ -186,18 +212,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         }
     }
 
-    private fun getImageSize(uri: Uri): Long {
-        var size: Long = 0
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        cursor?.let {
-            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
-            it.moveToFirst()
-            size = it.getLong(sizeIndex)
-            it.close()
-        }
-
-        return size
-    }
 
     fun startSmsRetriver(){
         val task=SmsRetriever.getClient(this)
@@ -238,6 +252,7 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (backPressedOnce) {
@@ -254,7 +269,14 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         val imm: InputMethodManager =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        //텍스트 박스 포커스 해제
+        currentFocus?.clearFocus()
         return super.dispatchTouchEvent(ev)
+    }
+
+    fun showSnackBar(msg:String){
+        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
+        customSnackbar.show()
     }
 
     companion object{

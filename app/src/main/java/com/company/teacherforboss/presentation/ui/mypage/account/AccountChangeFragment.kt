@@ -41,23 +41,14 @@ class AccountChangeFragment : BindingFragment<FragmentAccountChangeBinding>(R.la
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         binding.chosenBank.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, BankAccountFragment())
                 .addToBackStack(null)
                 .commit()
         }
-
-        /*binding.btnComplete.setOnClickListener {
-            val intent = Intent(requireActivity(), ExchangeActivity::class.java).apply {
-                putExtra("startWithFragment2", true)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            startActivity(intent)
-        }*/
     }
+
     private fun getUserBankAccount(){
         viewModel.getUserBankAccount()
     }
@@ -90,6 +81,7 @@ class AccountChangeFragment : BindingFragment<FragmentAccountChangeBinding>(R.la
             setChosenBank(bankAccount.bank)
             setInputAccount(bankAccount.accountNumber)
             setInputName(bankAccount.accountHolder)
+            setInit()
         }
     }
     private fun addListeners() {

@@ -35,12 +35,10 @@ class AccountChangeActivity : BindingActivity<ActivityAccountChangeBinding>(R.la
 
     fun onBackBtnPressed(){
         binding.backBtn.setOnClickListener {
-            /*val intent= Intent(this, ExchangeActivity::class.java).apply {
-                putExtra("FRAGMENT_DESTINATION","EXCHANGE")
+            with(supportFragmentManager){
+                if(backStackEntryCount >= 1) popBackStack()
+                else finish()
             }
-            startActivity(intent)*/
-            finish()
         }
-
     }
 }

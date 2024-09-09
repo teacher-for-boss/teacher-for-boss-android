@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,19 +14,17 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.DialogProfileImageBinding
-import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileViewModel
 import com.company.teacherforboss.util.base.BindingDialogFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
-import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.UrlConfig
 
-class ProfileImageModifyDialogFragment(
-    val role:String,
-    val clickGallery:() -> Unit,
+class ProfileImageDialogFragment(
+    val clickGallery:() -> Unit
 ) : BindingDialogFragment<DialogProfileImageBinding>(R.layout.dialog_profile_image) {
 
-    private val viewModel: ModifyProfileViewModel by activityViewModels() // ViewModel 공유
+    private val viewModel: SignupViewModel by activityViewModels() // ViewModel 공유
     private val clickedMap = mutableMapOf<Int, Boolean>()
     private val animalTeacherFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
     private val animalBossFileList: List<BossProfileAnimal> = BossProfileAnimal.values().toList()
@@ -45,7 +44,6 @@ class ProfileImageModifyDialogFragment(
         }
     }
 
-
     private fun setupDialogAppearance() {
         dialog?.window?.apply {
             setGravity(Gravity.CENTER)
@@ -54,8 +52,8 @@ class ProfileImageModifyDialogFragment(
     }
 
     private fun initContent() {
-        val selectedFileList = when (role) {
-            BOSS -> animalBossFileList
+        val selectedFileList = when (viewModel.role.value) {
+            1 -> animalBossFileList
             else -> animalTeacherFileList
         }
 
@@ -72,8 +70,13 @@ class ProfileImageModifyDialogFragment(
     }
 
     private fun <T : ProfileAnimal> setImgView(profileList: List<T>) {
-        binding.profileImage.loadImageFromUrlCoil(viewModel.profileImg.value!!)
-
+        if(viewModel.getIsInitializedDialog()==false){
+            when(viewModel.role.value){
+                1-> BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value?:DEFAULT_BOSS_PROFILE_IMG_URL)
+                2-> BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value?: DEFAULT_TEACHER_PROFILE_IMG_URL)
+            }
+            viewModel.setIsInitializedDialog(true)
+        }
         val bindingImgList = listOf(
             binding.p1, binding.p2, binding.p3, binding.p4, binding.p5, binding.p6,
             binding.p7, binding.p8, binding.p9, binding.p10, binding.p11
@@ -82,7 +85,7 @@ class ProfileImageModifyDialogFragment(
         bindingImgList.forEachIndexed { index, imageView ->
             val fileName = profileList[index].fileName
             val url = "${IMG_BASE_URL}${fileName}"
-            imageView.loadImageFromUrlCoil(url)
+            BindingImgAdapter.bindProfileImgUrl(imageView, url)
 
             clickedMap[index] = false // clickedMap 초기화
             imageView.setOnClickListener {
@@ -121,16 +124,16 @@ class ProfileImageModifyDialogFragment(
 
         binding.finishBtn.setOnClickListener {
             if (viewModel.getIsUserImgSelected()==false) { // 디폴트 이미지 선택 시
-               // 기본 이미지가 선택된 경우에만 처리
-               val selectedImage = clickedMap.entries.firstOrNull { it.value == true }
-               if (selectedImage != null) {
-                   selectedIndex = selectedImage.key
-                   viewModel._profileImg.value = IMG_BASE_URL + profileList[selectedIndex].fileName
-               }
+
+                // 기본 이미지가 선택된 경우에만 처리
+                val selectedImage = clickedMap.entries.firstOrNull { it.value == true }
+                if (selectedImage != null) {
+                    selectedIndex = selectedImage.key
+                    viewModel._profileImg.value = ProfileImageModifyDialogFragment.IMG_BASE_URL + profileList[selectedIndex].fileName
+                }
             }
             dismiss()
         }
-
         binding.profileDialogBackground.setOnClickListener { dismiss() }
     }
 

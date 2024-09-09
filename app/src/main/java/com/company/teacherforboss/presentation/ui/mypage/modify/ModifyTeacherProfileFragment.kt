@@ -2,6 +2,7 @@ package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -88,25 +89,33 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                             binding.switchPhone.isChecked = true
                             viewModel.setPhoneReveal(true)
                         }
-                    }
-                    // email
-                    if(!it.email.isNullOrEmpty()) {
-                        viewModel.setEmail(it.email)
-                        viewModel.setInitEmail(it.email)
-                        if(it.emailOpen==true){
-                            binding.switchEmail.isChecked = true
-                            viewModel.setEmailReveal(true)
+                        // email
+                        if(!it.email.isNullOrEmpty()) {
+                            setEmail(it.email)
+                            setInitEmail(it.email)
+                            if(it.emailOpen==true){
+                                binding.switchEmail.isChecked = true
+                                setEmailReveal(true)
+                                setInitEmailOpen(true)
+                            }
                         }
+                        // field
+                        setField(it.field)
+                        setInitField(it.field)
+                        // career
+                        setCareer(it.career.toString())
+                        setInitCareer(it.career.toString())
+                        // introduction
+                        setIntroduction(it.introduction)
+                        setInitIntroduction(it.introduction)
+
+                        setInitKeywords(it.keywords)
+
+                        setEnableNextState(false)
+//                        binding.nextBtn.isEnabled=false
+                        setIsInitializedView(true)
                     }
-                    // field
-                    viewModel.setField(it.field)
-                    viewModel.setInitField(it.field)
-                    // career
-                    viewModel.setCareer(it.career.toString())
-                    viewModel.setInitCareer(it.career.toString())
-                    // introduction
-                    viewModel.setIntroduction(it.introduction)
-                    viewModel.setInitIntroduction(it.introduction)
+
                     // keywords
                     val chipList = it.keywords
                     selectedChipList = chipList.toMutableList()
@@ -118,11 +127,7 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                             checkCnt++
                         }
                     }
-                    viewModel.setInitKeywords(it.keywords)
 
-                    viewModel.setEnableNextState(false)
-                    binding.nextBtn.isEnabled=false
-                    viewModel.setIsInitializedView(true)
                 }
             }
         }
@@ -236,39 +241,49 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
 
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
-            viewModel.setKeywords(selectedChipList)
-            viewModel.modifyTeacherProfile()
+            with(viewModel){
+                setKeywords(selectedChipList)
+                modifyTeacherProfile()
 
-            viewModel.modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-                Intent(requireActivity(), MainActivity::class.java).apply {
-                    putExtra(FRAGMENT_DESTINATION, MYPAGE)
-                    startActivity(this)
-                }
-            })
+                modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+                    if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
+                        Intent(context, MainActivity::class.java).apply {
+                            putExtra(FRAGMENT_DESTINATION, MYPAGE)
+                            startActivity(this)
+                        }
+                    } else {
+                        requireActivity().finish()
+                    }
+                })
+            }
         }
     }
 
     private fun observeProfile() {
-        // 디폴트 이미지
-        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
-            defaultImgUrl?.let {
-                viewModel.setIsUserImgSelected(false)
-                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
-            }
-        })
+        with(viewModel){
+            // 디폴트 이미지
+            profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+                defaultImgUrl?.let {
+                    setIsUserImgSelected(false)
+                    BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+                }
+            })
 
-        // 사용자 갤러리 이미지
-        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            viewModel.setIsUserImgSelected(true)
-            imgUri?.let {
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
-            }
-        })
+            // 사용자 갤러리 이미지
+            profileImgUri.observe(viewLifecycleOwner, { imgUri->
+                imgUri?.let {
+                    setIsUserImgSelected(true)
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
+            })
 
-        // presigned url
-        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
-            uploadImgtoS3()
-        })
+            // presigned url
+            profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+                uploadImgtoS3()
+            })
+
+        }
+
 
     }
     private fun uploadImgtoS3(){
@@ -296,7 +311,6 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked && checkCnt >= maxSelectedChip) {
                     chip.isChecked = false
-                    Toast.makeText(context, "5개 도달", Toast.LENGTH_SHORT).show()
                 } else {
                     if (isChecked) {
                         if(!selectedChipList.contains(chip.text.toString())){
@@ -323,35 +337,80 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
     }
 
     private fun checkFilled() {
-        viewModel.checkIfModified()
+        with(viewModel) {
+            checkIfModified()
 
-        if (viewModel.nicknameCheck.value == true) {
-            if (!viewModel.phone.value.isNullOrEmpty() &&
-                !viewModel.email.value.isNullOrEmpty() &&
-                !viewModel._field.value.isNullOrEmpty() &&
-                !viewModel._career_str.value.isNullOrEmpty() &&
-                !viewModel._introduction.value.isNullOrEmpty() &&
-                checkCnt > 0 &&
-                viewModel.getIsModified()==true
-            ) viewModel.setEnableNextState(true)
+            if(nicknameCheck.value==false) setEnableNextState(false)
 
-            else
-                viewModel.setEnableNextState(false)
+            // 이메일, 휴대폰 모두 공개
+            if(emailReveal.value==true && phoneReveal.value== true){
+                if (!phone.value.isNullOrEmpty() &&
+                    !email.value.isNullOrEmpty() &&
+                    !_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+            // 이메일 공개, 휴대폰 비공개
+            else if(emailReveal.value==true && phoneReveal.value== false){
+                if (!email.value.isNullOrEmpty() &&
+                    !_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true
+                ) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+            // 이메일 비공개, 휴대폰 공개
+            else if(emailReveal.value==false && phoneReveal.value== true){
+                if (!phone.value.isNullOrEmpty() &&
+                    !_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true
+                ) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+            else {
+                if (!_field.value.isNullOrEmpty() &&
+                    !_career_str.value.isNullOrEmpty() &&
+                    !_introduction.value.isNullOrEmpty() &&
+                    checkCnt > 0 &&
+                    getIsModified()==true
+                ) setEnableNextState(true)
+                else setEnableNextState(false)
+            }
+
         }
-        else
-            viewModel.setEnableNextState(false)
+
+
     }
 
     private fun observeDataChanges() {
         val dataObserver = Observer<String> {
             checkFilled()
         }
-        viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
-        viewModel.phone.observe(viewLifecycleOwner, dataObserver)
-        viewModel.email.observe(viewLifecycleOwner, dataObserver)
-        viewModel.field.observe(viewLifecycleOwner, dataObserver)
-        viewModel.career_str.observe(viewLifecycleOwner, dataObserver)
-        viewModel.introduction.observe(viewLifecycleOwner, dataObserver)
+        val isOpenObserver=Observer<Boolean>{
+            checkFilled()
+        }
+        val uriObserver=Observer<Uri?>{uri->
+            uri?.let { checkFilled() }
+        }
+        with(viewModel){
+            profileImgUri.observe(viewLifecycleOwner,uriObserver)
+            profileImg.observe(viewLifecycleOwner, dataObserver)
+            phone.observe(viewLifecycleOwner, dataObserver)
+            email.observe(viewLifecycleOwner, dataObserver)
+            field.observe(viewLifecycleOwner, dataObserver)
+            career_str.observe(viewLifecycleOwner, dataObserver)
+            introduction.observe(viewLifecycleOwner, dataObserver)
+            emailReveal.observe(viewLifecycleOwner, isOpenObserver)
+            phoneReveal.observe(viewLifecycleOwner, isOpenObserver)
+        }
 
         // keywords 필드에 대한 Observer
         val keywordsObserver = Observer<MutableList<String>> {
@@ -368,6 +427,7 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
             viewModel.setEmailReveal(isChecked)
         }
     }
+    
     private fun setupEditTextListeners() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         with(binding) {
@@ -382,5 +442,10 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                 }
             }
         }
+    }
+    
+    companion object {
+        private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+        private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
 }

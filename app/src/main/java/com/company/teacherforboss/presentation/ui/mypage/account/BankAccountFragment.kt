@@ -34,7 +34,13 @@ class BankAccountFragment : BindingFragment<FragmentBankAccountBinding>(R.layout
             BankAccount(R.drawable.bank_kdb, "KDB산업은행"),
             BankAccount(R.drawable.bank_sc, "SC제일은행"),
             BankAccount(R.drawable.bank_suhyup, "수협"),
-            BankAccount(R.drawable.bank_gwangju, "광주")
+            BankAccount(R.drawable.bank_gwangju, "광주"),
+            BankAccount(R.drawable.bank_busan, "경남"),
+            BankAccount(R.drawable.bank_gwangju, "전북"),
+            BankAccount(R.drawable.bank_shinhan, "제주"),
+            BankAccount(R.drawable.bank_citi, "한국씨티"),
+            BankAccount(R.drawable.bank_post, "우체국"),
+            BankAccount(R.drawable.bank_saving, "저축은행")
         )
 
         binding.rvBank.adapter = rvAdapterBankAccount(bankList, viewModel, parentFragmentManager)

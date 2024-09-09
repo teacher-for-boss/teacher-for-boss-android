@@ -68,8 +68,8 @@ class ModifyProfileViewModel @Inject constructor(
     val profileImg: LiveData<String>
         get() = _profileImg
 
-    var _profileImgUri= MutableLiveData<Uri>(null)
-    val profileImgUri: LiveData<Uri>
+    var _profileImgUri= MutableLiveData<Uri?>(null)
+    val profileImgUri: LiveData<Uri?>
         get() = _profileImgUri
 
     val _profilePresignedUrl= MutableLiveData<String>()
@@ -103,6 +103,7 @@ class ModifyProfileViewModel @Inject constructor(
     val isInitializedView:LiveData<Boolean> get() = _isInitializedView
 
     // 사용자 초기 프로필 데이터
+    val initialProfileUri = MutableLiveData<Uri>(null)
     val initialProfileImg = MutableLiveData<String>("")
     val initialNickname = MutableLiveData<String>("")
     val initialPhone = MutableLiveData<String>("")
@@ -111,6 +112,8 @@ class ModifyProfileViewModel @Inject constructor(
     val initialCareer = MutableLiveData<String>("")
     val initialIntroduction = MutableLiveData<String>("")
     val initialKeywords = MutableLiveData<List<String>>()
+    val initEmailOpen=MutableLiveData<Boolean>(false)
+    val initPhoneOpen=MutableLiveData<Boolean>(false)
 
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
 
@@ -142,6 +145,10 @@ class ModifyProfileViewModel @Inject constructor(
     fun setEmailReveal(reveal: Boolean) {
         _emailReveal.value = reveal
     }
+    fun setNicknameCheck(isChecked:Boolean){
+        _nicknameCheck.value=isChecked
+    }
+    fun getNicknameCheck()=nicknameCheck.value
 
     fun setIsInitializedView(isInitializedState:Boolean){
         _isInitializedView.value=isInitializedState
@@ -302,6 +309,9 @@ class ModifyProfileViewModel @Inject constructor(
     fun setInitProfileImg(img: String) {
         initialProfileImg.value = img
     }
+    fun setInitProfileUri(uri:Uri){
+        initialProfileUri.value=uri
+    }
     fun setInitPhone(phone: String) {
         initialPhone.value = phone
     }
@@ -320,6 +330,12 @@ class ModifyProfileViewModel @Inject constructor(
     fun setInitKeywords(keywordList: List<String>) {
         initialKeywords.value = keywordList
     }
+    fun setInitEmailOpen(isOpened:Boolean){
+        initEmailOpen.value=isOpened
+    }
+    fun setInitPhoneOpen(isOpened: Boolean){
+        initPhoneOpen.value=isOpened
+    }
 
     val isModified = MediatorLiveData<Boolean>().apply {
         value=false
@@ -331,6 +347,8 @@ class ModifyProfileViewModel @Inject constructor(
         addSource(_career_str) { checkIfModified() }
         addSource(_introduction) { checkIfModified() }
         addSource(_keywords) { checkIfModified() }
+        addSource(_phoneReveal){checkIfModified()}
+        addSource(_emailReveal){checkIfModified()}
     }
 
     fun getIsModified()=isModified.value?:false
@@ -338,6 +356,8 @@ class ModifyProfileViewModel @Inject constructor(
     fun checkIfModified() {
         val currentProfileImg = profileImg.value ?: ""
         val initialProfileImgValue = initialProfileImg.value ?: ""
+        val currentProfileUri=profileImgUri.value.toString()
+        val initProfileUri=initialProfileUri.value.toString()
         val currentNickname = nickname.value ?: ""
         val initialNicknameValue = initialNickname.value ?: ""
         val currentPhone = phone.value ?: ""
@@ -352,18 +372,25 @@ class ModifyProfileViewModel @Inject constructor(
         val initialIntroductionValue = initialIntroduction.value ?: ""
         val currentKeywords = keywords.value ?: mutableListOf()
         val initialKeywordsValue = initialKeywords.value ?: mutableListOf()
+        val initEmailOpen=initEmailOpen.value?:false
+        val currentEmailOpen=emailReveal.value
+        val initPhoneOpen=initPhoneOpen.value?:false
+        val currentPhoneOpen=phoneReveal.value
 
         // 키워드 리스트를 내용으로 비교
         val keywordsModified = currentKeywords.size != initialKeywordsValue.size ||
                 currentKeywords.sorted() != initialKeywordsValue.sorted()
 
         val modified = currentProfileImg != initialProfileImgValue ||
+                currentProfileUri != initProfileUri ||
                 currentNickname != initialNicknameValue ||
                 currentPhone != initialPhoneValue ||
                 currentEmail != initialEmailValue ||
                 currentField != initialFieldValue ||
                 currentCareerStr != initialCareerValue ||
                 currentIntroduction != initialIntroductionValue ||
+                currentEmailOpen != initEmailOpen ||
+                currentPhoneOpen != initPhoneOpen ||
                 keywordsModified
 
         isModified.value = modified

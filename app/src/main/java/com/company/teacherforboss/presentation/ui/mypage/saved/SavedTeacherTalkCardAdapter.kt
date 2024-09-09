@@ -10,13 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemSavedTeacherBinding
-import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.view.loadCircularImage
 
 class SavedTeacherTalkCardAdapter(private val context: Context) :
     RecyclerView.Adapter<SavedTeacherTalkCardAdapter.SavedTeacherTalkCardViewHolder>() {
@@ -71,27 +70,30 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
             spannable.setSpan(colorSpanQ, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             spannable.setSpan(colorSpanRest, 2, questionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            binding.tvAnsweredQuestionTitle.text = spannable
-            binding.tvAnsweredQuestionContent.text = question.content
-            binding.tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(question.createdAt)
-            binding.cardCategory.text = question.category
+            with(binding) {
+                tvAnsweredQuestionTitle.text = spannable
+                tvAnsweredQuestionContent.text = question.content
+                tvAnsweredQuestionDate.text = LocalDateFormatter.extractDate(question.createdAt)
+                cardCategory.text = question.category
 
+                if (question.solved) {
+                    widgetCardViewStatementNotSolved.visibility = View.GONE
+                    widgetCardViewStatementSolved.visibility = View.VISIBLE
 
-            if (question.solved) {
-                binding.widgetCardViewStatementSolved.visibility = View.VISIBLE
-                Glide.with(binding.root.context)
-                    .load(question.selectedTeacher)
-                    .into(binding.ivSelectedTeacher)
-            } else {
-                binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
-            }
-
-            // 상세 글 이동
-            binding.root.setOnClickListener {
-                val intent = Intent(context, TeacherTalkBodyActivity::class.java).apply {
-                    putExtra("questionId", question.questionId)
+                    question.selectedTeacher?.let { ivSelectedTeacher.loadCircularImage(it) }
                 }
-                context.startActivity(intent)
+                else {
+                    widgetCardViewStatementSolved.visibility = View.GONE
+                    widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+                }
+
+                // 상세 글 이동
+                root.setOnClickListener {
+                    Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                        putExtra("questionId", question.questionId)
+                        context.startActivity(this)
+                    }
+                }
             }
         }
     }

@@ -67,11 +67,12 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
             finish()
         }
     }
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        //텍스트 박스 포커스 해제
+        currentFocus?.clearFocus()
         return super.dispatchTouchEvent(ev)
     }
 
@@ -114,7 +115,7 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar("갤러리 접근 권한이 필요합니다.")
+                showSnackBar(getString(R.string.image_request_permission))
             }
         }
     }
@@ -132,11 +133,12 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 5) {
-                    showSnackBar("5MB 이하의 이미지만 첨부 가능합니다.")
+                    showSnackBar(getString(R.string.image_dialog_file_size_5MB))
                     return
                 }
             }
             if (imageUri != null) {
+                viewModel.setIsUserImgSelected(true)
                 viewModel.setUserImageUri(imageUri)
                 viewModel.getPresignedUrlList()
             }

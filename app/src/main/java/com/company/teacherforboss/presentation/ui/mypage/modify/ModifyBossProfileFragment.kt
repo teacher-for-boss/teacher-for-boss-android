@@ -2,6 +2,7 @@ package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -53,7 +54,12 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
 
     private fun initLayout() {
         binding.profileImage.loadCircularImage(viewModel.profileImg.value!!)
-        viewModel.initialNickname.value = viewModel.nickname.value.toString()
+        with(viewModel){
+            setInitNickname(nickname.value.toString())
+            setInitProfileImg(profileImg.value.toString())
+            setEnableNextState(false)
+            setNicknameCheck(true)
+        }
 
         observeProfile()
     }
@@ -65,29 +71,29 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
                     binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup)
-                    val filtered = it.toString().filter { char ->
-                        char.isLetterOrDigit() || char in "가-힣ㄱ-ㅎㅏ-ㅣ"
-                    }
-
-                    if (filtered != it.toString()) {
-                        binding.nicknameBox.removeTextChangedListener(this)
-                        binding.nicknameBox.apply {
-                            setText(filtered)
-                            setSelection(filtered.length)
-                        }
-                        binding.nicknameBox.addTextChangedListener(this)
-                    }
+                    val filtered = it.toString()
 
                     binding.veryInfo.visibility = View.INVISIBLE
-                    if(viewModel.initialNickname.value != it.toString()) {
-                        binding.nicknameVerifyBtn.isEnabled = true
-                        viewModel._nicknameCheck.value = false
+
+                    with(viewModel){
+                        if(initialNickname.value != filtered) {
+                            if (filtered.isEmpty()){
+                                binding.nicknameVerifyBtn.isEnabled = false
+                                _nicknameCheck.value = false
+                            }
+                            else{
+                                binding.nicknameVerifyBtn.isEnabled = true
+                                _nicknameCheck.value = false
+                            }
+                        }
+                        else {
+                            binding.nicknameVerifyBtn.isEnabled = false
+                            setNicknameCheck(true)
+                        }
+                        setNickname(filtered)
+
                     }
-                    else {
-                        binding.nicknameVerifyBtn.isEnabled = false
-                        viewModel._nicknameCheck.value = true
-                    }
-                    viewModel.setNickname(filtered)
+
                 }
             }
         })
@@ -106,7 +112,7 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
                     setTextColor(errorColor)
                     text = "특수문자 제외 10자 이내로 작성해주세요."
                 }
-                viewModel._nicknameCheck.value = false
+                viewModel.setNicknameCheck(false)
             } else viewModel.nicknameUser()
         }
 
@@ -120,7 +126,7 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
                         setTextColor(successColor)
                         text = "사용 가능한 닉네임입니다."
                     }
-                    viewModel._nicknameCheck.value = true
+                    viewModel.setNicknameCheck(true)
                 }
                 is BaseResponse.Error -> {
                     binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
@@ -129,7 +135,7 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
                         setTextColor(errorColor)
                         text = "사용할 수 없는 닉네임입니다."
                     }
-                    viewModel._nicknameCheck.value = false
+                    viewModel.setNicknameCheck(false)
                 }
                 else -> {}
             }
@@ -151,26 +157,30 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
     }
 
     private fun observeProfile() {
-        // 디폴트 이미지
-        viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
-            defaultImgUrl?.let {
-                viewModel.setIsUserImgSelected(false)
-                BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
-            }
-        })
+        with(viewModel){
+            // 디폴트 이미지
+            profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
+                defaultImgUrl?.let {
+                    setIsUserImgSelected(false)
+                    BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+                }
+            })
 
-        // 사용자 갤러리 이미지
-        viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            viewModel.setIsUserImgSelected(true)
-            imgUri?.let {
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
-            }
-        })
+            // 사용자 갤러리 이미지
+            profileImgUri.observe(viewLifecycleOwner, { imgUri->
+                imgUri?.let {
+                    setIsUserImgSelected(true)
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
+            })
 
-        // presigned url
-        viewModel.profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
-            uploadImgtoS3()
-        })
+            // presigned url
+            profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+                uploadImgtoS3()
+            })
+
+        }
+
 
     }
 
@@ -191,17 +201,32 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
     }
 
     private fun checkFilled() {
-        viewModel.nicknameCheck.observeForever {
-            if (viewModel.nicknameCheck.value == true)
-                viewModel.setEnableNextState(true)
-            else
-                viewModel.setEnableNextState(false)
+        with(viewModel){
+            if(nicknameCheck.value==false) setEnableNextState(false)
+            if(getNicknameCheck()==true &&
+                (initialNickname.value!=nickname.value ||
+                        initialProfileImg.value!=profileImg.value ||
+                        initialProfileUri.value.toString()!=profileImgUri.value.toString())
+            ){ setEnableNextState(true)
+            }
+            else {setEnableNextState(false)
+            }
+
         }
+
     }
 
     private fun setObserver() {
         val dataObserver = Observer<String> { _ -> checkFilled() }
-        viewModel.profileImg.observe(viewLifecycleOwner, dataObserver)
+        val isCheckedObserver = Observer<Boolean> { _ -> checkFilled() }
+        val uriObserver=Observer<Uri?>{ uri->
+            uri?.let { checkFilled() }
+        }
+        with(viewModel){
+            profileImgUri.observe(viewLifecycleOwner,uriObserver)
+            profileImg.observe(viewLifecycleOwner, dataObserver)
+            nicknameCheck.observe(viewLifecycleOwner,isCheckedObserver)
+        }
     }
     private fun setupEditTextListeners() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -11,19 +11,17 @@ import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentLocationserviceMoreBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 //@AndroidEntryPoint
-class LocationServiceMoreFragment : BottomSheetDialogFragment() {
-    private lateinit var binding: FragmentLocationserviceMoreBinding
+class LocationServiceMoreFragment : BindingDialogFragment<FragmentLocationserviceMoreBinding>(R.layout.fragment_locationservice_more) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_locationservice_more,container,false)
-
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

@@ -27,6 +27,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
@@ -47,9 +48,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TeacherTalkBodyActivity : AppCompatActivity() {
+class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(R.layout.activity_teachertalk_body) {
 
-    private lateinit var binding: ActivityTeachertalkBodyBinding
     private val viewModel: TeacherTalkBodyViewModel by viewModels()
     private val notificationViewModel: NotificationViewModel by viewModels()
     private var questionId: Long = 0

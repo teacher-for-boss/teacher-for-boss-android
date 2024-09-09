@@ -12,9 +12,10 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBankBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
-class BankFragment : Fragment() {
+import com.company.teacherforboss.util.base.BindingFragment
+
+class BankFragment : BindingFragment<FragmentBankBinding>(R.layout.fragment_bank) {
     private val viewModel by activityViewModels<SignupViewModel>()
-    lateinit var binding: FragmentBankBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -22,8 +23,7 @@ class BankFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bank, container, false)
+    ): View {
         val bankList = listOf(
             Bank(R.drawable.bank_toss, "토스뱅크"),
             Bank(R.drawable.bank_kakao, "카카오뱅크"),

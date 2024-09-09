@@ -12,25 +12,22 @@ import com.company.teacherforboss.databinding.FragmentSignupStartBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.company.teacherforboss.signup.fragment.EmailFragment
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SignupStartFragment : Fragment() {
+class SignupStartFragment : BindingFragment<FragmentSignupStartBinding>(R.layout.fragment_signup_start) {
 
-    private lateinit var binding: FragmentSignupStartBinding
     private val viewModel by activityViewModels<SignupViewModel>()
     @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_start, container, false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

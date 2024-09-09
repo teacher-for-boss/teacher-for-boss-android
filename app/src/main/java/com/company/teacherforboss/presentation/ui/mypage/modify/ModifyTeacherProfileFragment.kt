@@ -29,6 +29,7 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
@@ -40,22 +41,12 @@ import com.google.android.material.chip.Chip
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class ModifyTeacherProfileFragment : Fragment() {
-
-    private lateinit var binding: FragmentModifyTeacherProfileBinding
+class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfileBinding>(R.layout.fragment_modify_teacher_profile) {
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
     private val detailProfileViewModel by activityViewModels<TeacherProfileViewModel>()
 
     var selectedChipList = mutableListOf<String>()
     private var checkCnt = 0
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_teacher_profile, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

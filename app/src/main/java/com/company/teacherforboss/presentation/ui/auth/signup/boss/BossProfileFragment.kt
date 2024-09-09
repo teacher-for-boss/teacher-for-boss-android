@@ -18,6 +18,7 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentBossProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
@@ -35,18 +36,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BossProfileFragment : Fragment() {
+class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout.fragment_boss_profile) {
 
-    private lateinit var binding: FragmentBossProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
     @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boss_profile, container, false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

@@ -14,14 +14,14 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.TeacherProfileFragment
 import com.company.teacherforboss.signup.fragment.EmailFragment
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AccountFragment : Fragment() {
-    private lateinit var binding: FragmentAccountBinding
+class AccountFragment : BindingFragment<FragmentAccountBinding>(R.layout.fragment_account) {
     private val viewModel by activityViewModels<SignupViewModel>()
     @Inject
     lateinit var localDataSource: LocalDataSource
@@ -29,8 +29,7 @@ class AccountFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_account,container, false)
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

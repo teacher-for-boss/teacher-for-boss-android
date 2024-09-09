@@ -27,6 +27,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.signup.SignupResponse
 import com.company.teacherforboss.databinding.ActivitySignupBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.google.android.gms.auth.api.phone.SmsRetriever
@@ -39,8 +40,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SignupActivity: AppCompatActivity() {
-    private lateinit var binding: ActivitySignupBinding
+class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_signup) {
     private val viewModel: SignupViewModel by viewModels()
     private val fragmentManager:FragmentManager=supportFragmentManager
     @Inject lateinit var localDataSource: LocalDataSource

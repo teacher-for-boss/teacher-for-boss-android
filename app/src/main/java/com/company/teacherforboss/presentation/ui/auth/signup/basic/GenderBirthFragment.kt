@@ -15,20 +15,17 @@ import com.company.teacherforboss.databinding.FragmentGenderBirthBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.basic.AgreementFragment
+import com.company.teacherforboss.util.base.BindingFragment
 
 //@AndroidEntryPoint
-class GenderBirthFragment : Fragment() {
-    private lateinit var binding: FragmentGenderBirthBinding
+class GenderBirthFragment : BindingFragment<FragmentGenderBirthBinding>(R.layout.fragment_gender_birth) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_gender_birth,container,false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

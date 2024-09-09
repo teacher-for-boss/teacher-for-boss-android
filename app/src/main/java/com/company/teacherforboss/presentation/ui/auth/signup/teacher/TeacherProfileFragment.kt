@@ -23,6 +23,7 @@ import com.company.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
@@ -41,9 +42,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TeacherProfileFragment : Fragment(){
+class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.layout.fragment_teacher_profile){
 
-    private lateinit var binding: FragmentTeacherProfileBinding
     private val viewModel by activityViewModels<SignupViewModel>()
     private val loginViewModel by activityViewModels<LoginViewModel>()
     val selectedChipList= mutableListOf<String>()
@@ -53,10 +53,7 @@ class TeacherProfileFragment : Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_teacher_profile, container, false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

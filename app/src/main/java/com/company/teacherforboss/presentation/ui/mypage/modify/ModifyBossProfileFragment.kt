@@ -25,24 +25,15 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 
-class ModifyBossProfileFragment : Fragment() {
-
-    private lateinit var binding: FragmentModifyBossProfileBinding
+class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBinding>(R.layout.fragment_modify_boss_profile) {
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_boss_profile, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

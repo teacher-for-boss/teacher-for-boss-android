@@ -16,18 +16,17 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBusinessBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class BusinessFragment : Fragment(){
-    private lateinit var binding:FragmentBusinessBinding
+class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragment_business){
     private val viewModel by activityViewModels<SignupViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_business,container, false)
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

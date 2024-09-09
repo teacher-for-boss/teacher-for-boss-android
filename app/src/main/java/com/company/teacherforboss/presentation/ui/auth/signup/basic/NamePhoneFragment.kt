@@ -15,11 +15,11 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentNamePhoneBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NamePhoneFragment : Fragment() {
-    private lateinit var binding: FragmentNamePhoneBinding
+class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fragment_name_phone) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
     //사용자입력값
@@ -29,9 +29,7 @@ class NamePhoneFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_name_phone,container,false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

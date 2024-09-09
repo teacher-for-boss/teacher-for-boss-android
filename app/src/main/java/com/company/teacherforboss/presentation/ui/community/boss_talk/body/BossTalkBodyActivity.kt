@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -443,7 +444,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 finish()
             }
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            finish()
+        }
+    }
+
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()

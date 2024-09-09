@@ -9,14 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityFullScreenImageBinding
+import com.company.teacherforboss.util.base.BindingActivity
 
-class FullScreenImageActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFullScreenImageBinding
+class FullScreenImageActivity : BindingActivity<ActivityFullScreenImageBinding>(R.layout.activity_full_screen_image) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         val imageUrl = intent.getStringExtra("IMAGE_URL")
         if (imageUrl != null) {

@@ -17,11 +17,11 @@ import com.company.teacherforboss.databinding.ActivityTeacherTalkSearchBinding
 
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
+import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkSearchActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTeacherTalkSearchBinding
+class TeacherTalkSearchActivity : BindingActivity<ActivityTeacherTalkSearchBinding>(R.layout.activity_teacher_talk_search) {
     private val viewModel by viewModels<TeacherTalkMainViewModel>()
 
     private var hasNext = false

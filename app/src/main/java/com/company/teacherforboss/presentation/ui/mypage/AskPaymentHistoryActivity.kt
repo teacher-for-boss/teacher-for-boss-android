@@ -3,14 +3,15 @@ package com.company.teacherforboss.presentation.ui.mypage
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityAskPaymentHistoryBinding
 import com.company.teacherforboss.presentation.ui.mypage.exchange.AskPaymentHistoryItem
 import com.company.teacherforboss.presentation.ui.mypage.rvAdapterAskPaymentHistory
+import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AskPaymentHistoryActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAskPaymentHistoryBinding
+class AskPaymentHistoryActivity : BindingActivity<ActivityAskPaymentHistoryBinding>(R.layout.activity_ask_payment_history) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAskPaymentHistoryBinding.inflate(layoutInflater)

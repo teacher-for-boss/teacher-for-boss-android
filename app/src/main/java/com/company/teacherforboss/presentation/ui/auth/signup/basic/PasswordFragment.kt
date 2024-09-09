@@ -15,10 +15,10 @@ import com.company.teacherforboss.databinding.FragmentPasswordBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.signup.fragment.NamePhoneFragment
+import com.company.teacherforboss.util.base.BindingFragment
 
 //@AndroidEntryPoint
-class PasswordFragment : Fragment() {
-    private lateinit var binding: FragmentPasswordBinding
+class PasswordFragment : BindingFragment<FragmentPasswordBinding>(R.layout.fragment_password) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
     var show_pwEnter: Boolean = false
@@ -27,9 +27,7 @@ class PasswordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_password, container, false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -120,30 +121,50 @@ class BossTalkBodyViewModel @Inject constructor(
         }
     }
 
-    fun postLike(){
-        clickLikeBtn()
+    fun postLike() {
         viewModelScope.launch {
-            try{
-                val bossTalkLikeResponseEntity=bossTalkLikeUseCase(
-                    BossTalkRequestEntity(postId=postId.value!!)
+            try {
+                val response = bossTalkLikeUseCase(BossTalkRequestEntity(postId = postId.value!!))
+                val updatedLike = response.like
+
+                val updatedLikeCount = if (updatedLike) {
+                    (bossTalkBodyLiveData.value?.likeCount ?: 0) + 1
+                } else {
+                    (bossTalkBodyLiveData.value?.likeCount ?: 1) - 1
+                }
+
+                _bossTalkBodyLiveData.value = _bossTalkBodyLiveData.value?.copy(
+                    likeCount = updatedLikeCount,
+                    liked = updatedLike
                 )
-                _isLike.value=bossTalkLikeResponseEntity.like
-            }catch (ex:Exception){}
+
+                _isLike.value = updatedLike
+
+            } catch (ex: Exception) { }
         }
     }
-
-    fun postBookmark(){
-        clickBookmarkBtn()
+    fun postBookmark() {
         viewModelScope.launch {
-            try{
-                val bossTalkBookmarkResponseEntity=bossTalkBookmarkUseCase(
-                    BossTalkRequestEntity(postId=postId.value!!)
+            try {
+                val response = bossTalkBookmarkUseCase(BossTalkRequestEntity(postId = postId.value!!))
+                val updatedBookmark = response.bookmark
+
+                val updatedBookmarkCount = if (updatedBookmark) {
+                    (bossTalkBodyLiveData.value?.bookmarkCount ?: 0) + 1
+                } else {
+                    (bossTalkBodyLiveData.value?.bookmarkCount ?: 1) - 1
+                }
+
+                _bossTalkBodyLiveData.value = _bossTalkBodyLiveData.value?.copy(
+                    bookmarkCount = updatedBookmarkCount,
+                    bookmarked = updatedBookmark
                 )
-                _isBookmark.value=bossTalkBookmarkResponseEntity.bookmark
-            }catch (ex:Exception){}
+
+                _isBookmark.value = updatedBookmark
+
+            } catch (ex: Exception) { }
         }
     }
-
     fun postComment(){
         viewModelScope.launch {
             try{

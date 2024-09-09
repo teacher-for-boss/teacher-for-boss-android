@@ -10,17 +10,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBankAccountBinding
+import com.company.teacherforboss.util.base.BindingFragment
 
-class BankAccountFragment : Fragment() {
+class BankAccountFragment : BindingFragment<FragmentBankAccountBinding>(R.layout.fragment_bank_account) {
     private val viewModel by activityViewModels<AccountViewModel>()
-    lateinit var binding: FragmentBankAccountBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bank_account, container, false)
-
+    ): View {
         val bankList = listOf(
             BankAccount(R.drawable.bank_toss, "토스뱅크"),
             BankAccount(R.drawable.bank_kakao, "카카오뱅크"),

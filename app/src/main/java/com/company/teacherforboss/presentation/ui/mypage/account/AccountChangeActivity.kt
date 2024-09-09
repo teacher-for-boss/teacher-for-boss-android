@@ -7,14 +7,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityAccountChangeBinding
+import com.company.teacherforboss.util.base.BindingActivity
 
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AccountChangeActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityAccountChangeBinding
-
+class AccountChangeActivity : BindingActivity<ActivityAccountChangeBinding>(R.layout.activity_account_change) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAccountChangeBinding.inflate(layoutInflater)

@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -27,31 +30,24 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class ModifyTeacherProfileFragment : Fragment() {
-
-    private lateinit var binding: FragmentModifyTeacherProfileBinding
+class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfileBinding>(R.layout.fragment_modify_teacher_profile) {
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
     private val detailProfileViewModel by activityViewModels<TeacherProfileViewModel>()
 
     var selectedChipList = mutableListOf<String>()
     private var checkCnt = 0
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_teacher_profile, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,23 +74,20 @@ class ModifyTeacherProfileFragment : Fragment() {
         lifecycleScope.launch {
             detailProfileViewModel.teacherProfileDetail.collect {
                 it?.let {
-                    with(viewModel){
-                        // image
-                        binding.profileImage.loadCircularImage(it.profileImg)
-                        setProfileImg(it.profileImg)
-                        setInitProfileImg(it.profileImg)
-                        // nickname
-                        setNickname(it.nickname)
-                        setInitNickname(it.nickname)
-                        // phone
-                        if(!it.phone.isNullOrEmpty()) {
-                            setInitPhone(it.phone)
-                            setPhone(it.phone)
-                            if(it.phoneOpen==true){
-                                binding.switchPhone.isChecked = true
-                                setPhoneReveal(true)
-                                setInitPhoneOpen(true)
-                            }
+                    // image
+                    binding.profileImage.loadImageFromUrlCoil(it.profileImg)
+                    viewModel.setProfileImg(it.profileImg)
+                    viewModel.setInitProfileImg(it.profileImg)
+                    // nickname
+                    viewModel.setNickname(it.nickname)
+                    viewModel.setInitNickname(it.nickname)
+                    // phone
+                    if(!it.phone.isNullOrEmpty()) {
+                        viewModel.setInitPhone(it.phone)
+                        viewModel.setPhone(it.phone)
+                        if(it.phoneOpen==true){
+                            binding.switchPhone.isChecked = true
+                            viewModel.setPhoneReveal(true)
                         }
                         // email
                         if(!it.email.isNullOrEmpty()) {
@@ -436,11 +429,12 @@ class ModifyTeacherProfileFragment : Fragment() {
     }
     
     private fun setupEditTextListeners() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         with(binding) {
             listOf(etPhone, nicknameBox, etEmail, categoryBox, careerBox, introduceBox).forEach { editText ->
                 editText.setOnEditorActionListener { _, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        editText.clearFocus()
+                        imm.hideSoftInputFromWindow(editText.windowToken, 0)
                         true
                     } else {
                         false

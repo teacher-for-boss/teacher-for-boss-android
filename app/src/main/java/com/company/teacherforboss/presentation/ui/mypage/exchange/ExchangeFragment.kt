@@ -8,34 +8,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchangeBinding
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ExchangeFragment : Fragment() {
+class ExchangeFragment : BindingFragment<FragmentExchangeBinding>(R.layout.fragment_exchange) {
 
-    private var _binding: FragmentExchangeBinding? = null
-    private val binding get() = _binding!!
     private val viewModel: ExchangeViewModel by activityViewModels()
     @Inject lateinit var localDataSource: LocalDataSource
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentExchangeBinding.inflate(inflater, container, false).apply {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.apply {
             exchangeViewModel = viewModel
             lifecycleOwner = viewLifecycleOwner
         }
-        return binding.root
 
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         viewModel.getTeacherPoint()
         setTeacherPoint()
         setTeacherName()
@@ -46,14 +38,7 @@ class ExchangeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun setTeacherPoint() {
         binding.tvTeacherPoint.text = getString(
             R.string.current_teacher_point,

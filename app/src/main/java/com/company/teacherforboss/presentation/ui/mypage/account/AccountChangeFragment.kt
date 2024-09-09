@@ -14,22 +14,20 @@ import com.company.teacherforboss.presentation.ui.mypage.account.BankAccountFrag
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.view.UiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class AccountChangeFragment : Fragment() {
+class AccountChangeFragment : BindingFragment<FragmentAccountChangeBinding>(R.layout.fragment_account_change) {
 
-    private var _binding: FragmentAccountChangeBinding? = null
-    private val binding get() = _binding!!
     private val viewModel by activityViewModels<AccountViewModel>()
     private var isInit = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAccountChangeBinding.inflate(inflater, container, false)
+    ): View {
         binding.accountViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         getUserBankAccount()
@@ -94,7 +92,6 @@ class AccountChangeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 
 }

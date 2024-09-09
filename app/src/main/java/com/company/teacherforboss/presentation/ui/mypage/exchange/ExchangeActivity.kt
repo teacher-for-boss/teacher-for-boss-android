@@ -10,13 +10,11 @@ import androidx.fragment.app.commit
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityExchangeBinding
+import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExchangeActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityExchangeBinding
-
+class ExchangeActivity : BindingActivity<ActivityExchangeBinding>(R.layout.activity_exchange) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExchangeBinding.inflate(layoutInflater)

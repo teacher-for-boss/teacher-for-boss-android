@@ -22,6 +22,7 @@ import com.company.teacherforboss.databinding.ActivityModifyProfileBinding
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity.Companion.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +30,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class ModifyProfileActivity : AppCompatActivity() {
+class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.layout.activity_modify_profile) {
     private val viewModel: ModifyProfileViewModel by viewModels()
     private val detailProfileViewModel: TeacherProfileViewModel by viewModels()
-    private lateinit var binding: ActivityModifyProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

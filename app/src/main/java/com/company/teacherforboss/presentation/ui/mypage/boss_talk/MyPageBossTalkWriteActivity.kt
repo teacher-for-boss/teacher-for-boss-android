@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityMyPageBossWriteBinding
 import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageBossTalkWriteActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMyPageBossWriteBinding
+class MyPageBossTalkWriteActivity : BindingActivity<ActivityMyPageBossWriteBinding>(R.layout.activity_my_page_boss_write) {
     private val viewModel by viewModels<MyPageBossTalkWriteViewModel>()
     private lateinit var adapter : rvAdapterBoss
 

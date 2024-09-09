@@ -177,7 +177,6 @@ dependencies {
     implementation("com.navercorp.nid:oauth:5.9.0") // jdk 11
 
     // coil
-
     implementation("io.coil-kt:coil:1.2.0")
     implementation("io.coil-kt:coil-svg:1.2.0")
 

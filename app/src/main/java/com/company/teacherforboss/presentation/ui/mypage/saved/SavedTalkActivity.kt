@@ -8,14 +8,14 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.company.teacherforboss.MainActivity
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivitySavedTalkBinding
+import com.company.teacherforboss.util.base.BindingActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SavedTalkActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySavedTalkBinding
+class SavedTalkActivity : BindingActivity<ActivitySavedTalkBinding>(R.layout.activity_saved_talk) {
     private lateinit var pagerAdapter: SavedTalkPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

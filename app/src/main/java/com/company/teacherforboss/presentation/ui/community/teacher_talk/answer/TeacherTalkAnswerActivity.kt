@@ -27,6 +27,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_ANSWERID
@@ -35,8 +36,7 @@ import com.company.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAnswerActivity : AppCompatActivity(), WriteExitDialogListener {
-    private lateinit var binding: ActivityTeachertalkAnswerBinding
+class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBinding>(R.layout.activity_teachertalk_answer), WriteExitDialogListener {
     private val viewModel: TeacherTalkAnswerViewModel by viewModels()
 
     private var questionId:Long=0

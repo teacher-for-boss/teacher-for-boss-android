@@ -1,6 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
-import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -422,6 +423,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
         startActivity(intent, options.toBundle())*/
 //    }
 
+    fun showKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
@@ -434,7 +444,15 @@ class BossTalkBodyActivity : AppCompatActivity() {
                 finish()
             }
         }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            finish()
+        }
+    }
+
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()

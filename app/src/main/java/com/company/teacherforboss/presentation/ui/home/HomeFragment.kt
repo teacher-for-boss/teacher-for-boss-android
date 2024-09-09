@@ -214,14 +214,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     override fun onItemClicked(category: String) {
-        teacherTalkMainViewModel.setCategory(category,DEFAULT_LASTID)
-        (activity as MainActivity)?.setSelectedMenu(R.id.menu_teacher_talk)
-
-        val transaction = parentFragmentManager.beginTransaction()
-
-        transaction.replace(R.id.fcv_teacher_for_boss, TeacherTalkMainFragment())
-        transaction.commit()
-
+        if (isAdded && activity != null) {
+            teacherTalkMainViewModel.setCategory(category, DEFAULT_LASTID)
+            (activity as? MainActivity)?.setSelectedMenu(R.id.menu_teacher_talk)
+        }
     }
 
     private fun navigateToAlarm(){

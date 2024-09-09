@@ -4,9 +4,9 @@ import com.company.teacherforboss.data.model.request.mypage.ModifyTeacherProfile
 
 data class ModifyTeacherProfileRequestEntity (
     val nickname: String,
-    val phone: String,
+    val phone: String?,
     val phoneOpen: Boolean,
-    val email: String,
+    val email: String?,
     val emailOpen: Boolean,
     val field: String,
     val career: Int,

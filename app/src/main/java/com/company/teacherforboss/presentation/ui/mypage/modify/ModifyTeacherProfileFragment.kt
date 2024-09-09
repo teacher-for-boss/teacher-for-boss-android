@@ -74,47 +74,50 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
         lifecycleScope.launch {
             detailProfileViewModel.teacherProfileDetail.collect {
                 it?.let {
-                    // image
-                    binding.profileImage.loadImageFromUrlCoil(it.profileImg)
-                    viewModel.setProfileImg(it.profileImg)
-                    viewModel.setInitProfileImg(it.profileImg)
-                    // nickname
-                    viewModel.setNickname(it.nickname)
-                    viewModel.setInitNickname(it.nickname)
-                    // phone
-                    if(!it.phone.isNullOrEmpty()) {
-                        viewModel.setInitPhone(it.phone)
-                        viewModel.setPhone(it.phone)
-                        if(it.phoneOpen==true){
-                            binding.switchPhone.isChecked = true
-                            viewModel.setPhoneReveal(true)
-                        }
-                        // email
-                        if(!it.email.isNullOrEmpty()) {
-                            setEmail(it.email)
-                            setInitEmail(it.email)
-                            if(it.emailOpen==true){
-                                binding.switchEmail.isChecked = true
-                                setEmailReveal(true)
-                                setInitEmailOpen(true)
+                    with(viewModel){
+                        // image
+                        binding.profileImage.loadImageFromUrlCoil(it.profileImg)
+                        setProfileImg(it.profileImg)
+                        setInitProfileImg(it.profileImg)
+                        // nickname
+                        setNickname(it.nickname)
+                        setInitNickname(it.nickname)
+                        // phone
+                        if(!it.phone.isNullOrEmpty()) {
+                            setInitPhone(it.phone)
+                            setPhone(it.phone)
+                            if(it.phoneOpen==true){
+                                binding.switchPhone.isChecked = true
+                                setPhoneReveal(true)
                             }
-                        }
-                        // field
-                        setField(it.field)
-                        setInitField(it.field)
-                        // career
-                        setCareer(it.career.toString())
-                        setInitCareer(it.career.toString())
-                        // introduction
-                        setIntroduction(it.introduction)
-                        setInitIntroduction(it.introduction)
+                            // email
+                            if(!it.email.isNullOrEmpty()) {
+                                setEmail(it.email)
+                                setInitEmail(it.email)
+                                if(it.emailOpen==true){
+                                    binding.switchEmail.isChecked = true
+                                    setEmailReveal(true)
+                                    setInitEmailOpen(true)
+                                }
+                            }
+                            // field
+                            setField(it.field)
+                            setInitField(it.field)
+                            // career
+                            setCareer(it.career.toString())
+                            setInitCareer(it.career.toString())
+                            // introduction
+                            setIntroduction(it.introduction)
+                            setInitIntroduction(it.introduction)
 
-                        setInitKeywords(it.keywords)
+                            setInitKeywords(it.keywords)
 
-                        setEnableNextState(false)
+                            setEnableNextState(false)
 //                        binding.nextBtn.isEnabled=false
-                        setIsInitializedView(true)
+                            setIsInitializedView(true)
+                        }
                     }
+
 
                     // keywords
                     val chipList = it.keywords

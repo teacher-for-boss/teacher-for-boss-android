@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -404,39 +403,11 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             }
 
             hideOptionMenuIfVisible()
-//            // btnOption 영역 외부를 터치한 경우에만 메뉴를 닫습니다.
-//            if (!btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-//                hideOptionMenuIfVisible()
-//            }
-//            else if (!isInAnyBtnOption)
-//                hideOptionMenuIfVisible()
-
-            // 댓글 영역의 터치 이벤트를 확인하고, 부모로 이벤트 전달
             binding.rvComment.dispatchTouchEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }
 
-//    override fun onBackPressed() {
-//        finish()
-        // TODO: 얘는 여기 말고 나중에 Activity 새로 부르는 코드에 추가해주세요 여기서는 finish()만 하는게 로직상 맞아서요!
-        /*val options = ActivityOptionsCompat.makeCustomAnimation(
-            this,
-            android.R.anim.fade_in, // 새 Activity의 애니메이션
-            android.R.anim.fade_out // 현재 Activity의 애니메이션
-        )
-        startActivity(intent, options.toBundle())*/
-//    }
-
-    fun showKeyboard(view: View) {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    fun hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-    }
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
@@ -449,15 +420,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 finish()
             }
         }
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
-
-    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            finish()
-        }
-    }
-
     fun showSnackBar(msg:String){
         val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
         customSnackbar.show()

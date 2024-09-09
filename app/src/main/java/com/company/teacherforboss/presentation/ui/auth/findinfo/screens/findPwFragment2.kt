@@ -17,6 +17,7 @@ import androidx.navigation.Navigation
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentFindPw2Binding
 import com.company.teacherforboss.presentation.ui.auth.findinfo.FindPwViewModel
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.view.UiState
 import kotlinx.coroutines.launch
 
@@ -112,11 +113,13 @@ class findPwFragment2 : Fragment() {
 
 
         binding.changePwBtn.setOnClickListener {
-            if(viewModel.all_check.value==false) showToast("비밀번호 조건을 충족시키지 않습니다")
+            if(viewModel.all_check.value==false)
+                CustomSnackBar.make(binding.root, getString(R.string.format_pw_false), 2000).show()
             else if(viewModel.rePw_check.value==true){
                 viewModel.postResetPw()
             }
-            else showToast("재입력한 비밀번호가 일치하지 않습니다.")
+            else
+                CustomSnackBar.make(binding.root, getString(R.string.format_re_pw_false), 2000).show()
 
         }
 

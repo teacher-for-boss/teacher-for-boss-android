@@ -52,7 +52,7 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
                 is BaseResponse.Success->{
 
                     // fix.. 여기에 가입된 계정이 아닌 경우에만 타이머 visible 하게 해놨는데 그러면 굉장히 느려짐.. 뭐지
-                    binding.veryInfo.text="해당 메일로 인증 번호가 발송되었습니다."
+                    binding.veryInfo.text = getString(R.string.verify_email_info)
 
                     // 이미 가입된 계정일 경우, 타이머 및 입력란 비가시
                     binding.inputEmailCode.visibility=View.VISIBLE
@@ -64,7 +64,7 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
                 is BaseResponse.Error->{
                     //중복 이메일인 경우
                     if(it.msg=="이미 가입된 이메일입니다."){
-                        binding.veryInfo.text="이미 가입된 이메일 주소입니다."
+                        binding.veryInfo.text = getString(R.string.email_unavailable)
 
                         // 이미 가입된 계정일 경우, 타이머 및 입력란 비가시
                         binding.inputEmailCode.visibility=View.INVISIBLE

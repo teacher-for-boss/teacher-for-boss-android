@@ -29,14 +29,20 @@ import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessag
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -65,9 +71,9 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
         viewModel.setQuestionId(questionId)
 
-        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg != null) {
-            showSnackBar(snackBarMsg)
+            CustomSnackBar.make(binding.root, snackBarMsg, 2000).show()
         }
 
         // 서버 api 요청
@@ -293,7 +299,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
                 // 보스인 경우 답변작성하기 버튼 invisible
                 val role= localDataSource.getUserInfo(USER_ROLE)
-                if(role=="BOSS")binding.answerBtn.visibility=View.GONE
+                if(role==BOSS)binding.answerBtn.visibility=View.GONE
 
             },
         )
@@ -394,18 +400,5 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         )
 
         title.text = spannableString
-    }
-
-    fun showSnackBar(msg: String) {
-        val customSnackbar = CustomSnackBar.make(binding.root, msg, 2000)
-        customSnackbar.show()
-    }
-
-    companion object {
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
-        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
-        const val FRAGMENT_DESTINATION = "FRAGMENT_DESTINATION"
-        const val TEACHER_TALK = "TEACHER_TALK"
     }
 }

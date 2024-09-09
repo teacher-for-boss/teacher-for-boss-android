@@ -90,16 +90,16 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                 binding.veryInfo.visibility = View.VISIBLE
                 binding.veryInfo.setTextColor(successColor)
-                binding.veryInfo.text = "사용 가능한 닉네임입니다."
+                binding.veryInfo.text = getString(R.string.nickname_available)
                 binding.nicknameVerifyBtn.isEnabled = true
             } else {
                 binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                 binding.veryInfo.visibility = View.VISIBLE
                 binding.veryInfo.setTextColor(errorColor)
                 binding.veryInfo.text = if (binding.nicknameBox.text.isEmpty()) {
-                    "닉네임을 입력해주세요."
+                    getString(R.string.nickname_input)
                 } else {
-                    "특수문자 제외 10자 이내로 작성해주세요."
+                    getString(R.string.verify_nickname)
                 }
                 binding.nicknameVerifyBtn.isEnabled = false
             }
@@ -124,7 +124,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(successColor)
-                    veryInfo.text = "사용 가능한 닉네임입니다."
+                    veryInfo.text = getString(R.string.nickname_available)
                     viewModel.nicknameCheck.value = true
 
                 }
@@ -133,7 +133,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(errorColor)
-                    veryInfo.text = "사용할 수 없는 닉네임입니다."
+                    veryInfo.text = getString(R.string.nickname_unavailable)
                     viewModel.nicknameCheck.value = false
                 }
                 else -> {}
@@ -227,7 +227,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 //최대 개수 도달
                 if(isChecked && checkCnt>=maxSelectedChip){
                     chip.isChecked = false
-                    Toast.makeText(context,"5개 도달",Toast.LENGTH_SHORT).show()
                 }
                 else{
                     if(isChecked) {

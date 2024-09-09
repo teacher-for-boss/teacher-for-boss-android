@@ -6,11 +6,14 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentManageAccountBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.LOGOUT_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.view.UiState
@@ -89,7 +92,7 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
                     clickLeftBtn = {},
                     clickRightBtn = {
                         viewModel.postLogout()},
-                ).show(parentFragmentManager, ManageAccountFragment.LOGOUT_DIALOG)
+                ).show(parentFragmentManager, LOGOUT_DIALOG)
             }
             "Delete"->{
                 DialogPopupFragment(
@@ -99,7 +102,7 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
                     rightBtnText = getString(R.string.dialog_delete_btn),
                     clickLeftBtn = {},
                     clickRightBtn = {viewModel.withdraw()},
-                ).show(parentFragmentManager, ManageAccountFragment.DELETE_DIALOG)
+                ).show(parentFragmentManager, DELETE_DIALOG)
             }
         }
 
@@ -110,11 +113,5 @@ class ManageAccountFragment : BindingFragment<FragmentManageAccountBinding>(R.la
         val intent= Intent(requireActivity(), LoginActivity::class.java).apply {
         }
         startActivity(intent)
-    }
-    companion object {
-        private const val LOGOUT_DIALOG = "logoutModal"
-        private const val DELETE_DIALOG = "deleteModal"
-        private const val USER_EMAIL="USER_EMAIL"
-        private const val USER_PHONE="USER_PHONE"
     }
 }

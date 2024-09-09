@@ -7,7 +7,6 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -24,8 +23,10 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -194,14 +195,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun navigateToTeacherTalkPost(questionId: Long) {
         Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply {
-            putExtra(TEACHER_TALK_QUESTION_ID, questionId)
+            putExtra(TEACHER_QUESTIONID, questionId)
             startActivity(this)
         }
     }
 
     private fun navigateToBossTalkPost(postId: Long) {
         Intent(requireContext(), BossTalkBodyActivity::class.java).apply {
-            putExtra(BOSS_TALK_POST_ID, postId)
+            putExtra(BOSS_POSTID, postId)
             startActivity(this)
         }
     }
@@ -233,8 +234,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         private const val END_SPAN_INDEX = 2
         private const val INC_POSITION = 1
         private const val AUTO_SCROLL_INTERVAL = 2500L
-        private const val TEACHER_TALK_QUESTION_ID = "questionId"
-        private const val BOSS_TALK_POST_ID = "postId"
     }
 }
 

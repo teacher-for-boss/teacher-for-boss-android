@@ -27,8 +27,6 @@ class rvAdapterCategory(
 
                 selectCategory(selectedItemPosition.toLong())
 
-                Log.d("cagtegory", selectedItemPosition.toString())
-
                 //bind에 보내는 함수
                 notifyItemChanged(previousItemPosition)
                 notifyItemChanged(selectedItemPosition)

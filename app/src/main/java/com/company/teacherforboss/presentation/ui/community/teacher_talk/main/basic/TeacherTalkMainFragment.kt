@@ -12,7 +12,6 @@ import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
@@ -24,10 +23,10 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.ca
 import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.rvAdapterCardTeacher
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
@@ -116,7 +115,7 @@ class TeacherTalkMainFragment :
 
         //fab
         val role=localDataSource.getUserInfo(USER_ROLE)
-        if(role=="TEACHER")binding.fabWrite.visibility=View.INVISIBLE
+        if(role==TEACHER)binding.fabWrite.visibility=View.INVISIBLE
 
         //scrollview
         binding.svTeacherTalkMain.run {

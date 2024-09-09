@@ -18,7 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkAnswerBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
@@ -30,8 +29,12 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_ANSWERID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
 import com.company.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -137,7 +140,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             gallery.type = "image/*"
             startActivityForResult(gallery, 100)
         } else {
-            showSnackBar("세장까지만 업로드 가능합니다.")
+            CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
         }
     }
 
@@ -147,7 +150,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar("갤러리 접근 권한이 필요합니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -165,7 +168,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 10) {
-                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
+                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_10MB), 2000).show()
                     return
                 }
             }
@@ -223,7 +226,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             val body = binding.inputAnswer.text.toString()
 
             if(body.length < 100)
-                showSnackBar("100자 이상 작성해주세요.")
+                CustomSnackBar.make(binding.root, getString(R.string.community_input_length_100), 2000).show()
             else uploadPostAnswer()
         }
     }
@@ -259,7 +262,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
-                putExtra("snackBarMsg","답변이 등록되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_uploaded))
                 startActivity(this)
             }
         })
@@ -268,7 +271,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
-                putExtra("snackBarMsg","답변이 수정되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_modified))
                 startActivity(this)
             }
         })
@@ -290,17 +293,5 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
 
         //최대글자수 지정
         binding.inputAnswer.filters = arrayOf(InputFilter.LengthFilter(5000))
-    }
-
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
-    }
-
-
-    companion object{
-        const val TEACHER_TALK="TEACHER_TALK"
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
     }
 }

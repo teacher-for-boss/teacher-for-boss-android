@@ -79,7 +79,7 @@
                         app:layout_constraintBottom_toTopOf="@id/tv_my_page_level"
                         app:layout_constraintStart_toEndOf="@id/view_my_page_profile_background"
                         app:layout_constraintTop_toTopOf="@id/view_my_page_profile_background"
-                        tools:text="티처포보스 보스" />
+                        android:text="@{myPageViewModel.nickname}" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_my_page_profile_fix"

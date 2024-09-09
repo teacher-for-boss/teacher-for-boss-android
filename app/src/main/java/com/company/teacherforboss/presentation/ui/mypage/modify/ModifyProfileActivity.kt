@@ -1,7 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -22,12 +21,13 @@ import com.company.teacherforboss.databinding.ActivityModifyProfileBinding
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity.Companion.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.layout.activity_modify_profile) {
@@ -40,13 +40,13 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
 
         // Fragment 초기화
         val role = intent.getStringExtra(ROLE)
-        if(role == ROLE_TEACHER) {
+        if(role == TEACHER) {
             detailProfileViewModel.setMemberId(intent.getLongExtra(TEACHER_PROFILE_ID,DEFAULT_ID))
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ModifyTeacherProfileFragment())
                 .commit()
         }
-        else if(role == ROLE_BOSS) {
+        else if(role == BOSS) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ModifyBossProfileFragment())
                 .commit()
@@ -115,7 +115,7 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar(getString(R.string.image_request_permission))
+                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -133,7 +133,7 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 5) {
-                    showSnackBar(getString(R.string.image_dialog_file_size_5MB))
+                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_5MB), 2000).show()
                     return
                 }
             }
@@ -145,15 +145,7 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
         }
     }
 
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
-    }
-
     companion object {
-        private const val ROLE = "ROLE"
-        private const val ROLE_TEACHER = "TEACHER"
-        private const val ROLE_BOSS = "BOSS"
         private const val NICKNAME = "nickname"
         private const val PROFILE_IMG = "profileImg"
     }

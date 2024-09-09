@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,6 +14,7 @@ import com.company.teacherforboss.databinding.FragmentPasswordBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.signup.fragment.NamePhoneFragment
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
 
 //@AndroidEntryPoint
@@ -57,8 +57,10 @@ class PasswordFragment : BindingFragment<FragmentPasswordBinding>(R.layout.fragm
         val activity=activity as SignupActivity
         with (binding) {
             nextBtn.setOnClickListener {
-                if(viewModel.all_check.value==false) showToast("비밀번호 조건을 충족시키지 않습니다")
-                else if(viewModel.rePw_check.value==false) showToast("재입력한 비밀번호가 일치하지 않습니다.")
+                if(viewModel.all_check.value==false)
+                    CustomSnackBar.make(binding.root, getString(R.string.format_pw_false), 2000).show()
+                else if(viewModel.rePw_check.value==false)
+                    CustomSnackBar.make(binding.root, getString(R.string.format_re_pw_false), 2000).show()
                 else {
                     activity.gotoNextFragment(NamePhoneFragment())
                 }
@@ -103,10 +105,6 @@ class PasswordFragment : BindingFragment<FragmentPasswordBinding>(R.layout.fragm
         val isPasswordMatch = viewModel.rePw_check.value ?: false
 
         binding.nextBtn.isEnabled = isPasswordValid && isPasswordMatch
-    }
-
-    fun showToast(msg:String){
-        Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun updatePasswordInputType() {

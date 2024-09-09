@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityLoginBinding
@@ -20,7 +19,6 @@ import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwActivity
 import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
 import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
-
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.CustomSnackBar
@@ -88,7 +86,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
-                    processError("아이디 또는 비밀번호가 맞지 않습니다.")
+                    CustomSnackBar.make(binding.root, getString(R.string.id_or_pw_different), 2000).show()
                 }
                 else->{
                     //loading 종료시
@@ -111,7 +109,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                             getKakaoUserInfo()
                         }
                         SocialLoginUiState.LoginFail->{
-                            showSnackBar("social Login Fail")
+                            CustomSnackBar.make(binding.root, getString(R.string.social_login_fail), 2000).show()
                         }
                         else->{
                         }
@@ -132,7 +130,6 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     gotoMainActivity()
                 }
                 is BaseResponse.Error ->{
-//                    processError(it.msg)
                     // 회원가입 진행
                     loginViewModel._isSocialLoginSignup.value=true
                     gotoSignupActivity()
@@ -386,16 +383,6 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     private fun gotoMainActivity(){
         val intent = Intent(context, MainActivity::class.java)
         startActivity(intent)
-    }
-
-
-
-    fun processError(msg:String){
-        showSnackBar(msg)
-    }
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
     }
 
     //사용하지 않는 함수들 (나중에 사용할수도..?)

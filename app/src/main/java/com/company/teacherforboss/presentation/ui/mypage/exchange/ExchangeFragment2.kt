@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.room.InvalidationTracker
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchange2Binding
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.databinding.FragmentExchangeBinding
 import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
 import com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity
@@ -61,12 +60,12 @@ class ExchangeFragment2 : BindingFragment<FragmentExchange2Binding>(R.layout.fra
                 viewModel.getExchangeUiState.flowWithLifecycle(lifecycle)
                     .onEach { getExchangeUiState ->
                         when(getExchangeUiState) {
-                            is UiState.Loading -> { showSnackBar("환전 중입니다.") }
+                            is UiState.Loading -> { CustomSnackBar.make(binding.root, getString(R.string.exchange_loading), 2000).show() }
                             is UiState.Success -> {
 
                             }
                             is UiState.Error -> {
-                                showSnackBar("환전 중 오류가 발생했습니다: ${getExchangeUiState.message}")
+                                CustomSnackBar.make(binding.root, getString(R.string.exchange_error), 2000).show()
                             }
                             else -> Unit
                         }
@@ -95,23 +94,15 @@ class ExchangeFragment2 : BindingFragment<FragmentExchange2Binding>(R.layout.fra
     private fun isValidPoints(points: Int): Boolean {
         return when {
             points < 550 -> {
-                processError("최소 550tp 이상 교환할 수 있습니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.point_info4), 2000).show()
                 false
             }
 
             points % 100 != 0 -> {
-                processError("100tp 단위로 교환할 수 있습니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.point_info5), 2000).show()
                 false
             }
             else -> true
         }
-    }
-
-    fun processError(msg:String){
-        showSnackBar(msg)
-    }
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,4000)
-        customSnackbar.show()
     }
 }

@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkWriteBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
@@ -35,8 +34,12 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK_WRITE_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -101,7 +104,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
                 if (lastChar == ' ')
-                    showSnackBar("해시태그는 스페이스바 입력이 불가능합니다.")
+                    CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_space), 2000).show()
             }
             override fun afterTextChanged(editable: Editable?) {
                 editable?.let {
@@ -130,7 +133,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
                         binding.inputHashtag.text.clear()
                     }
                     else {
-                        showSnackBar("해시태그는 5개까지 입력 가능합니다.")
+                        CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_number), 2000).show()
                     }
                 }
 
@@ -157,7 +160,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             gallery.type = "image/*"
             startActivityForResult(gallery, 100)
         } else {
-            showSnackBar("세장까지만 업로드 가능합니다.")
+            CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
         }
     }
 
@@ -167,7 +170,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar("갤러리 접근 권한이 필요합니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -185,7 +188,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 10) {
-                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
+                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_10MB), 2000).show()
                     return
                 }
             }
@@ -298,7 +301,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                showSnackBar("제목과 본문을 작성해야 등록할 수 있습니다.")
+                CustomSnackBar(binding.root, getString(R.string.community_input_title_body), 2000).show()
             }
             else uploadPost()
         }
@@ -346,7 +349,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra(BOSS_POSTID,it.postId)
                 putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
-                putExtra("snackBarMsg","게시글이 등록되었습니다.")
+                putExtra("snackBarMsg",getString(R.string.community_post_uploaded))
                 startActivity(this)
 
             }
@@ -356,7 +359,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             Intent(this,BossTalkBodyActivity::class.java).apply {
                 putExtra(BOSS_POSTID,it.postId)
                 putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
-                putExtra("snackBarMsg","게시글이 수정되었습니다.")
+                putExtra(SNACK_BAR_MSG,getString(R.string.community_post_modified))
                 startActivity(this)
             }
         })
@@ -376,20 +379,12 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
         }
     }
 
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
-    }
-
     override fun onExitBtnClicked() {
         onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
 
     companion object{
-        const val BOSS_TALK="BOSS_TALK"
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
         const val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
     }
 }

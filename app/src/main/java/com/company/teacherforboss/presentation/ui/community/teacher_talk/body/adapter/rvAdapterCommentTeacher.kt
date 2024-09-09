@@ -21,6 +21,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
@@ -44,7 +45,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
-                if (member.role == "TEACHER") {
+                if (member.role == TEACHER) {
                     Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
                         putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
                         binding.root.context.startActivity(this)
@@ -179,7 +180,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                     val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner)
                     dialog.show()
                 } else {
-                    showSnackBar("채택된 글의 답변은 삭제할 수 없습니다.")
+                    CustomSnackBar.make(binding.root, context.getString(R.string.community_cannot_delete_answer), 2000).show()
                     hideOptionMenuIfVisible()
                 }
 
@@ -210,7 +211,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                     }
                     context.startActivity(intent)
                 } else {
-                    showSnackBar("채택된 글의 답변은 수정할 수 없습니다.")
+                    CustomSnackBar.make(binding.root, context.getString(R.string.community_cannot_modify_answer), 2000).show()
                     hideOptionMenuIfVisible()
                 }
             }
@@ -220,11 +221,6 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
                 context.startActivity(intent)
             }
-        }
-
-        private fun showSnackBar(msg: String) {
-            val customSnackbar = CustomSnackBar.make(binding.root, msg, 2000)
-            customSnackbar.show()
         }
 
         private fun hideOptionMenuIfVisible() {

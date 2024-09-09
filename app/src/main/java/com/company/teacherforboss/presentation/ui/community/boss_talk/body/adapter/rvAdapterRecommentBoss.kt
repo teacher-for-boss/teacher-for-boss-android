@@ -19,6 +19,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossT
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterRecommentBoss(
@@ -46,7 +47,7 @@ class rvAdapterRecommentBoss(
 
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
-                if (member.role == "TEACHER") {
+                if (member.role == TEACHER) {
                     Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
                         putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
                         binding.root.context.startActivity(this)

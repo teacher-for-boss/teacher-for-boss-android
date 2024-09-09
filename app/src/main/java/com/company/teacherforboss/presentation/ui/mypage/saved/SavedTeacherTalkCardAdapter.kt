@@ -14,6 +14,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemSavedTeacherBinding
 import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.company.teacherforboss.util.view.loadCircularImage
 
@@ -90,7 +91,7 @@ class SavedTeacherTalkCardAdapter(private val context: Context) :
                 // 상세 글 이동
                 root.setOnClickListener {
                     Intent(context, TeacherTalkBodyActivity::class.java).apply {
-                        putExtra("questionId", question.questionId)
+                        putExtra(TEACHER_QUESTIONID, question.questionId)
                         context.startActivity(this)
                     }
                 }

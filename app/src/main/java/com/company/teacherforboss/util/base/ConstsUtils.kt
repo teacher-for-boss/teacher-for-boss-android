@@ -25,6 +25,7 @@ class ConstsUtils {
 
 
         // 보스톡, 티처톡 게시글 수정 공통
+        const val ROLE = "ROLE"
         const val POST_PURPOSE="purpose"
         const val POST_TITLE="title"
         const val POST_BODY="body"
@@ -49,11 +50,30 @@ class ConstsUtils {
         // 경로 변경
         const val ACTIVITY_DESTINATION="ACTIVITY_DESTINATION"
         const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
+        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
+
+        const val HOME="HOME"
+        const val BOSS_TALK="BOSS_TALK"
+        const val TEACHER_TALK="TEACHER_TALK"
+        const val MYPAGE="MYPAGE"
+
+        const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
+        const val BOSS_TALK_WRITE_ACTIVITY = "BOSS_TALK_WRITE_ACTIVITY"
+        const val TEACHER_TALK_ANSWER_ACTIVITY = "TEACHER_TALK_ANSWER_ACTIVITY"
+        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
 
         // 티처 프로필 정보
         const val TEACHER_PROFILE_ID = "teacherProfileId"
 
         // 프로필 수정
         const val MODIFY_PROFILE_IMAGE_DIALOG="MODIFY_PROFILE_IMAGE_DIALOG"
+
+        // 스낵바
+        const val SNACK_BAR_MSG = "snackBarMsg"
+
+        // 다이얼로그
+        const val LOGOUT_DIALOG = "logoutModal"
+        const val DELETE_DIALOG = "deleteModal"
+        const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
     }
 }

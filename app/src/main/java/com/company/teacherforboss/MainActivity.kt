@@ -6,8 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,11 +16,16 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.main.basic
 import com.company.teacherforboss.presentation.ui.home.HomeFragment
 import com.company.teacherforboss.presentation.ui.mypage.MyPageFragment
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
-import com.company.teacherforboss.presentation.ui.home.ItemClickListener
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.HOME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,31 +49,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null) {
-            if(intent.getStringExtra("gotoTeacherTalk") == "gotoTeacherTalk") {
-                replaceFragment(TeacherTalkMainFragment())
-                setSelectedMenu(R.id.menu_teacher_talk)
-            }
-            if(intent.getStringExtra("gotoBossTalk") == "gotoBossTalk") {
-                replaceFragment(BossTalkMainFragment())
-                setSelectedMenu(R.id.menu_boss_talk)
-            }
-            if(intent.getStringExtra("gotoMyPage") == "gotoMyPage") {
-                replaceFragment(MyPageFragment())
-                binding.bnvTeacherForBoss.selectedItemId = R.id.menu_my_page
-            }
-            else {
-                replaceFragment(HomeFragment())
-            }
-        }
+        if (savedInstanceState == null) replaceFragment(HomeFragment())
+
         clickBottomNavigation()
         setFragment()
         askNotificationPermission()
         readNotification()
 
-        val snackBarMsg = intent.getStringExtra("snackBarMsg")?.toString()
+        val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg!=null){
-            showSnackBar(snackBarMsg)
+            CustomSnackBar.make(binding.root, snackBarMsg, 2000).show()
         }
 
         // 백 버튼 콜백 설정
@@ -139,11 +127,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
-    }
-
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val fragmentManager = supportFragmentManager
@@ -154,7 +137,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 finishAffinity()
             } else {
                 backPressedOnce = true
-                Toast.makeText(this@MainActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                CustomSnackBar.make(binding.root, getString(R.string.exit_warning) ,2000).show()
                 exitHandler.postDelayed(resetBackPressed, 2000)
             }
         }
@@ -176,13 +159,5 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
         }
 
-    }
-
-    companion object{
-        const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
-        const val HOME="HOME"
-        const val BOSS_TALK="BOSS_TALK"
-        const val TEACHER_TALK="TEACHER_TALK"
-        const val MYPAGE="MYPAGE"
     }
 }

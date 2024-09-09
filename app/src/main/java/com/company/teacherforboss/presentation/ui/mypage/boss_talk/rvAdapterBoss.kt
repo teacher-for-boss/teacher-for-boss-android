@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemBossSearchCardBinding
-import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.mypage.MyPagePostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterBoss(
@@ -35,8 +36,8 @@ class rvAdapterBoss(
                 // 본문 상세보기
                 root.setOnClickListener {
                     val intent = Intent(context, BossTalkBodyActivity::class.java).apply {
-                        putExtra("PREVIOUS_ACTIVITY", "BossTalkSearchActivity")
-                        putExtra("postId", post.postId)
+                        putExtra(PREVIOUS_ACTIVITY, "BossTalkSearchActivity")
+                        putExtra(BOSS_POSTID, post.postId)
                     }
                     context.startActivity(intent)
                 }

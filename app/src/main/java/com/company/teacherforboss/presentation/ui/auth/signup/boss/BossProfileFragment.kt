@@ -74,7 +74,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                         nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                         veryInfo.visibility = View.VISIBLE
                         veryInfo.setTextColor(setColor(SUCCESS))
-                        veryInfo.text = "사용 가능한 닉네임입니다."
+                        veryInfo.text = getString(R.string.nickname_available)
                         nicknameVerifyBtn.isEnabled = false
                         nextBtn.isEnabled = true
                     }
@@ -84,7 +84,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                         nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                         veryInfo.visibility = View.VISIBLE
                         veryInfo.setTextColor(setColor(ERROR))
-                        veryInfo.text = "사용할 수 없는 닉네임입니다."
+                        veryInfo.text = getString(R.string.nickname_unavailable)
                         nicknameVerifyBtn.isEnabled = false
                     }
                 }
@@ -121,7 +121,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(setColor(ERROR))
-                    veryInfo.text = "특수문자 제외 10자 이내로 작성해주세요."
+                    veryInfo.text = getString(R.string.verify_nickname)
                     nicknameVerifyBtn.isEnabled = false
                 }
                 else viewModel.nicknameUser()

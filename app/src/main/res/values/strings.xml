@@ -3,6 +3,9 @@
 
     <string name="pwSame">비밀번호가 일치합니다</string>
     <string name="pwDifferent">비밀번호가 일치하지 않습니다</string>
+    <string name="id_or_pw_different">아이디 또는 비밀번호가 맞지 않습니다.</string>
+    <string name="social_login_fail">소셜 로그인 실패</string>
+    <string name="exit_warning">뒤로가기를 한 번 더 누르면 종료됩니다.</string>
 
     <string name="boss_talk_fragment">bosstalk fragement입니다</string>
     <string name="my_page_fragment">mypage fragement입니다</string>
@@ -11,12 +14,32 @@
     <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>
     <string name="naver_client_secret">tazdlVePfj</string>
 
+    <!-- find info-->
+    <string name="find_email">이메일 찾기</string>
+    <string name="find_pw">비밀번호 찾기</string>
+
+    <!-- verify password-->
+    <string name="format_pw_false">비밀번호 조건을 충족시키지 않습니다.</string>
+    <string name="format_re_pw_false">재입력한 비밀번호가 일치하지 않습니다.</string>
+
+    <!-- verify nickname-->
+    <string name="nickname_input">닉네임을 입력해주세요.</string>
+    <string name="verify_nickname">특수문자 제외 10자 이내로 작성해주세요.</string>
+    <string name="nickname_available">사용 가능한 닉네임입니다</string>
+    <string name="nickname_unavailable">사용할 수 없는 닉네임입니다.</string>
+
     <!-- verify email,phone-->
+    <string name="verify_email_info">해당 메일로 인증 번호가 발송되었습니다.</string>
+    <string name="verify_phone_info">인증번호가 발송되었습니다.</string>
     <string name="verified_true">인증되었습니다.</string>
     <string name="verified_false">인증번호가 올바르지 않습니다.</string>
 
     <string name="format_true">올바른 형식입니다</string>
     <string name="format_false">올바르지 않은 형식입니다</string>
+
+    <string name="verify_phone">전화번호는 10 ~ 11 자리의 숫자만 입력 가능합니다.</string>
+    <string name="verify_email">이메일 형식이 아닙니다.</string>
+    <string name="email_unavailable">이미 가입된 이메일 주소입니다.</string>
 
     <!--timer    -->
     <string name="timeover_true">"인증번호 다시 받기"</string>
@@ -29,6 +52,7 @@
     <string name="string_menu_my_page">마이페이지</string>
 
     <!-- teacher_talk -->
+    <string name="tv_teacher_talk">티처톡</string>
     <string name="tv_question_pay_btn"><u>보유티포 NNTP</u></string>
     <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
     <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
@@ -36,6 +60,7 @@
     <string name="more_card">게시물 더 불러오기</string>
 
     <!-- boss_talk -->
+    <string name="tv_boss_talk">보스톡</string>
     <string name="tv_boss_talk_1"><b>자유롭게 이야기를 나눠요.</b></string>
     <string name="tv_boss_talk_2">보스 talk</string>
 
@@ -126,6 +151,25 @@
     <string name="comment_cnt">댓글 %d개</string>
     <string name="user_level">Lv.%s 지식의 별</string>
 
+    <string name="community_hashtag_input_space">해시태그는 스페이스바 입력이 불가능합니다.</string>
+    <string name="community_hashtag_input_number">"해시태그는 5개까지 입력 가능합니다."</string>
+    <string name="community_input_title_body">제목과 본문을 작성해야 등록할 수 있습니다.</string>
+    <string name="community_cannot_delete_answer">채택된 글의 답변은 삭제할 수 없습니다.</string>
+    <string name="community_cannot_modify_answer">채택된 글의 답변은 수정할 수 없습니다.</string>
+    <string name="community_input_length_100">100자 이상 작성해주세요.</string>
+    <string name="community_input_comment">댓글을 입력해주세요.</string>
+
+    <string name="community_post_uploaded">게시글이 등록되었습니다.</string>
+    <string name="community_post_modified">게시글이 수정되었습니다.</string>
+    <string name="community_post_deleted">게시글이 삭제되었습니다.</string>
+
+    <string name="community_question_uploaded">질문이 등록되었습니다.</string>
+    <string name="community_question_modified">질문이 수정되었습니다.</string>
+    <string name="community_question_deleted">질문이 삭제되었습니다.</string>
+
+    <string name="community_answer_uploaded">답변이 등록되었습니다.</string>
+    <string name="community_answer_modified">답변이 수정되었습니다.</string>
+
 
     <!-- my page -->
     <string name="modify_teacher_profile_title">프로필 수정</string>
@@ -187,6 +231,8 @@
     <string name="point_info1">이용 방법 : 질문권은 ‘티쳐톡’에서 얻을 수 있습니다.  질문글에 답변을 한 후 채택되면 100TP를 얻습니다. 질문글에 달린 답변이 일주일동안 채택되지 않으면 답변자 모두 (100/답변자 수)TP를 얻습니다.</string>
     <string name="point_info2">출금 방법 : 모은 질문권은 550TP 이상부터 100TP 단위로 출금할 수 있습니다.</string>
     <string name="point_info3">출금 금액 : 1TP는 100원으로 환산됩니다. (환전 수수료 10% 별도)</string>
+    <string name="point_info4">최소 550tp 이상 교환할 수 있습니다.</string>
+    <string name="point_info5">100tp 단위로 교환할 수 있습니다.</string>
     <string name="exchange_tp">환전할 TP</string>
     <string name="tp">TP</string>
     <string name="livedata_won">-----원* (수수료 10% 별도)</string>
@@ -216,6 +262,9 @@
     <string name="hint_input_account">계좌번호를 입력해주세요</string>
     <string name="hint_input_name">예금주명을 입력해주세요</string>
     <string name="account_complete">완료</string>
+
+    <string name="exchange_loading">환전 중입니다.</string>
+    <string name="exchange_error">환전 중 오류가 발생했습니다.</string>
 
     <!-- dialog -->
     <string name="dialog_logout_title">로그아웃하시겠어요?</string>
@@ -282,7 +331,9 @@
     <string name="notification_type_exchange">환전신청완료</string>
 
     <!-- 이미지   -->
-
     <string name="image_dialog_file_size_5MB">5MB 이하의 이미지만 첨부 가능합니다.</string>
+    <string name="image_dialog_file_size_10MB">10MB 이하의 이미지만 첨부 가능합니다.</string>
     <string name="image_request_permission">갤러리 접근 권한이 필요합니다.</string>
+    <string name="image_input_number">세장까지만 업로드 가능합니다.</string>
+
 </resources>

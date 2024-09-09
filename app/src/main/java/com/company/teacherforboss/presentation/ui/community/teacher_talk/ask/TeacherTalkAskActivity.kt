@@ -38,8 +38,12 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -144,7 +148,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val lastChar = charSequence?.lastOrNull()
                 if (lastChar == ' ')
-                    showSnackBar("해시태그는 스페이스바 입력이 불가능합니다.")
+                    CustomSnackBar(binding.root, getString(R.string.community_hashtag_input_space), 2000).show()
             }
             override fun afterTextChanged(editable: Editable?) {
                 editable?.let {
@@ -173,7 +177,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                         binding.inputHashtag.text.clear()
                     }
                     else {
-                        showSnackBar("해시태그는 5개까지 입력 가능합니다.")
+                        CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_number), 2000).show()
                     }
                 }
 
@@ -202,7 +206,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             gallery.type = "image/*"
             startActivityForResult(gallery, 100)
         } else {
-            showSnackBar("세장까지만 업로드 가능합니다.")
+            CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
         }
     }
 
@@ -212,7 +216,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                showSnackBar("갤러리 접근 권한이 필요합니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -230,7 +234,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 viewModel.setFileType(extension?:"jpeg")
                 Log.d("image extension",extension.toString())
                 if(fileSizeInMB > 10) {
-                    showSnackBar("10MB 이하의 이미지만 첨부 가능합니다.")
+                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_10MB), 2000).show()
                     return
                 }
             }
@@ -331,7 +335,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             val body = binding.inputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
-                showSnackBar("제목과 본문을 작성해야 등록할 수 있습니다.")
+                CustomSnackBar.make(binding.root, getString(R.string.community_input_title_body), 2000).show()
             }
             else uploadPost()
         }
@@ -367,7 +371,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
-                putExtra("snackBarMsg","질문이 등록되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_question_uploaded))
                 startActivity(this)
             }
         })
@@ -376,7 +380,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             Intent(this, TeacherTalkBodyActivity::class.java).apply {
                 putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
-                putExtra("snackBarMsg","질문이 수정되었습니다.")
+                putExtra(SNACK_BAR_MSG, getString(R.string.community_question_modified))
                 startActivity(this)
             }
         })
@@ -401,11 +405,6 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         }
     }
 
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
-    }
-
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val dialog = WriteExitDialog(this@TeacherTalkAskActivity, TEACHER_TALK,purpose,this@TeacherTalkAskActivity)
@@ -417,11 +416,4 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
-
-    companion object{
-        const val TEACHER_TALK="TEACHER_TALK"
-        const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        const val TEACHER_TALK_ASK_ACTIVITY = "TEACHER_TALK_ASK_ACTIVITY"
-    }
-
 }

@@ -6,11 +6,15 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentManageSocialAccountBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.LOGOUT_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.view.UiState
@@ -84,7 +88,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
                     rightBtnText = getString(R.string.dialog_logout_btn),
                     clickLeftBtn = {},
                     clickRightBtn = {viewModel.postLogout()},
-                ).show(parentFragmentManager, ManageSocialAccountFragment.LOGOUT_DIALOG)
+                ).show(parentFragmentManager, LOGOUT_DIALOG)
             }
             "Delete"->{
                 DialogPopupFragment(
@@ -94,7 +98,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
                     rightBtnText = getString(R.string.dialog_delete_btn),
                     clickLeftBtn = {},
                     clickRightBtn = {viewModel.withdraw()},
-                ).show(parentFragmentManager, ManageSocialAccountFragment.DELETE_DIALOG)
+                ).show(parentFragmentManager, DELETE_DIALOG)
             }
         }
 
@@ -105,15 +109,5 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
         val intent= Intent(requireActivity(), LoginActivity::class.java).apply {
         }
         startActivity(intent)
-    }
-
-
-
-    companion object {
-        private const val LOGOUT_DIALOG = "logoutModal"
-        private const val DELETE_DIALOG = "deleteModal"
-        private const val SIGNUP_SOCIAL_NAVER="NAVER"
-        private const val SIGNUP_SOCIAL_KAKAO="KAKAO"
-        private const val USER_EMAIL="USER_EMAIL"
     }
 }

@@ -11,6 +11,7 @@ import com.company.teacherforboss.databinding.FragmentSavedBossTalkBinding
 import com.company.teacherforboss.domain.model.mypage.BookmarkedPostsEntity
 import com.company.teacherforboss.presentation.ui.mypage.MyPageViewModel
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -83,16 +84,11 @@ class SavedBossTalkFragment :
             viewModel.setLastPostId(lastPostId)
             viewModel.setHasNextPost(viewModel.hasNextPost.value ?: false)
 
-            if (previousLastPostId == DEFAULT_LAST_POST_ID) {
+            if (previousLastPostId == DEFAULT_LASTID) {
                 bookmarkedPostsAdapter.setCardList(postList)
             } else {
                 updatePosts(postList)
             }
         })
     }
-
-    companion object{
-        const val DEFAULT_LAST_POST_ID=0L
-    }
-
 }

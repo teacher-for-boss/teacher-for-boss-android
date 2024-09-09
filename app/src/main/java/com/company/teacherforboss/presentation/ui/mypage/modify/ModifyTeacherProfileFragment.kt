@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,20 +19,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.company.teacherforboss.MainActivity
-import com.company.teacherforboss.MainActivity.Companion.FRAGMENT_DESTINATION
-import com.company.teacherforboss.MainActivity.Companion.MYPAGE
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyTeacherProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileViewModel
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ACTIVITY
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
@@ -204,7 +204,7 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                 binding.veryInfo.apply {
                     visibility = View.VISIBLE
                     setTextColor(errorColor)
-                    text = "특수문자 제외 10자 이내로 작성해주세요."
+                    text = getString(R.string.verify_nickname)
                 }
                 viewModel._nicknameCheck.value = false
             } else viewModel.nicknameUser()
@@ -218,7 +218,7 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                     binding.veryInfo.apply {
                         visibility = View.VISIBLE
                         setTextColor(successColor)
-                        text = "사용 가능한 닉네임입니다."
+                        text = getString(R.string.nickname_available)
                     }
                     viewModel._nicknameCheck.value = true
                 }
@@ -227,7 +227,7 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                     binding.veryInfo.apply {
                         visibility = View.VISIBLE
                         setTextColor(errorColor)
-                        text = "사용할 수 없는 닉네임입니다."
+                        text = getString(R.string.nickname_unavailable)
                     }
                     viewModel._nicknameCheck.value = false
                 }
@@ -238,26 +238,53 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
 
     }
 
+    private fun checkPhoneAndEmail(): Boolean {
+        if(viewModel.phoneReveal.value == true) {
+            if(!viewModel.phone_validation()) {
+                CustomSnackBar.make(binding.root, getString(R.string.verify_phone), 2000).show()
+                return false
+            } else {
+                if(viewModel.emailReveal.value == true) {
+                    if(!viewModel.email_validation()) {
+                        CustomSnackBar.make(binding.root, getString(R.string.verify_email), 2000).show()
+                        return false
+                    }
+                }
+            }
+        }
+        else {
+            if(viewModel.emailReveal.value == true) {
+                if(!viewModel.email_validation()) {
+                    CustomSnackBar.make(binding.root, getString(R.string.verify_email), 2000).show()
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
     private fun getTeacherDetailProfile() {
         detailProfileViewModel.getTeacherDetailProfile()
     }
 
     private fun modifyTeacherProfile() {
         binding.nextBtn.setOnClickListener {
-            with(viewModel){
-                setKeywords(selectedChipList)
-                modifyTeacherProfile()
+            if(checkPhoneAndEmail()) {
+                with(viewModel){
+                    setKeywords(selectedChipList)
+                    modifyTeacherProfile()
 
-                modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
-                    if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
-                        Intent(context, MainActivity::class.java).apply {
-                            putExtra(FRAGMENT_DESTINATION, MYPAGE)
-                            startActivity(this)
+                    modifyTeacherProfileLiveData.observe(viewLifecycleOwner, Observer {
+                        if(requireActivity().intent.getStringExtra(PREVIOUS_ACTIVITY) == TEACHER_PROFILE_ACTIVITY) {
+                            Intent(context, MainActivity::class.java).apply {
+                                putExtra(FRAGMENT_DESTINATION, MYPAGE)
+                                startActivity(this)
+                            }
+                        } else {
+                            requireActivity().finish()
                         }
-                    } else {
-                        requireActivity().finish()
-                    }
-                })
+                    })
+                }
             }
         }
     }
@@ -445,10 +472,5 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                 }
             }
         }
-    }
-    
-    companion object {
-        private const val PREVIOUS_ACTIVITY = "PREVIOUS_ACTIVITY"
-        private const val TEACHER_PROFILE_ACTIVITY = "TEACHER_PROFILE_ACTIVITY"
     }
 }

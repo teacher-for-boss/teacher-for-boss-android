@@ -105,12 +105,6 @@ class BossTalkMainFragment :
             viewModel.getBossTalkPosts()
         }
 
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                findNavController().navigateUp()
-//            }
-//        })
-
     }
 
     private fun initPostView(postList: List<PostEntity>) {

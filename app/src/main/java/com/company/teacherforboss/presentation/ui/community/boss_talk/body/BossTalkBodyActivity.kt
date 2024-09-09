@@ -211,7 +211,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         viewModel.isLike.observe(this, Observer { isLike ->
             if (isLike) {
                 binding.likeIv.setImageResource(R.drawable.community_like_on)
-                binding.likeTv.setTextColor(Color.parseColor("#5F5CE8"))
+                binding.likeTv.setTextColor(Color.parseColor("#8D37EF"))
             } else {
                 binding.likeIv.setImageResource(R.drawable.community_like)
                 binding.likeTv.setTextColor(Color.parseColor("#8490A0"))
@@ -225,7 +225,7 @@ class BossTalkBodyActivity : AppCompatActivity() {
         viewModel.isBookmark.observe(this, Observer { isBookmark ->
             if (isBookmark) {
                 binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)
-                binding.bookmarkTv.setTextColor(Color.parseColor("#5F5CE8"))
+                binding.bookmarkTv.setTextColor(Color.parseColor("#8D37EF"))
             } else {
                 binding.bookmarkIv.setImageResource(R.drawable.community_bookmark)
                 binding.bookmarkTv.setTextColor(Color.parseColor("#8490A0"))

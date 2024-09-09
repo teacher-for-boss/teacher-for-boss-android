@@ -82,8 +82,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/teacher_talk_main_text1" />
 
                     <ImageView
-                        android:layout_width="281dp"
-                        android:layout_height="200dp"
+                        android:layout_width="320dp"
+                        android:layout_height="215dp"
                         android:layout_marginTop="19dp"
                         android:src="@drawable/ic_teacher_talk_character"
                         app:layout_constraintEnd_toEndOf="parent"

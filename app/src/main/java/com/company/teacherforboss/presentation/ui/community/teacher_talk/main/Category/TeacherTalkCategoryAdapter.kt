@@ -45,10 +45,10 @@ class TeacherTalkCategoryAdapter(
                 binding.teacherTalkCategory.setTextColor(Color.WHITE)
                 binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple600)
             } else if (position == previousItemPosition) {
-                binding.teacherTalkCategory.setTextColor(Color.parseColor("#7B79E8"))  // purple500
+                binding.teacherTalkCategory.setTextColor(Color.parseColor("#A15AF2"))  // purple500
                 binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple200)
             } else {
-                binding.teacherTalkCategory.setTextColor(Color.parseColor("#7B79E8"))  // purple500
+                binding.teacherTalkCategory.setTextColor(Color.parseColor("#A15AF2"))  // purple500
                 binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple200)
             }
         }

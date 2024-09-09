@@ -14,11 +14,11 @@ import com.company.teacherforboss.databinding.FragmentEmailBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.basic.PasswordFragment
+import com.company.teacherforboss.util.base.BindingFragment
 
 
 //@AndroidEntryPoint
-class EmailFragment : Fragment() {
-    private lateinit var binding:FragmentEmailBinding
+class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_email) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
     //사용자입력값
@@ -28,10 +28,7 @@ class EmailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_email,container,false)
-
+    ): View {
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

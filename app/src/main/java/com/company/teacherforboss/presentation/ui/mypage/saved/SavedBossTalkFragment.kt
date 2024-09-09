@@ -37,6 +37,12 @@ class SavedBossTalkFragment :
         viewModel.clearQuestionData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getBookmarkedPosts()
+
+    }
+
     private fun initView() {
         bookmarkedPostsAdapter = SavedBossTalkCardAdapter(requireContext())
         binding.rvCard.apply {
@@ -72,7 +78,6 @@ class SavedBossTalkFragment :
     }
     private fun getPosts() {
         viewModel.bookmarkedPostList.observe(viewLifecycleOwner, { postList ->
-            val postList = postList
             val previousLastPostId = viewModel.getLastPostId()
             val lastPostId = postList.get(postList.lastIndex).postId
 

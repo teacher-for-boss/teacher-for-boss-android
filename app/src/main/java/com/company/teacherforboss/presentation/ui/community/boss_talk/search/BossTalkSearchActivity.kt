@@ -15,11 +15,11 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBossTalkSearchBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
+import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BossTalkSearchActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityBossTalkSearchBinding
+class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.layout.activity_boss_talk_search) {
     private val viewModel by viewModels<BossTalkMainViewModel>()
 
     private var hasNext = false

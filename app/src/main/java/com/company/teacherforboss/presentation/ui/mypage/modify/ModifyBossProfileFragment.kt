@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.mypage.modify
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -19,6 +21,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
 import com.company.teacherforboss.databinding.FragmentModifyBossProfileBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageModifyDialogFragment
+import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
@@ -27,18 +30,8 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 
-class ModifyBossProfileFragment : Fragment() {
-
-    private lateinit var binding: FragmentModifyBossProfileBinding
+class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBinding>(R.layout.fragment_modify_boss_profile) {
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_boss_profile, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -233,13 +226,15 @@ class ModifyBossProfileFragment : Fragment() {
         }
     }
     private fun setupEditTextListeners() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         binding.nicknameBox.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    binding.nicknameBox.clearFocus()
-                    true
-                } else {
-                    false
-                }
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                imm.hideSoftInputFromWindow(binding.nicknameBox.windowToken, 0)
+                true
+            } else {
+                false
             }
+        }
+
     }
 }

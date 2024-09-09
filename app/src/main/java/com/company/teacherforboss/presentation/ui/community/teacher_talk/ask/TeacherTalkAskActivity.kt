@@ -32,6 +32,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
@@ -50,9 +51,7 @@ import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAskActivity : AppCompatActivity(),WriteExitDialogListener {
-
-    private lateinit var binding: ActivityTeachertalkAskBinding
+class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.layout.activity_teachertalk_ask),WriteExitDialogListener {
     private val viewModel: TeacherTalkAskViewModel by viewModels()
 
     private val adapterTag:rvAdapterTagTeacher by lazy { rvAdapterTagTeacher(viewModel.hashTagList,::deleteHashTag) }

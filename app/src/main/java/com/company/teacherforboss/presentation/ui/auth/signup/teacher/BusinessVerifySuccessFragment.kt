@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBusinessVerifySuccessBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 
-class BusinessVerifySuccessFragment : Fragment() {
+class BusinessVerifySuccessFragment : BindingFragment<FragmentBusinessVerifySuccessBinding>(R.layout.fragment_business_verify_success) {
     private val viewModel by activityViewModels<SignupViewModel>()
-    private lateinit var binding:FragmentBusinessVerifySuccessBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding=FragmentBusinessVerifySuccessBinding.inflate(inflater, container, false)
+    ): View {
         addListeners()
 
         return binding.root

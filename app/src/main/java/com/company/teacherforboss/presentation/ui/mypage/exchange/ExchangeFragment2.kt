@@ -13,41 +13,33 @@ import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchange2Binding
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.databinding.FragmentExchangeBinding
+import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
+import com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity
+import com.company.teacherforboss.presentation.ui.mypage.ManageAccountFragment
+import com.company.teacherforboss.presentation.ui.mypage.ManageSocialAccountFragment
+import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class ExchangeFragment2 : Fragment() {
-
-    private var _binding: FragmentExchange2Binding? = null
-    private val binding get() = _binding!!
+class ExchangeFragment2 : BindingFragment<FragmentExchange2Binding>(R.layout.fragment_exchange2) {
     private val viewModel: ExchangeViewModel by activityViewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentExchange2Binding.inflate(inflater, container, false).apply {
-            exchangeViewModel = viewModel
-            lifecycleOwner = viewLifecycleOwner
-        }
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.apply {
+            exchangeViewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
         changeAccountInfo()
         setupObservers()
         setupClickListeners()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 
     private fun changeAccountInfo() {
         binding.tvChangeInfo.setOnClickListener {

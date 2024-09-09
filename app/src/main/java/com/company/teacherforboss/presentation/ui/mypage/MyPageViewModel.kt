@@ -201,6 +201,22 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun reLoadBookmarkedPosts() {
+        viewModelScope.launch {
+            try {
+                val bookmarkedPostsResponseEntity = bookmarkedPostsUseCase(
+                    BookmarkedPostsRequestEntity(
+                        lastPostId = 0L,
+                        size = bookmarkedQuestionSize.value ?: 10,
+                    )
+                )
+                setHasNextPost(bookmarkedPostsResponseEntity.hasNext)
+                setBookmarkedPostsList(bookmarkedPostsResponseEntity.postList)
+            } catch (ex: Exception) {
+            }
+        }
+    }
+
     fun setHasNextQuestion(hasNext: Boolean) {
         _hasNextQuestion.value = hasNext
     }

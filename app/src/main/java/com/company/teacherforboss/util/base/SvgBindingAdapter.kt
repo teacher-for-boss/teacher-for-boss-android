@@ -1,6 +1,7 @@
 package com.company.teacherforboss.util.base
 
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import android.widget.ImageView
 import coil.ImageLoader
@@ -43,6 +44,27 @@ object SvgBindingAdapter {
                 onError = { error ->
                     Log.d("error",error.toString())
                 }
+            )
+            .build()
+
+        imageLoader.enqueue(imageRequest)
+    }
+
+    fun ImageView.loadImageFromUrlCoil(imageUrl: String) {
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry { add(SvgDecoder(context))
+            }
+            .build()
+
+        val imageRequest = ImageRequest.Builder(this.context)
+            .crossfade(true)
+            .crossfade(300)
+            .data(imageUrl)
+            .target(
+                onSuccess = { result ->
+                    val bitmap = (result as BitmapDrawable).bitmap
+                    this.setImageBitmap(bitmap)
+                },
             )
             .build()
 

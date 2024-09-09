@@ -11,13 +11,12 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivitySavedTalkBinding
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
+import com.company.teacherforboss.util.base.BindingActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SavedTalkActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySavedTalkBinding
+class SavedTalkActivity : BindingActivity<ActivitySavedTalkBinding>(R.layout.activity_saved_talk) {
     private lateinit var pagerAdapter: SavedTalkPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

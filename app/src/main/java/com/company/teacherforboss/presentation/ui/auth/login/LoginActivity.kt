@@ -22,6 +22,8 @@ import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginV
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
@@ -51,8 +53,7 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity: AppCompatActivity(){
-    private lateinit var binding:ActivityLoginBinding
+class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_login){
     private val signupViewModel by viewModels<SignupViewModel>()
     private val loginViewModel by viewModels<LoginViewModel>()
     private val socialLoginViewModel by viewModels<SocialLoginViewModel>()

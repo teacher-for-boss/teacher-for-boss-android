@@ -193,9 +193,9 @@ class ModifyProfileViewModel @Inject constructor(
                 val modifyTeacherProfileResponseEntity = modifyTeacherProfileUseCase(
                     ModifyTeacherProfileRequestEntity(
                         nickname = nickname.value!!,
-                        phone = phone.value!!,
+                        phone =phone.value?.takeIf { it.isNullOrEmpty() }?:null,
                         phoneOpen = phoneReveal.value!!,
-                        email = email.value!!,
+                        email=email.value?.takeIf { it.isNullOrEmpty() }?:null,
                         emailOpen = emailReveal.value!!,
                         field = field.value!!,
                         career = CareerToInt(),

@@ -15,14 +15,14 @@ import androidx.databinding.DataBindingUtil
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivitySignupFinishBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 
-class SignupFinishActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySignupFinishBinding
+class SignupFinishActivity : BindingActivity<ActivitySignupFinishBinding>(R.layout.activity_signup_finish) {
     private val viewModel: SignupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

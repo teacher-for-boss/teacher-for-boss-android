@@ -1,109 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.ui.auth.signup.teacher.BusinessVerifyFailFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.auth.signup.teacher.BusinessVerifyFailFragment">
 
-        <ImageView
-            android:id="@+id/failIcon"
-            android:src="@drawable/fail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="40dp"
-            app:layout_constraintBottom_toTopOf="@id/failDesc"
-            >
-
-        </ImageView>
-
-        <LinearLayout
-            android:id="@+id/failDesc"
-            app:layout_constraintTop_toBottomOf="@id/failIcon"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/failIcon"
+                android:src="@drawable/fail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintBottom_toTopOf="@id/failDesc">
 
-            <TextView
-                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@id/successIcon"
-                android:text="@string/business_verify" />
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="4dp">
+            </ImageView>
 
-            </Space>
-
-            <TextView
-                android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAlignment="center"
-                android:text="@string/business_verify_fail"/>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp">
-
-            </Space>
-
-            <TextView
-                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.12"
-                android:textColor="@color/error"
-                android:textAlignment="center"
-                android:text="@string/business_verify_fail_desc"
+            <LinearLayout
+                android:id="@+id/failDesc"
+                app:layout_constraintTop_toBottomOf="@id/failIcon"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </TextView>
 
-        </LinearLayout>
+                <TextView
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/successIcon"
+                    android:text="@string/business_verify" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp">
+
+                </Space>
+
+                <TextView
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:text="@string/business_verify_fail" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp">
+
+                </Space>
+
+                <TextView
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.12"
+                    android:textColor="@color/error"
+                    android:textAlignment="center"
+                    android:text="@string/business_verify_fail_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/problemText"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.12"
+            android:textColor="@color/Gray400"
+            android:textAlignment="center"
+            android:text="@string/business_verify_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
+            android:layout_marginBottom="40dp"
+            android:clickable="true">
+
+        </TextView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next_signup"
+            android:background="@drawable/radius_purple_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/selector_all_btn_background"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
+            android:textColor="@color/white"
+            android:text="@string/signup_re_verify"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/problemText"
-        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.12"
-        android:textColor="@color/Gray400"
-        android:textAlignment="center"
-        android:text="@string/business_verify_help"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_next_signup"
-        android:layout_marginBottom="40dp"
-        android:clickable="true"
-        >
-
-    </TextView>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_next_signup"
-        android:background="@drawable/radius_purple_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/selector_all_btn_background"
-        android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.16"
-        android:textColor="@color/white"
-        android:text="@string/signup_re_verify"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

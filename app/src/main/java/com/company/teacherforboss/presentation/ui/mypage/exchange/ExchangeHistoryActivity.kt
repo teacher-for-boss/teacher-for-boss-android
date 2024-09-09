@@ -4,14 +4,15 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityExchangeHistoryBinding
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
+import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExchangeHistoryActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityExchangeHistoryBinding
+class ExchangeHistoryActivity : BindingActivity<ActivityExchangeHistoryBinding>(R.layout.activity_exchange_history) {
     private val notificationViewModel by viewModels<NotificationViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

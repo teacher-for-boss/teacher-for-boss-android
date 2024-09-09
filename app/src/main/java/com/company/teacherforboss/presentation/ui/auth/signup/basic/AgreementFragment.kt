@@ -18,19 +18,17 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.TeacherProfileFragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.company.teacherforboss.util.base.BindingDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
-class AgreementFragment : BottomSheetDialogFragment() {
-    private lateinit var binding: FragmentAgreementBinding
+@AndroidEntryPoint
+class AgreementFragment : BindingDialogFragment<FragmentAgreementBinding>(R.layout.fragment_agreement) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_agreement,container,false)
-
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 

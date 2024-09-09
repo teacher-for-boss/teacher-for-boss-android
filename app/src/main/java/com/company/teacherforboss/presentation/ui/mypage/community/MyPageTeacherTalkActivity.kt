@@ -12,14 +12,14 @@ import com.company.teacherforboss.databinding.ActivityMyPageTeacherTalkBinding
 import com.company.teacherforboss.domain.model.mypage.MyPageQuestionEntity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageTeacherTalkActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMyPageTeacherTalkBinding
+class MyPageTeacherTalkActivity : BindingActivity<ActivityMyPageTeacherTalkBinding>(R.layout.activity_my_page_teacher_talk) {
     private val viewModel by viewModels<MyPageQuestionViewModel>()
     private lateinit var questionList: ArrayList<MyPageQuestionEntity>
     private lateinit var adapter: rvAdapterMyPageQuestion

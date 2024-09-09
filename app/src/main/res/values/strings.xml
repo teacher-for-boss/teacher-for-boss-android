@@ -72,6 +72,12 @@
     <string name="teacher_talk_bookmark_count">%s</string>
     <string name="teacher_talk_comment_count">%s</string>
     <string name="teacher_talk_like_count">%s</string>
+    <string name="like">좋아요</string>
+    <string name="like_any">좋아요 %s</string>
+    <string name="bookmark">저장</string>
+    <string name="bookmark_any">저장 %s</string>
+
+
 
     <!-- boss talk item-->
     <string name="boss_talk_title"><b>%s</b></string>

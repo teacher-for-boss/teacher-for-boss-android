@@ -11,16 +11,15 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBusinessInfoBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.base.BindingFragment
 
-class BusinessInfoFragment : Fragment(){
+class BusinessInfoFragment : BindingFragment<FragmentBusinessInfoBinding>(R.layout.fragment_business_info){
     private val viewModel by activityViewModels<SignupViewModel>()
-    private lateinit var binding: FragmentBusinessInfoBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_business_info, container, false)
+    ): View {
         addListeners()
         return binding.root
     }

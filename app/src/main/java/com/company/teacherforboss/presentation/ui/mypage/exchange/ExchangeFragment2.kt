@@ -13,14 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentExchange2Binding
 import com.company.teacherforboss.util.CustomSnackBar
-import com.company.teacherforboss.databinding.FragmentExchangeBinding
-import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
-import com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity
-import com.company.teacherforboss.presentation.ui.mypage.ManageAccountFragment
-import com.company.teacherforboss.presentation.ui.mypage.ManageSocialAccountFragment
-import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
-import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

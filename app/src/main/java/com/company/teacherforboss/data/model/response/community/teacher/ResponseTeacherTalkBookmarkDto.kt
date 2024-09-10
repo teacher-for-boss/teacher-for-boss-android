@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.datetime.LocalDateTime
 
 data class ResponseTeacherTalkBookmarkDto (
-    @SerializedName("bookmark")
+    @SerializedName("bookmarked")
     val bookmarked:Boolean,
     @SerializedName("updatedAt")
-    val updatedAt: LocalDateTime,
+    val updatedAt: String,
     @SerializedName("questionId")
     val questionId: Long,
 ){

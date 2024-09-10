@@ -119,7 +119,6 @@ class NewScrollView @JvmOverloads constructor(
 //        }
 //    }
 
-
     private fun adjustRecyclerViewHeight() {
         recyclerView?.apply {
             post {

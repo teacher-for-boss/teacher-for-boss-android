@@ -20,5 +20,5 @@ interface MyPageRepository {
     suspend fun getChipInfo(): Result<ChipInfoResponseEntity>
     suspend fun getMyQuestion(myPageMyQuestionRequestEntity: MyPageMyQuestionRequestEntity):MyPageAnsweredQuestionResponseEntity
     suspend fun getCommentedPosts (myPageCommentedPostsRequestEntity: MyPageCommentedPostsRequestEntity): MyPagePostsResponseEntity
-    suspend fun getMyPosts (myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity): MyPagePostsResponseEntity
+    suspend fun getMyPosts (myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity): Result<MyPagePostsResponseEntity>
 }

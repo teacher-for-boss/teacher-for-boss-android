@@ -91,21 +91,30 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
 
         isLoading = true
         viewModelScope.launch {
-            try{
-                val myPageMyPostsResponseEntity = myPageMyPostsUseCase(
-                    MyPageMyPostsRequestEntity(
+            myPageMyPostsUseCase(MyPageMyPostsRequestEntity(
                         lastPostId = lastPostId.value?:0L,
-                        size = size.value?:10
-                    )
-                )
-                _myPostsState.value = UiState.Success(myPageMyPostsResponseEntity)
-
-            }catch (ex:Exception){
-                _myPostsState.value=UiState.Error(ex.message)
-            }finally {
-                isLoading = false
-                _myPostsState.value = UiState.Empty
+                        size = size.value?:10)).onSuccess { myPageMyPostResponseEntity->
+                            _myPostsState.value=UiState.Success(myPageMyPostResponseEntity)
+                isLoading=false
+            }.onFailure { exception: Throwable ->
+                _myPostsState.value=UiState.Error(exception.message)
             }
+
+//            try{
+//                val myPageMyPostsResponseEntity = myPageMyPostsUseCase(
+//                    MyPageMyPostsRequestEntity(
+//                        lastPostId = lastPostId.value?:0L,
+//                        size = size.value?:10
+//                    )
+//                )
+//                _myPostsState.value = UiState.Success(myPageMyPostsResponseEntity)
+//
+//            }catch (ex:Exception){
+//                _myPostsState.value=UiState.Error(ex.message)
+//            }finally {
+//                isLoading = false
+////                _myPostsState.value = UiState.Empty
+//            }
         }
     }
 

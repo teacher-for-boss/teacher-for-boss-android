@@ -11,6 +11,6 @@ import com.company.teacherforboss.domain.model.payment.BankAccountChangeResponse
 import com.company.teacherforboss.domain.repository.MyPageRepository
 
 class MyPageMyPostsUseCase(private val myPageRepository: MyPageRepository) {
-    suspend operator fun invoke(myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity) : MyPagePostsResponseEntity
+    suspend operator fun invoke(myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity) : Result<MyPagePostsResponseEntity>
             = myPageRepository.getMyPosts(myPageMyPostsRequestEntity)
 }

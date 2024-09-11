@@ -50,11 +50,11 @@ class MyPageRepositoryImpl @Inject constructor(
                 .result.toMyPagePostsResponseEntity()
         }.getOrElse { err -> throw err }
 
-    override suspend fun getMyPosts(myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity): MyPagePostsResponseEntity =
+    override suspend fun getMyPosts(myPageMyPostsRequestEntity: MyPageMyPostsRequestEntity): Result<MyPagePostsResponseEntity> =
         runCatching{
             myPageRemoteDataSource.getMyPosts(myPageMyPostsRequestEntity.toRequestMyPageMyPostsDto())
                 .result.toMyPagePostsResponseEntity()
-        }.getOrElse { err -> throw err }
+        }
 
     override suspend fun getChipInfo(): Result<ChipInfoResponseEntity> =
         runCatching {

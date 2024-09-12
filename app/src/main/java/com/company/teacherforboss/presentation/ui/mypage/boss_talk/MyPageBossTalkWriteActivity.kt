@@ -69,9 +69,7 @@ class MyPageBossTalkWriteActivity : BindingActivity<ActivityMyPageBossWriteBindi
                         else{
                             adapter.addMoreCards(viewModel.postList.value!!)
                         }
-
                     }
-
                     else -> Unit
                 }
             }.launchIn(this.lifecycleScope)

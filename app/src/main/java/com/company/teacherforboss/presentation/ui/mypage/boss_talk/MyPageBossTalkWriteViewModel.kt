@@ -82,7 +82,7 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
                 _commentedPostsState.value = UiState.Error(ex.message)
             } finally {
                 isLoading = false
-                _myPostsState.value = UiState.Empty
+                _commentedPostsState.value = UiState.Empty
             }
         }
     }
@@ -108,6 +108,4 @@ class MyPageBossTalkWriteViewModel@Inject constructor(
             }
         }
     }
-
-
 }

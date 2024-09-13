@@ -24,12 +24,11 @@ class PasswordFragment : BindingFragment<FragmentPasswordBinding>(R.layout.fragm
     var show_pwEnter: Boolean = false
     var show_PwReEnter: Boolean = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding.signupViewModel=viewModel
-        binding.lifecycleOwner=this
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.signupViewModel = viewModel
+        binding.lifecycleOwner = this
 
         viewModel.livePw.observe(viewLifecycleOwner) { pw ->
             viewModel.pw_validation()
@@ -54,20 +53,22 @@ class PasswordFragment : BindingFragment<FragmentPasswordBinding>(R.layout.fragm
         // 비밀번호 일치할 때만 nextBtn 활성화
 
 
-        val activity=activity as SignupActivity
-        with (binding) {
+        val activity = activity as SignupActivity
+        with(binding) {
             nextBtn.setOnClickListener {
-                if(viewModel.all_check.value==false)
-                    CustomSnackBar.make(binding.root, getString(R.string.format_pw_false), 2000).show()
-                else if(viewModel.rePw_check.value==false)
-                    CustomSnackBar.make(binding.root, getString(R.string.format_re_pw_false), 2000).show()
+                if (viewModel.all_check.value == false)
+                    CustomSnackBar.make(binding.root, getString(R.string.format_pw_false), 2000)
+                        .show()
+                else if (viewModel.rePw_check.value == false)
+                    CustomSnackBar.make(binding.root, getString(R.string.format_re_pw_false), 2000)
+                        .show()
                 else {
                     activity.gotoNextFragment(NamePhoneFragment())
                 }
             }
 
             //비밀번호 입력
-            pwEyeClosed.setOnClickListener{
+            pwEyeClosed.setOnClickListener {
                 show_pwEnter = true  //비밀번호가 보임
                 binding.pwEyeClosed.visibility = View.GONE
                 binding.pwEyeOpen.visibility = View.VISIBLE
@@ -94,8 +95,6 @@ class PasswordFragment : BindingFragment<FragmentPasswordBinding>(R.layout.fragm
                 updatePasswordInputType()
             }
         }
-
-        return binding.root
     }
 
     private fun checkNextButtonActivation() {

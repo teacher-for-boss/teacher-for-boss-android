@@ -16,13 +16,10 @@ import com.company.teacherforboss.util.base.BindingFragment
 
 class BusinessVerifyFailFragment : BindingFragment<FragmentBusinessVerifyFailBinding>(R.layout.fragment_business_verify_fail) {
     private val viewModel by activityViewModels<SignupViewModel>()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        addListeners()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        return binding.root
+        addListeners()
     }
 
     private fun addListeners(){

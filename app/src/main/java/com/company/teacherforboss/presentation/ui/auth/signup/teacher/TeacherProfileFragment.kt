@@ -52,10 +52,9 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
     @Inject
     lateinit var localDataSource: LocalDataSource
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
@@ -151,8 +150,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 binding.nextBtn.isEnabled = false
             }
         })
-
-        return binding.root
     }
 
     private fun addListeners(){

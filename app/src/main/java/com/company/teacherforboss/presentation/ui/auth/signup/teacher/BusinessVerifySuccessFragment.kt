@@ -14,13 +14,9 @@ import com.company.teacherforboss.util.base.BindingFragment
 
 class BusinessVerifySuccessFragment : BindingFragment<FragmentBusinessVerifySuccessBinding>(R.layout.fragment_business_verify_success) {
     private val viewModel by activityViewModels<SignupViewModel>()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         addListeners()
-
-        return binding.root
     }
 
     private fun addListeners(){

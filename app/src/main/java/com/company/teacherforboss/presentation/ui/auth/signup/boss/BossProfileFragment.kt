@@ -43,10 +43,9 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
 
     private val viewModel by activityViewModels<SignupViewModel>()
     @Inject lateinit var localDataSource: LocalDataSource
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
@@ -55,7 +54,6 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
         observeNickname()
         observeProfile()
 
-        return binding.root
     }
 
     override fun onDestroyView() {

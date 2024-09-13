@@ -24,46 +24,44 @@ class SignupStartFragment : BindingFragment<FragmentSignupStartBinding>(R.layout
     private val viewModel by activityViewModels<SignupViewModel>()
     @Inject lateinit var localDataSource: LocalDataSource
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding.signupViewModel=viewModel
-        binding.lifecycleOwner=this
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val activity=activity as SignupActivity
-        var btn1 = binding.bossSelectTab
-        var btn2 = binding.teacherSelectTab
+        binding.signupViewModel = viewModel
+        binding.lifecycleOwner = this
+
+        val activity = activity as SignupActivity
+        val btn1 = binding.bossSelectTab
+        val btn2 = binding.teacherSelectTab
         btn1.isSelected = true
 
-        btn1.setOnClickListener(){
+        btn1.setOnClickListener {
             btn1.isSelected = true
             btn2.isSelected = false
-
         }
-        btn2.setOnClickListener(){
+
+        btn2.setOnClickListener {
             btn1.isSelected = false
             btn2.isSelected = true
         }
-        binding.nextBtn.setOnClickListener(){
-            val signupType= localDataSource.getSignupType()
 
-            if(btn1.isSelected){
+        binding.nextBtn.setOnClickListener {
+            val signupType = localDataSource.getSignupType()
+
+            if (btn1.isSelected) {
                 viewModel.setBossMode()
                 viewModel.changeToBossPageSize()
-                // 소셜로 회원가입 중일때
-                if (signupType != SIGNUP_DEFAULT) activity.gotoNextFragment(BossProfileFragment())
-                else  activity.gotoNextFragment(EmailFragment())
-            }
-            else{
+
+                if (signupType != SIGNUP_DEFAULT) {
+                    activity.gotoNextFragment(BossProfileFragment())
+                } else {
+                    activity.gotoNextFragment(EmailFragment())
+                }
+            } else {
                 viewModel.setTeacherMode()
                 viewModel.changeToTeacherPageSize()
                 activity.gotoNextFragment(BusinessInfoFragment())
-//                activity.gotoNextFragment(TeacherProfileFragment())
             }
         }
-
-        return binding.root
-
     }
 }

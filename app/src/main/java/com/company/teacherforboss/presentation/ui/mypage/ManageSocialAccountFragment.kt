@@ -83,7 +83,7 @@ class ManageSocialAccountFragment : BindingFragment<FragmentManageSocialAccountB
             "Logout"->{
                 DialogPopupFragment(
                     title = getString(R.string.dialog_logout_title),
-                    content = getString(R.string.dialog_logout_content),
+                    content = "",
                     leftBtnText = getString(R.string.dialog_exit),
                     rightBtnText = getString(R.string.dialog_logout_btn),
                     clickLeftBtn = {},

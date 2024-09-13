@@ -133,7 +133,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
     fun doOptionMenu() {
         // 삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this, viewModel, this, questionId)
+            val dialog = DeleteBodyDialog(this, viewModel, this, questionId, TEACHER_TALK)
             dialog.show()
         }
 

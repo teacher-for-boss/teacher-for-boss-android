@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="앱을 어떤 목적으로\n사용하실 건가요?"
+                android:text="@string/sign_up_title"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.24" />
 
             <View
@@ -65,7 +65,7 @@
                             android:id="@+id/bossStartText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="보스로 시작하기"
+                            android:text="@string/sign_up_boss"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
                             android:textColor="@drawable/tab_text_color"/>
 
@@ -73,7 +73,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="누구나 가입할 수 있어요"
+                            android:text="@string/sign_up_boss_info1"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                             android:textColor="@color/Gray500"/>
 
@@ -81,7 +81,7 @@
                             android:id="@+id/textView7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="티쳐Talk에서 궁금한 것을 질문하고\n보스Talk에서 다른 사장님들과\n자유롭게 이야기 나눌 수 있어요"
+                            android:text="@string/sign_up_boss_info2"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                             android:textColor="@color/Gray500"
                             android:layout_marginTop="8dp"
@@ -128,7 +128,7 @@
                             android:id="@+id/teacherStartText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="티쳐로 시작하기"
+                            android:text="@string/sign_up_teacher"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
                             android:textColor="@drawable/tab_text_color"/>
 
@@ -136,14 +136,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="사업자 인증 후 가입할 수 있어요"
+                            android:text="@string/sign_up_teacher_info1"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                             android:textColor="@color/Gray500"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="티쳐Talk에서 보스가 남긴 질문에\n답변을 남기고 리워드를 받을 수 \n있어요!"
+                            android:text="@string/sign_up_teacher_info2"
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
                             android:textColor="@color/Gray500"
                             android:layout_marginTop="8dp"

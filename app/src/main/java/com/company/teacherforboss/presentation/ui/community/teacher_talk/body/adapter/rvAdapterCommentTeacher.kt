@@ -22,6 +22,7 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
@@ -177,7 +178,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
             binding.deleteBtn.setOnClickListener {
                 if(!viewModel.isSelected.value!!) {
                     viewModel.setAnswerId(answer.answerId)
-                    val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner)
+                    val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner, TEACHER_TALK)
                     dialog.show()
                 } else {
                     CustomSnackBar.make(binding.root, context.getString(R.string.community_cannot_delete_answer), 2000).show()

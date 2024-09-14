@@ -36,6 +36,8 @@ import com.company.teacherforboss.util.base.LocalDataSource
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -136,10 +138,11 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
     }
 
     fun checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_READ_EXTERNAL_STORAGE)
-        } else {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
             openGallery()
+        } else {
+            requestPermissions()
         }
     }
 
@@ -183,6 +186,29 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
                 viewModel.getPresignedUrlList()
             }
         }
+    }
+
+    fun requestPermissions() {
+        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES) // Android 13 이상일 경우
+        } else {
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE) // Android 12 이하일 경우
+        }
+        TedPermission.create()
+            .setPermissionListener(object : PermissionListener {
+                override fun onPermissionGranted() {
+                    openGallery()
+                }
+
+                override fun onPermissionDenied(deniedPermissions: List<String>) {
+                }
+            })
+
+            .setDeniedMessage(getString(R.string.image_permission_denied))
+            .setPermissions(
+                *permissions
+            )
+            .check()
     }
 
 

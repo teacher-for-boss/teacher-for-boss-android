@@ -206,6 +206,13 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Normal
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.4.2")
+
+    // Coroutine
+    implementation("io.github.ParkSangGwon:tedpermission-coroutine:3.4.2")
+
 }
 
 kapt {

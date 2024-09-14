@@ -69,9 +69,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        stopAutoScroll()
         removeAdapter()
+        stopAutoScroll()
+        super.onDestroyView()
+
     }
 
     private fun initLayout() {

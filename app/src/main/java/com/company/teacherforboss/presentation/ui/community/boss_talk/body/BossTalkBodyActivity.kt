@@ -332,7 +332,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         })
     }
     private fun handleTouchEvent(ev: MotionEvent): Boolean {
-        if (currentOptionButton != null && ev.action == MotionEvent.ACTION_DOWN) {
+        if (currentOptionButton != null && ev.action == MotionEvent.ACTION_UP) {
             val optionButtonLocation = IntArray(2)
             currentOptionButton?.getLocationOnScreen(optionButtonLocation)
             val optionButtonRect = Rect(
@@ -374,7 +374,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (ev.action == MotionEvent.ACTION_DOWN) {
+        if (ev.action == MotionEvent.ACTION_UP) {
             val v = currentFocus
             if (v != null) {
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

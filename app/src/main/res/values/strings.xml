@@ -53,9 +53,10 @@
 
     <!-- teacher_talk -->
     <string name="tv_teacher_talk">티처톡</string>
-    <string name="tv_question_pay_btn"><u>보유티포 NNTP</u></string>
-    <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
-    <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
+    <string name="tv_question_pay_teacher_btn">티포 %dTP</string>
+    <string name="tv_question_pay_boss_btn">질문권 무료 체험 중</string>
+    <string name="teacher_talk_main_text1">티처Talk에서 궁금증을 해결할 수 있어요</string>
+    <string name="teacher_talk_main_text2"><b>티처에게 물어보세요!</b></string>
     <string name="search_view_hint">궁금한 키워드를 입력하세요</string>
     <string name="more_card">게시물 더 불러오기</string>
 
@@ -138,12 +139,12 @@
     <string name="bank_title">은행을 선택해 주세요</string>
 
     <!-- home -->
-    <string name="home_logo">티쳐포보스</string>
+    <string name="home_logo">티처포보스</string>
     <string name="home_banner_position">%s / %s</string>
     <string name="home_teacher_talk_shortcut">티처Talk 바로가기</string>
     <string name="home_teacher_talk_popular_post">티처Talk 인기글</string>
     <string name="home_boss_talk_popular_post">보스Talk 인기글</string>
-    <string name="home_weekly_best_teacher">이번 주 인기 티쳐</string>
+    <string name="home_weekly_best_teacher">이번 주 인기 티처</string>
 
     <string name="home_teacher_talk_all">전체</string>
     <string name="home_teacher_talk_marketing">마케팅</string>
@@ -256,7 +257,7 @@
     <string name="exchange_complete2">✔️ 영업일 기준 3일 내로 입금됩니다.</string>
     <string name="exchange_complete3">✔️ 환전 신청한 내역은 마이페이지에서 확인 가능합니다.</string>
     <string name="current_teacher_point">%s TP</string>
-    <string name="current_user_name">%s 티쳐의\n 현재 보유 티포</string>
+    <string name="current_user_name">%s 티처의\n 현재 보유 티포</string>
 
 
     <string name="exchange_history_title">환전 내역</string>

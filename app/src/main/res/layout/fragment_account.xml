@@ -50,8 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                android:text="은행 선택"
-                />
+                android:text="@string/choose_bank" />
 
             <Space
                 android:layout_width="match_parent"
@@ -65,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_signup"
-                android:hint="클릭하여 은행을 선택해주세요"
+                android:hint="@string/hint_choose_bank"
                 android:text="@={signupViewModel._bank}"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:padding="12dp"
@@ -84,8 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                android:text="계좌번호 입력"
-                />
+                android:text="@string/input_account" />
 
             <Space
                 android:layout_width="match_parent"
@@ -99,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_signup"
-                android:hint="계좌번호를 입력해주세요"
+                android:hint="@string/hint_input_account"
                 android:inputType="number"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:padding="12dp"
@@ -119,8 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
-                android:text="예금주명 입력"
-                />
+                android:text="@string/input_name" />
 
             <Space
                 android:layout_width="match_parent"
@@ -134,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_signup"
-                android:hint="예금주명을 입력해주세요"
+                android:hint="@string/hint_input_name"
 
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.14"
                 android:padding="12dp"

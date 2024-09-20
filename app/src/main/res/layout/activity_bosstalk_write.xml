@@ -129,7 +129,8 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
                     android:gravity="top"
-                    android:hint="내용을 자유롭게 작성해주세요."
+                    android:hint="※ 보스Talk 커뮤니티 정책\n
+티처포보스 커뮤니티 운영 정책에 따라 다른 이용자의 안전을 저해하거나 권리를 침해하는 내용의 게시물은 별도의 통보 없이 게재가 제한되거나 삭제될 수 있으며 커뮤니티 활동이 제한될 수 있습니다."
                     android:paddingHorizontal="10dp"
                     android:paddingTop="14dp"
                     android:paddingBottom="40dp"

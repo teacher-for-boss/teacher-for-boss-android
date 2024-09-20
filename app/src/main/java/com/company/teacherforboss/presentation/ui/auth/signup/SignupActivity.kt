@@ -57,7 +57,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         initLayout()
         addListeners()
         collectData()
-        localDataSource.saveSignupType(SIGNUP_DEFAULT)
 
         fragmentManager
             .beginTransaction()

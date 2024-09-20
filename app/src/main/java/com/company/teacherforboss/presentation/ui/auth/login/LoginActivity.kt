@@ -153,12 +153,12 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         }
 
         // TODO: 깨져서 주석함, 앱 심사 후 권한 요청
-//        binding.kakaoBtn.setOnClickListener {
-//            socialLoginViewModel.kakaoLogin()
-//        }
-//        binding.naverBtn.setOnClickListener {
-//            socialLoginViewModel.naverLogin()
-//        }
+        binding.kakaoBtn.setOnClickListener {
+            socialLoginViewModel.kakaoLogin()
+        }
+        binding.naverBtn.setOnClickListener {
+            socialLoginViewModel.naverLogin()
+        }
 
 
         binding.findEmailBtn.setOnClickListener {
@@ -229,9 +229,9 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이미지 : $imageUrl")
 
                         // 소셜 로그인 요청
-                        loginViewModel.socialLogin(type="naver",email)
                         localDataSource.saveSignupType(SIGNUP_SOCIAL_NAVER)
                         signupViewModel._socialType.value=3
+                        loginViewModel.socialLogin(type="naver",email)
                     }
 
 

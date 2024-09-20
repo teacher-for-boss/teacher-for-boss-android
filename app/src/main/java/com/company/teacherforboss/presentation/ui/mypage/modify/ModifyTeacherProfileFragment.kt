@@ -89,36 +89,34 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
                             if(it.phoneOpen==true){
                                 binding.switchPhone.isChecked = true
                                 setPhoneReveal(true)
+                                setInitPhoneOpen(true)
                             }
-                            // email
-                            if(!it.email.isNullOrEmpty()) {
-                                setEmail(it.email)
-                                setInitEmail(it.email)
-                                if(it.emailOpen==true){
-                                    binding.switchEmail.isChecked = true
-                                    setEmailReveal(true)
-                                    setInitEmailOpen(true)
-                                }
-                            }
-                            // field
-                            setField(it.field)
-                            setInitField(it.field)
-                            // career
-                            setCareer(it.career.toString())
-                            setInitCareer(it.career.toString())
-                            // introduction
-                            setIntroduction(it.introduction)
-                            setInitIntroduction(it.introduction)
-
-                            setInitKeywords(it.keywords)
-
-                            setEnableNextState(false)
-//                        binding.nextBtn.isEnabled=false
-                            setIsInitializedView(true)
                         }
-                    }
+                        // email
+                        if(!it.email.isNullOrEmpty()) {
+                            setEmail(it.email)
+                            setInitEmail(it.email)
+                            if(it.emailOpen==true){
+                                binding.switchEmail.isChecked = true
+                                setEmailReveal(true)
+                                setInitEmailOpen(true)
+                            }
+                        }
+                        // field
+                        setField(it.field)
+                        setInitField(it.field)
+                        // career
+                        setCareer(it.career.toString())
+                        setInitCareer(it.career.toString())
+                        // introduction
+                        setIntroduction(it.introduction)
+                        setInitIntroduction(it.introduction)
 
+                        setInitKeywords(it.keywords)
 
+                        setEnableNextState(false)
+                        setIsInitializedView(true)
+                        }
                     // keywords
                     val chipList = it.keywords
                     selectedChipList = chipList.toMutableList()

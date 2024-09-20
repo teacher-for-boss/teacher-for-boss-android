@@ -69,9 +69,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        stopAutoScroll()
         removeAdapter()
+        stopAutoScroll()
+        super.onDestroyView()
+
     }
 
     private fun initLayout() {
@@ -184,12 +185,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun removeAdapter() {
+        binding?.let {
         with(binding) {
             vpHomeBanner.adapter = null
             rvHomeTeacherTalkShortcut.adapter = null
             rvHomeTeacherTalkPopularPost.adapter = null
             rvHomeBossTalkPopularPost.adapter = null
             rvHomeWeeklyBestTeacher.adapter = null
+        }
         }
     }
 

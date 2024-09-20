@@ -42,7 +42,6 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val teacherTalkSelectUseCase: TeacherTalkSelectUseCase,
     private val teacherTalkAnswerLikeUseCase: TeacherTalkAnswerLikeUseCase,
     private val teacherTalkAnswerDislikeUseCase: TeacherTalkAnswerDislikeUseCase,
-    private val teacherLikeUseCase: TeacherTalkLikeUseCase,
     private val teacherTalkAnsUseCase: TeacherTalkAnsUseCase
 ): ViewModel() {
     private val _role = MutableLiveData<String>("")
@@ -51,7 +50,7 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     private var _postAnswerLiveData=MutableLiveData<TeacherTalkAnswerResponseEntity>()
     val postAnswerLiveData:LiveData<TeacherTalkAnswerResponseEntity> get() = _postAnswerLiveData
-    var _questionId=MutableLiveData<Long>().apply { value=null }
+    var _questionId = MutableLiveData<Long>().apply { value = 0L }
     val questionId:LiveData<Long> get()=_questionId
 
     var _answerId = MutableLiveData<Long>().apply { value=0L }
@@ -63,11 +62,11 @@ class TeacherTalkBodyViewModel @Inject constructor(
     var _content = MutableLiveData<String>("")
     val content: LiveData<String> get()=_content
 
-    private val _isLike = MutableLiveData<Boolean>().apply { value = false }
-    val isLike: LiveData<Boolean> get() = _isLike
+    private val _isLiked = MutableLiveData<Boolean>().apply { value = false }
+    val isLiked: LiveData<Boolean> get() = _isLiked
 
-    private val _isBookmark = MutableLiveData<Boolean>().apply { value = false }
-    val isBookmark: LiveData<Boolean> get() = _isBookmark
+    private val _isBookmarked = MutableLiveData<Boolean>().apply { value = false }
+    val isBookmarked: LiveData<Boolean> get() = _isBookmarked
 
     private var _tagList = MutableLiveData<ArrayList<String>>()
     val tagList:LiveData<ArrayList<String>> get()=_tagList
@@ -89,12 +88,6 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     private var _teacherTalkBodyLiveData=MutableLiveData<TeacherTalkBodyResponseEntity>()
     val teacherTalkBodyLiveData:LiveData<TeacherTalkBodyResponseEntity> get() = _teacherTalkBodyLiveData
-
-    private var _teacherTalkBodyBookmarkLiveData=MutableLiveData<TeacherTalkBookmarkResponseEntity>()
-    val teacherTalkBodyBookmarkLiveData:LiveData<TeacherTalkBookmarkResponseEntity> get() = _teacherTalkBodyBookmarkLiveData
-
-    private var _teacherTalkBodyLikeLiveData=MutableLiveData<TeacherTalkLikeResponseEntity>()
-    val teacherTalkBodyLikeLiveData:LiveData<TeacherTalkLikeResponseEntity> get() = _teacherTalkBodyLikeLiveData
 
     private var _deleteLiveData = MutableLiveData<TeacherTalkDeleteResponseEntity>()
     val deleteLiveData: MutableLiveData<TeacherTalkDeleteResponseEntity> get() = _deleteLiveData
@@ -133,7 +126,6 @@ class TeacherTalkBodyViewModel @Inject constructor(
     }
 
     fun deletePost() {
-        Log.d("delete", "questionId: ${questionId.toString()}")
         viewModelScope.launch {
             try {
                 val teacherDeleteResponseEntity = teacherTalkDeleteBodyUseCase(
@@ -160,7 +152,6 @@ class TeacherTalkBodyViewModel @Inject constructor(
     fun selectAnswer() {
         viewModelScope.launch {
             try {
-                Log.d("questionId", questionId.value.toString())
                 val teacherTalkSelectResponseEntity = teacherTalkSelectUseCase(
                     TeacherTalkRequestEntity(questionId = questionId.value!!),
                     TeacherTalkAnswerRequestEntity(answerId = answerId.value!!)
@@ -183,34 +174,55 @@ class TeacherTalkBodyViewModel @Inject constructor(
         }
     }
 
-    fun clickLikeBtn() {
-        _isLike.value = _isLike.value?.not()
-    }
-    fun clickBookmarkBtn() {
-        _isBookmark.value = _isBookmark.value?.not()
-    }
-
-    fun postBookmark(){
-        clickBookmarkBtn()
+    fun postLike() {
         viewModelScope.launch {
-            try{
-                val teacherTalkBookmarkResponseEntity=teacherTalkBookmarkUseCase(
-                    TeacherTalkRequestEntity(questionId=questionId.value!!)
+            try {
+                val response = teacherTalkLikeUseCase(TeacherTalkRequestEntity(questionId = questionId.value!!))
+                val updatedLike = response.liked
+
+                val updatedLikeCount = if (updatedLike) {
+                    (teacherTalkBodyLiveData.value?.likeCount ?: 0) + 1
+                } else {
+                    (teacherTalkBodyLiveData.value?.likeCount ?: 1) - 1
+                }
+
+                _teacherTalkBodyLiveData.value = _teacherTalkBodyLiveData.value?.copy(
+                    likeCount = updatedLikeCount,
+                    liked = updatedLike
                 )
-                _isBookmark.value=teacherTalkBookmarkResponseEntity.bookmarked
-            }catch (ex:Exception){}
+
+                _isLiked.value = updatedLike
+            } catch (ex: Exception) {
+            }
         }
     }
 
-    fun postLike(){
-        clickLikeBtn()
+    fun postBookmark() {
         viewModelScope.launch {
-            try{
-                val teacherTalkLikeResponseEntity=teacherTalkLikeUseCase(
-                    TeacherTalkRequestEntity(questionId=questionId.value!!)
+            try {
+                Log.d("TeacherTalkBodyViewModel", "postBookmark() called")
+                val response = teacherTalkBookmarkUseCase(TeacherTalkRequestEntity(questionId = questionId.value!!))
+                Log.d("TeacherTalkBodyViewModel", "Bookmark response: $response")
+
+                val updatedBookmark = response.bookmarked
+                Log.d("TeacherTalkBodyViewModel", "updatedBookmark: $updatedBookmark")
+
+                val updatedBookmarkCount = if (updatedBookmark) {
+                    (teacherTalkBodyLiveData.value?.bookmarkCount ?: 0) + 1
+                } else {
+                    (teacherTalkBodyLiveData.value?.bookmarkCount ?: 1) - 1
+                }
+                Log.d("TeacherTalkBodyViewModel", "updatedBookmarkCount: $updatedBookmarkCount")
+
+                _teacherTalkBodyLiveData.value = _teacherTalkBodyLiveData.value?.copy(
+                    bookmarkCount = updatedBookmarkCount,
+                    bookmarked = updatedBookmark
                 )
-                _isLike.value=teacherTalkLikeResponseEntity.liked
-            }catch (ex:Exception){}
+                _isBookmarked.value = updatedBookmark
+
+            } catch (ex: Exception) {
+                Log.e("TeacherTalkBodyViewModel", "Error in postBookmark(): ${ex.message}")
+            }
         }
     }
 

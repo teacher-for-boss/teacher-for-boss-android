@@ -58,7 +58,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg!=null){
-            CustomSnackBar.make(binding.root, snackBarMsg, 2000).show()
+            CustomSnackBar.make(binding.root, snackBarMsg, 1000).show()
         }
 
         // 백 버튼 콜백 설정
@@ -137,8 +137,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 finishAffinity()
             } else {
                 backPressedOnce = true
-                CustomSnackBar.make(binding.root, getString(R.string.exit_warning) ,2000).show()
-                exitHandler.postDelayed(resetBackPressed, 2000)
+                CustomSnackBar.make(binding.root, getString(R.string.exit_warning) ,1000).show()
+                exitHandler.postDelayed(resetBackPressed, 1000)
             }
         }
     }

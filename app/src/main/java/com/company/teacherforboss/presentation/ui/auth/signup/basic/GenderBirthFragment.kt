@@ -22,10 +22,8 @@ class GenderBirthFragment : BindingFragment<FragmentGenderBirthBinding>(R.layout
     private val viewModel by activityViewModels<SignupViewModel>()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
@@ -96,7 +94,6 @@ class GenderBirthFragment : BindingFragment<FragmentGenderBirthBinding>(R.layout
                 value = 15
             }
         }
-        return binding.root
 
     }
 

@@ -4,6 +4,6 @@ import kotlinx.datetime.LocalDateTime
 
 data class TeacherTalkBookmarkResponseEntity (
     val bookmarked: Boolean,
-    val updatedAt: LocalDateTime,
+    val updatedAt: String,
     val questionId: Long,
 ){ }

@@ -18,15 +18,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class PersonalInfoMoreFragment : BindingDialogFragment<FragmentPersonalinfoMoreBinding>(R.layout.fragment_personalinfo_more) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        return binding.root
     }
 }

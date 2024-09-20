@@ -23,10 +23,9 @@ import java.util.Calendar
 class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragment_business){
     private val viewModel by activityViewModels<SignupViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
@@ -38,22 +37,22 @@ class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragm
         viewModel._representative.observe(viewLifecycleOwner,dataObserver)
         viewModel._openDateStr.observe(viewLifecycleOwner,dataObserver)
         viewModel._businessNum.observe(viewLifecycleOwner,dataObserver)
-
-        return binding.root
     }
 
     private fun addListeners(){
         with (binding){
             btnNextSignup.setOnClickListener {
-                lifecycleScope.launch {
-                    val isVerified = viewModel.businessNumCheck()
-                    val activity = activity as SignupActivity
-                    if (isVerified) {
-                        activity.gotoNextFragment(BusinessVerifySuccessFragment())
-                    } else {
-                        activity.gotoNextFragment(BusinessVerifyFailFragment())
-                    }
-                }
+//                lifecycleScope.launch {
+//                    val isVerified = viewModel.businessNumCheck()
+//                    val activity = activity as SignupActivity
+//                    if (isVerified) {
+//                        activity.gotoNextFragment(BusinessVerifySuccessFragment())
+//                    } else {
+//                        activity.gotoNextFragment(BusinessVerifyFailFragment())
+//                    }
+//                }
+                val activity = activity as SignupActivity
+                activity.gotoNextFragment(BusinessVerifySuccessFragment())
             }
             calendar.setOnClickListener {
                 val cal=Calendar.getInstance()

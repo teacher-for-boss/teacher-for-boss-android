@@ -20,10 +20,9 @@ class BankFragment : BindingFragment<FragmentBankBinding>(R.layout.fragment_bank
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val bankList = listOf(
             Bank(R.drawable.bank_toss, "토스뱅크"),
             Bank(R.drawable.bank_kakao, "카카오뱅크"),
@@ -45,7 +44,5 @@ class BankFragment : BindingFragment<FragmentBankBinding>(R.layout.fragment_bank
 
         binding.rvBank.adapter = rvAdapterBank(bankList,viewModel,activity,parentFragmentManager)
         binding.rvBank.layoutManager = GridLayoutManager(requireContext(), 3)
-
-        return binding.root
     }
 }

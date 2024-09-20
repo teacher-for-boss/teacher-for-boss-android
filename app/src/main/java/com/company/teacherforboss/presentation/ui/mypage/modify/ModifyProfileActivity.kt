@@ -27,6 +27,8 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -94,10 +96,11 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
     }
 
     fun checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_READ_EXTERNAL_STORAGE)
-        } else {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
             openGallery()
+        } else {
+            requestPermissions()
         }
     }
 
@@ -128,7 +131,6 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
             imageUri?.let {
                 val fileSizeInBytes = getImageSize(it)
                 val fileSizeInMB = fileSizeInBytes / (512.0 * 512.0)
-                Log.d("imageSize", fileSizeInMB.toString())
                 val extension=getImageExtension(it)
                 viewModel.setFileType(extension?:"jpeg")
 
@@ -143,6 +145,29 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
                 viewModel.getPresignedUrlList()
             }
         }
+    }
+
+    fun requestPermissions() {
+        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES) // Android 13 이상일 경우
+        } else {
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE) // Android 12 이하일 경우
+        }
+        TedPermission.create()
+            .setPermissionListener(object : PermissionListener {
+                override fun onPermissionGranted() {
+                    openGallery()
+                }
+
+                override fun onPermissionDenied(deniedPermissions: List<String>) {
+                    }
+            })
+
+            .setDeniedMessage(getString(R.string.image_permission_denied))
+            .setPermissions(
+                *permissions
+            )
+            .check()
     }
 
     companion object {

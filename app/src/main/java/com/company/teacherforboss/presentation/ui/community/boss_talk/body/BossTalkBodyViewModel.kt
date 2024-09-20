@@ -284,13 +284,6 @@ class BossTalkBodyViewModel @Inject constructor(
         }
     }
 
-    fun clickLikeBtn() {
-        _isLike.value = _isLike.value?.not()
-    }
-    fun clickBookmarkBtn() {
-        _isBookmark.value = _isBookmark.value?.not()
-    }
-
     fun setPostId(postId: Long){
         _postId.value=postId
     }

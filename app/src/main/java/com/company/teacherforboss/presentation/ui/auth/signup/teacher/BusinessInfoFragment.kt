@@ -16,16 +16,9 @@ import com.company.teacherforboss.util.base.BindingFragment
 class BusinessInfoFragment : BindingFragment<FragmentBusinessInfoBinding>(R.layout.fragment_business_info){
     private val viewModel by activityViewModels<SignupViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        addListeners()
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        addListeners()
     }
 
     private fun addListeners() {

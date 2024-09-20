@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -99,7 +100,6 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         // 알림 클릭
         readNotification()
 
-        updateLike()
         binding.root.setOnClickListener {
             hideOptionMenuIfVisible()
         }
@@ -176,40 +176,58 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         }
     }
 
-    fun likeAndBookmark() {
-        // 질문 좋아요
+    private fun likeAndBookmark() {
+        viewModel.isLiked.observe(this, Observer {
+            updateLikeUI(it)
+        })
+
+        viewModel.isBookmarked.observe(this, Observer {
+            updateBookmarkUI(it)
+        })
+
         binding.like.setOnClickListener {
             viewModel.postLike()
         }
-        viewModel.isLike.observe(
-            this,
-            Observer { isLike ->
-                if (isLike) {
-                    binding.likeIv.setImageResource(R.drawable.community_like_on)
-                    binding.likeTv.setTextColor(Color.parseColor("#8D37EF"))
-                } else {
-                    binding.likeIv.setImageResource(R.drawable.community_like)
-                    binding.likeTv.setTextColor(Color.parseColor("#8490A0"))
-                }
-            },
-        )
 
-        // 질문 저장하기
         binding.bookmark.setOnClickListener {
             viewModel.postBookmark()
         }
-        viewModel.isBookmark.observe(
-            this,
-            Observer { isBookmark ->
-                if (isBookmark) {
-                    binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)
-                    binding.bookmarkTv.setTextColor(Color.parseColor("#8D37EF"))
-                } else {
-                    binding.bookmarkIv.setImageResource(R.drawable.community_bookmark)
-                    binding.bookmarkTv.setTextColor(Color.parseColor("#8490A0"))
-                }
-            },
-        )
+    }
+
+
+    private fun updateLikeUI(isLike: Boolean?) {
+        val likeCount = viewModel.teacherTalkBodyLiveData.value?.likeCount ?: 0
+
+        if (likeCount > 0) {
+            binding.likeTv.text = getString(R.string.like_any, "${likeCount}개")
+        } else {
+            binding.likeTv.text = getString(R.string.like)
+        }
+
+        if (isLike == true) {
+            binding.likeIv.setImageResource(R.drawable.community_like_on)
+            binding.likeTv.setTextColor(ContextCompat.getColor(this, R.color.Purple600))
+        } else {
+            binding.likeIv.setImageResource(R.drawable.community_like)
+            binding.likeTv.setTextColor(ContextCompat.getColor(this, R.color.Gray400))
+        }
+    }
+    private fun updateBookmarkUI(isBookmark: Boolean?) {
+        val bookmarkCount = viewModel.teacherTalkBodyLiveData.value?.bookmarkCount ?: 0
+
+        if (bookmarkCount > 0) {
+            binding.bookmarkTv.text = getString(R.string.bookmark_any, "${bookmarkCount}개")
+        } else {
+            binding.bookmarkTv.text = getString(R.string.bookmark)
+        }
+
+        if (isBookmark == true) {
+            binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)
+            binding.bookmarkTv.setTextColor(ContextCompat.getColor(this, R.color.Purple600))
+        } else {
+            binding.bookmarkIv.setImageResource(R.drawable.community_bookmark)
+            binding.bookmarkTv.setTextColor(ContextCompat.getColor(this, R.color.Gray400))
+        }
     }
 
     fun setRecyclerView() {
@@ -250,58 +268,50 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
     }
 
     private fun setBodyView() {
-        viewModel.teacherTalkBodyLiveData.observe(
-            this,
-            Observer {
-                // 해시태그
-                if (it.hashtagList!!.isNotEmpty()) viewModel.setTagList(it.hashtagList as ArrayList<String>)
+        viewModel.teacherTalkBodyLiveData.observe(this, Observer { body ->
+            // 해시태그
+            if (body.hashtagList!!.isNotEmpty()) viewModel.setTagList(body.hashtagList as ArrayList<String>)
 
-                // 좋아요, 북마크
-                if (it.liked) {
-                    viewModel.clickLikeBtn()
-                    binding.likeTv.text = "좋아요 ${it.likeCount}개"
-                }
-                if (it.bookmarked) {
-                    viewModel.clickBookmarkBtn()
-                    binding.bookmarkTv.text = "저장 ${it.bookmarkCount}개"
-                }
+            // 좋아요, 북마크
+            updateLikeUI(body.liked)
+            updateBookmarkUI(body.bookmarked)
 
-                // 본문 글
-                with(binding) {
-                    bodyTitle.text = getString(R.string.teacher_talk_card_view_question, it.title)
-                    bodyBody.text = it.content
-                    userNickname.text = it.memberInfo.toMemberDto().name
-                    date.text = LocalDateFormatter.extractDate(it.createdAt)
-                }
+            // 본문 글
+            with(binding) {
+                bodyTitle.text = getString(R.string.teacher_talk_card_view_question, body.title)
+                bodyBody.text = body.content
+                userNickname.text = body.memberInfo.toMemberDto().name
+                date.text = LocalDateFormatter.extractDate(body.createdAt)
+            }
 
-                // 본문 업로드 이미지
-                if (it.imageUrlList.isNotEmpty()) viewModel.imageUrlList = it.imageUrlList
+            // 본문 업로드 이미지
+            if (body.imageUrlList.isNotEmpty()) viewModel.imageUrlList = body.imageUrlList
 
-                // 프로필 이미지
-                if (it.memberInfo.toMemberDto().profileImg != null) {
-                    BindingImgAdapter.bindImage(
-                        binding.profileImage,
-                        it.memberInfo.toMemberDto().profileImg!!,
-                    )
-                }
+            // 프로필 이미지
+            if (body.memberInfo.toMemberDto().profileImg != null) {
+                BindingImgAdapter.bindImage(
+                    binding.profileImage,
+                    body.memberInfo.toMemberDto().profileImg!!,
+                )
+            }
 
-                // 사용자 본인 작성 여부
-                viewModel._isMine.value = it.isMine
+            // 사용자 본인 작성 여부
+            viewModel._isMine.value = body.isMine
 
-                // 카테고리
-                categoryName = it.category
+            // 카테고리
+            categoryName = body.category
 
-                setRecyclerView()
-                setTextColor()
+            setRecyclerView()
+            setTextColor()
 
-                viewModel._title.value = it.title
-                viewModel._content.value = it.content
+            viewModel._title.value = body.title
+            viewModel._content.value = body.content
 
-                // 보스인 경우 답변작성하기 버튼 invisible
-                val role= localDataSource.getUserInfo(USER_ROLE)
-                if(role==BOSS)binding.answerBtn.visibility=View.GONE
+            // 보스인 경우 답변작성하기 버튼 invisible
+            val role= localDataSource.getUserInfo(USER_ROLE)
+            if(role==BOSS)binding.answerBtn.visibility=View.GONE
 
-            },
+        },
         )
     }
 
@@ -348,18 +358,6 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                 viewModel.getAnswerList()
             },
         )
-    }
-
-    fun updateLike() {
-        binding.like.setOnClickListener {
-            viewModel.postLike()
-            viewModel.teacherTalkBodyLikeLiveData.observe(
-                this,
-                Observer {
-                    if (it.liked) viewModel.clickLikeBtn()
-                },
-            )
-        }
     }
 
     private fun hideOptionMenuIfVisible() {

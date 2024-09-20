@@ -25,10 +25,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class AgreementFragment : BindingDialogFragment<FragmentAgreementBinding>(R.layout.fragment_agreement) {
     private val viewModel by activityViewModels<SignupViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
@@ -190,7 +189,6 @@ class AgreementFragment : BindingDialogFragment<FragmentAgreementBinding>(R.layo
             dismiss()
         }
 
-        return binding.root
     }
     fun isAllAgree(otherCheckboxes: Array<CheckBox>): Boolean {
         var isAgree = true

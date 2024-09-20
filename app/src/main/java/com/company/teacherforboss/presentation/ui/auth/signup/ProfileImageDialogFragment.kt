@@ -64,7 +64,7 @@ class ProfileImageDialogFragment(
 
     private fun observeProfileImg() {
         viewModel.isUserImgSelected.observe(viewLifecycleOwner){isUserImgSelected->
-            if(isUserImgSelected) BindingImgAdapter.bindProfileImgUri(binding.profileImage, viewModel.profileImgUri.value!!)
+            if(isUserImgSelected && viewModel.profileImgUri.value!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage, viewModel.profileImgUri.value!!)
             else BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value!!)
         }
     }

@@ -26,16 +26,14 @@ class AccountFragment : BindingFragment<FragmentAccountBinding>(R.layout.fragmen
     @Inject
     lateinit var localDataSource: LocalDataSource
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
         addListeners()
         setObserver()
-        return binding.root
     }
 
 

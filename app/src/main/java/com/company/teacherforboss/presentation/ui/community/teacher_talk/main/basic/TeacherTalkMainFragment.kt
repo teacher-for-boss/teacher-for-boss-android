@@ -151,9 +151,9 @@ class TeacherTalkMainFragment :
         binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
 
         // TODO: 작동 x (카테고리 변경시 Rv focus)
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
-        },2000)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
+//        },2000)
         initialized = true
     }
 

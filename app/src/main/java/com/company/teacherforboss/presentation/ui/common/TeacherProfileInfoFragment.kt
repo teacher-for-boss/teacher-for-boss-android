@@ -20,8 +20,9 @@ class TeacherProfileInfoFragment : BindingFragment<FragmentTeacherProfileInfoBin
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding.rvTeacherProfileInfoKeywordDetail.adapter = null
+        super.onDestroyView()
+
     }
 
     private fun initLayout() {

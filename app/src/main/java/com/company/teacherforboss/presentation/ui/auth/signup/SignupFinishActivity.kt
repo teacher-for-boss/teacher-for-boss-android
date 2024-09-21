@@ -46,13 +46,13 @@ class SignupFinishActivity : BindingActivity<ActivitySignupFinishBinding>(R.layo
         val nickname = intent.getStringExtra(USER_NICKNAME)?: ""
         var text = ""
         if (int == 1) {
-            text = "$nickname 보스,\n회원가입을 축하합니다!"
+            text = getString(R.string.sign_up_finish_boss, nickname)
             binding.dialog.visibility = View.INVISIBLE
             binding.confetti2.visibility = View.INVISIBLE
         }
         else if (int == 2) {
-            text = "$nickname 티쳐,\n회원가입을 축하합니다!"
-            binding.dialogName.text = "$nickname 티쳐"
+            text = getString(R.string.sign_up_finish_teacher, nickname)
+            binding.dialogName.text = "$nickname 티처"
             binding.confetti1.visibility = View.INVISIBLE
         }
 

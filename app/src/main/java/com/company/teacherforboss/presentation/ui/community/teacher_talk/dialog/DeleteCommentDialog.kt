@@ -10,15 +10,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.DialogDeleteCommentBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
 import kotlinx.coroutines.launch
 
 class DeleteCommentDialog<T: ViewModel>(
     context: Context,
     private val viewModel: T,
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val role: String
     ): Dialog(context) {
     private lateinit var binding: DialogDeleteCommentBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +32,25 @@ class DeleteCommentDialog<T: ViewModel>(
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setCanceledOnTouchOutside(false)
 
+        initLayout()
+        dismissDialog()
+        deleteComment()
+    }
+
+    private fun initLayout() {
+        with(binding) {
+            if(role == BOSS_TALK) { text.text = context.getString(R.string.dialog_delete_boss_comment) }
+            else { text.text = context.getString(R.string.dialog_delete_teacher_answer) }
+        }
+    }
+
+    private fun dismissDialog() {
         binding.keepBtn.setOnClickListener {
             dismiss()
         }
+    }
 
+    private fun deleteComment() {
         binding.deleteBtn.setOnClickListener {
             lifecycleOwner.lifecycleScope.launch {
                 if(viewModel is TeacherTalkBodyViewModel) {

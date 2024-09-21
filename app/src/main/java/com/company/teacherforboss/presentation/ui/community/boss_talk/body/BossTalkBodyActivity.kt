@@ -153,7 +153,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
     private fun doOptionMenu() {
         // 삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this, viewModel, this, postId)
+            val dialog = DeleteBodyDialog(this, viewModel, this, postId, BOSS_TALK)
             dialog.show()
         }
 
@@ -433,11 +433,6 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         override fun handleOnBackPressed() {
             finish()
         }
-    }
-
-    fun showSnackBar(msg:String){
-        val customSnackbar = CustomSnackBar.make(binding.root, msg,2000)
-        customSnackbar.show()
     }
 
     fun showKeyboard(view: View) {

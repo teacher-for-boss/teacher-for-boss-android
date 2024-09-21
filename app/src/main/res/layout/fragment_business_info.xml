@@ -33,22 +33,6 @@
 
         </Space>
 
-        <TextView
-            android:text="@string/business_info_desc1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16">
-
-        </TextView>
-
-        <TextView
-            android:text="@string/business_info_desc2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Regular.16">
-
-        </TextView>
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="40dp">
@@ -80,7 +64,7 @@
 
         <TextView
             android:textAlignment="center"
-            android:text="@string/business_info_desc3"
+            android:text="@string/business_info_desc1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/Gray400"
@@ -90,7 +74,7 @@
 
         <TextView
             android:textAlignment="center"
-            android:text="@string/business_info_desc4"
+            android:text="@string/business_info_desc2"
             android:textColor="@color/Gray400"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

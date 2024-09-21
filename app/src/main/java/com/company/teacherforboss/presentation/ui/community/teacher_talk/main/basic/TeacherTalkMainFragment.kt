@@ -23,6 +23,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.ca
 import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
@@ -38,6 +39,7 @@ class TeacherTalkMainFragment :
     BindingFragment<FragmentTeacherTalkMainBinding>(R.layout.fragment_teacher_talk_main) {
 
     private val viewModel by activityViewModels<TeacherTalkMainViewModel>()
+    private val exchangeViewModel by activityViewModels<ExchangeViewModel>()
     private val teacherTalkCardAdapter:TeacherTalkCardAdapter by lazy { TeacherTalkCardAdapter(::navigateToTeacherTalkBody) }
     private val teacherTalkCategoryAdapter:TeacherTalkCategoryAdapter by lazy { TeacherTalkCategoryAdapter(viewModel.categoryList,viewModel.getCategoryId(),::changeCategory) }
 
@@ -95,44 +97,57 @@ class TeacherTalkMainFragment :
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
-        binding.spinnerDropdown.adapter = adapter
 
-        binding.spinnerDropdown.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    var presentSortBy = viewModel.sortBy.value
-                    viewModel.resetLastPostIdMap(DEFAULT_LASTID)
-                    when (presentSortBy) {
-                        "latest" -> presentSortBy = "최신순"
-                        "views" -> presentSortBy = "조회수순"
-                        "likes" -> presentSortBy = "좋아요순"
+        with(binding) {
+            spinnerDropdown.adapter = adapter
+
+            spinnerDropdown.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                        var presentSortBy = viewModel?.sortBy?.value
+                        viewModel?.resetLastPostIdMap(DEFAULT_LASTID)
+                        when (presentSortBy) {
+                            "latest" -> presentSortBy = "최신순"
+                            "views" -> presentSortBy = "조회수순"
+                            "likes" -> presentSortBy = "좋아요순"
+                        }
+                        if (presentSortBy != items[p2]) viewModel?.setSortBy(items[p2])
                     }
-                    if (presentSortBy != items[p2]) viewModel.setSortBy(items[p2])
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {}
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            val role=localDataSource.getUserInfo(USER_ROLE)
+            if(role==TEACHER) {
+                fabWrite.visibility=View.INVISIBLE
+
+                // 보유 티포
+                exchangeViewModel.getTeacherPoint()
+                exchangeViewModel.currentTeacherPoint.observe(viewLifecycleOwner) { currentTeacherPoint ->
+                    tvQuestionPayBtn.text = getString(R.string.tv_question_pay_teacher_btn, exchangeViewModel.currentTeacherPoint.value)
+                }
+            }
+            else  {
+
+                // TODO: 질문권 개수 서버통신으로 받아와서 연결 (릴리즈 직후 이후에)
+                tvQuestionPayBtn.text = getString(R.string.tv_question_pay_boss_btn)
             }
 
-        //fab
-        val role=localDataSource.getUserInfo(USER_ROLE)
-        if(role==TEACHER)binding.fabWrite.visibility=View.INVISIBLE
+            //scrollview
+            svTeacherTalkMain.run {
+                header = binding.teacherTalkWidget2
+                stickListener = { _ ->
+                    Log.d("LOGGER_TAG", "stickListener")
+                }
+                freeListener = { _ ->
+                    Log.d("LOGGER_TAG", "freeListener")
+                }
+            }
 
-        //scrollview
-        binding.svTeacherTalkMain.run {
-            header = binding.teacherTalkWidget2
-            stickListener = { _ ->
-                Log.d("LOGGER_TAG", "stickListener")
-            }
-            freeListener = { _ ->
-                Log.d("LOGGER_TAG", "freeListener")
-            }
+            //btnMoreCard
+            btnMoreCard.setOnClickListener { viewModel?.getTeacherTalkQuestions() }
+
         }
-
-        //btnMoreCard
-        binding.btnMoreCard.setOnClickListener {
-            viewModel.getTeacherTalkQuestions()
-        }
-
         /*requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

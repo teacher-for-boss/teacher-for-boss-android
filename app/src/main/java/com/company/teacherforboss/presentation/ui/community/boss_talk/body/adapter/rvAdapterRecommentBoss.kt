@@ -19,6 +19,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossT
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
@@ -102,7 +103,7 @@ class rvAdapterRecommentBoss(
             // 삭제하기
             binding.deleteBtn.setOnClickListener {
                 viewModel.setCommentId(comment.commentId)
-                val dialog = DeleteCommentDialog(binding.root.context, viewModel, lifecycleOwner)
+                val dialog = DeleteCommentDialog(binding.root.context, viewModel, lifecycleOwner, BOSS_TALK)
                 dialog.show()
             }
 

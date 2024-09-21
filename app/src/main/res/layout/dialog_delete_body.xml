@@ -11,9 +11,9 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="삭제하시겠습니까?"
+            android:text=""
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title2"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
             android:layout_marginTop="22dp" />
 
         <FrameLayout
-            android:id="@+id/delete_btn"
+            android:id="@+id/keep_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_radius8_gray300"
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="네, 삭제할게요"
+                android:text="@string/dialog_exit_button"
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:gravity="center"
@@ -44,12 +44,12 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/keep_btn"
+            android:id="@+id/delete_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_radius8_purple600"
-            app:layout_constraintStart_toEndOf="@id/delete_btn"
-            app:layout_constraintTop_toTopOf="@id/delete_btn"
+            app:layout_constraintStart_toEndOf="@id/keep_btn"
+            app:layout_constraintTop_toTopOf="@id/keep_btn"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="9dp"
             android:layout_marginEnd="27dp">
@@ -57,7 +57,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아니요"
+                android:text="@string/dialog_delete_button"
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:gravity="center"

@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="사장님들의 고민에 답변해주며\n레벨을 쌓아보세요!"
+                    android:text="@string/sign_up_finish_teacher_info"
                     android:gravity="center"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
                     android:textColor="@color/Gray500"

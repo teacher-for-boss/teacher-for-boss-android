@@ -31,7 +31,8 @@ class DialogPopupFragment(
     private fun initLayout() {
         with(binding) {
             tvDialogPopupTitle.text = title
-            tvDialogPopupContent.text = content
+            if (content.isNullOrEmpty()) { tvDialogPopupContent.visibility = View.GONE }
+            else { tvDialogPopupContent.text = content }
             btnDialogPopupLeft.text = leftBtnText
             btnDialogPopupRight.text = rightBtnText
         }

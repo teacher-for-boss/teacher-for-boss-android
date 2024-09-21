@@ -17,6 +17,7 @@ import com.company.teacherforboss.databinding.DialogDeleteBodyBinding
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
 import kotlinx.coroutines.launch
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
@@ -26,7 +27,8 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 class DeleteBodyDialog<T: ViewModel>(context: Context,
                                      private val viewModel: T,
                                      private val lifecycleOwner: LifecycleOwner,
-                                     val id: Long
+                                     val id: Long,
+                                     val role: String
 ): Dialog(context) {
     private lateinit var binding: DialogDeleteBodyBinding
 
@@ -38,12 +40,25 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setCanceledOnTouchOutside(false)
 
+        initLayout()
+        dismissDialog()
+        deleteBody()
+    }
 
-        //나가기 취소
+    private fun initLayout() {
+        with(binding) {
+            if(role == BOSS_TALK) { text.text = context.getString(R.string.dialog_delete_boss_body) }
+            else { text.text = context.getString(R.string.dialog_delete_teacher_body) }
+        }
+    }
+
+    private fun dismissDialog() {
         binding.keepBtn.setOnClickListener {
             dismiss()
         }
-        //나가기
+    }
+
+    private fun deleteBody() {
         binding.deleteBtn.setOnClickListener {
 
             lifecycleOwner.lifecycleScope.launch {
@@ -66,15 +81,15 @@ class DeleteBodyDialog<T: ViewModel>(context: Context,
                     context.startActivity(intent)
                 })
             } else if (viewModel is BossTalkBodyViewModel) {
-            viewModel.deleteLiveData.observe(lifecycleOwner, Observer {
-                val intent = Intent(context, MainActivity::class.java).apply {
-                    putExtra(FRAGMENT_DESTINATION, BOSS_TALK)
-                    putExtra(SNACK_BAR_MSG, context.getString(R.string.community_post_deleted))
-                }
-                context.startActivity(intent)
-                dismiss()
+                viewModel.deleteLiveData.observe(lifecycleOwner, Observer {
+                    val intent = Intent(context, MainActivity::class.java).apply {
+                        putExtra(FRAGMENT_DESTINATION, BOSS_TALK)
+                        putExtra(SNACK_BAR_MSG, context.getString(R.string.community_post_deleted))
+                    }
+                    context.startActivity(intent)
+                    dismiss()
 
-            })
+                })
             }
         }
     }

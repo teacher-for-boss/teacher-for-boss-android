@@ -53,16 +53,17 @@
 
     <!-- teacher_talk -->
     <string name="tv_teacher_talk">티처톡</string>
-    <string name="tv_question_pay_btn"><u>보유티포 NNTP</u></string>
-    <string name="teacher_talk_main_text1">보스는 질문권을 사용해 질문할 수 있어요</string>
-    <string name="teacher_talk_main_text2"><b>티쳐에게 질문하세요!</b></string>
-    <string name="search_view_hint">궁금한 키워드를 검색해보세요.</string>
+    <string name="tv_question_pay_teacher_btn">티포 %dTP</string>
+    <string name="tv_question_pay_boss_btn">질문권 무료 체험 중</string>
+    <string name="teacher_talk_main_text1">티처Talk에서 궁금증을 해결할 수 있어요</string>
+    <string name="teacher_talk_main_text2"><b>티처에게 물어보세요!</b></string>
+    <string name="search_view_hint">궁금한 키워드를 입력하세요</string>
     <string name="more_card">게시물 더 불러오기</string>
 
     <!-- boss_talk -->
     <string name="tv_boss_talk">보스톡</string>
-    <string name="tv_boss_talk_1"><b>자유롭게 이야기를 나눠요.</b></string>
-    <string name="tv_boss_talk_2">보스 talk</string>
+    <string name="tv_boss_talk_1"><b>모두가 자유롭게 소통해요</b></string>
+    <string name="tv_boss_talk_2">보스 TALK</string>
 
     <!-- teacher talk card view-->
     <string name="teacher_talk_card_view_question"><b>Q. %s</b></string>
@@ -100,16 +101,28 @@
     </string-array>
 
     <!--signup  -->
+    <string name="sign_up_title">티처포보스에 오신 것을 환영합니다!</string>
+
+    <string name="sign_up_boss">보스로 시작하기</string>
+    <string name="sign_up_boss_info1">누구나 가입할 수 있어요</string>
+    <string name="sign_up_boss_info2">티처Talk에서 궁금한 것을 질문하고\n보스Talk에서 다른 사장님들과\n자유롭게 이야기 나눌 수 있어요</string>
+
+    <string name="sign_up_teacher">티처로 시작하기</string>
+    <string name="sign_up_teacher_info1">티처포보스의 심사 과정이 필요해요</string>
+    <string name="sign_up_teacher_info2">티처Talk에서 보스가 남긴 질문에\n답변을 남기고 보상을 받아요</string>
+
     <string name="sinup_next_btn">다음 단계</string>
     <string name="signup_re_verify">다시 인증하기</string>
     <string name="signup_insert_info">정보 입력하러 가기</string>
 
+    <string name="sign_up_finish_boss">%s 보스님, 회원가입을 축하합니다!</string>
+    <string name="sign_up_finish_teacher">%s 티처님, 회원가입을 축하합니다!</string>
+    <string name="sign_up_finish_teacher_info">적극적인 티처포보스 활동으로\n티처레벨을 올려보세요!</string>
+
     <!-- signup-teacher-->
-    <string name="business_info_title">사업자 인증을 진행해주세요</string>
-    <string name="business_info_desc1">누군가를 가르칠 준비가 되셨나요?</string>
-    <string name="business_info_desc2">사업자 입력을 통해 티쳐 자격 인증을 진행해요</string>
-    <string name="business_info_desc3">"사업자 등록번호/성명/개업연월일이"</string>
-    <string name="business_info_desc4">"동일해야 다음 단계로 넘어갈 수 있어요"</string>
+    <string name="business_info_title">사업자 인증을 해주세요.</string>
+    <string name="business_info_desc1">"사업자 등록번호/성명/개업연월일이"</string>
+    <string name="business_info_desc2">"동일해야 다음 단계로 넘어갈 수 있어요"</string>
     <string name="business_info_next_btn">정보 입력하러 가기</string>
 
     <string name="business_register">정보를 입력해주세요</string>
@@ -120,18 +133,18 @@
     <string name="business_verify_help">문제가 생겼나요?</string>
 
     <string name="account_title">계좌를 등록해 주세요</string>
-    <string name="account_desc">답변에 대한 리워드를 받을 수 있어요</string>
+    <string name="account_desc">답변에 대한 보상을 받을 수 있어요</string>
 
 
     <string name="bank_title">은행을 선택해 주세요</string>
 
     <!-- home -->
-    <string name="home_logo">티쳐포보스</string>
+    <string name="home_logo">티처포보스</string>
     <string name="home_banner_position">%s / %s</string>
     <string name="home_teacher_talk_shortcut">티처Talk 바로가기</string>
     <string name="home_teacher_talk_popular_post">티처Talk 인기글</string>
     <string name="home_boss_talk_popular_post">보스Talk 인기글</string>
-    <string name="home_weekly_best_teacher">이번 주 인기 티쳐</string>
+    <string name="home_weekly_best_teacher">이번 주 인기 티처</string>
 
     <string name="home_teacher_talk_all">전체</string>
     <string name="home_teacher_talk_marketing">마케팅</string>
@@ -227,10 +240,10 @@
     <string name="exchange_apply">환전 신청하기</string>
     <string name="exchange_check">확인했어요</string>
     <string name="use_point1">TP(티처 포인트) 이용 안내</string>
-    <string name="use_point2">티처톡에서 답변하고 티포(티처 포인트)를 얻어요\n채택 1번당 100TP의 리워드를 얻어요\n24시간 365일 답변하고 채택받을 수 있어요</string>
-    <string name="point_info1">이용 방법 : 질문권은 ‘티쳐톡’에서 얻을 수 있습니다.  질문글에 답변을 한 후 채택되면 100TP를 얻습니다. 질문글에 달린 답변이 일주일동안 채택되지 않으면 답변자 모두 (100/답변자 수)TP를 얻습니다.</string>
-    <string name="point_info2">출금 방법 : 모은 질문권은 550TP 이상부터 100TP 단위로 출금할 수 있습니다.</string>
-    <string name="point_info3">출금 금액 : 1TP는 100원으로 환산됩니다. (환전 수수료 10% 별도)</string>
+    <string name="use_point2">티처톡에서 답변하고 티포(티처 포인트)를 얻어요\n채택 1번당 100TP의 리워드를 얻어요\n24시간 365일 언제든 답변하고 채택받을 수 있어요</string>
+    <string name="point_info1">이용 방법 : 티포는 ‘티처톡’에서 얻을 수 있습니다. 보스가 남긴 질문글에 답변을 한 후, 채택된 경우 1TP를 얻습니다. 질문글에 남긴 답변이 일주일동안 채택되지 않는 경우 추천수 및 답변일자에 따라 자동 채택됩니다.</string>
+    <string name="point_info2">출금 방법 : 모은 티포는 10TP 이상부터 1TP 단위로 출금할 수 있습니다.</string>
+    <string name="point_info3">출금 금액 : 1TP는 1000원으로 환산됩니다. (환전수수료는 티처포보스 부담)</string>
     <string name="point_info4">최소 550tp 이상 교환할 수 있습니다.</string>
     <string name="point_info5">100tp 단위로 교환할 수 있습니다.</string>
     <string name="exchange_tp">환전할 TP</string>
@@ -244,7 +257,7 @@
     <string name="exchange_complete2">✔️ 영업일 기준 3일 내로 입금됩니다.</string>
     <string name="exchange_complete3">✔️ 환전 신청한 내역은 마이페이지에서 확인 가능합니다.</string>
     <string name="current_teacher_point">%s TP</string>
-    <string name="current_user_name">%s 티쳐의\n 현재 보유 티포</string>
+    <string name="current_user_name">%s 티처의\n 현재 보유 티포</string>
 
 
     <string name="exchange_history_title">환전 내역</string>
@@ -258,7 +271,7 @@
     <string name="choose_bank">은행 선택</string>
     <string name="input_account">계좌번호 입력</string>
     <string name="input_name">예금주명 입력</string>
-    <string name="hint_choose_bank">클릭하여 은행을 선택해주세요</string>
+    <string name="hint_choose_bank">은행을 선택해주세요</string>
     <string name="hint_input_account">계좌번호를 입력해주세요</string>
     <string name="hint_input_name">예금주명을 입력해주세요</string>
     <string name="account_complete">완료</string>
@@ -268,12 +281,21 @@
 
     <!-- dialog -->
     <string name="dialog_logout_title">로그아웃하시겠어요?</string>
-    <string name="dialog_logout_content">언제든지 다시 로그인하실 수 있어요.</string>
     <string name="dialog_logout_btn">로그아웃</string>
     <string name="dialog_delete_title">정말 탈퇴하시겠어요?</string>
-    <string name="dialog_delete_content">탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
+    <string name="dialog_delete_content">탈퇴 시 계정은 삭제되며 복구되지 않습니다.</string>
     <string name="dialog_delete_btn">탈퇴하기</string>
     <string name="dialog_exit">취소하기</string>
+    <string name="dialog_write_btn">계속 작성</string>
+
+    <string name="dialog_write_exit">질문 작성을 취소하시겠어요?\n취소하기 버튼을 누르면\n작성했던 내용이 모두 삭제됩니다.</string>
+    <string name="dialog_delete_boss_body">게시글을 삭제하시겠습니까?</string>
+    <string name="dialog_delete_boss_comment">댓글을 삭제하시겠습니까?</string>
+    <string name="dialog_delete_teacher_body">질문을 삭제하시겠습니까?</string>
+    <string name="dialog_delete_teacher_answer">답변을 삭제하시겠습니까?</string>
+
+    <string name="dialog_delete_button">삭제하기</string>
+    <string name="dialog_exit_button">아니요</string>
 
     <!-- manage account -->
     <string name="manage_account_title">계정 관리</string>

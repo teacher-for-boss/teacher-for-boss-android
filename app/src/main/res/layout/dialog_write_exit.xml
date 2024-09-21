@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_radius12_white">
 
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="작성을 취소하시겠어요?\n이 화면에서 나가면 작성했던\n내용은 모두 삭제됩니다."
-        android:textColor="@color/black"
-        android:lineSpacingExtra="4dp"
-        android:textSize="16dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/dialog_write_exit"
+        android:textAppearance="@style/TextAppearance.TeacherForBoss.Body1"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/exit_btn"
@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="작성 취소"
+            android:text="@string/dialog_exit"
             android:textColor="@color/white"
             android:textSize="14dp"
             android:gravity="center"
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="계속 작성"
+            android:text="@string/dialog_write_btn"
             android:textColor="@color/white"
             android:textSize="14dp"
             android:gravity="center"

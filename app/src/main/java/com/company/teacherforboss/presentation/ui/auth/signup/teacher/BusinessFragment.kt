@@ -42,15 +42,15 @@ class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragm
     private fun addListeners(){
         with (binding){
             btnNextSignup.setOnClickListener {
-//                lifecycleScope.launch {
-//                    val isVerified = viewModel.businessNumCheck()
-//                    val activity = activity as SignupActivity
-//                    if (isVerified) {
-//                        activity.gotoNextFragment(BusinessVerifySuccessFragment())
-//                    } else {
-//                        activity.gotoNextFragment(BusinessVerifyFailFragment())
-//                    }
-//                }
+                lifecycleScope.launch {
+                    val isVerified = viewModel.businessNumCheck()
+                    val activity = activity as SignupActivity
+                    if (isVerified) {
+                        activity.gotoNextFragment(BusinessVerifySuccessFragment())
+                    } else {
+                        activity.gotoNextFragment(BusinessVerifyFailFragment())
+                    }
+                }
                 val activity = activity as SignupActivity
                 activity.gotoNextFragment(BusinessVerifySuccessFragment())
             }

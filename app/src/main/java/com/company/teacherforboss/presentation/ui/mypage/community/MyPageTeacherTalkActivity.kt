@@ -57,18 +57,22 @@ class MyPageTeacherTalkActivity : BindingActivity<ActivityMyPageTeacherTalkBindi
             .onEach { answeredQuestionState ->
                 when (answeredQuestionState) {
                     is UiState.Success -> {
-                            val previousLastQuestionId = viewModel.lastQuestionId.value
-                            viewModel.apply {
-                                setHasNext(answeredQuestionState.data.hasNext)
-                                setQuestionList(answeredQuestionState.data.questionList)
-                                setLastQuestionId(answeredQuestionState.data.questionList.last().questionId)
-                            }
-                            if(previousLastQuestionId == 0L){
-                                setAdapter(viewModel.questionList.value!!.toMutableList())
-                            }
-                            else{
-                                adapter.addMoreCards(viewModel.questionList.value!!)
-                            }
+
+                        val previousLastPostId = viewModel.lastQuestionId.value
+                        val hasNext = answeredQuestionState.data.hasNext
+                        val questionList = answeredQuestionState.data.questionList
+                        val lastQuestionId = questionList.lastOrNull()?.questionId?:0L
+
+                        viewModel.apply {
+                            setHasNext(hasNext)
+                            setQuestionList(questionList)
+                            setLastQuestionId(lastQuestionId)
+                        }
+                        if (questionList.isNotEmpty()){
+                            if(previousLastPostId == 0L) setAdapter(questionList.toMutableList())
+                            else adapter.addMoreCards(questionList)
+                        }
+                        else {}
                     }
                     else -> Unit
                 }
@@ -78,24 +82,23 @@ class MyPageTeacherTalkActivity : BindingActivity<ActivityMyPageTeacherTalkBindi
             .onEach { myQuestionState ->
                 when (myQuestionState) {
                     is UiState.Success -> {
-                        val previousLastQuestionId = viewModel.lastQuestionId.value
-                        questionList = myQuestionState.data.questionList
-                        viewModel.setQuestionList(questionList)
+
+                        val previousLastPostId = viewModel.lastQuestionId.value
+                        val hasNext = myQuestionState.data.hasNext
+                        val questionList = myQuestionState.data.questionList
+                        val lastQuestionId = questionList.lastOrNull()?.questionId?:0L
+
                         viewModel.apply {
-                            setHasNext(myQuestionState.data.hasNext)
-                            setQuestionList(myQuestionState.data.questionList)
-                            setLastQuestionId(myQuestionState.data.questionList.last().questionId)
+                            setHasNext(hasNext)
+                            setQuestionList(questionList)
+                            setLastQuestionId(lastQuestionId)
                         }
-                        if(previousLastQuestionId == 0L){
-                            setAdapter(viewModel.questionList.value!!.toMutableList())
+                        if (questionList.isNotEmpty()){
+                            if(previousLastPostId == 0L) setAdapter(questionList.toMutableList())
+                            else adapter.addMoreCards(questionList)
                         }
-                        else{
-                            adapter.addMoreCards(viewModel.questionList.value!!)
-                        }
-
-
+                        else {}
                     }
-
                     else -> Unit
                 }
             }.launchIn(this.lifecycleScope)

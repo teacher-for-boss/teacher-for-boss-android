@@ -57,21 +57,24 @@ class MyPageBossTalkWriteActivity : BindingActivity<ActivityMyPageBossWriteBindi
             .onEach { commentedPostsState ->
                 when (commentedPostsState) {
                     is UiState.Success -> {
+
                         val previousLastPostId = viewModel.lastPostId.value
+                        val hasNext = commentedPostsState.data.hasNext
+                        val postList = commentedPostsState.data.postList
+                        val lastPostId = postList.lastOrNull()?.postId?:0L
+
                         viewModel.apply {
-                            setHasNext(commentedPostsState.data.hasNext)
-                            setPostList(commentedPostsState.data.postList)
-                            setLastPostId(commentedPostsState.data.postList.last().postId)
+                            setHasNext(hasNext)
+                            setPostList(postList)
+                            setLastPostId(lastPostId)
                         }
-                        if(previousLastPostId == 0L){
-                            setAdapter(viewModel.postList.value!!.toMutableList())
+                        if (postList.isNotEmpty()){
+                            if(previousLastPostId == 0L) setAdapter(postList.toMutableList())
+                            else adapter.addMoreCards(postList)
                         }
-                        else{
-                            adapter.addMoreCards(viewModel.postList.value!!)
-                        }
-
+                        else {}
+                        // 목록 없음 뷰..?
                     }
-
                     else -> Unit
                 }
             }.launchIn(this.lifecycleScope)
@@ -80,20 +83,23 @@ class MyPageBossTalkWriteActivity : BindingActivity<ActivityMyPageBossWriteBindi
             .onEach { myPostsState ->
                 when (myPostsState) {
                     is UiState.Success -> {
-                        val previousLastPostId = viewModel.lastPostId.value
-                        viewModel.apply {
-                            setHasNext(myPostsState.data.hasNext)
-                            setPostList(myPostsState.data.postList)
-                            setLastPostId(myPostsState.data.postList.last().postId)
-                        }
-                        if(previousLastPostId == 0L){
-                            setAdapter(viewModel.postList.value!!.toMutableList())
-                        }
-                        else{
-                            adapter.addMoreCards(viewModel.postList.value!!)
-                        }
-                    }
 
+                        val previousLastPostId = viewModel.lastPostId.value
+                        val hasNext = myPostsState.data.hasNext
+                        val postList = myPostsState.data.postList
+                        val lastPostId = postList.lastOrNull()?.postId?:0L
+
+                        viewModel.apply {
+                            setHasNext(hasNext)
+                            setPostList(postList)
+                            setLastPostId(lastPostId)
+                        }
+                        if (postList.isNotEmpty()){
+                            if(previousLastPostId == 0L) setAdapter(postList.toMutableList())
+                            else adapter.addMoreCards(postList)
+                        }
+                        else {}
+                    }
                     else -> Unit
                 }
             }.launchIn(this.lifecycleScope)

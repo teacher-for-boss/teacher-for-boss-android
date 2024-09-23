@@ -102,10 +102,6 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         setRecommentListener()
         // 알림 읽기
         readNotification()
-
-//        binding.root.setOnClickListener {
-//            hideOptionMenuIfVisible()
-//        }
     }
 
     fun addListeners() {
@@ -127,7 +123,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
         notificationViewModel.readNotification(notifiationId)
     }
-    private fun showOptionMenu() {
+    fun showOptionMenu() {
         // 더보기 버튼
         binding.btnOption.setOnClickListener {
             if (binding.writerOption.visibility == View.VISIBLE || binding.nonWriterOption.visibility == View.VISIBLE) {
@@ -150,7 +146,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         }
     }
 
-    private fun doOptionMenu() {
+    fun doOptionMenu() {
         // 삭제하기
         binding.deleteBtn.setOnClickListener {
             val dialog = DeleteBodyDialog(this, viewModel, this, postId, BOSS_TALK)

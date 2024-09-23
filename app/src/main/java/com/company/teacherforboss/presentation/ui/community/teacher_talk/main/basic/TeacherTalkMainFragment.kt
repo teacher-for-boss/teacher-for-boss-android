@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
@@ -49,6 +50,11 @@ class TeacherTalkMainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
 
         val newScrollView = binding.svTeacherTalkMain as NewScrollView
         newScrollView.setBinding(binding.teacherTalkWidget2, binding.rvTeacherTalkCard)

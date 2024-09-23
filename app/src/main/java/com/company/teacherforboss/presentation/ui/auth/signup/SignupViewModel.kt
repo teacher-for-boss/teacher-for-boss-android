@@ -566,6 +566,7 @@ class SignupViewModel @Inject constructor(
 
     val nicknameResult: MutableLiveData<BaseResponse<NicknameResponse>> = MutableLiveData()
     var nicknameCheck = MutableLiveData<Boolean>(false)
+    var nicknamePrevCheck=MutableLiveData<Boolean>(null)
     fun nicknameUser() {
         nicknameResult.value = BaseResponse.Loading()
 
@@ -642,16 +643,16 @@ class SignupViewModel @Inject constructor(
     }
 
     fun nickname_not_blank_validation(){
-        nicknameCheck.value=!_nickname.value.isNullOrEmpty()
+        nicknamePrevCheck.value=!_nickname.value.isNullOrEmpty()
     }
 
     fun nickname_pattern_validation() {
         val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
-        nicknameCheck.value = !_nickname.value.isNullOrEmpty() && !nicknamePattern.containsMatchIn(_nickname.value!!)
+        nicknamePrevCheck.value = !_nickname.value.isNullOrEmpty() && !nicknamePattern.containsMatchIn(_nickname.value!!)
     }
 
     fun checkFilled() {
-        if (nicknameCheck.value == true &&
+        if (nicknamePrevCheck.value == true &&
             !field.value.isNullOrEmpty() &&
             !introduction.value.isNullOrEmpty()
         ) {

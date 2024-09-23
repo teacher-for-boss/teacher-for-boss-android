@@ -6,6 +6,7 @@
     <string name="id_or_pw_different">아이디 또는 비밀번호가 맞지 않습니다.</string>
     <string name="social_login_fail">소셜 로그인 실패</string>
     <string name="exit_warning">뒤로가기를 한 번 더 누르면 종료됩니다.</string>
+    <string name="login_loading">로딩중입니다. 잠시만 기다려주세요</string>
 
     <string name="boss_talk_fragment">bosstalk fragement입니다</string>
     <string name="my_page_fragment">mypage fragement입니다</string>
@@ -358,5 +359,4 @@
     <string name="image_request_permission">갤러리 접근 권한이 필요합니다.</string>
     <string name="image_input_number">세장까지만 업로드 가능합니다.</string>
     <string name="image_permission_denied">권한을 허용하지 않으면 이미지를 업로드 할 수 없습니다.\n설정에서 권한을 허용해주세요.</string>
-
 </resources>

@@ -77,49 +77,29 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
             nicknameVerifyBtn.setOnClickListener {
                 val nicknameText = binding.nicknameBox.text.toString()
                 viewModel.validateNickname(nicknameText)
-            }
-            nicknameVerifyBtn.setOnClickListener {
-                val nicknameText = binding.nicknameBox.text.toString()
-                viewModel.validateNickname(nicknameText)
+
+                viewModel.nicknamePrevCheck.observe(viewLifecycleOwner,Observer{isValid->
+                    if(isValid==true) viewModel.nicknameUser()
+                    else{
+                        binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
+                        binding.veryInfo.visibility = View.VISIBLE
+                        binding.veryInfo.setTextColor(errorColor)
+                        binding.veryInfo.text = if (binding.nicknameBox.text.isEmpty()) {
+                            getString(R.string.nickname_input)
+                        } else {
+                            getString(R.string.verify_nickname)
+                        }
+                        binding.nicknameVerifyBtn.isEnabled = false
+                    }
+                })
             }
         }
-
-        viewModel.nicknameCheck.observe(viewLifecycleOwner, Observer { isValid ->
-            if (isValid == true) {
-                binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
-                binding.veryInfo.visibility = View.VISIBLE
-                binding.veryInfo.setTextColor(successColor)
-                binding.veryInfo.text = getString(R.string.nickname_available)
-                binding.nicknameVerifyBtn.isEnabled = true
-            } else {
-                binding.nicknameBox.setBackgroundResource(R.drawable.selector_signup_error)
-                binding.veryInfo.visibility = View.VISIBLE
-                binding.veryInfo.setTextColor(errorColor)
-                binding.veryInfo.text = if (binding.nicknameBox.text.isEmpty()) {
-                    getString(R.string.nickname_input)
-                } else {
-                    getString(R.string.verify_nickname)
-                }
-                binding.nicknameVerifyBtn.isEnabled = false
-            }
-        })
-
-        viewModel.isUserImgSelected.observe(viewLifecycleOwner,{bool->
-            if (bool==true){
-                Glide.with(this)
-                    .load(viewModel.profileImgUri.value)
-                    .fitCenter()
-                    .apply(RequestOptions().override(80,80))
-                    .into(binding.profileImage)
-            }
-        })
 
         viewModel.nicknameResult.observe(viewLifecycleOwner){
           when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
 
-                    //viewModel.emailAuthId.value=it.data?.result?.emailAuthId!!//result로 전달받은 emailAuthId 저장
                     nicknameBox.setBackgroundResource(R.drawable.selector_signup_success)
                     veryInfo.visibility = View.VISIBLE
                     veryInfo.setTextColor(successColor)

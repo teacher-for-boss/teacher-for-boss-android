@@ -122,7 +122,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         // 소셜 로그인 (3.로그인 요청)
         loginViewModel.socialLoginResult.observe(this){
             when(it){
-                is BaseResponse.Loading ->{}
+                is BaseResponse.Loading ->{CustomSnackBar.make(binding.root,getString(R.string.login_loading),1000).show() }
                 is BaseResponse.Success ->{
                     loginViewModel.saveToken(it.data)
                     localDataSource.saveUserInfo(USER_NAME,it.data?.result?.name!!.toString())
@@ -131,6 +131,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                 }
                 is BaseResponse.Error ->{
                     // 회원가입 진행
+                    CustomSnackBar.make(binding.root,getString(R.string.login_loading),1000).show()
                     loginViewModel._isSocialLoginSignup.value=true
                     gotoSignupActivity()
 

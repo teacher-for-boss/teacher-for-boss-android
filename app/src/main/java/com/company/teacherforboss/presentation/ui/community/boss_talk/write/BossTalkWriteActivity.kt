@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.write
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,13 +12,17 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -293,6 +298,32 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
         binding.inputImage.setOnClickListener {
             checkAndRequestPermissions()
         }
+        binding.inputTitle.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+
+                true
+            }
+            else {
+                false
+            }
+        }
+        binding.inputBody.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+
+                true
+            }
+            else {
+                false
+            }
+        }
     }
 
     fun IsValidPost() {
@@ -382,6 +413,14 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
     override fun onExitBtnClicked() {
         onBackPressedCallback.isEnabled = false
         onBackPressed()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        currentFocus?.clearFocus()
+        return super.dispatchTouchEvent(ev)
     }
 
     companion object{

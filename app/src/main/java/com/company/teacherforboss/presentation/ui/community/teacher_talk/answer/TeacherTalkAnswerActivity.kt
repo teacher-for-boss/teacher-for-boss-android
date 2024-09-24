@@ -263,6 +263,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
                 putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_uploaded))
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(this)
             }
         })
@@ -272,6 +273,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
                 putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_modified))
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(this)
             }
         })

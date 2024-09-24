@@ -12,6 +12,7 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -68,6 +69,8 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         setInitView()
 
         addListeners()
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     fun setInitView() {
@@ -216,8 +219,15 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             dialog.show()
         }
     }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val dialog = WriteExitDialog(this@TeacherTalkAnswerActivity, TEACHER_TALK,purpose,this@TeacherTalkAnswerActivity)
+            dialog.show()
+        }
+    }
 
     override fun onExitBtnClicked() {
+        onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
 

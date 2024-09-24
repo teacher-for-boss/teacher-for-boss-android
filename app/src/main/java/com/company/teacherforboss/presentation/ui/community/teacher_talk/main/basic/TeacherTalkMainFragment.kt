@@ -24,6 +24,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.ca
 import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
@@ -226,8 +227,9 @@ class TeacherTalkMainFragment :
     }
 
     private fun addListeners() {
+        apply { binding }
         binding.fabWrite.setOnClickListener {
-            gotoTeacherTalkWrite()
+            navigateToTeacherTalkWrite()
         }
         binding.ivSearch.setOnClickListener {
             viewModel.setKeyword(binding.etSearchView.text.toString())
@@ -247,6 +249,9 @@ class TeacherTalkMainFragment :
                 false
             }
         }
+        binding.tvQuestionPayBtn.setOnClickListener{
+            navigateToExchange()
+        }
     }
 
     private fun finishSearch() {
@@ -262,7 +267,7 @@ class TeacherTalkMainFragment :
         })
     }
 
-    fun gotoTeacherTalkWrite(){
+    fun navigateToTeacherTalkWrite(){
         val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
         startActivity(intent)
     }
@@ -278,5 +283,9 @@ class TeacherTalkMainFragment :
             startActivity(this)
         }
     }
-
+    private fun navigateToExchange(){
+        Intent(requireContext(), ExchangeActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
 }

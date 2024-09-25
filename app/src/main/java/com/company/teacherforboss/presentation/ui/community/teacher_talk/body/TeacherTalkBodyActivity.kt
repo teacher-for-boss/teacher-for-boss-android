@@ -378,6 +378,11 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
             var isInAnyBtnOption = false
 
+            // 현재 btnOption의 터치 여부 확인
+            if (btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                isInAnyBtnOption = true
+            }
+
             adapter?.let {
                 for (i in 0 until adapter.itemCount) {
                     val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentBoss.ViewHolder
@@ -389,12 +394,15 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                 }
             }
 
-            hideOptionMenuIfVisible()
+            // 만약 어떤 btnOption이 터치된 것이 아니라면 옵션 메뉴 숨기기
+            if (!isInAnyBtnOption) {
+                hideOptionMenuIfVisible()
+            }
+
             binding.rvComment.dispatchTouchEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }
-
 
     private fun handleTouchEvent(ev: MotionEvent): Boolean {
         if (currentOptionButton != null && ev.action == MotionEvent.ACTION_UP) {

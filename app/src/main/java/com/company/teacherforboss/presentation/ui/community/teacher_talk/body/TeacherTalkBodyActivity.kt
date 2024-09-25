@@ -203,13 +203,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
 
     private fun updateLikeUI(isLike: Boolean?) {
-        val likeCount = viewModel.teacherTalkBodyLiveData.value?.likeCount ?: 0
-
-        if (likeCount > 0) {
-            binding.likeTv.text = getString(R.string.like_any, "${likeCount}개")
-        } else {
-            binding.likeTv.text = getString(R.string.like)
-        }
+        binding.likeTv.text = getString(R.string.like)
 
         if (isLike == true) {
             binding.likeIv.setImageResource(R.drawable.community_like_on)
@@ -220,13 +214,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         }
     }
     private fun updateBookmarkUI(isBookmark: Boolean?) {
-        val bookmarkCount = viewModel.teacherTalkBodyLiveData.value?.bookmarkCount ?: 0
-
-        if (bookmarkCount > 0) {
-            binding.bookmarkTv.text = getString(R.string.bookmark_any, "${bookmarkCount}개")
-        } else {
-            binding.bookmarkTv.text = getString(R.string.bookmark)
-        }
+        binding.bookmarkTv.text = getString(R.string.bookmark)
 
         if (isBookmark == true) {
             binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)

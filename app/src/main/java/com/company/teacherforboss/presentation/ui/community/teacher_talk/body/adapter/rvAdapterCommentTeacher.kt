@@ -28,7 +28,7 @@ import com.company.teacherforboss.util.base.LocalDateFormatter
 class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
                               private val viewModel: TeacherTalkBodyViewModel,
                               private val context: Context,
-                              private val lifecycleOwner: LifecycleOwner
+                              private val lifecycleOwner: LifecycleOwner,
 ): RecyclerView.Adapter<rvAdapterCommentTeacher.ViewHolder>() {
     class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(answer: TeacherTalkAnswerListResponseEntity.AnswerEntity,
@@ -151,7 +151,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                         binding.nonWriterOption.visibility = View.VISIBLE
                     }
                     else {
-                    binding.nonWriterOption.visibility = View.GONE
+                        binding.nonWriterOption.visibility = View.GONE
                     }
                 }
             }

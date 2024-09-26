@@ -185,7 +185,7 @@
 
     <string name="community_answer_uploaded">답변이 등록되었습니다.</string>
     <string name="community_answer_modified">답변이 수정되었습니다.</string>
-
+    <string name="community_answer_deleted">답변이 삭제되었습니다.</string>
 
     <!-- my page -->
     <string name="modify_teacher_profile_title">프로필 수정</string>

@@ -170,8 +170,8 @@
     <string name="community_hashtag_input_number">"해시태그는 5개까지 입력 가능합니다."</string>
     <string name="community_hashtag_input_duplicated">중복된 해시태그입니다.</string>
     <string name="community_input_title_body">필수 항목을 모두 입력해주세요.</string>
-    <string name="community_cannot_delete_answer">채택된 글의 답변은 삭제할 수 없습니다.</string>
-    <string name="community_cannot_modify_answer">채택된 글의 답변은 수정할 수 없습니다.</string>
+    <string name="community_cannot_delete_answer">채택된 답변은 삭제할 수 없어요.</string>
+    <string name="community_cannot_modify_answer">채택된 답변은 수정할 수 없어요.</string>
     <string name="community_input_length_100">100자 이상 작성해주세요.</string>
     <string name="community_input_comment">댓글을 입력해주세요.</string>
 

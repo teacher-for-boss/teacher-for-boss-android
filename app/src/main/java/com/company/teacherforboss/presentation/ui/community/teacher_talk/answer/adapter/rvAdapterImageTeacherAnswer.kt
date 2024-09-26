@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemImageBinding
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerViewModel
+import com.company.teacherforboss.util.base.BindingImgAdapter
 
 class rvAdapterImageTeacherAnswer (
     private val imageList: ArrayList<Uri>,
     private val deleteImg:(Int)->Unit,
 ): RecyclerView.Adapter<rvAdapterImageTeacherAnswer.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemImageBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(imagePath: Uri) {
-            binding.image.setImageURI(Uri.parse(imagePath.toString()))
+        fun bind(imagePath: String) {
+            BindingImgAdapter.bindImgUri(binding.image, Uri.parse(imagePath))
 
             binding.deleteButton.setOnClickListener {
                 val position = adapterPosition
@@ -34,6 +34,6 @@ class rvAdapterImageTeacherAnswer (
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(imageList[position])
+        holder.bind(imageList[position].toString())
     }
 }

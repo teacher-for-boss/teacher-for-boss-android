@@ -23,6 +23,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SELECT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
@@ -190,7 +191,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             //삭제하기
             binding.deleteBtn.setOnClickListener {
-                if(!viewModel.isSelected.value!!) {
+                if(answer.selectedAt == null) {
                     viewModel.setAnswerId(answer.answerId)
                     val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner, TEACHER_TALK)
                     dialog.show()
@@ -203,7 +204,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             //수정하기
             binding.modifyBtn.setOnClickListener {
-                if(!viewModel.isSelected.value!!) {
+                if(answer.selectedAt == null) {
                     // answerId
                     viewModel.setAnswerId(answer.answerId)
 
@@ -217,11 +218,11 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
                         viewModel.imageUrlList?.let {
                             if(it.isNotEmpty()) {
-                                putExtra("isImgList", "true")
-                                val imgArrayList = viewModel.imageUrlList as ArrayList<String>
+                                putExtra(POST_ISIMGLIST, "true")
+                                val imgArrayList = answer.imageUrlList as ArrayList<String>
                                 putStringArrayListExtra("imgList", imgArrayList)
                             }
-                            else putExtra("isImgList", "false")
+                            else putExtra(POST_ISIMGLIST, "false")
                         }
                     }
                     context.startActivity(intent)

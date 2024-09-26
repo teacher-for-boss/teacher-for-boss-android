@@ -39,6 +39,11 @@ class BossTalkMainFragment :
         viewModel.clearData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.etSearchView.text.clear()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

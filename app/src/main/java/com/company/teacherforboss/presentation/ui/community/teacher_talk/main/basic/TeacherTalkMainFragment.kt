@@ -48,6 +48,11 @@ class TeacherTalkMainFragment :
     lateinit var localDataSource: LocalDataSource
     var initialized = false
 
+    override fun onResume() {
+        super.onResume()
+        binding.etSearchView.text.clear()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

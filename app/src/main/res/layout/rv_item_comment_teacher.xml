@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="@string/tv_answer_chosen"
                     android:textSize="14dp"
                     android:textColor="#66BD83"
                     app:layout_constraintStart_toEndOf="@id/comment_choice_iv"

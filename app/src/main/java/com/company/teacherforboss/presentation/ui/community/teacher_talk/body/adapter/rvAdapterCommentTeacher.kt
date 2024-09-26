@@ -7,6 +7,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentTeacherBinding
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
+import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
@@ -21,6 +23,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SELECT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -71,7 +74,8 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
             // 채택된 답변이 있는지
             if(viewModel.isSelected.value!!) {  // 채택된 답변이 있는 경우
                 // 채택된 답변
-                if(answer.selected) binding.commentChoice.visibility = View.VISIBLE
+                if(answer.selectedAt != null) binding.commentChoice.visibility = View.VISIBLE
+                else binding.commentChoice.visibility = View.GONE
                 binding.selectAnswer.visibility = View.GONE
             }
             else {  // 채택된 답변이 없는 경우
@@ -158,19 +162,29 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
 
             //채택하기
             binding.selectAnswer.setOnClickListener {
-                // answerId
-                viewModel.setAnswerId(answer.answerId)
+                if (context is FragmentActivity) {
+                    val fragmentManager = (context as FragmentActivity).supportFragmentManager
 
-                viewModel.selectAnswer()
+                    CommunityDialogFragment(
+                    title = context.getString(R.string.dialog_select_title),
+                    leftBtnText = context.getString(R.string.dialog_exit),
+                    rightBtnText = context.getString(R.string.dialog_select_btn),
+                    clickLeftBtn = {},
+                    clickRightBtn = {
+                        // answerId
+                        viewModel.setAnswerId(answer.answerId)
+                        viewModel.selectAnswer()
 
-                if(context is LifecycleOwner) {
-                    viewModel.teacherSelectAnswerLiveData.observe(context, Observer {
-
-                        // 채택하기 버튼이 안보이도록
-                        viewModel._isSelected.value = true
-                        // 채택된 답변 ui 수정 -> 리스트 다시 불러옴
-                        viewModel.isSelectClicked.value = Unit
-                    })
+                        if(context is LifecycleOwner) {
+                            viewModel.teacherSelectAnswerLiveData.observe(context, Observer {
+                                // 채택하기 버튼이 안보이도록
+                                viewModel._isSelected.value = true
+                                // 채택된 답변 ui 수정 -> 리스트 다시 불러옴
+                                viewModel.isSelectClicked.value = Unit
+                            })
+                        }
+                    }
+                    ).show(fragmentManager, SELECT_DIALOG)
                 }
             }
 

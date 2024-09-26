@@ -75,5 +75,6 @@ class ConstsUtils {
         const val LOGOUT_DIALOG = "logoutModal"
         const val DELETE_DIALOG = "deleteModal"
         const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
+        const val SELECT_DIALOG = "selectModal"
     }
 }

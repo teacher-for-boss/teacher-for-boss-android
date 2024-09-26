@@ -60,6 +60,7 @@
     <string name="teacher_talk_main_text2"><b>티처에게 물어보세요!</b></string>
     <string name="search_view_hint">궁금한 키워드를 입력하세요</string>
     <string name="more_card">게시물 더 불러오기</string>
+    <string name="tv_answer_chosen">채택된 답변입니다.</string>
 
     <!-- boss_talk -->
     <string name="tv_boss_talk">보스톡</string>
@@ -298,6 +299,9 @@
 
     <string name="dialog_delete_button">삭제하기</string>
     <string name="dialog_exit_button">아니요</string>
+
+    <string name="dialog_select_title">채택하시겠어요?</string>
+    <string name="dialog_select_btn">채택하기</string>
 
     <!-- manage account -->
     <string name="manage_account_title">계정 관리</string>

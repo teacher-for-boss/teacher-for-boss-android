@@ -320,8 +320,19 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                 viewModel.setAnswerList(it.answerList)
 
                 // 채택된 답변이 있는지
-                if (it.answerList.any { it.selected }) {
+                if (it.answerList.any { answer -> answer.selectedAt != null }) {
                     viewModel._isSelected.value = true
+
+                    val selectedAnswerIndex = it.answerList.indexOfFirst { answer -> answer.selectedAt != null }
+                    if(selectedAnswerIndex != 0) {
+                        val selectedAnswer = it.answerList[selectedAnswerIndex]
+
+                        val updatedAnswerList = it.answerList.toMutableList()
+                        updatedAnswerList.removeAt(selectedAnswerIndex)
+                        updatedAnswerList.add(0, selectedAnswer)
+
+                        viewModel.setAnswerList(updatedAnswerList)
+                    }
                 }
 
                 // 답변 개수

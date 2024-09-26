@@ -1,16 +1,13 @@
 package com.company.teacherforboss.presentation.ui.community.teacher_talk.body
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -236,8 +233,8 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         // tagRv
-        val tagList = viewModel.tagList.value ?: emptyList()
-        binding.rvTagArea.adapter = rvAdapterTag(tagList)
+        val tagList = viewModel.getTagListWithCategory()
+        binding.rvTagArea.adapter = tagList?.let { rvAdapterTag(it, this) }
         binding.rvTagArea.layoutManager = layoutManager
 
         // image vp
@@ -300,6 +297,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
             // 카테고리
             categoryName = body.category
+            viewModel.setCategory(body.category)
 
             setRecyclerView()
             setTextColor()

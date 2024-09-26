@@ -196,7 +196,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         layoutManager.justifyContent = JustifyContent.FLEX_START
         // rvTag
         if (viewModel.getTagList().isNotEmpty()) {
-            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!)
+            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!, this)
             binding.rvTagArea.layoutManager = layoutManager
         }
 

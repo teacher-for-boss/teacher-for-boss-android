@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tag"
+        android:id="@+id/tag_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,13 +32,13 @@
     <View
         android:layout_width="8dp"
         android:layout_height="1dp"
-        app:layout_constraintStart_toEndOf="@id/tag"
+        app:layout_constraintStart_toEndOf="@id/tag_area"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="1dp"
         android:layout_height="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tag"
-        app:layout_constraintStart_toStartOf="@id/tag" />
+        app:layout_constraintTop_toBottomOf="@id/tag_area"
+        app:layout_constraintStart_toStartOf="@id/tag_area" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

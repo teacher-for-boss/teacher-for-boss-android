@@ -171,10 +171,15 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
                 if(inputText.isNotBlank()) {
                     if(viewModel.hashTagList.size < 5) {
-                        viewModel.addHashTag(inputText)
-                        adapterTag.notifyDataSetChanged()
+                        if(!viewModel.hashTagList.contains(inputText)) {
+                            viewModel.addHashTag(inputText)
+                            adapterTag.notifyDataSetChanged()
 
-                        binding.inputHashtag.text.clear()
+                            binding.inputHashtag.text.clear()
+                        }
+                        else  {
+                            CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_duplicated), 2000).show()
+                        }
                     }
                     else {
                         CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_number), 2000).show()

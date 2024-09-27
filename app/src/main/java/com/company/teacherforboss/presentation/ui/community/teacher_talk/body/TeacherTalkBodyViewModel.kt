@@ -78,6 +78,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
 
     val isSelectClicked=MutableLiveData<Unit>()
 
+    var _isAnswered = MutableLiveData<Boolean>().apply { value = false }
+    val isAnswered: LiveData<Boolean> get()=_isAnswered
+
     var _isSelected = MutableLiveData<Boolean>().apply { value = false }
     val isSelected: LiveData<Boolean> get()=_isSelected
 

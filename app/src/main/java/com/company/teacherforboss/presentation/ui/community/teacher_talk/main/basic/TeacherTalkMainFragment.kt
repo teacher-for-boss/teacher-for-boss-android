@@ -25,6 +25,7 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.ca
 import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel
 import com.company.teacherforboss.presentation.ui.mypage.subscription.SubscriptionActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
@@ -249,10 +250,13 @@ class TeacherTalkMainFragment :
 
             }
             tvQuestionPayBtn.setOnClickListener{
-                navigateToSubscription()
+                val role=localDataSource.getUserInfo(USER_ROLE)
+                if (role == TEACHER)
+                    navigateToExchange()
+                else
+                    navigateToSubscription()
             }
         }
-
     }
 
     private fun finishSearch() {
@@ -270,7 +274,7 @@ class TeacherTalkMainFragment :
         })
     }
 
-    fun gotoTeacherTalkWrite(){
+    fun navigateToTeacherTalkWrite(){
         val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
         startActivity(intent)
     }
@@ -283,6 +287,11 @@ class TeacherTalkMainFragment :
     private fun navigateToTeacherTalkBody(questionId:Long){
         Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply{
             putExtra(TEACHER_QUESTIONID,questionId)
+            startActivity(this)
+        }
+    }
+    private fun navigateToExchange(){
+        Intent(requireContext(), ExchangeActivity::class.java).apply {
             startActivity(this)
         }
     }
@@ -301,12 +310,7 @@ class TeacherTalkMainFragment :
 
 
     private fun navigateToSubscription() {
-        val role=localDataSource.getUserInfo(USER_ROLE)
-        if(role==BOSS) {
-            val intent = Intent(requireContext(), SubscriptionActivity::class.java)
-            startActivity(intent)
-
-        }
+        val intent = Intent(requireContext(), SubscriptionActivity::class.java)
+        startActivity(intent)
     }
-
 }

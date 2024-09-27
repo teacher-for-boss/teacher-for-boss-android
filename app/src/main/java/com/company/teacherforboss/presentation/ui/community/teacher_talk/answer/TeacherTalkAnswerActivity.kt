@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -73,6 +74,8 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         setInitView()
 
         addListeners()
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     fun setInitView() {
@@ -257,8 +260,15 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
             dialog.show()
         }
     }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val dialog = WriteExitDialog(this@TeacherTalkAnswerActivity, TEACHER_TALK,purpose,this@TeacherTalkAnswerActivity)
+            dialog.show()
+        }
+    }
 
     override fun onExitBtnClicked() {
+        onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
 
@@ -304,6 +314,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
                 putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_uploaded))
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(this)
             }
         })
@@ -313,6 +324,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
                 putExtra(TEACHER_QUESTIONID, viewModel.questionId.value)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ANSWER_ACTIVITY)
                 putExtra(SNACK_BAR_MSG, getString(R.string.community_answer_modified))
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(this)
             }
         })

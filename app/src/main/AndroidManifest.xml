@@ -74,12 +74,7 @@
 
         <activity
             android:name="com.company.teacherforboss.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"

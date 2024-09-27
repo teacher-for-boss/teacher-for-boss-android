@@ -51,6 +51,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_A
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.context.showToast
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -140,39 +141,47 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
     fun doOptionMenu() {
         // 삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this, viewModel, this, questionId, TEACHER_TALK)
-            dialog.show()
+            if (viewModel._isAnswered.value == false){
+                val dialog = DeleteBodyDialog(this, viewModel, this, questionId, TEACHER_TALK)
+                dialog.show()
+            }
+            else {CustomSnackBar.make(binding.root, getString(R.string.community_question_cant_delete) ,1000).show()
+            }
         }
 
         // 수정하기
         binding.modifyBtn.setOnClickListener {
-            val intent = Intent(this, TeacherTalkAskActivity::class.java).apply {
-                putExtra(POST_PURPOSE, "modify")
-                putExtra(POST_TITLE, binding.bodyTitle.text.toString())
-                putExtra(POST_BODY, binding.bodyBody.text.toString())
-                putExtra(TEACHER_QUESTIONID, questionId)
-                putExtra(TEACHER_CATAEGORYNAME, categoryName)
+            if (viewModel._isAnswered.value == false){
+                val intent = Intent(this, TeacherTalkAskActivity::class.java).apply {
+                    putExtra(POST_PURPOSE, "modify")
+                    putExtra(POST_TITLE, binding.bodyTitle.text.toString())
+                    putExtra(POST_BODY, binding.bodyBody.text.toString())
+                    putExtra(TEACHER_QUESTIONID, questionId)
+                    putExtra(TEACHER_CATAEGORYNAME, categoryName)
 
-                viewModel.getTagList()?.let {
-                    if (it.isNotEmpty()) {
-                        putExtra(POST_ISTAGLIST, "true")
-                        putStringArrayListExtra("tagList", viewModel.tagList.value)
-                    } else {
-                        putExtra(POST_ISTAGLIST, "false")
+                    viewModel.getTagList()?.let {
+                        if (it.isNotEmpty()) {
+                            putExtra(POST_ISTAGLIST, "true")
+                            putStringArrayListExtra("tagList", viewModel.tagList.value)
+                        } else {
+                            putExtra(POST_ISTAGLIST, "false")
+                        }
+                    }
+
+                    viewModel.imageUrlList?.let {
+                        if (it.isNotEmpty()) {
+                            putExtra(POST_ISIMGLIST, "true")
+                            val imgArrayList = viewModel.imageUrlList as ArrayList<String>
+                            putStringArrayListExtra("imgList", imgArrayList)
+                        } else {
+                            putExtra(POST_ISIMGLIST, "false")
+                        }
                     }
                 }
-
-                viewModel.imageUrlList?.let {
-                    if (it.isNotEmpty()) {
-                        putExtra(POST_ISIMGLIST, "true")
-                        val imgArrayList = viewModel.imageUrlList as ArrayList<String>
-                        putStringArrayListExtra("imgList", imgArrayList)
-                    } else {
-                        putExtra(POST_ISIMGLIST, "false")
-                    }
-                }
+                startActivity(intent)
             }
-            startActivity(intent)
+            else {CustomSnackBar.make(binding.root, getString(R.string.community_question_cant_delete) ,1000).show()}
+
         }
 
         // 신고하기
@@ -314,10 +323,15 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         viewModel.teacherTalkAnswerListLiveData.observe(this, Observer { answerListResponse ->
             viewModel.setAnswerList(answerListResponse.answerList)
 
-            if (answerListResponse.answerList.any { it.selected }) {
-                viewModel._isSelected.value = true
+            if (it.answerList.isNotEmpty()){
+                viewModel._isAnswered.value = true
+                // 채택된 답변이 있는지
+                if (it.answerList.any { it.selected }) {
+                    viewModel._isSelected.value = true
+                }
             }
-
+            else {viewModel._isAnswered.value = false}
+            
             val adapter = rvAdapterCommentTeacher(
                 lifecycleOwner = this,
                 context = this,

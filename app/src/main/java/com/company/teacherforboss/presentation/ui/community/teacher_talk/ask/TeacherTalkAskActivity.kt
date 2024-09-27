@@ -445,6 +445,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
                 putExtra(SNACK_BAR_MSG, getString(R.string.community_question_uploaded))
                 startActivity(this)
+                finish()
             }
         })
 
@@ -453,6 +454,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 putExtra(TEACHER_QUESTIONID, it.questionId)
                 putExtra(PREVIOUS_ACTIVITY, TEACHER_TALK_ASK_ACTIVITY)
                 putExtra(SNACK_BAR_MSG, getString(R.string.community_question_modified))
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(this)
             }
         })

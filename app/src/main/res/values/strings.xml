@@ -367,6 +367,9 @@
     <string name="notification_type_event">이벤트</string>ㅅ
     <string name="notification_type_exchange">환전신청완료</string>
 
+    <!--구독-->
+    <string name="subscription_title">구독권 결제</string>
+
     <!-- 이미지   -->
     <string name="image_dialog_file_size_5MB">5MB 이하의 이미지만 첨부 가능합니다.</string>
     <string name="image_dialog_file_size_10MB">10MB 이하의 이미지만 첨부 가능합니다.</string>

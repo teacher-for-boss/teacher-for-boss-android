@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -21,6 +22,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -338,6 +340,32 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
         binding.inputImage.setOnClickListener {
             checkAndRequestPermissions()
         }
+        binding.inputTitle.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+
+                true
+            }
+            else {
+                false
+            }
+        }
+        binding.inputBody.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+
+                true
+            }
+            else {
+                false
+            }
+        }
     }
 
     fun IsValidPost() {
@@ -428,6 +456,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
         onBackPressedCallback.isEnabled = false
         onBackPressed()
     }
+
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null && ev?.action == MotionEvent.ACTION_DOWN) {

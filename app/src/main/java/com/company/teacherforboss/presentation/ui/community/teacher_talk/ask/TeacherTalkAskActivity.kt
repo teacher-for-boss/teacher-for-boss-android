@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -141,6 +142,33 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         // 이미지
         binding.inputImage.setOnClickListener {
             checkAndRequestPermissions()
+        }
+        binding.inputTitle.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+
+                imm?.hideSoftInputFromWindow(v.windowToken, 0)
+
+                true
+            }
+            else {
+                false
+            }
+        }
+        binding.inputBody.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+
+                true
+            }
+            else {
+                false
+            }
         }
     }
 
@@ -454,6 +482,15 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             val dialog = WriteExitDialog(this@TeacherTalkAskActivity, TEACHER_TALK,purpose,this@TeacherTalkAskActivity)
             dialog.show()
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        //텍스트 박스 포커스 해제
+        currentFocus?.clearFocus()
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onExitBtnClicked() {

@@ -310,27 +310,35 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         )
     }
 
-    fun setCommentView() {
-        viewModel.teacherTalkAnswerListLiveData.observe(
-            this,
-            Observer {
-                viewModel.setAnswerList(it.answerList)
+    private fun setCommentView() {
+        viewModel.teacherTalkAnswerListLiveData.observe(this, Observer { answerListResponse ->
+            viewModel.setAnswerList(answerListResponse.answerList)
 
-                // 채택된 답변이 있는지
-                if (it.answerList.any { it.selected }) {
-                    viewModel._isSelected.value = true
+            if (answerListResponse.answerList.any { it.selected }) {
+                viewModel._isSelected.value = true
+            }
+
+            val adapter = rvAdapterCommentTeacher(
+                lifecycleOwner = this,
+                context = this,
+                answerList = viewModel.getAnswerListValue(),
+                viewModel = viewModel
+            ) { btnOption ->
+                if (currentOptionButton != null && currentOptionButton != btnOption) {
+                    currentOptionButton?.visibility = View.GONE
                 }
+                currentOptionButton = btnOption
+            }
 
-                // 답변 개수
-                binding.commentNumber.text =
-                    getString(R.string.boss_talk_comment_count, it.answerList.size)
+            adapter.setDispatchTouchEventListener { ev ->
+                handleTouchEvent(ev)
+            }
 
-                // 답변 rv
-                binding.rvComment.adapter =
-                    rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this, this)
-                binding.rvComment.layoutManager = LinearLayoutManager(this)
-            },
-        )
+            binding.commentNumber.text = getString(R.string.teacher_talk_comment_count, answerListResponse.answerList.size)
+
+            binding.rvComment.adapter = adapter
+            binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        })
 
         viewModel.isSelectClicked.observe(
             this,
@@ -375,7 +383,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             )
 
             // 리사이클러뷰의 각 아이템의 btnOption 영역 처리
-            val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
+            val adapter = binding.rvComment.adapter as? rvAdapterCommentTeacher
             var isInAnyBtnOption = false
 
             // 현재 btnOption의 터치 여부 확인
@@ -385,7 +393,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
             adapter?.let {
                 for (i in 0 until adapter.itemCount) {
-                    val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentBoss.ViewHolder
+                    val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentTeacher.ViewHolder
                     val itemBtnOptionRect = viewHolder?.getBtnOptionRect()
                     if (itemBtnOptionRect != null && itemBtnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
                         isInAnyBtnOption = true

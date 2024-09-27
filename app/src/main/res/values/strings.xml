@@ -86,7 +86,7 @@
     <string name="card_view_statement_solved">채택 완료</string>
     <string name="card_view_statement_not_solved">답변 대기중</string>
     <string name="teacher_talk_bookmark_count">%s</string>
-    <string name="teacher_talk_comment_count">%s</string>
+    <string name="teacher_talk_comment_count">댓글 %d개</string>
     <string name="teacher_talk_like_count">%s</string>
     <string name="like">좋아요</string>
     <string name="like_any">좋아요 %s</string>

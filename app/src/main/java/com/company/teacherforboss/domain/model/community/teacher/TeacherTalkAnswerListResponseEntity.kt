@@ -13,7 +13,7 @@ data class TeacherTalkAnswerListResponseEntity(
         val dislikeCount: Int,
         val liked: Boolean,
         val disliked: Boolean,
-        val selected: Boolean,
+        val selectedAt: String?,
         val createdAt: String,
         val memberInfo: MemberEntity,
         val imageUrlList: List<String>,

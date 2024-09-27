@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="@string/tv_answer_chosen"
                     android:textSize="14dp"
                     android:textColor="#66BD83"
                     app:layout_constraintStart_toEndOf="@id/comment_choice_iv"
@@ -133,6 +133,18 @@
                 app:layout_constraintTop_toBottomOf="@id/comment_choice"
                 app:layout_constraintBottom_toTopOf="@id/comment_body"
                 android:layout_marginTop="16dp"
+                android:visibility="gone" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/vp_img_slider"
+                app:layout_constraintStart_toStartOf="@id/vp_img_slider"
+                app:layout_constraintEnd_toEndOf="@id/vp_img_slider"
+                app:tabPaddingStart="8dp"
+                app:tabPaddingEnd="8dp"
                 android:visibility="gone" />
 
             <TextView

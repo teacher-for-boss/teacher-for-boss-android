@@ -3,19 +3,16 @@ package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +48,7 @@ import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -196,7 +194,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         layoutManager.justifyContent = JustifyContent.FLEX_START
         // rvTag
         if (viewModel.getTagList().isNotEmpty()) {
-            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!)
+            binding.rvTagArea.adapter = rvAdapterTag(viewModel.tagList.value!!, this)
             binding.rvTagArea.layoutManager = layoutManager
         }
 
@@ -204,6 +202,14 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         if (viewModel.imgUrlList.isNotEmpty()) {
             binding.vpImgSlider.visibility = View.VISIBLE
             binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imgUrlList)
+
+            if(viewModel.imgUrlList.size > 1) {
+                binding.tabIndicator.visibility = View.VISIBLE
+                TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->
+                    val tabView = LayoutInflater.from(this).inflate(R.layout.indicator_dot, null)
+                    tab.customView = tabView
+                }.attach()
+            }
         }
     }
 

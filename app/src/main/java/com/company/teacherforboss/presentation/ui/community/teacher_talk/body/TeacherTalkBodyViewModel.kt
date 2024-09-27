@@ -68,6 +68,9 @@ class TeacherTalkBodyViewModel @Inject constructor(
     private val _isBookmarked = MutableLiveData<Boolean>().apply { value = false }
     val isBookmarked: LiveData<Boolean> get() = _isBookmarked
 
+    private var _category = MutableLiveData<String>()
+    val category: LiveData<String> get() = _category
+
     private var _tagList = MutableLiveData<ArrayList<String>>()
     val tagList:LiveData<ArrayList<String>> get()=_tagList
 
@@ -265,6 +268,18 @@ class TeacherTalkBodyViewModel @Inject constructor(
     }
 
     fun getTagList(): List<String> = tagList.value?: emptyList<String>()
+
+    fun getTagListWithCategory(): List<String>? {
+        val tagList = tagList.value?: emptyList<String>()
+        val category = category.value?.let { listOf(it) }
+        val tagListWithCategory = category?.plus(tagList)
+
+        return tagListWithCategory
+    }
+
+    fun setCategory(category: String) {
+        _category.value = category
+    }
 
     fun setQuestionId(questionId: Long) {
         _questionId.value = questionId

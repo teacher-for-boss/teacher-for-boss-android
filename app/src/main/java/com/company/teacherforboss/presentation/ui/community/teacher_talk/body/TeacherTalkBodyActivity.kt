@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.teacher_talk.body
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -8,12 +9,12 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -55,6 +56,7 @@ import com.company.teacherforboss.util.context.showToast
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -234,20 +236,29 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         }
     }
 
+    @SuppressLint("ResourceType")
     fun setRecyclerView() {
         // FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.FLEX_START
         // tagRv
-        val tagList = viewModel.tagList.value ?: emptyList()
-        binding.rvTagArea.adapter = rvAdapterTag(tagList)
+        val tagList = viewModel.getTagListWithCategory()
+        binding.rvTagArea.adapter = tagList?.let { rvAdapterTag(it, this) }
         binding.rvTagArea.layoutManager = layoutManager
 
         // image vp
         if (viewModel.imageUrlList.isNotEmpty()) {
             binding.vpImgSlider.visibility = View.VISIBLE
             binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imageUrlList)
+
+            if(viewModel.imageUrlList.size > 1) {
+                binding.tabIndicator.visibility = View.VISIBLE
+                TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->
+                    val tabView = LayoutInflater.from(this).inflate(R.layout.indicator_dot, null)
+                    tab.customView = tabView
+                }.attach()
+            }
         }
     }
 
@@ -304,6 +315,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
             // 카테고리
             categoryName = body.category
+            viewModel.setCategory(body.category)
 
             setRecyclerView()
             setTextColor()
@@ -326,8 +338,19 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             if (answerListResponse.answerList.isNotEmpty()){
                 viewModel._isAnswered.value = true
                 // 채택된 답변이 있는지
-                if (answerListResponse.answerList.any { it.selected }) {
+                if (it.answerList.any { answer -> answer.selectedAt != null }) {
                     viewModel._isSelected.value = true
+
+                    val selectedAnswerIndex = it.answerList.indexOfFirst { answer -> answer.selectedAt != null }
+                    if(selectedAnswerIndex != 0) {
+                        val selectedAnswer = it.answerList[selectedAnswerIndex]
+
+                        val updatedAnswerList = it.answerList.toMutableList()
+                        updatedAnswerList.removeAt(selectedAnswerIndex)
+                        updatedAnswerList.add(0, selectedAnswer)
+
+                        viewModel.setAnswerList(updatedAnswerList)
+                    }
                 }
             }
             else {viewModel._isAnswered.value = false}

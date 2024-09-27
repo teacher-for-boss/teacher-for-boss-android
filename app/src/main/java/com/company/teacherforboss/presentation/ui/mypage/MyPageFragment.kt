@@ -278,10 +278,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setBossProfileLayoutByAPI(data: MyPageProfileEntity) {
-        viewModel.setNickname(getString(
+        viewModel.setNickname(data.nickname)
+        binding.tvMyPageProfileName.text = getString(
             R.string.my_page_boss_name,
             data.nickname,
-        ))
+        )
     }
 
     private fun setTeacherMenuBarLayout() {

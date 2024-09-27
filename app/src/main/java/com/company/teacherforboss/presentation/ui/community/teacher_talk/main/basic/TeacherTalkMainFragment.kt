@@ -228,7 +228,7 @@ class TeacherTalkMainFragment :
     private fun addListeners() {
         with(binding) {
             fabWrite.setOnClickListener {
-                gotoTeacherTalkWrite()
+                navigateToTeacherTalkWrite()
             }
             ivSearch.setOnClickListener {
                 viewModel?.setKeyword(binding.etSearchView.text.toString())

@@ -323,10 +323,10 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         viewModel.teacherTalkAnswerListLiveData.observe(this, Observer { answerListResponse ->
             viewModel.setAnswerList(answerListResponse.answerList)
 
-            if (it.answerList.isNotEmpty()){
+            if (answerListResponse.answerList.isNotEmpty()){
                 viewModel._isAnswered.value = true
                 // 채택된 답변이 있는지
-                if (it.answerList.any { it.selected }) {
+                if (answerListResponse.answerList.any { it.selected }) {
                     viewModel._isSelected.value = true
                 }
             }

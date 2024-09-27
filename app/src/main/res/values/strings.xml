@@ -181,6 +181,9 @@
     <string name="community_question_modified">질문이 수정되었습니다.</string>
     <string name="community_question_deleted">질문이 삭제되었습니다.</string>
 
+    <string name="community_question_cant_modify">답변이 달린 질문은 수정할 수 없어요.</string>
+    <string name="community_question_cant_delete">답변이 달린 질문은 삭제할 수 없어요.</string>
+
     <string name="community_answer_uploaded">답변이 등록되었습니다.</string>
     <string name="community_answer_modified">답변이 수정되었습니다.</string>
 

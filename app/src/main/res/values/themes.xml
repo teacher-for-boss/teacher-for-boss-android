@@ -1,6 +1,6 @@
 <resources>
     <style name="Base.Theme.TeacherForBoss" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/light_status</item>
+        <item name="android:statusBarColor">@color/Purple600</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:includeFontPadding">false</item>
     </style>

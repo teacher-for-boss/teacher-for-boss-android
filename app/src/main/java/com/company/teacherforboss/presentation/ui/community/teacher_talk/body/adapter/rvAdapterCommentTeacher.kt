@@ -3,8 +3,10 @@ package com.company.teacherforboss.presentation.ui.community.teacher_talk.body.a
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
@@ -30,12 +32,16 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.material.tabs.TabLayoutMediator
 
-class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
+class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
                               private val viewModel: TeacherTalkBodyViewModel,
                               private val context: Context,
-                              private val lifecycleOwner: LifecycleOwner
+                              private val lifecycleOwner: LifecycleOwner,
+                              private val optionClickListener: (View) -> Unit
 ): RecyclerView.Adapter<rvAdapterCommentTeacher.ViewHolder>() {
-    class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
+
+    private var dispatchTouchEvent: ((MotionEvent) -> Boolean)? = null
+    var currentOptionMenu: View? = null
+    inner class ViewHolder(private val binding: RvItemCommentTeacherBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(answer: TeacherTalkAnswerListResponseEntity.AnswerEntity,
                  viewModel: TeacherTalkBodyViewModel,
                  context: Context,
@@ -89,6 +95,11 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
             //사용자의 추천 비추천 여부
             var isCommentGood = answer.liked
             var isCommentBad = answer.disliked
+
+            // 터치 이벤트 처리
+            binding.root.setOnTouchListener { _, event ->
+                dispatchTouchEvent?.invoke(event) ?: false
+            }
 
             fun handleCommentBtnColor(){
                 if(isCommentGood) {
@@ -165,7 +176,7 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                         binding.nonWriterOption.visibility = View.VISIBLE
                     }
                     else {
-                    binding.nonWriterOption.visibility = View.GONE
+                        binding.nonWriterOption.visibility = View.GONE
                     }
                 }
             }
@@ -256,16 +267,35 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
                 binding.nonWriterOption.visibility = View.GONE
             }
         }
+
+        fun getBtnOptionRect(): Rect? {
+            return if (binding.btnOption.visibility == View.VISIBLE) {
+                val btnOptionLocation = IntArray(2)
+                binding.btnOption.getLocationOnScreen(btnOptionLocation)
+                Rect(
+                    btnOptionLocation[0],
+                    btnOptionLocation[1],
+                    btnOptionLocation[0] + binding.btnOption.width,
+                    btnOptionLocation[1] + binding.btnOption.height
+                )
+            } else {
+                null
+            }
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = RvItemCommentTeacherBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
     override fun getItemCount(): Int {
-        return AnswerList.size
+        return answerList.size
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(answer = AnswerList[position], viewModel = viewModel, context = context, lifecycleOwner = lifecycleOwner)
+        holder.bind(answer = answerList[position], viewModel = viewModel, context = context, lifecycleOwner = lifecycleOwner)
 
+    }
+
+    fun setDispatchTouchEventListener(listener: (MotionEvent) -> Boolean) {
+        this.dispatchTouchEvent = listener
     }
 }

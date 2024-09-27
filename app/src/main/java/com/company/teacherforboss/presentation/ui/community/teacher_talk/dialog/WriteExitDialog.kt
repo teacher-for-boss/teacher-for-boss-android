@@ -29,7 +29,7 @@ class WriteExitDialog(
         setContentView(binding.root)
 
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        setCanceledOnTouchOutside(false)
+        setCanceledOnTouchOutside(true)
 
         binding.keepBtn.setOnClickListener {
             dismiss()

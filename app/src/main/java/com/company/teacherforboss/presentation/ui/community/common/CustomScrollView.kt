@@ -84,41 +84,6 @@ class NewScrollView @JvmOverloads constructor(
         this.recyclerView = recyclerView
     }
 
-    // one by one 계산
-//    private fun adjustRecyclerViewHeight() {
-//        recyclerView?.apply {
-//            post {
-//                if (width == 0 || height == 0) {
-//                    postDelayed({ adjustRecyclerViewHeight() }, 50)
-//                    return@post
-//                }
-//
-//                val adapter = adapter ?: return@post
-//                var totalHeight = 0
-//                var itemDecorationHeight = 0
-//
-//                for (i in 0 until adapter.itemCount) {
-//                    // ViewHolder 생성
-//                    val holder = adapter.createViewHolder(this, adapter.getItemViewType(i))
-//
-//                    // 아이템 바인딩 / 측정
-//                    adapter.onBindViewHolder(holder, i)
-//                    holder.itemView.measure(
-//                        MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-//                        MeasureSpec.UNSPECIFIED
-//                    )
-//                    totalHeight += holder.itemView.measuredHeight
-//                }
-//
-//                itemDecorationHeight = getItemDecorationHeight(this)
-//
-//                val params = layoutParams
-//                params.height = totalHeight + itemDecorationHeight
-//                layoutParams = params
-//            }
-//        }
-//    }
-
     private fun adjustRecyclerViewHeight() {
         recyclerView?.apply {
             post {
@@ -159,7 +124,6 @@ class NewScrollView @JvmOverloads constructor(
         }
     }
 
-
     private fun getItemDecorationHeight(recyclerView: RecyclerView): Int {
         var totalHeight = 0
         for (i in 0 until recyclerView.itemDecorationCount) {
@@ -170,7 +134,6 @@ class NewScrollView @JvmOverloads constructor(
         }
         return totalHeight
     }
-
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()

@@ -1,11 +1,13 @@
 package com.company.teacherforboss.presentation.ui.community.teacher_talk.body
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -47,6 +49,7 @@ import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -227,6 +230,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         }
     }
 
+    @SuppressLint("ResourceType")
     fun setRecyclerView() {
         // FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
@@ -241,6 +245,14 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         if (viewModel.imageUrlList.isNotEmpty()) {
             binding.vpImgSlider.visibility = View.VISIBLE
             binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imageUrlList)
+
+            if(viewModel.imageUrlList.size > 1) {
+                binding.tabIndicator.visibility = View.VISIBLE
+                TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->
+                    val tabView = LayoutInflater.from(this).inflate(R.layout.indicator_dot, null)
+                    tab.customView = tabView
+                }.attach()
+            }
         }
     }
 

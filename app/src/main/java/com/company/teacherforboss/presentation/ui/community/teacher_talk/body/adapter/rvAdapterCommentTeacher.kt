@@ -28,6 +28,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.SELECT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.google.android.material.tabs.TabLayoutMediator
 
 class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
                               private val viewModel: TeacherTalkBodyViewModel,
@@ -140,6 +141,14 @@ class rvAdapterCommentTeacher(private val AnswerList: List<TeacherTalkAnswerList
             if (answer.imageUrlList.isNotEmpty()) {
                 binding.vpImgSlider.visibility = View.VISIBLE
                 binding.vpImgSlider.adapter = ImgSliderAdapter(answer.imageUrlList)
+
+                if(answer.imageUrlList.size > 1) {
+                    binding.tabIndicator.visibility = View.VISIBLE
+                    TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->
+                        val tabView = LayoutInflater.from(context).inflate(R.layout.indicator_dot, null)
+                        tab.customView = tabView
+                    }.attach()
+                }
             }
 
             //더보기 버튼 보여주기

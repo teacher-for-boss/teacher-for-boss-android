@@ -2,13 +2,16 @@ package com.company.teacherforboss.presentation.ui.community.teacher_talk.body
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkBodyBinding
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
@@ -63,6 +67,9 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
     private var categoryName: String = ""
     @Inject
     lateinit var localDataSource: LocalDataSource
+
+    private var currentOptionButton: View? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,13 +203,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
 
     private fun updateLikeUI(isLike: Boolean?) {
-        val likeCount = viewModel.teacherTalkBodyLiveData.value?.likeCount ?: 0
-
-        if (likeCount > 0) {
-            binding.likeTv.text = getString(R.string.like_any, "${likeCount}개")
-        } else {
-            binding.likeTv.text = getString(R.string.like)
-        }
+        binding.likeTv.text = getString(R.string.like)
 
         if (isLike == true) {
             binding.likeIv.setImageResource(R.drawable.community_like_on)
@@ -213,13 +214,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         }
     }
     private fun updateBookmarkUI(isBookmark: Boolean?) {
-        val bookmarkCount = viewModel.teacherTalkBodyLiveData.value?.bookmarkCount ?: 0
-
-        if (bookmarkCount > 0) {
-            binding.bookmarkTv.text = getString(R.string.bookmark_any, "${bookmarkCount}개")
-        } else {
-            binding.bookmarkTv.text = getString(R.string.bookmark)
-        }
+        binding.bookmarkTv.text = getString(R.string.bookmark)
 
         if (isBookmark == true) {
             binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)
@@ -315,27 +310,35 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         )
     }
 
-    fun setCommentView() {
-        viewModel.teacherTalkAnswerListLiveData.observe(
-            this,
-            Observer {
-                viewModel.setAnswerList(it.answerList)
+    private fun setCommentView() {
+        viewModel.teacherTalkAnswerListLiveData.observe(this, Observer { answerListResponse ->
+            viewModel.setAnswerList(answerListResponse.answerList)
 
-                // 채택된 답변이 있는지
-                if (it.answerList.any { it.selected }) {
-                    viewModel._isSelected.value = true
+            if (answerListResponse.answerList.any { it.selected }) {
+                viewModel._isSelected.value = true
+            }
+
+            val adapter = rvAdapterCommentTeacher(
+                lifecycleOwner = this,
+                context = this,
+                answerList = viewModel.getAnswerListValue(),
+                viewModel = viewModel
+            ) { btnOption ->
+                if (currentOptionButton != null && currentOptionButton != btnOption) {
+                    currentOptionButton?.visibility = View.GONE
                 }
+                currentOptionButton = btnOption
+            }
 
-                // 답변 개수
-                binding.commentNumber.text =
-                    getString(R.string.boss_talk_comment_count, it.answerList.size)
+            adapter.setDispatchTouchEventListener { ev ->
+                handleTouchEvent(ev)
+            }
 
-                // 답변 rv
-                binding.rvComment.adapter =
-                    rvAdapterCommentTeacher(viewModel.getAnswerListValue(), viewModel, this, this)
-                binding.rvComment.layoutManager = LinearLayoutManager(this)
-            },
-        )
+            binding.commentNumber.text = getString(R.string.teacher_talk_comment_count, answerListResponse.answerList.size)
+
+            binding.rvComment.adapter = adapter
+            binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        })
 
         viewModel.isSelectClicked.observe(
             this,
@@ -358,6 +361,75 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                 viewModel.getAnswerList()
             },
         )
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_UP) {
+            val v = currentFocus
+            if (v != null) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                v.clearFocus()
+            }
+
+            // btnOption 영역의 터치 이벤트 처리
+            val btnOptionLocation = IntArray(2)
+            binding.btnOption.getLocationOnScreen(btnOptionLocation)
+            val btnOptionRect = Rect(
+                btnOptionLocation[0],
+                btnOptionLocation[1],
+                btnOptionLocation[0] + binding.btnOption.width,
+                btnOptionLocation[1] + binding.btnOption.height
+            )
+
+            // 리사이클러뷰의 각 아이템의 btnOption 영역 처리
+            val adapter = binding.rvComment.adapter as? rvAdapterCommentTeacher
+            var isInAnyBtnOption = false
+
+            // 현재 btnOption의 터치 여부 확인
+            if (btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                isInAnyBtnOption = true
+            }
+
+            adapter?.let {
+                for (i in 0 until adapter.itemCount) {
+                    val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentTeacher.ViewHolder
+                    val itemBtnOptionRect = viewHolder?.getBtnOptionRect()
+                    if (itemBtnOptionRect != null && itemBtnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                        isInAnyBtnOption = true
+                        break
+                    }
+                }
+            }
+
+            // 만약 어떤 btnOption이 터치된 것이 아니라면 옵션 메뉴 숨기기
+            if (!isInAnyBtnOption) {
+                hideOptionMenuIfVisible()
+            }
+
+            binding.rvComment.dispatchTouchEvent(ev)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
+    private fun handleTouchEvent(ev: MotionEvent): Boolean {
+        if (currentOptionButton != null && ev.action == MotionEvent.ACTION_UP) {
+            val optionButtonLocation = IntArray(2)
+            currentOptionButton?.getLocationOnScreen(optionButtonLocation)
+            val optionButtonRect = Rect(
+                optionButtonLocation[0],
+                optionButtonLocation[1],
+                optionButtonLocation[0] + currentOptionButton!!.width,
+                optionButtonLocation[1] + currentOptionButton!!.height
+            )
+
+            if (!optionButtonRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                currentOptionButton?.visibility = View.GONE
+                currentOptionButton = null
+                return true
+            }
+        }
+        return false
     }
 
     private fun hideOptionMenuIfVisible() {

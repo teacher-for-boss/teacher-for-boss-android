@@ -25,14 +25,17 @@ import com.company.teacherforboss.presentation.ui.community.common.NewScrollView
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel
+import com.company.teacherforboss.presentation.ui.mypage.subscription.SubscriptionActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.Flow.Subscription
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -226,27 +229,33 @@ class TeacherTalkMainFragment :
     }
 
     private fun addListeners() {
-        binding.fabWrite.setOnClickListener {
-            gotoTeacherTalkWrite()
-        }
-        binding.ivSearch.setOnClickListener {
-            viewModel.setKeyword(binding.etSearchView.text.toString())
-            viewModel.searchKeywordTeacherTalk()
-        }
-        binding.ivAlarmBtn.setOnClickListener {
-            navigateToAlarm()
-        }
-        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                viewModel.setKeyword(binding.etSearchView.text.toString())
-                viewModel.searchKeywordTeacherTalk()
-                true
+        with(binding) {
+            fabWrite.setOnClickListener {
+                gotoTeacherTalkWrite()
             }
-            else {
-                false
+            ivSearch.setOnClickListener {
+                viewModel?.setKeyword(binding.etSearchView.text.toString())
+                viewModel?.searchKeywordTeacherTalk()
+            }
+            ivAlarmBtn.setOnClickListener {
+                navigateToAlarm()
+            }
+            etSearchView.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                    viewModel?.setKeyword(binding.etSearchView.text.toString())
+                    viewModel?.searchKeywordTeacherTalk()
+                    true
+                }
+                else {
+                    false
+                }
+            }
+            tvQuestionPayBtn.setOnClickListener{
+                navigateToSubscription()
             }
         }
+
     }
 
     private fun finishSearch() {
@@ -276,6 +285,15 @@ class TeacherTalkMainFragment :
         Intent(requireContext(), TeacherTalkBodyActivity::class.java).apply{
             putExtra(TEACHER_QUESTIONID,questionId)
             startActivity(this)
+        }
+    }
+
+    private fun navigateToSubscription() {
+        val role=localDataSource.getUserInfo(USER_ROLE)
+        if(role==BOSS) {
+            val intent = Intent(requireContext(), SubscriptionActivity::class.java)
+            startActivity(intent)
+
         }
     }
 

@@ -58,6 +58,18 @@
     <string name="tv_question_pay_boss_btn">질문권 무료 체험 중</string>
     <string name="teacher_talk_main_text1">티처Talk에서 궁금증을 해결할 수 있어요</string>
     <string name="teacher_talk_main_text2"><b>티처에게 물어보세요!</b></string>
+    <string name="teacher_talk_ask_hint">※ 티처Talk 질문 작성 요령\n
+• 여러 질문보다 핵심 질문 한가지에 집중해 주세요\n
+• 추상적인 질문보다 보스가 처한 구체적인 상황과 고민을 적어주세요\n
+• 카테고리에 맞는 질문일수록 빠르게 답변을 받을 수 있어요\n\n
+
+※ 티처Talk 질문 작성 정책\n
+• 답변이 달리면 질문글을 수정하거나 삭제할 수 없어요.\n
+• 최종 수정 시간을 기준으로 일주일 내에 답변이 달리지 않았을 때 질문권을 돌려드려요\n
+• 답변이 달리고 일주일 동안 채택하지 않으면 자동으로 한명의 티처가 채택돼요\n\n
+
+※ 티처Talk 커뮤니티 정책\n
+티처포보스 커뮤니티 운영 정책에 따라 다른 이용자의 안전을 저해하거나 권리를 침해하는 내용의 게시물은 별도의 통보 없이 게재가 제한되거나 삭제될 수 있으며 커뮤니티 활동이 제한될 수 있습니다.</string>
     <string name="search_view_hint">궁금한 키워드를 입력하세요</string>
     <string name="more_card">게시물 더 불러오기</string>
 
@@ -65,6 +77,8 @@
     <string name="tv_boss_talk">보스톡</string>
     <string name="tv_boss_talk_1"><b>모두가 자유롭게 소통해요</b></string>
     <string name="tv_boss_talk_2">보스 TALK</string>
+    <string name="boss_talk_write_hint">※ 보스Talk 커뮤니티 정책\n
+티처포보스 커뮤니티 운영 정책에 따라 다른 이용자의 안전을 저해하거나 권리를 침해하는 내용의 게시물은 별도의 통보 없이 게재가 제한되거나 삭제될 수 있으며 커뮤니티 활동이 제한될 수 있습니다.</string>
 
     <!-- teacher talk card view-->
     <string name="teacher_talk_card_view_question"><b>Q. %s</b></string>
@@ -72,7 +86,7 @@
     <string name="card_view_statement_solved">채택 완료</string>
     <string name="card_view_statement_not_solved">답변 대기중</string>
     <string name="teacher_talk_bookmark_count">%s</string>
-    <string name="teacher_talk_comment_count">%s</string>
+    <string name="teacher_talk_comment_count">댓글 %d개</string>
     <string name="teacher_talk_like_count">%s</string>
     <string name="like">좋아요</string>
     <string name="like_any">좋아요 %s</string>
@@ -355,6 +369,9 @@
     <string name="notification_type_home">홈</string>
     <string name="notification_type_event">이벤트</string>ㅅ
     <string name="notification_type_exchange">환전신청완료</string>
+
+    <!--구독-->
+    <string name="subscription_title">구독권 결제</string>
 
     <!-- 이미지   -->
     <string name="image_dialog_file_size_5MB">5MB 이하의 이미지만 첨부 가능합니다.</string>

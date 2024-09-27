@@ -117,6 +117,8 @@
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
                     app:layout_constraintTop_toBottomOf="@id/title_tv"
                     android:layout_marginTop="8dp"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
                     android:text="@={viewModel._title}"
                     android:hint="제목을 입력해주세요"
                     android:textSize="14dp"
@@ -157,19 +159,11 @@
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
                     app:layout_constraintTop_toBottomOf="@id/body_tv"
                     android:layout_marginTop="8dp"
+                    android:scrollHorizontally="false"
+                    android:inputType="textMultiLine"
+                    android:imeOptions="actionDone"
                     android:text="@={viewModel._content}"
-                    android:hint="※ 티처Talk 질문 작성 요령\n
-• 여러 질문보다 핵심 질문 한가지에 집중해 주세요\n
-• 추상적인 질문보다 보스가 처한 구체적인 상황과 고민을 적어주세요\n
-• 카테고리에 맞는 질문일수록 빠르게 답변을 받을 수 있어요\n\n
-
-※ 티처Talk 질문 작성 정책\n
-• 답변이 달리면 질문글을 수정하거나 삭제할 수 없어요.\n
-• 최종 수정 시간을 기준으로 일주일 내에 답변이 달리지 않았을 때 질문권을 돌려드려요\n
-• 답변이 달리고 일주일 동안 채택하지 않으면 자동으로 한명의 티처가 채택돼요\n\n
-
-※ 티처Talk 커뮤니티 정책\n
-티처포보스 커뮤니티 운영 정책에 따라 다른 이용자의 안전을 저해하거나 권리를 침해하는 내용의 게시물은 별도의 통보 없이 게재가 제한되거나 삭제될 수 있으며 커뮤니티 활동이 제한될 수 있습니다."
+                    android:hint="@string/teacher_talk_ask_hint"
                     android:textSize="12dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/Gray400"

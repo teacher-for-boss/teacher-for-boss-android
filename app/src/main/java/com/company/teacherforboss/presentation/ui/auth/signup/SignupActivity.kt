@@ -176,7 +176,7 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
                 viewModel.setFileType(extension?:"jpeg")
 
                 if(fileSizeInMB > 5) {
-                    CustomSnackBar(binding.root, getString(R.string.image_request_permission), 2000).show()
+                    CustomSnackBar(binding.root, getString(R.string.image_dialog_file_size_5MB), 2000).show()
                     return
                 }
             }
@@ -220,10 +220,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         }
     }
 
-
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
     fun showToast(msg:String){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
     }
@@ -234,7 +230,6 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
             viewModel._isUserImgSelected.value=true
         }
     }
-
 
     fun startSmsRetriver(){
         val task=SmsRetriever.getClient(this)

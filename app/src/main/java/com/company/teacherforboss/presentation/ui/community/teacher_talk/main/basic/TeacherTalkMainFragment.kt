@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
@@ -26,14 +27,17 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel
+import com.company.teacherforboss.presentation.ui.mypage.subscription.SubscriptionActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.Flow.Subscription
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -48,6 +52,11 @@ class TeacherTalkMainFragment :
     @Inject
     lateinit var localDataSource: LocalDataSource
     var initialized = false
+
+    override fun onResume() {
+        super.onResume()
+        binding.etSearchView.text.clear()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -155,13 +164,7 @@ class TeacherTalkMainFragment :
             btnMoreCard.setOnClickListener { viewModel?.getTeacherTalkQuestions() }
 
         }
-        /*requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigateUp()
-                }
-            })*/
+
     }
 
     private fun initQuestionListView(questionList: List<QuestionEntity>){
@@ -172,10 +175,6 @@ class TeacherTalkMainFragment :
         val rvLayoutManager=LinearLayoutManager(requireContext())
         binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
 
-        // TODO: 작동 x (카테고리 변경시 Rv focus)
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
-//        },2000)
         initialized = true
     }
 
@@ -227,30 +226,36 @@ class TeacherTalkMainFragment :
     }
 
     private fun addListeners() {
-        apply { binding }
-        binding.fabWrite.setOnClickListener {
-            navigateToTeacherTalkWrite()
-        }
-        binding.ivSearch.setOnClickListener {
-            viewModel.setKeyword(binding.etSearchView.text.toString())
-            viewModel.searchKeywordTeacherTalk()
-        }
-        binding.ivAlarmBtn.setOnClickListener {
-            navigateToAlarm()
-        }
-        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                viewModel.setKeyword(binding.etSearchView.text.toString())
-                viewModel.searchKeywordTeacherTalk()
-                true
+        with(binding) {
+            fabWrite.setOnClickListener {
+                gotoTeacherTalkWrite()
             }
-            else {
-                false
+            ivSearch.setOnClickListener {
+                viewModel?.setKeyword(binding.etSearchView.text.toString())
+                viewModel?.searchKeywordTeacherTalk()
             }
-        }
-        binding.tvQuestionPayBtn.setOnClickListener{
-            navigateToExchange()
+            ivAlarmBtn.setOnClickListener {
+                navigateToAlarm()
+            }
+            etSearchView.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                    viewModel?.setKeyword(binding.etSearchView.text.toString())
+                    viewModel?.searchKeywordTeacherTalk()
+                    true
+                }
+                else {
+                    false
+                }
+
+            }
+            tvQuestionPayBtn.setOnClickListener{
+                val role=localDataSource.getUserInfo(USER_ROLE)
+                if (role == TEACHER)
+                    navigateToExchange()
+                else
+                    navigateToSubscription()
+            }
         }
     }
 
@@ -262,6 +267,8 @@ class TeacherTalkMainFragment :
                 putExtra("lastQuestionId", viewModel.getLastQuestionId())
                 putExtra("keyword", binding.etSearchView.text.toString())
             }.also {
+                clearSearchViewFocus()
+                hideKeyboard()
                 startActivity(it)
             }
         })
@@ -287,5 +294,23 @@ class TeacherTalkMainFragment :
         Intent(requireContext(), ExchangeActivity::class.java).apply {
             startActivity(this)
         }
+    }
+
+
+    fun focusSearchView(){
+        binding.etSearchView.requestFocus()
+    }
+    fun clearSearchViewFocus(){
+        binding.etSearchView.clearFocus()
+    }
+
+    fun hideKeyboard(){
+        (activity as MainActivity).hideKeyboard()
+    }
+
+
+    private fun navigateToSubscription() {
+        val intent = Intent(requireContext(), SubscriptionActivity::class.java)
+        startActivity(intent)
     }
 }

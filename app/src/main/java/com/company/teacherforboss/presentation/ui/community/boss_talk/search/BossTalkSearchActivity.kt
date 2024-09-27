@@ -33,6 +33,7 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
         postList = intent.getSerializableExtra("postList") as ArrayList<PostEntity>
         viewModel.setKeyword(intent.getStringExtra("keyword").toString())
         viewModel._lastPostId.value = intent.getLongExtra("lastPostId",-1L)
+        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
 
         initView()
         onBackBtnPressed()
@@ -90,5 +91,8 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
         binding.backBtn.setOnClickListener {
             finish()
         }
+    }
+    companion object{
+        const val KEYWORD="keyword"
     }
 }

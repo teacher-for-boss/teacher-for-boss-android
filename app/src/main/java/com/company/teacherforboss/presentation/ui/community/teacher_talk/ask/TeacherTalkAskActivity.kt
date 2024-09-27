@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.community.teacher_talk.ask
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,7 +12,9 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -25,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkAskBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
+import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity.Companion.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacherAsk
@@ -48,6 +52,8 @@ import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -189,13 +195,12 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
     fun deleteHashTag(position: Int)=viewModel.deleteHashTag(position)
 
-    private fun checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                BossTalkWriteActivity.REQUEST_CODE_READ_EXTERNAL_STORAGE
-            )
-        } else {
+    fun checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
             openGallery()
+        } else {
+            requestPermissions()
         }
     }
 
@@ -212,11 +217,11 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == BossTalkWriteActivity.REQUEST_CODE_READ_EXTERNAL_STORAGE) {
+        if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 openGallery()
             } else {
-                CustomSnackBar.make(binding.root, getString(R.string.image_request_permission), 2000).show()
+                CustomSnackBar(binding.root, getString(R.string.image_request_permission), 2000).show()
             }
         }
     }
@@ -244,6 +249,29 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             }
             adapterImage.notifyDataSetChanged()
         }
+    }
+
+    fun requestPermissions() {
+        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES) // Android 13 이상일 경우
+        } else {
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE) // Android 12 이하일 경우
+        }
+        TedPermission.create()
+            .setPermissionListener(object : PermissionListener {
+                override fun onPermissionGranted() {
+                    openGallery()
+                }
+
+                override fun onPermissionDenied(deniedPermissions: List<String>) {
+                }
+            })
+
+            .setDeniedMessage(getString(R.string.image_permission_denied))
+            .setPermissions(
+                *permissions
+            )
+            .check()
     }
 
     private fun getImageSize(uri: Uri): Long {
@@ -415,5 +443,14 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     override fun onExitBtnClicked() {
         onBackPressedCallback.isEnabled = false
         onBackPressed()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null && ev?.action == MotionEvent.ACTION_DOWN) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+            currentFocus?.clearFocus()
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

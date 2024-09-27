@@ -33,6 +33,7 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
         postList = intent.getSerializableExtra("postList") as ArrayList<PostEntity>
         viewModel.setKeyword(intent.getStringExtra("keyword").toString())
         viewModel._lastPostId.value = intent.getLongExtra("lastPostId",-1L)
+        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
 
         initView()
         onBackBtnPressed()
@@ -57,7 +58,6 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
             binding.rvBossTalkCard.adapter = rvAdapterCardBoss(this, postList)
             binding.rvBossTalkCard.layoutManager = LinearLayoutManager(this)
         }
-        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
     }
 
     fun addListeners() {

@@ -18,6 +18,8 @@ import com.company.teacherforboss.databinding.ActivityTeacherTalkSearchBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +37,7 @@ class TeacherTalkSearchActivity : BindingActivity<ActivityTeacherTalkSearchBindi
         questionList = intent.getSerializableExtra("questionList") as ArrayList<QuestionEntity>
         viewModel.setKeyword(intent.getStringExtra("keyword").toString())
         viewModel._lastQuestionId.value = intent.getLongExtra("lastQuestionId",-1L)
+        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
 
         initView()
         onBackBtnPressed()
@@ -60,7 +63,6 @@ class TeacherTalkSearchActivity : BindingActivity<ActivityTeacherTalkSearchBindi
             binding.rvTeacherTalkCard.adapter = rvAdapterCardTeacher(this, questionList)
             binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(this)
         }
-        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
     }
 
     fun addListeners() {
@@ -92,6 +94,12 @@ class TeacherTalkSearchActivity : BindingActivity<ActivityTeacherTalkSearchBindi
 
     fun onBackBtnPressed() {
         binding.backBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(FRAGMENT_DESTINATION, TEACHER_TALK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+            }
+            startActivity(intent)
             finish()
         }
     }

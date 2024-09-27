@@ -338,14 +338,14 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             if (answerListResponse.answerList.isNotEmpty()){
                 viewModel._isAnswered.value = true
                 // 채택된 답변이 있는지
-                if (it.answerList.any { answer -> answer.selectedAt != null }) {
+                if (answerListResponse.answerList.any { answer -> answer.selectedAt != null }) {
                     viewModel._isSelected.value = true
 
-                    val selectedAnswerIndex = it.answerList.indexOfFirst { answer -> answer.selectedAt != null }
+                    val selectedAnswerIndex = answerListResponse.answerList.indexOfFirst { answer -> answer.selectedAt != null }
                     if(selectedAnswerIndex != 0) {
-                        val selectedAnswer = it.answerList[selectedAnswerIndex]
+                        val selectedAnswer = answerListResponse.answerList[selectedAnswerIndex]
 
-                        val updatedAnswerList = it.answerList.toMutableList()
+                        val updatedAnswerList = answerListResponse.answerList.toMutableList()
                         updatedAnswerList.removeAt(selectedAnswerIndex)
                         updatedAnswerList.add(0, selectedAnswer)
 

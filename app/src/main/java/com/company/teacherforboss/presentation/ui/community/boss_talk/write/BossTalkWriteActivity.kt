@@ -429,6 +429,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
                 putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
                 putExtra("snackBarMsg",getString(R.string.community_post_uploaded))
                 startActivity(this)
+                finish()
 
             }
         })
@@ -438,6 +439,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
                 putExtra(BOSS_POSTID,it.postId)
                 putExtra(PREVIOUS_ACTIVITY, BOSS_TALK_WRITE_ACTIVITY)
                 putExtra(SNACK_BAR_MSG,getString(R.string.community_post_modified))
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(this)
             }
         })

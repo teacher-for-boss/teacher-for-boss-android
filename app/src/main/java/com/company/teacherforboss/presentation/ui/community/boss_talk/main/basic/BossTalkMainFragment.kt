@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentBossTalkMainBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
@@ -37,6 +38,11 @@ class BossTalkMainFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.clearData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.etSearchView.text.clear()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -166,17 +172,7 @@ class BossTalkMainFragment :
             ) {
                 viewModel.setKeyword(binding.etSearchView.text.toString())
                 viewModel.searchKeywordBossTalk()
-                true
-            } else {
-                false
-            }
-        }
-        binding.etSearchView.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
-            ) {
-                viewModel.setKeyword(binding.etSearchView.text.toString())
-                viewModel.searchKeywordBossTalk()
+                focusSearchView()
                 true
             } else {
                 false
@@ -200,6 +196,8 @@ class BossTalkMainFragment :
                 putExtra("lastPostId", viewModel.getLastPostId())
                 putExtra("keyword", binding.etSearchView.text.toString())
             }.also { intent ->
+                hideKeyboard()
+                clearSearchViewFocus()
                 startActivity(intent)
             }
         }
@@ -234,4 +232,16 @@ class BossTalkMainFragment :
             outRect.right = horizontalSpaceWidth
         }
     }
+
+    fun focusSearchView(){
+        binding.etSearchView.requestFocus()
+    }
+    fun clearSearchViewFocus(){
+        binding.etSearchView.clearFocus()
+    }
+
+    fun hideKeyboard(){
+        (activity as MainActivity).hideKeyboard()
+    }
+
 }

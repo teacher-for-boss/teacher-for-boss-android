@@ -57,6 +57,7 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
             binding.rvBossTalkCard.adapter = rvAdapterCardBoss(this, postList)
             binding.rvBossTalkCard.layoutManager = LinearLayoutManager(this)
         }
+        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
     }
 
     fun addListeners() {
@@ -90,5 +91,8 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
         binding.backBtn.setOnClickListener {
             finish()
         }
+    }
+    companion object{
+        const val KEYWORD="keyword"
     }
 }

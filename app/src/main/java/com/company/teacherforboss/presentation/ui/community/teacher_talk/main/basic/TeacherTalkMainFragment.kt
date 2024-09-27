@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentTeacherTalkMainBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
@@ -159,13 +160,7 @@ class TeacherTalkMainFragment :
             btnMoreCard.setOnClickListener { viewModel?.getTeacherTalkQuestions() }
 
         }
-        /*requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigateUp()
-                }
-            })*/
+
     }
 
     private fun initQuestionListView(questionList: List<QuestionEntity>){
@@ -176,10 +171,6 @@ class TeacherTalkMainFragment :
         val rvLayoutManager=LinearLayoutManager(requireContext())
         binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
 
-        // TODO: 작동 x (카테고리 변경시 Rv focus)
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            binding.rvTeacherTalkCard.scrollToPosition(rvLayoutManager.findFirstVisibleItemPosition())
-//        },2000)
         initialized = true
     }
 
@@ -246,6 +237,7 @@ class TeacherTalkMainFragment :
                 event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
                 viewModel.setKeyword(binding.etSearchView.text.toString())
                 viewModel.searchKeywordTeacherTalk()
+                focusSearchView()
                 true
             }
             else {
@@ -262,6 +254,8 @@ class TeacherTalkMainFragment :
                 putExtra("lastQuestionId", viewModel.getLastQuestionId())
                 putExtra("keyword", binding.etSearchView.text.toString())
             }.also {
+                clearSearchViewFocus()
+                hideKeyboard()
                 startActivity(it)
             }
         })
@@ -283,5 +277,18 @@ class TeacherTalkMainFragment :
             startActivity(this)
         }
     }
+
+
+    fun focusSearchView(){
+        binding.etSearchView.requestFocus()
+    }
+    fun clearSearchViewFocus(){
+        binding.etSearchView.clearFocus()
+    }
+
+    fun hideKeyboard(){
+        (activity as MainActivity).hideKeyboard()
+    }
+
 
 }

@@ -60,6 +60,7 @@ class TeacherTalkSearchActivity : BindingActivity<ActivityTeacherTalkSearchBindi
             binding.rvTeacherTalkCard.adapter = rvAdapterCardTeacher(this, questionList)
             binding.rvTeacherTalkCard.layoutManager = LinearLayoutManager(this)
         }
+        binding.etInputKeyword.setText(intent.getStringExtra(KEYWORD))
     }
 
     fun addListeners() {
@@ -93,5 +94,8 @@ class TeacherTalkSearchActivity : BindingActivity<ActivityTeacherTalkSearchBindi
         binding.backBtn.setOnClickListener {
             finish()
         }
+    }
+    companion object{
+        const val KEYWORD="keyword"
     }
 }

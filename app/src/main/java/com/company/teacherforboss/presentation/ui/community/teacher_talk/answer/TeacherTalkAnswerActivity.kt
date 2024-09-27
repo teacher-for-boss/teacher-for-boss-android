@@ -139,10 +139,12 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
 
     private fun openGallery() {
         if (viewModel.imageList.size < 3) {
-            val gallery =
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            gallery.type = "image/*"
-            startActivityForResult(gallery, 100)
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "image/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)  // 여러 개의 이미지 선택 허용
+                addCategory(Intent.CATEGORY_OPENABLE)  // 반드시 열 수 있는 파일만 보여줌
+            }
+            startActivityForResult(Intent.createChooser(intent, "Select Pictures"), 100)
         } else {
             CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
         }
@@ -162,26 +164,38 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == 100) {
-            val imageUri = data?.data
+            val maxImageCount=3
+            val clipData = data?.clipData
+            if (clipData != null) {
+                if(clipData.itemCount> maxImageCount) CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
 
-            imageUri?.let {
-                val fileSizeInBytes = getImageSize(it)
-                val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
-                Log.d("imageSize", fileSizeInMB.toString())
-                val extension=getImageExtension(it)
-                viewModel.setFileType(extension?:"jpeg")
-
-                if(fileSizeInMB > 10) {
-                    CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_10MB), 2000).show()
-                    return
+                for (i in 0 until clipData.itemCount) {
+                    val imageUri = clipData.getItemAt(i).uri
+                    processImageUri(imageUri)
                 }
-            }
-
-            if(imageUri != null) {
-                viewModel.addImage(imageUri)
+            } else {
+                // 단일 선택일 경우
+                val imageUri = data?.data
+                imageUri?.let {
+                    processImageUri(it)
+                }
             }
             adapterImage.notifyDataSetChanged()
         }
+    }
+    fun processImageUri(imgUri:Uri){
+        val fileSizeInBytes = getImageSize(imgUri)
+        val fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0)
+        Log.d("imageSize", fileSizeInMB.toString())
+        val extension=getImageExtension(imgUri)
+        viewModel.setFileType(extension?:"jpeg")
+
+        if(fileSizeInMB > 10) {
+            CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_10MB), 2000).show()
+            return
+        }
+        viewModel.addImage(imgUri)
+
     }
 
     fun requestPermissions() {

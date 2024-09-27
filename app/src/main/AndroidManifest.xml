@@ -76,8 +76,7 @@
 
         <activity
             android:name="com.company.teacherforboss.MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+            android:exported="false">
         </activity>
         <activity
             android:name="com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FinishFindPwActivity"

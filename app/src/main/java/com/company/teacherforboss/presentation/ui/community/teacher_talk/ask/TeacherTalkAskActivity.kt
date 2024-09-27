@@ -484,15 +484,6 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         }
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        val imm: InputMethodManager =
-            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        //텍스트 박스 포커스 해제
-        currentFocus?.clearFocus()
-        return super.dispatchTouchEvent(ev)
-    }
-
     override fun onExitBtnClicked() {
         onBackPressedCallback.isEnabled = false
         onBackPressed()

@@ -227,6 +227,14 @@ class SignupViewModel @Inject constructor(
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
+    init{
+        role.observeForever {
+            when(role.value){
+                1->_profileImg.value= DEFAULT_BOSS_PROFILE_IMG_URL
+                2->_profileImg.value= DEFAULT_TEACHER_PROFILE_IMG_URL
+            }
+        }
+    }
     // image
     fun setUserImageUri(imgUri:Uri){
         _profileImgUri.value=imgUri

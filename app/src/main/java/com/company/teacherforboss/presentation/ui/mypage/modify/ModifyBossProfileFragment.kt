@@ -27,6 +27,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MODIFY_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
 
@@ -159,7 +160,7 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
             profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
                 defaultImgUrl?.let {
                     setIsUserImgSelected(false)
-                    BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+                    binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
                 }
             })
 

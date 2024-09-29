@@ -15,6 +15,8 @@ class DialogPopupFragment(
     private val clickLeftBtn: () -> Unit,
     private val clickRightBtn: () -> Unit,
     private val closeDialog: () -> Unit = {},
+    private val backgroundClickable: Boolean = true,
+    private val clickBackground: () -> Unit = {}
 ) : BindingDialogFragment<DialogPopupBinding>(R.layout.dialog_popup) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,9 +33,14 @@ class DialogPopupFragment(
     private fun initLayout() {
         with(binding) {
             tvDialogPopupTitle.text = title
-            if (content.isNullOrEmpty()) { tvDialogPopupContent.visibility = View.GONE }
+            if (content.isNullOrEmpty()) {
+                tvDialogPopupContent.visibility = View.GONE
+            }
             else { tvDialogPopupContent.text = content }
-            btnDialogPopupLeft.text = leftBtnText
+            if(leftBtnText.isNullOrEmpty()) {
+                btnDialogPopupLeft.visibility = View.GONE
+            }
+            else { btnDialogPopupLeft.text = leftBtnText }
             btnDialogPopupRight.text = rightBtnText
         }
     }
@@ -49,8 +56,11 @@ class DialogPopupFragment(
             dismiss()
         }
 
-        binding.layoutDialogPopupBackground.setOnClickListener {
-            dismiss()
+        if(backgroundClickable) {
+            binding.layoutDialogPopupBackground.setOnClickListener {
+                clickBackground()
+                dismiss()
+            }
         }
     }
 }

@@ -7,9 +7,11 @@ import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +41,8 @@ import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Flow.Subscription
 import javax.inject.Inject
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.transition.TransitionManager
 
 @AndroidEntryPoint
 class TeacherTalkMainFragment :
@@ -195,9 +199,46 @@ class TeacherTalkMainFragment :
                 else updateQuestions(questionList)
             }
 
-            binding.btnMoreCard.visibility= if (result.hasNext) View.VISIBLE else View.INVISIBLE
+            if (result.hasNext) {
+                binding.btnMoreCard.visibility = View.VISIBLE
+                binding.btnNoMoreContent.visibility = View.GONE
+                updateConstraints()
+            } else {
+                binding.btnMoreCard.visibility = View.GONE
+                binding.btnNoMoreContent.visibility = View.VISIBLE
+                updateConstraints()
+            }
 
         })
+    }
+
+    private fun updateConstraints() {
+        // root가 ConstraintLayout이 맞는지 먼저 확인
+        val rootLayout = binding.root as? ConstraintLayout ?: return // null 체크
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(rootLayout) // ConstraintLayout을 기준으로 복사
+
+        // 'btn_more_card'가 gone이면 'rv_teacher_talk_card'의 bottom을 'btn_no_more_content'로 변경
+        if (binding.btnMoreCard.visibility == View.GONE) {
+            constraintSet.connect(
+                R.id.rv_teacher_talk_card,
+                ConstraintSet.BOTTOM,
+                R.id.btn_no_more_content,
+                ConstraintSet.TOP
+            )
+        } else {
+            constraintSet.connect(
+                R.id.rv_teacher_talk_card,
+                ConstraintSet.BOTTOM,
+                R.id.btn_more_card,
+                ConstraintSet.TOP
+            )
+        }
+
+        // Transition을 사용하여 애니메이션을 적용
+        TransitionManager.beginDelayedTransition(rootLayout)
+        constraintSet.applyTo(rootLayout) // 변경 사항 적용
     }
 
     private fun observeSortType() {

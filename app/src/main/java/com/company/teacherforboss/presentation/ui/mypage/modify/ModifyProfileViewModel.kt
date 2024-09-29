@@ -160,6 +160,9 @@ class ModifyProfileViewModel @Inject constructor(
 
     fun getIsUserImgSelected()=isUserImgSelected.value
 
+    fun getEmail()=email.value?:null
+    fun getPhone()=phone.value?:null
+
     fun nicknameUser() {
         nicknameResult.value = BaseResponse.Loading()
 
@@ -193,9 +196,9 @@ class ModifyProfileViewModel @Inject constructor(
                 val modifyTeacherProfileResponseEntity = modifyTeacherProfileUseCase(
                     ModifyTeacherProfileRequestEntity(
                         nickname = nickname.value!!,
-                        phone =phone.value?.takeIf { it.isNullOrEmpty() }?:null,
+                        phone =phone.value?.takeIf { it.isNotEmpty() }?:null,
                         phoneOpen = phoneReveal.value!!,
-                        email=email.value?.takeIf { it.isNullOrEmpty() }?:null,
+                        email=email.value?.takeIf { it.isNotEmpty() }?:null,
                         emailOpen = emailReveal.value!!,
                         field = field.value!!,
                         career = CareerToInt(),

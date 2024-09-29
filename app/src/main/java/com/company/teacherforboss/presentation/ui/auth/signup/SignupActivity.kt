@@ -207,6 +207,7 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
             .setPermissions(
                 *permissions
             )
+            .setDeniedCloseButtonText(R.string.cancel_button)
             .check()
     }
 

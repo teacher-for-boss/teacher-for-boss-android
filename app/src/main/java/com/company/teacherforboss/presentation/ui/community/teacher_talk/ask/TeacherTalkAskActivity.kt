@@ -320,6 +320,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             .setPermissions(
                 *permissions
             )
+            .setDeniedCloseButtonText(R.string.cancel_button)
             .check()
     }
 

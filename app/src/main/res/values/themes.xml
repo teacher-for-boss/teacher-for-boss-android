@@ -136,4 +136,27 @@
         <item name="android:layout_height">20dp</item>
     </style>
 
+    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#8D37EF</item> <!-- Accent 색상 변경 -->
+        <item name="android:datePickerDialogTheme">@style/CustomDatePicker</item> <!-- 커스텀 DatePicker 테마 설정 -->
+        <item name="android:buttonBarPositiveButtonStyle">@style/CustomButtonText</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/CustomButtonText</item>
+    </style>
+    <!-- DatePicker 테마 정의 -->
+    <style name="CustomDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:headerBackground">#8D37EF</item> <!-- 헤더 배경색 -->
+        <item name="android:textColorPrimary">#FFFFFF</item> <!-- 헤더 텍스트 색상 -->
+        <item name="android:weekDayTextAppearance">@style/CustomWeekdayText</item> <!-- 주간 텍스트 색상 -->
+    </style>
+
+    <!-- 요일 텍스트 색상 정의 -->
+    <style name="CustomWeekdayText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#8D37EF</item> <!-- 요일 텍스트 색상 -->
+    </style>
+
+    <!-- 다이얼로그 버튼 텍스트 색상 정의 -->
+    <style name="CustomButtonText" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#000000</item> <!-- 버튼 텍스트 색상 검정으로 설정 -->
+    </style>
+
 </resources>

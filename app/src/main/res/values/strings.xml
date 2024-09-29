@@ -383,5 +383,6 @@
     <string name="image_dialog_file_size_10MB">10MB 이하의 이미지만 첨부 가능합니다.</string>
     <string name="image_request_permission">갤러리 접근 권한이 필요합니다.</string>
     <string name="image_input_number">3장까지만 첨부 가능합니다.</string>
-    <string name="image_permission_denied">권한을 허용하지 않으면 이미지를 업로드 할 수 없습니다.\n설정에서 권한을 허용해주세요.</string>
+    <string name="image_permission_denied">갤러리 접근 권한이 없습니다.\n설정에서 권한을 허용해주세요.</string>
+    <string name="cancel_button">취소</string>
 </resources>

@@ -227,6 +227,7 @@
     <string name="my_page_app_information_title">이용 안내</string>
 
     <string name="my_page_menu_account">계정 관리</string>
+    <string name="my_page_menu_notification">알림 설정</string>
     <string name="my_page_menu_account_change">계좌 확인 및 변경</string>
     <string name="my_page_menu_exchange">티포 환전하기</string>
     <string name="my_page_menu_exchange_details">환전 내역</string>
@@ -372,7 +373,7 @@
     <string name="notification_type_teacher_talk">티처톡</string>
     <string name="notification_type_boss_talk">보스톡</string>
     <string name="notification_type_home">홈</string>
-    <string name="notification_type_event">이벤트</string>ㅅ
+    <string name="notification_type_event">이벤트</string>
     <string name="notification_type_exchange">환전신청완료</string>
     
     <string name="notification_permission_title">‘티처포보스’에서 알림을 보내고자 합니다.</string>

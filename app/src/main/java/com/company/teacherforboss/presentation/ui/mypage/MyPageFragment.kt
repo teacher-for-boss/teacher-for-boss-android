@@ -92,6 +92,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 val intent = Intent(context,ManageAccountActivity::class.java)
                 startActivity(intent)
             }
+            includeMyPageMenuNotification.root.setOnClickListener {
+                Intent(context, ManageNotificationActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
             includeMyPageMenuAccountChange.root.setOnClickListener {
                 if (viewModel.getRole() == TEACHER) {
                     val intent = Intent(context, AccountChangeActivity::class.java)

@@ -265,10 +265,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setTeacherProfileLayoutByAPI(data: MyPageProfileEntity) {
         binding.apply {
-            viewModel.setNickname(getString(
+            tvMyPageProfileName.text = getString(
                 R.string.my_page_teacher_name,
                 data.nickname,
-            ))
+            )
             tvMyPageLevel.text = data.teacherInfo!!.level
             tvMyPageLevelInfo.text =
                 if (data.teacherInfo!!.leftAnswerCount == 0) {

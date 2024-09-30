@@ -1,19 +1,21 @@
 package com.company.teacherforboss.presentation.ui.mypage
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentNotificationBinding
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
 
-    private lateinit var prefs: SharedPreferences
-    private var agreementStatus: Boolean = false
+
+    @Inject lateinit var localDataSource: LocalDataSource
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,12 +25,11 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     }
 
     private fun getNotificationPermission() {
-        prefs = requireContext().getSharedPreferences(APP_PREF, AppCompatActivity.MODE_PRIVATE)
-        agreementStatus = prefs.getBoolean(AGREEMENT_STATUS, false)
+        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS)
 
         if(agreementStatus == true) {
-            val notification = prefs.getBoolean(NOTIFICATION, false)
-            val marketing = prefs.getBoolean(MARKETING, false)
+            val notification = localDataSource.getAgreementStatus(NOTIFICATION)
+            val marketing = localDataSource.getAgreementStatus(MARKETING)
 
             if(notification == true) {
                 binding.switchServiceNotification.isChecked = true
@@ -46,20 +47,14 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
 
     private fun setNotificationPermission() {
         binding.switchServiceNotification.setOnCheckedChangeListener { _, isChecked ->
-            saveNotificationStatus(NOTIFICATION, isChecked)
+            localDataSource.saveNotificationStatus(NOTIFICATION, isChecked)
             showDialogFragment()
         }
 
         binding.switchMarketing.setOnCheckedChangeListener { _, isChecked ->
-            saveNotificationStatus(MARKETING, isChecked)
+            localDataSource.saveNotificationStatus(MARKETING, isChecked)
             showDialogFragment()
         }
-    }
-
-    private fun saveNotificationStatus(key: String, value: Boolean) {
-        val editor = prefs.edit()
-        editor.putBoolean(key, value)
-        editor.commit()
     }
 
     private fun showDialogFragment() {
@@ -76,12 +71,12 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     private fun getNotificationResult(): String {
         var notificationResult = ""
 
-        if(prefs.getBoolean(NOTIFICATION, true))
+        if(localDataSource.getAgreementStatus(NOTIFICATION))
             notificationResult += getString(R.string.notification_permission_result_2)
         else
             notificationResult += getString(R.string.notification_permission_result_1)
 
-        if(prefs.getBoolean(MARKETING, true))
+        if(localDataSource.getAgreementStatus(MARKETING))
             notificationResult += getString(R.string.notification_permission_result_4)
         else
             notificationResult += getString(R.string.notification_permission_result_3)
@@ -91,7 +86,6 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     }
 
     companion object {
-        private val APP_PREF = "AppPrefs"
         private val AGREEMENT_STATUS = "AgreementStatus"
         private val NOTIFICATION = "NotificationAgreement"
         private val MARKETING = "MarketingAgreement"

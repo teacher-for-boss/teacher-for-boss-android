@@ -28,8 +28,8 @@ class TeacherProfileRecentAnswerFragment :
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding.rvTeacherProfileRecentAnswer.adapter = null
+        super.onDestroyView()
     }
 
     private fun initLayout() {

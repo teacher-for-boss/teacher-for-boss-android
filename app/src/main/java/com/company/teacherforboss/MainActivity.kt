@@ -33,8 +33,10 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.NOTIFICATION_D
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.NOTIFICATION_RESULT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -43,6 +45,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val resetBackPressed = Runnable { backPressedOnce = false }
 
     private val notificationViewModel by viewModels<NotificationViewModel>()
+    @Inject lateinit var localDataSource: LocalDataSource
 
     // fcm messaging 권한 요청
     private val requestPermissionLauncher = registerForActivityResult(
@@ -171,8 +174,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun getNotificationPermission() {
-        val prefs = getSharedPreferences(APP_PREF, MODE_PRIVATE)
-        val agreementStatus = prefs.getBoolean(AGREEMENT_STATUS, false)
+        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS)
 
         if(!agreementStatus) {
             showDialogFragment("Notification")
@@ -188,11 +190,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     getString(R.string.notification_permission_deny),
                     getString(R.string.notification_permission_accept),
                     {
-                        saveNotificationStatus(NOTIFICATION, false)
+                        localDataSource.saveNotificationStatus(NOTIFICATION, false)
                         showDialogFragment("Marketing")
                     },
                     {
-                        saveNotificationStatus(NOTIFICATION, true)
+                        localDataSource.saveNotificationStatus(NOTIFICATION, true)
                         showDialogFragment("Marketing")
                     },
                     backgroundClickable = false
@@ -206,11 +208,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     getString(R.string.notification_permission_deny),
                     getString(R.string.notification_permission_accept),
                     {
-                        saveNotificationStatus(MARKETING, false)
+                        localDataSource.saveNotificationStatus(MARKETING, false)
                         showDialogFragment("Result")
                     },
                     {
-                        saveNotificationStatus(MARKETING, true)
+                        localDataSource.saveNotificationStatus(MARKETING, true)
                         showDialogFragment("Result")
                     },
                     backgroundClickable = false
@@ -224,31 +226,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     "",
                     getString(R.string.notification_permission_confirm),
                     {},
-                    { saveNotificationStatus(AGREEMENT_STATUS, true) },
-                    clickBackground = { saveNotificationStatus(AGREEMENT_STATUS, true) }
+                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, true) },
+                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, true) }
                 ).show(supportFragmentManager, NOTIFICATION_RESULT_DIALOG)
             }
         }
     }
 
-    private fun saveNotificationStatus(key: String, value: Boolean) {
-        val prefs = getSharedPreferences(APP_PREF, MODE_PRIVATE)
-        val editor = prefs.edit()
-
-        editor.putBoolean(key, value)
-        editor.commit()
-    }
-
     private fun getNotificationResult(): String {
         var notificationResult = ""
-        val prefs = getSharedPreferences(APP_PREF, MODE_PRIVATE)
 
-        if(prefs.getBoolean(NOTIFICATION, true))
+        if(localDataSource.getAgreementStatus(NOTIFICATION))
             notificationResult += getString(R.string.notification_permission_result_2)
         else
             notificationResult += getString(R.string.notification_permission_result_1)
 
-        if(prefs.getBoolean(MARKETING, true))
+        if(localDataSource.getAgreementStatus(MARKETING))
             notificationResult += getString(R.string.notification_permission_result_4)
         else
             notificationResult += getString(R.string.notification_permission_result_3)
@@ -277,7 +270,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     companion object {
-        private val APP_PREF = "AppPrefs"
         private val AGREEMENT_STATUS = "AgreementStatus"
         private val NOTIFICATION = "NotificationAgreement"
         private val MARKETING = "MarketingAgreement"

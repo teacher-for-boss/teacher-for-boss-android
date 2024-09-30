@@ -52,10 +52,33 @@ class LocalDataSource @Inject constructor(
         editor.apply()
     }
 
+    fun getAgreementStatus(key: String): Boolean {
+        val prefs = getPreferences(APP_PREF)
+
+        return when (key) {
+            AGREEMENT_STATUS -> prefs.getBoolean(AGREEMENT_STATUS, false)
+            NOTIFICATION -> prefs.getBoolean(NOTIFICATION, false)
+            MARKETING -> prefs.getBoolean(MARKETING, false)
+            else -> false
+        }
+    }
+
+    fun saveNotificationStatus(key: String, value: Boolean) {
+        val prefs = getPreferences(APP_PREF)
+        val editor = prefs.edit()
+
+        editor.putBoolean(key, value)
+        editor.commit()
+    }
+
     companion object {
         const val USER_INFO="USER_INFO"
         const val INFO_NULL="INFO_NULL"
         const val SIGNUP_TYPE="SIGNUP_TYPE"
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
+        const val APP_PREF = "AppPrefs"
+        const val AGREEMENT_STATUS = "AgreementStatus"
+        const val NOTIFICATION = "NotificationAgreement"
+        const val MARKETING = "MarketingAgreement"
     }
 }

@@ -99,13 +99,21 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
     }
 
     private fun collectData(){
+        val signupType = localDataSource.getSignupType()
+        var max_size=TEACHER_FRAGMENT_SZIE
+
+        if (signupType!=SIGNUP_DEFAULT){
+            max_size-=DEFAULT_SIGNUP_SIZE
+            viewModel._totalPage.value=max_size
+        }
+
         viewModel.currentPage.observe(this){currentPage->
             Log.d("signup",currentPage.toString())
             binding.progressbarSignup.progress=currentPage
         }
         viewModel.totalPage.observe(this){totalPage->
             Log.d("signup",totalPage.toString())
-            binding.progressbarSignup.max=totalPage
+            binding.progressbarSignup.max=max_size
         }
     }
 
@@ -294,8 +302,11 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
     }
 
     companion object{
+        // 온보딩1, 보스 1, 티처 6, 기본 회원가입 3
         private const val DEFAULT_PROGRESSBAR=1f
-        private const val TEACHER_FRAGMENT_SZIE=10f // 티쳐: 온보딩:1 + 일반 4 + 티쳐 4 + 프로필 1= 10
+        private const val BOSS_FRAGMENT_SZIE=5f
+        private const val TEACHER_FRAGMENT_SZIE=10f
+        private const val DEFAULT_SIGNUP_SIZE=3f
     }
 
 }

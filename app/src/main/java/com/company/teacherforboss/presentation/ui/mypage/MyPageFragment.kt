@@ -265,7 +265,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setTeacherProfileLayoutByAPI(data: MyPageProfileEntity) {
         binding.apply {
-            tvMyPageProfileName.text = getString(
+            binding.tvMyPageProfileName.text = getString(
                 R.string.my_page_teacher_name,
                 data.nickname,
             )

@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="휴대폰 본인인증을 해주세요\n"
+                    android:text="휴대폰 본인인증을 해주세요 (필수)\n"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold"/>

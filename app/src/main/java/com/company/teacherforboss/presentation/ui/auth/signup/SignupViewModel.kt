@@ -146,7 +146,7 @@ class SignupViewModel @Inject constructor(
     val currentPage:LiveData<Float>
         get() = _currentPage
 
-    var _totalPage=MutableLiveData<Float>(BOSS_FRAGMENT_SIZE)
+    var _totalPage=MutableLiveData<Float>(TEACHER_FRAGMENT_SZIE)
     val totalPage: LiveData<Float>
         get() = _totalPage
 
@@ -210,7 +210,7 @@ class SignupViewModel @Inject constructor(
         get() = _isEmailVerified_str
 
     //이메일인증 여부 boolean ->data binding
-    var _isEmailVerified= MutableLiveData<Boolean>(true) //TODO
+    var _isEmailVerified= MutableLiveData<Boolean>(false) //TODO
     val isEmailVerified: LiveData<Boolean>
         get() = _isEmailVerified
 
@@ -223,7 +223,7 @@ class SignupViewModel @Inject constructor(
         get()=_isPhoneVerified_str
 
     //휴대폰 인증 여부 boolean->data binding
-    var _isPhoneVerified=MutableLiveData<Boolean>(true) //TODO
+    var _isPhoneVerified=MutableLiveData<Boolean>(false) //TODO
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 

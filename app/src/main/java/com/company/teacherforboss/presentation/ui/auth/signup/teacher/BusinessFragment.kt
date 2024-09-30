@@ -17,7 +17,7 @@ import com.company.teacherforboss.databinding.FragmentBusinessBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingFragment
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Calendar
 
 class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragment_business){
@@ -42,23 +42,24 @@ class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragm
     private fun addListeners(){
         with (binding){
             btnNextSignup.setOnClickListener {
-                lifecycleScope.launch {
-                    val isVerified = viewModel.businessNumCheck()
-                    val activity = activity as SignupActivity
-                    if (isVerified) {
-                        activity.gotoNextFragment(BusinessVerifySuccessFragment())
-                    } else {
-                        activity.gotoNextFragment(BusinessVerifyFailFragment())
-                    }
-                }
                 val activity = activity as SignupActivity
                 activity.gotoNextFragment(BusinessVerifySuccessFragment())
+//                lifecycleScope.launch {
+//                    val isVerified = viewModel.businessNumCheck()
+//                    val activity = activity as SignupActivity
+//                    if (isVerified) {
+//                        activity.gotoNextFragment(BusinessVerifySuccessFragment())
+//                    } else {
+//                        activity.gotoNextFragment(BusinessVerifyFailFragment())
+//                    }
+//                }
+//                activity.gotoNextFragment(BusinessVerifySuccessFragment())
             }
             calendar.setOnClickListener {
                 val cal=Calendar.getInstance()
                 val data=DatePickerDialog.OnDateSetListener{view,year,month,day->
-                    viewModel._openDateStr.value="${year} / ${month+1} / ${day}"
-                    binding.openDate.text="${year} / ${month+1} / ${day}"
+                    viewModel._openDateStr.value=LocalDate.of(year, month, day).toString()
+                    binding.openDate.text="${year}/${month+1}/${day}"
                 }
                 context?.let { it1 ->
                     DatePickerDialog(

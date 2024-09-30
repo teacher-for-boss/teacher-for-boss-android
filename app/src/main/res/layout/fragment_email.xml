@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="로그인에 사용할\n이메일을 인증해주세요"
+                    android:text="로그인에 사용할\n이메일을 인증해주세요 (필수)"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold" />

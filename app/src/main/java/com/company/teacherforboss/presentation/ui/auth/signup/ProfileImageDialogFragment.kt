@@ -18,6 +18,7 @@ import com.company.teacherforboss.util.base.BindingDialogFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UrlConfig
 
 class ProfileImageDialogFragment(
@@ -29,8 +30,8 @@ class ProfileImageDialogFragment(
     private val animalTeacherFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
     private val animalBossFileList: List<BossProfileAnimal> = BossProfileAnimal.values().toList()
 
-    private var presentIndex = 0
-    private var previousIndex = 0
+    private var presentIndex = -1
+    private var previousIndex = -1
     private var selectedImageView: ImageView? = null
 
     override fun onCreateView(
@@ -70,13 +71,9 @@ class ProfileImageDialogFragment(
     }
 
     private fun <T : ProfileAnimal> setImgView(profileList: List<T>) {
-        if(viewModel.getIsInitializedDialog()==false){
-            when(viewModel.role.value){
-                1-> BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value?:DEFAULT_BOSS_PROFILE_IMG_URL)
-                2-> BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value?: DEFAULT_TEACHER_PROFILE_IMG_URL)
-            }
-            viewModel.setIsInitializedDialog(true)
-        }
+
+        binding.profileImage.loadImageFromUrlCoil(viewModel.profileImg.value!!)
+
         val bindingImgList = listOf(
             binding.p1, binding.p2, binding.p3, binding.p4, binding.p5, binding.p6,
             binding.p7, binding.p8, binding.p9, binding.p10, binding.p11
@@ -85,14 +82,21 @@ class ProfileImageDialogFragment(
         bindingImgList.forEachIndexed { index, imageView ->
             val fileName = profileList[index].fileName
             val url = "${IMG_BASE_URL}${fileName}"
-            BindingImgAdapter.bindProfileImgUrl(imageView, url)
+            imageView.loadImageFromUrlCoil(url)
 
             clickedMap[index] = false // clickedMap 초기화
             imageView.setOnClickListener {
-                presentIndex = index
-                clickedMap[presentIndex] = true
-                clickedMap[previousIndex] = false
-                previousIndex = index
+                if(presentIndex==-1){
+                    presentIndex=index
+                    clickedMap[presentIndex] = true
+                }
+                else{
+                    previousIndex=presentIndex
+                    clickedMap[previousIndex]=false
+
+                    presentIndex=index
+                    clickedMap[presentIndex]=true
+                }
 
                 val strokeWidth = 5 // 테두리 두께
                 val strokeColor = ContextCompat.getColor(requireContext(), R.color.Purple500)

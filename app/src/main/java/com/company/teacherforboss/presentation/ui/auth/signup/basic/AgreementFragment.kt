@@ -3,6 +3,7 @@ package com.company.teacherforboss.presentation.ui.auth.signup.basic
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AgreementFragment : BindingDialogFragment<FragmentAgreementBinding>(R.layout.fragment_agreement) {
     private val viewModel by activityViewModels<SignupViewModel>()
+
+    override fun onStart() {
+        super.onStart()
+
+        dialog?.let {
+            val params = it.window?.attributes
+            params?.width = ViewGroup.LayoutParams.MATCH_PARENT
+            params?.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            it.window?.attributes = params
+            it.window?.setGravity(Gravity.BOTTOM) // 화면 하단에 붙이기
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

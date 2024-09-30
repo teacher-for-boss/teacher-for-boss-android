@@ -30,8 +30,8 @@ class ProfileImageModifyDialogFragment(
     private val animalTeacherFileList: List<TeacherProfileAnimal> = TeacherProfileAnimal.values().toList()
     private val animalBossFileList: List<BossProfileAnimal> = BossProfileAnimal.values().toList()
 
-    private var presentIndex = 0
-    private var previousIndex = 0
+    private var presentIndex = -1
+    private var previousIndex = -1
     private var selectedImageView: ImageView? = null
 
     override fun onCreateView(
@@ -86,10 +86,18 @@ class ProfileImageModifyDialogFragment(
 
             clickedMap[index] = false // clickedMap 초기화
             imageView.setOnClickListener {
-                presentIndex = index
-                clickedMap[presentIndex] = true
-                clickedMap[previousIndex] = false
-                previousIndex = index
+
+                if(presentIndex==-1){
+                    presentIndex=index
+                    clickedMap[presentIndex] = true
+                }
+                else{
+                    previousIndex=presentIndex
+                    clickedMap[previousIndex]=false
+
+                    presentIndex=index
+                    clickedMap[presentIndex]=true
+                }
 
                 val strokeWidth = 5 // 테두리 두께
                 val strokeColor = ContextCompat.getColor(requireContext(), R.color.Purple500)
@@ -121,7 +129,6 @@ class ProfileImageModifyDialogFragment(
 
         binding.finishBtn.setOnClickListener {
             if (viewModel.getIsUserImgSelected()==false) { // 디폴트 이미지 선택 시
-               // 기본 이미지가 선택된 경우에만 처리
                val selectedImage = clickedMap.entries.firstOrNull { it.value == true }
                if (selectedImage != null) {
                    selectedIndex = selectedImage.key

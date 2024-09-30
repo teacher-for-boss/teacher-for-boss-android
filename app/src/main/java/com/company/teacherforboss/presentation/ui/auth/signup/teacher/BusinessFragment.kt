@@ -57,13 +57,13 @@ class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragm
             calendar.setOnClickListener {
                 val cal=Calendar.getInstance()
                 val data=DatePickerDialog.OnDateSetListener{view,year,month,day->
-                    viewModel._openDateStr.value="${year} / ${month} / ${day}"
-                    binding.openDate.text="${year} / ${month} / ${day}"
+                    viewModel._openDateStr.value="${year} / ${month+1} / ${day}"
+                    binding.openDate.text="${year} / ${month+1} / ${day}"
                 }
                 context?.let { it1 ->
                     DatePickerDialog(
-                        it1,data,
-                        cal.get(Calendar.YEAR),
+                        it1,R.style.CustomDatePickerDialog,data
+                        ,cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)
                     ).show()

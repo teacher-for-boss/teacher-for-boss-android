@@ -204,7 +204,7 @@ class TeacherTalkMainFragment :
                 binding.btnNoMoreContent.visibility = View.GONE
                 updateConstraints()
             } else {
-                binding.btnMoreCard.visibility = View.GONE
+                binding.btnMoreCard.visibility = View.INVISIBLE
                 binding.btnNoMoreContent.visibility = View.VISIBLE
                 updateConstraints()
             }
@@ -218,23 +218,6 @@ class TeacherTalkMainFragment :
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(rootLayout) // ConstraintLayout을 기준으로 복사
-
-        // 'btn_more_card'가 gone이면 'rv_teacher_talk_card'의 bottom을 'btn_no_more_content'로 변경
-        if (binding.btnMoreCard.visibility == View.GONE) {
-            constraintSet.connect(
-                R.id.rv_teacher_talk_card,
-                ConstraintSet.BOTTOM,
-                R.id.btn_no_more_content,
-                ConstraintSet.TOP
-            )
-        } else {
-            constraintSet.connect(
-                R.id.rv_teacher_talk_card,
-                ConstraintSet.BOTTOM,
-                R.id.btn_more_card,
-                ConstraintSet.TOP
-            )
-        }
 
         // Transition을 사용하여 애니메이션을 적용
         TransitionManager.beginDelayedTransition(rootLayout)

@@ -92,7 +92,10 @@ class TeacherTalkCardAdapter(
                     .load(teacherTalkCard.selectedTeacher)
                     .into(binding.ivSelectedTeacher)
             }
-            else binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+            else {
+                binding.widgetCardViewStatementSolved.visibility = View.GONE
+                binding.widgetCardViewStatementNotSolved.visibility = View.VISIBLE
+            }
 
             // 상세 글 이동
             binding.root.setOnClickListener {

@@ -167,6 +167,7 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
             .setPermissions(
                 *permissions
             )
+            .setDeniedCloseButtonText(R.string.cancel_button)
             .check()
     }
 

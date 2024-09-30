@@ -214,6 +214,20 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_no_more_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:text="마지막 게시글입니다."
+                        android:background="@drawable/background_radius8_border_gray400"
+                        android:textColor="@color/Gray500"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </com.company.teacherforboss.presentation.ui.community.common.NewScrollView>

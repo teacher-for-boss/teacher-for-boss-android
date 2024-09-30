@@ -237,25 +237,18 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
     }
 
     private fun checkPhoneAndEmail(): Boolean {
-        if(viewModel.phoneReveal.value == true) {
+        if(!viewModel.getPhone().isNullOrEmpty()){
             if(!viewModel.phone_validation()) {
                 CustomSnackBar.make(binding.root, getString(R.string.verify_phone), 2000).show()
                 return false
-            } else {
-                if(viewModel.emailReveal.value == true) {
-                    if(!viewModel.email_validation()) {
-                        CustomSnackBar.make(binding.root, getString(R.string.verify_email), 2000).show()
-                        return false
-                    }
-                }
             }
+
         }
-        else {
-            if(viewModel.emailReveal.value == true) {
-                if(!viewModel.email_validation()) {
-                    CustomSnackBar.make(binding.root, getString(R.string.verify_email), 2000).show()
-                    return false
-                }
+
+        if(!viewModel.getEmail().isNullOrEmpty()){
+            if(!viewModel.email_validation()) {
+                CustomSnackBar.make(binding.root, getString(R.string.verify_email), 2000).show()
+                return false
             }
         }
         return true
@@ -293,7 +286,7 @@ class ModifyTeacherProfileFragment : BindingFragment<FragmentModifyTeacherProfil
             profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
                 defaultImgUrl?.let {
                     setIsUserImgSelected(false)
-                    BindingImgAdapter.bindProfileImgUrl(binding.profileImage,defaultImgUrl)
+                    binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
                 }
             })
 

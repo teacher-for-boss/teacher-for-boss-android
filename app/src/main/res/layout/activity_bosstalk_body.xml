@@ -37,7 +37,7 @@
                     android:id="@+id/board_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="보스Talk"
+                    android:text="@string/tv_boss_talk_title"
                     android:textSize="18dp"
                     android:textColor="@color/Gray600"
                     app:layout_constraintStart_toStartOf="parent"

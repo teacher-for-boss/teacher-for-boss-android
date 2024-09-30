@@ -10,6 +10,7 @@
 
     <string name="boss_talk_fragment">bosstalk fragement입니다</string>
     <string name="my_page_fragment">mypage fragement입니다</string>
+    <string name="tv_boss_talk_title">보스talk</string>
 
 
     <string name="naver_client_id">arPMXPe7ew3tmToDKvgA</string>

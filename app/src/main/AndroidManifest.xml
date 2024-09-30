@@ -123,8 +123,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:exported="true">
         </activity>
 
         <activity android:name=".presentation.ui.mypage.community.MyPageTeacherTalkActivity"

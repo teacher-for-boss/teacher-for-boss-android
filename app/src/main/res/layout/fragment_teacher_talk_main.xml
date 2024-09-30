@@ -198,21 +198,10 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/btn_more_card"
+                        app:layout_constraintBottom_toTopOf="@id/btn_no_more_content"
                         tools:listitem="@layout/item_teacher_talk_card" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_more_card"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="24dp"
-                        android:layout_marginBottom="24dp"
-                        android:text="@string/more_card"
-                        android:background="@drawable/background_radius8_border_purple500"
-                        android:textColor="@color/Purple600"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_no_more_content"

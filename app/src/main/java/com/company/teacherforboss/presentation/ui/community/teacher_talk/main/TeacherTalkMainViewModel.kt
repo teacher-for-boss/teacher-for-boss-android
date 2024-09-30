@@ -8,13 +8,17 @@ import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsRequestEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkQuestionsResponseEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsResponseEntity
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkQuestionsUseCase
 import com.company.teacherforboss.domain.usecase.community.teacher.TeacherTalkSearchUseCase
 import com.company.teacherforboss.presentation.ui.community.common.TalkMainViewModel
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_SIZE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_SORTBY
+import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -70,6 +74,9 @@ class TeacherTalkMainViewModel @Inject constructor(
 
     private var isLoading=false
 
+    private val _QuestionState = MutableStateFlow<UiState<TeacherTalkQuestionsResponseEntity>>(UiState.Empty)
+    val QuestionState get() = _QuestionState.asStateFlow()
+
     fun getTeacherTalkQuestions(){
         if(isLoading) return
 
@@ -78,17 +85,19 @@ class TeacherTalkMainViewModel @Inject constructor(
             try{
                 val teacherTalkQuestionsResponseEntity=teacherTalkQuestionsUseCase(
                     TeacherTalkQuestionsRequestEntity(
-                        lastQuestionId=getLastQuestionId()?:lastQuestionId.value?:DEFAULT_LASTID,
+                        lastQuestionId=lastQuestionId.value?:DEFAULT_LASTID,
                         size=size.value?:DEFAULT_SIZE,
                         sortBy=sortBy.value?: DEFAULT_SORTBY,
                         category = category.value,
                         keyword = null
                     )
                 )
-                _getTeacherTalkQuestionsLiveData.value=teacherTalkQuestionsResponseEntity
-
+                _QuestionState.value =
+                    UiState.Success(teacherTalkQuestionsResponseEntity)
+                setHasNext(teacherTalkQuestionsResponseEntity.hasNext)
+                setTeacherTalkQuestionList(teacherTalkQuestionsResponseEntity.questionList)
             }catch (ex:Exception){
-
+                _QuestionState.value = UiState.Error(ex.message)
             }finally {
                 isLoading=false
             }
@@ -157,6 +166,10 @@ class TeacherTalkMainViewModel @Inject constructor(
 
     fun updateQuestionIdMap(questionId:Long){
         lastQuestionIdMap.replace(category.value?: DEFAULT_CATEGORY,questionId)
+    }
+
+    fun setLastQuestionId(lastId: Long) {
+        _lastQuestionId.value = lastId
     }
 
     fun resetLastPostIdMap(postId:Long){

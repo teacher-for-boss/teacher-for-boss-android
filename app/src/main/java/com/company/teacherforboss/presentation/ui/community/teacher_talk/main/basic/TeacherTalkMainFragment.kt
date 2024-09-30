@@ -42,6 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Flow.Subscription
 import javax.inject.Inject
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 
 @AndroidEntryPoint
@@ -113,7 +114,7 @@ class TeacherTalkMainFragment :
     }
 
     private fun initView() {
-        if (!initialized) viewModel.getTeacherTalkQuestions()
+        viewModel.getTeacherTalkQuestions()
         //dropdown
         val items = resources.getStringArray(R.array.dropdown_items)
         val adapter = CustomAdapter(requireContext(), items)
@@ -165,64 +166,47 @@ class TeacherTalkMainFragment :
             }
 
             //btnMoreCard
-            btnMoreCard.setOnClickListener { viewModel?.getTeacherTalkQuestions() }
+//            btnMoreCard.setOnClickListener { viewModel?.getTeacherTalkQuestions() }
 
         }
 
     }
 
-    private fun initQuestionListView(questionList: List<QuestionEntity>){
-        // rv
-        teacherTalkCardAdapter.setCardList(questionList)
-        teacherTalkCardAdapter.notifyDataSetChanged()
-
-        val rvLayoutManager=LinearLayoutManager(requireContext())
-        binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
-
-        initialized = true
-    }
+//    private fun initQuestionListView(questionList: List<QuestionEntity>){
+//        // rv
+//        teacherTalkCardAdapter.setCardList(questionList)
+//        teacherTalkCardAdapter.notifyDataSetChanged()
+//
+//        val rvLayoutManager=LinearLayoutManager(requireContext())
+//        binding.rvTeacherTalkCard.layoutManager = rvLayoutManager
+//
+//        initialized = true
+//    }
 
 
     private fun getQuestions() {
-        viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { result ->
-            val questionList=result.questionList
-            viewModel.apply {
-                setTeacherTalkQuestionList(questionList)
+        viewModel.getTeacherTalkQuestionLiveData.observe(viewLifecycleOwner, { questionList ->
+            val questionList = questionList
+            val previousLastQuestionId = viewModel.getLastQuestionId()
+            val lastQuestionId = questionList.questionList.get(questionList.questionList.lastIndex).questionId
 
-                val previousLastPostId=getLastQuestionId()
-                val lastQuestionId=questionList.get(questionList.lastIndex).questionId
+            viewModel.updateQuestionIdMap(lastQuestionId)
+            viewModel.setHasNext(viewModel.hasNext.value ?: false)
 
-                updateQuestionIdMap(lastQuestionId)
-                setHasNext(result.hasNext)
-
-                if(previousLastPostId==DEFAULT_LASTID) initQuestionListView(questionList)
-                else updateQuestions(questionList)
+            if (previousLastQuestionId == DEFAULT_LASTID){
+                Log.d("TeacherTalkCardAdapter", "Fetched data successfully")
+                teacherTalkCardAdapter.setCardList(questionList.questionList)
             }
+            else updateQuestions(questionList.questionList)
 
-            if (result.hasNext) {
-                binding.btnMoreCard.visibility = View.VISIBLE
-                binding.btnNoMoreContent.visibility = View.GONE
-                updateConstraints()
-            } else {
-                binding.btnMoreCard.visibility = View.INVISIBLE
+
+            if (!questionList.hasNext) {
                 binding.btnNoMoreContent.visibility = View.VISIBLE
-                updateConstraints()
             }
 
         })
     }
 
-    private fun updateConstraints() {
-        // root가 ConstraintLayout이 맞는지 먼저 확인
-        val rootLayout = binding.root as? ConstraintLayout ?: return // null 체크
-
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(rootLayout) // ConstraintLayout을 기준으로 복사
-
-        // Transition을 사용하여 애니메이션을 적용
-        TransitionManager.beginDelayedTransition(rootLayout)
-        constraintSet.applyTo(rootLayout) // 변경 사항 적용
-    }
 
     private fun observeSortType() {
         viewModel.sortBy.observe(viewLifecycleOwner, {
@@ -280,6 +264,19 @@ class TeacherTalkMainFragment :
                 else
                     navigateToSubscription()
             }
+            rvTeacherTalkCard.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val layoutManager = binding.rvTeacherTalkCard.layoutManager as LinearLayoutManager
+                    // 마지막 아이템 위치 확인
+                    val totalItemCount = layoutManager.itemCount
+                    val lastVisibileItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                    // 로딩 중 x, 마지막 아이템 화면에 보이면 추가 데이터 로드
+                    if (viewModel!!.hasNext.value == true && lastVisibileItemPosition == totalItemCount - 1)
+                        viewModel!!.getTeacherTalkQuestions()
+                }
+            })
         }
     }
 

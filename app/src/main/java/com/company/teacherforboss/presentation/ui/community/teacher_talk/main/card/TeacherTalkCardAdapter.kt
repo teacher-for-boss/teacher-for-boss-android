@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ItemTeacherTalkCardBinding
 import com.company.teacherforboss.domain.model.community.teacher.QuestionEntity
+import com.company.teacherforboss.domain.model.mypage.BookmarkedQuestionsEntity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -23,6 +25,7 @@ class TeacherTalkCardAdapter(
     RecyclerView.Adapter<TeacherTalkCardAdapter.TeacherTalkMainCardViewHolder>() {
 
     private var teacherTalkCardList: MutableList<QuestionEntity> = mutableListOf()
+    private var allQuestionsList: List<QuestionEntity> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,6 +44,8 @@ class TeacherTalkCardAdapter(
     }
 
     fun setCardList(cardList: List<QuestionEntity>) {
+        Log.d("TeacherTalkCardAdapter", "setCardList: ${cardList.size} items")
+        this.allQuestionsList = cardList
         this.teacherTalkCardList = cardList.take(10).toMutableList()
         notifyDataSetChanged()
     }
@@ -48,16 +53,15 @@ class TeacherTalkCardAdapter(
     fun addMoreCards(newQuestionList:List<QuestionEntity>) {
         val currentSize = teacherTalkCardList.size
         val newItemSize=newQuestionList.size
-        if(newItemSize>0){
-            teacherTalkCardList.addAll(newQuestionList)
-            notifyItemRangeInserted(currentSize,newItemSize)
-        }
+        teacherTalkCardList.addAll(newQuestionList)
+        notifyItemRangeInserted(currentSize,newItemSize)
     }
 
     inner class TeacherTalkMainCardViewHolder(private val binding: ItemTeacherTalkCardBinding,clickItem: (Long) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(teacherTalkCard: QuestionEntity) {
+            Log.d("TeacherTalkCardAdapter", "Binding card: ${teacherTalkCard.title}")
             val questionText = "Q. ${teacherTalkCard.title}"
 
             // Q. 부분 색상 설정

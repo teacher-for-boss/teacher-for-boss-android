@@ -50,7 +50,7 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             // 유저 정보
             val member = answer.memberInfo
             binding.userName.text = member.name
-            binding.profileLevel.text = context.getString(R.string.user_level, member.level)
+            binding.profileLevel.text = member.level
             member.profileImg?.let {
                 if(it!="") BindingImgAdapter.bindImage(binding.userImage, it)
             }

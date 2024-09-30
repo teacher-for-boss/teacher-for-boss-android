@@ -178,7 +178,6 @@
     <string name="not_recommed_option">추천하지 않아요 %d개</string>
 
     <string name="comment_cnt">댓글 %d개</string>
-    <string name="user_level">Lv.%s 지식의 별</string>
 
     <string name="community_hashtag_input_space">스페이스바 입력은 불가능합니다.</string>
     <string name="community_hashtag_input_number">"해시태그는 5개까지 입력 가능합니다."</string>

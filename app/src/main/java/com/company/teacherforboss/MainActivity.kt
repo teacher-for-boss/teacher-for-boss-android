@@ -27,9 +27,13 @@ import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.HOME
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MARKETING_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.NOTIFICATION_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.NOTIFICATION_RESULT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.component.DialogPopupFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,6 +63,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setFragment()
         askNotificationPermission()
         readNotification()
+        getNotificationPermission()
 
         val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg!=null){
@@ -165,6 +170,93 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     }
 
+    private fun getNotificationPermission() {
+        val prefs = getSharedPreferences(APP_PREF, MODE_PRIVATE)
+        val agreementStatus = prefs.getBoolean(AGREEMENT_STATUS, false)
+
+        if(!agreementStatus) {
+            showDialogFragment("Notification")
+        }
+    }
+
+    private fun showDialogFragment(index: String) {
+        when(index) {
+            "Notification" -> {
+                DialogPopupFragment(
+                    getString(R.string.notification_permission_title),
+                    getString(R.string.notification_permission_content),
+                    getString(R.string.notification_permission_deny),
+                    getString(R.string.notification_permission_accept),
+                    {
+                        saveNotificationStatus(NOTIFICATION, false)
+                        showDialogFragment("Marketing")
+                    },
+                    {
+                        saveNotificationStatus(NOTIFICATION, true)
+                        showDialogFragment("Marketing")
+                    },
+                    backgroundClickable = false
+                ).show(supportFragmentManager, NOTIFICATION_DIALOG)
+            }
+
+            "Marketing" -> {
+                DialogPopupFragment(
+                    getString(R.string.notification_marketing_title),
+                    getString(R.string.notification_marketing_content),
+                    getString(R.string.notification_permission_deny),
+                    getString(R.string.notification_permission_accept),
+                    {
+                        saveNotificationStatus(MARKETING, false)
+                        showDialogFragment("Result")
+                    },
+                    {
+                        saveNotificationStatus(MARKETING, true)
+                        showDialogFragment("Result")
+                    },
+                    backgroundClickable = false
+                ).show(supportFragmentManager, MARKETING_DIALOG)
+            }
+
+            "Result" -> {
+                DialogPopupFragment(
+                    getString(R.string.notification_permission_result_title),
+                    getNotificationResult(),
+                    "",
+                    getString(R.string.notification_permission_confirm),
+                    {},
+                    { saveNotificationStatus(AGREEMENT_STATUS, true) },
+                    clickBackground = { saveNotificationStatus(AGREEMENT_STATUS, true) }
+                ).show(supportFragmentManager, NOTIFICATION_RESULT_DIALOG)
+            }
+        }
+    }
+
+    private fun saveNotificationStatus(key: String, value: Boolean) {
+        val prefs = getSharedPreferences(APP_PREF, MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        editor.putBoolean(key, value)
+        editor.commit()
+    }
+
+    private fun getNotificationResult(): String {
+        var notificationResult = ""
+        val prefs = getSharedPreferences(APP_PREF, MODE_PRIVATE)
+
+        if(prefs.getBoolean(NOTIFICATION, true))
+            notificationResult += getString(R.string.notification_permission_result_2)
+        else
+            notificationResult += getString(R.string.notification_permission_result_1)
+
+        if(prefs.getBoolean(MARKETING, true))
+            notificationResult += getString(R.string.notification_permission_result_4)
+        else
+            notificationResult += getString(R.string.notification_permission_result_3)
+
+        notificationResult += getString(R.string.notification_permission_info)
+        return notificationResult
+    }
+
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null && ev?.action == MotionEvent.ACTION_DOWN) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -182,5 +274,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    companion object {
+        private val APP_PREF = "AppPrefs"
+        private val AGREEMENT_STATUS = "AgreementStatus"
+        private val NOTIFICATION = "NotificationAgreement"
+        private val MARKETING = "MarketingAgreement"
     }
 }

@@ -76,5 +76,8 @@ class ConstsUtils {
         const val DELETE_DIALOG = "deleteModal"
         const val TEACHER_LEVEL_DIALOG = "teacherLevelModal"
         const val SELECT_DIALOG = "selectModal"
+        const val NOTIFICATION_DIALOG = "notificationModal"
+        const val MARKETING_DIALOG = "marketingModal"
+        const val NOTIFICATION_RESULT_DIALOG = "notificationResultModal"
     }
 }

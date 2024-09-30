@@ -38,6 +38,8 @@
        <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.ManageAccountActivity"
             android:exported="false" />
+        <activity android:name=".presentation.ui.mypage.ManageNotificationActivity"
+            android:exported="false" />
         <activity
             android:name="com.company.teacherforboss.presentation.ui.mypage.AskPaymentHistoryActivity"
             android:exported="false" />

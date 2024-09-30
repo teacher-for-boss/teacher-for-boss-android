@@ -227,6 +227,7 @@
     <string name="my_page_app_information_title">이용 안내</string>
 
     <string name="my_page_menu_account">계정 관리</string>
+    <string name="my_page_menu_notification">알림 설정</string>
     <string name="my_page_menu_account_change">계좌 확인 및 변경</string>
     <string name="my_page_menu_exchange">티포 환전하기</string>
     <string name="my_page_menu_exchange_details">환전 내역</string>
@@ -372,8 +373,24 @@
     <string name="notification_type_teacher_talk">티처톡</string>
     <string name="notification_type_boss_talk">보스톡</string>
     <string name="notification_type_home">홈</string>
-    <string name="notification_type_event">이벤트</string>ㅅ
+    <string name="notification_type_event">이벤트</string>
     <string name="notification_type_exchange">환전신청완료</string>
+    
+    <string name="notification_permission_title">‘티처포보스’에서 알림을 보내고자 합니다.</string>
+    <string name="notification_permission_content">해당 기기로 댓글이나 채택 알림 등\n서비스 이용에 필요한 안내 사항을\n푸시 알림으로 보내드리겠습니다.\n앱 푸시에 수신 동의하시겠습니까?</string>
+    <string name="notification_permission_deny">수신 거부</string>
+    <string name="notification_permission_accept">수신 동의</string>
+    <string name="notification_permission_confirm">닫기</string>
+    
+    <string name="notification_marketing_title">‘티처포보스’에서 마케팅 정보 알림을 보내고자 합니다.</string>
+    <string name="notification_marketing_content">해당 기기로 이벤트, 할인 혜택 등을\n푸시 알림으로 보내드리겠습니다.\n앱 푸시에 수신 동의하시겠습니까?</string>
+    
+    <string name="notification_permission_result_title">푸시알림 수신 처리 결과</string>
+    <string name="notification_permission_result_1">서비스 알림 : 수신거부 처리 완료\n</string>
+    <string name="notification_permission_result_2">서비스 알림 : 수신동의 처리 완료\n</string>
+    <string name="notification_permission_result_3">마케팅 정보 : 수신거부 처리 완료\n\n</string>
+    <string name="notification_permission_result_4">마케팅 정보 : 수신동의 처리 완료\n\n</string>
+    <string name="notification_permission_info">알림 설정 변경은 마이페이지 > 알림 설정에서 가능합니다.</string>
 
     <!--구독-->
     <string name="subscription_title">구독권 결제</string>

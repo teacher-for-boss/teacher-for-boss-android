@@ -79,6 +79,6 @@ class ConstsUtils {
         const val NOTIFICATION_DIALOG = "notificationModal"
         const val MARKETING_DIALOG = "marketingModal"
         const val NOTIFICATION_RESULT_DIALOG = "notificationResultModal"
-        const val WRITE_EXIT_DIALOG = "WriteExitDialog"
+        const val WRITE_EXIT_DIALOG = "WriteExitModal"
     }
 }

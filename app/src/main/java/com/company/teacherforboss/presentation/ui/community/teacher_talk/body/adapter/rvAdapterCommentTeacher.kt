@@ -13,18 +13,19 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentTeacherBinding
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
-import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
+import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SELECT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
@@ -187,18 +188,17 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
                     val fragmentManager = (context as FragmentActivity).supportFragmentManager
 
                     CommunityDialogFragment(
-                    title = context.getString(R.string.dialog_select_title),
-                    leftBtnText = context.getString(R.string.dialog_exit),
-                    rightBtnText = context.getString(R.string.dialog_select_btn),
-                    clickLeftBtn = {},
-                    clickRightBtn = {
+                    context.getString(R.string.dialog_select_title),
+                    context.getString(R.string.dialog_exit),
+                    context.getString(R.string.dialog_select_btn),
+                    {},
+                    {
                         // answerId
                         viewModel.setAnswerId(answer.answerId)
                         viewModel.selectAnswer()
 
                         if(context is LifecycleOwner) {
                             viewModel.teacherSelectAnswerLiveData.observe(context, Observer {
-                                // 채택하기 버튼이 안보이도록
                                 viewModel._isSelected.value = true
                                 // 채택된 답변 ui 수정 -> 리스트 다시 불러옴
                                 viewModel.isSelectClicked.value = Unit
@@ -213,8 +213,25 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             binding.deleteBtn.setOnClickListener {
                 if(answer.selectedAt == null) {
                     viewModel.setAnswerId(answer.answerId)
-                    val dialog = DeleteCommentDialog(binding.root.context,viewModel,lifecycleOwner, TEACHER_TALK)
-                    dialog.show()
+                    if(context is FragmentActivity) {
+                        CommunityDialogFragment(
+                            context.getString(R.string.dialog_delete_teacher_answer),
+                            context.getString(R.string.dialog_exit_button),
+                            context.getString(R.string.dialog_delete_button),
+                            {},
+                            {
+                                viewModel.deleteAnswer()
+
+                                viewModel.deleteAnsLiveData.observe(lifecycleOwner, Observer {
+                                    Intent(context, MainActivity::class.java).apply {
+                                        putExtra(ConstsUtils.FRAGMENT_DESTINATION, TEACHER_TALK)
+                                        putExtra(ConstsUtils.SNACK_BAR_MSG, context.getString(R.string.community_answer_deleted))
+                                        context.startActivity(this)
+                                    }
+                                })
+                            }
+                        ).show(context.supportFragmentManager, DELETE_DIALOG)
+                    }
                 } else {
                     CustomSnackBar.make(binding.root, context.getString(R.string.community_cannot_delete_answer), 2000).show()
                     hideOptionMenuIfVisible()

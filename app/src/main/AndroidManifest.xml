@@ -107,7 +107,7 @@
         <activity
             android:name="com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.TeacherForBoss" />
         <activity
             android:name="com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity"
             android:exported="true" />
@@ -120,7 +120,7 @@
         <activity
             android:name="com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.TeacherForBoss" />
         <activity
             android:name="com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity"
             android:exported="true">

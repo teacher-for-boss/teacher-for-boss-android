@@ -154,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:tabIndicatorHeight="0dp"
+                    android:backgroundTint="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="@id/vp_img_slider"
                     app:layout_constraintStart_toStartOf="@id/vp_img_slider"
                     app:layout_constraintEnd_toEndOf="@id/vp_img_slider"

@@ -1,6 +1,5 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -25,7 +24,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapt
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
@@ -33,15 +32,12 @@ import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK_WRITE_ACTIVITY
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -93,7 +89,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         // 뒤로가기
         onBackBtnPressed()
         // 댓글 관찰
-        observePostComment()
+        observeComment()
         // 댓글
         setCommentView()
         // 답글 쓰기
@@ -147,8 +143,23 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
     fun doOptionMenu() {
         // 삭제하기
         binding.deleteBtn.setOnClickListener {
-            val dialog = DeleteBodyDialog(this, viewModel, this, postId, BOSS_TALK)
-            dialog.show()
+            CommunityDialogFragment(
+                getString(R.string.dialog_delete_boss_body),
+                getString(R.string.dialog_exit_button),
+                getString(R.string.dialog_delete_button),
+                {},
+                {
+                    viewModel.deletePost()
+
+                    viewModel.deleteLiveData.observe(this, Observer {
+                        Intent(this, MainActivity::class.java).apply {
+                            putExtra(ConstsUtils.FRAGMENT_DESTINATION, ConstsUtils.BOSS_TALK)
+                            putExtra(SNACK_BAR_MSG, getString(R.string.community_post_deleted))
+                            startActivity(this)
+                        }
+                    })
+                }
+            ).show(supportFragmentManager, DELETE_DIALOG)
         }
 
         // 수정하기
@@ -332,6 +343,10 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 binding.rvComment.adapter = adapter
                 binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             }
+            else  {
+                binding.commentNumber.text = getString(R.string.comment_cnt, 0)
+                binding.rvComment.adapter = null
+            }
         })
     }
     private fun handleTouchEvent(ev: MotionEvent): Boolean {
@@ -354,8 +369,12 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         return false
     }
 
-    private fun observePostComment() {
+    private fun observeComment() {
         viewModel.postCommentLiveData.observe(this, Observer {
+            viewModel.getCommentList()
+        })
+
+        viewModel.deleteCommentLiveData.observe(this, Observer {
             viewModel.getCommentList()
         })
     }

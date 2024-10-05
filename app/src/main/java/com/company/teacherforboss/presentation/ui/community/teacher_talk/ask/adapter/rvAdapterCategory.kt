@@ -40,11 +40,15 @@ class rvAdapterCategory(
                 binding.categoryTv.setTextColor(Color.WHITE)
                 binding.category.setBackgroundResource(R.drawable.background_radius8_purple600)
             } else if (position == previousItemPosition) {
-                binding.categoryTv.setTextColor(Color.parseColor("#7B79E8"))  // purple500
+                binding.categoryTv.setTextColor(Color.parseColor("#A15AF2"))  // purple500
+                binding.category.setBackgroundResource(R.drawable.background_radius8_purple200)
+            } else if (category == "세무"|| category == "노무"|| category == "노하우"){
+                binding.categoryTv.setTextColor(Color.parseColor("#A15AF2"))  // purple500
                 binding.category.setBackgroundResource(R.drawable.background_radius8_purple200)
             } else {
-                binding.categoryTv.setTextColor(Color.parseColor("#7B79E8"))  // purple500
-                binding.category.setBackgroundResource(R.drawable.background_radius8_purple200)
+                binding.categoryTv.setTextColor(Color.WHITE)  // purple500
+                binding.category.setBackgroundResource(R.drawable.background_radius8_gray300)
+                binding.category.isEnabled = false
             }
         }
     }

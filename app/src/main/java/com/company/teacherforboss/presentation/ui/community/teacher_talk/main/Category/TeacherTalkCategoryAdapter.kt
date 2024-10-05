@@ -39,18 +39,25 @@ class TeacherTalkCategoryAdapter(
 
         @SuppressLint("ResourceAsColor")
         fun bind(category: String, position: Int) {
-            binding.teacherTalkCategory.text = category
+            binding.teacherTalkCategory.apply {
+                text = category
 
-            if (position == selectedItemPosition) {
-                binding.teacherTalkCategory.setTextColor(Color.WHITE)
-                binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple600)
-            } else if (position == previousItemPosition) {
-                binding.teacherTalkCategory.setTextColor(Color.parseColor("#A15AF2"))  // purple500
-                binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple200)
-            } else {
-                binding.teacherTalkCategory.setTextColor(Color.parseColor("#A15AF2"))  // purple500
-                binding.teacherTalkCategory.setBackgroundResource(R.drawable.background_radius8_purple200)
+                if (position == selectedItemPosition) {
+                    setTextColor(Color.WHITE)
+                    setBackgroundResource(R.drawable.background_radius8_purple600)
+                } else if (position == previousItemPosition) {
+                    setTextColor(Color.parseColor("#A15AF2"))  // purple500
+                    setBackgroundResource(R.drawable.background_radius8_purple200)
+                } else if (category == "전체" || category == "세무"|| category == "노무"|| category == "노하우"){
+                    setTextColor(Color.parseColor("#A15AF2"))  // purple500
+                    setBackgroundResource(R.drawable.background_radius8_purple200)
+                } else{
+                    setTextColor(Color.WHITE)
+                    setBackgroundResource(R.drawable.background_radius8_gray300)
+                    isEnabled = false
+                }
             }
+
         }
     }
 

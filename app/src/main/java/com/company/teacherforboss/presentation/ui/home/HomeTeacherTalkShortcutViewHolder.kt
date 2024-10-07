@@ -10,12 +10,16 @@ class HomeTeacherTalkShortcutViewHolder(
 
 ) : RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: TeacherTalkShortCutModel) {
-        binding.teacherTalkShortcutItem = item
-        binding.ivCategoryImage.setImageResource(item.shortCutImage)
-
-        binding.viewCategory.setOnClickListener {
-            itemClickListener?.onItemClicked(binding.tvCategoryName.text.toString())
+        binding.apply{
+            teacherTalkShortcutItem = item
+            ivCategoryImage.setImageResource(item.shortCutImage)
+            binding.viewCategory.setOnClickListener {
+                if (tvCategoryName.text in listOf("전체", "세무", "노무", "노하우")) {
+                    itemClickListener?.onItemClicked(binding.tvCategoryName.text.toString())
+                }
+            }
         }
+
 
     }
 }

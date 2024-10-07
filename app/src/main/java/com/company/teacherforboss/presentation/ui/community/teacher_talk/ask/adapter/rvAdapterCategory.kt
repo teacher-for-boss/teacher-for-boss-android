@@ -42,7 +42,7 @@ class rvAdapterCategory(
             } else if (position == previousItemPosition) {
                 binding.categoryTv.setTextColor(Color.parseColor("#A15AF2"))  // purple500
                 binding.category.setBackgroundResource(R.drawable.background_radius8_purple200)
-            } else if (category == "세무"|| category == "노무"|| category == "노하우"){
+            } else if (category in listOf("세무", "노무", "노하우")){
                 binding.categoryTv.setTextColor(Color.parseColor("#A15AF2"))  // purple500
                 binding.category.setBackgroundResource(R.drawable.background_radius8_purple200)
             } else {

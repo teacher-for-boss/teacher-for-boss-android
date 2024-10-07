@@ -64,6 +64,18 @@ class HomeViewModel @Inject constructor(
         _teacherTalkShortcutList.value = listOf(
             TeacherTalkShortCutModel(R.drawable.ic_category_all, R.string.home_teacher_talk_all),
             TeacherTalkShortCutModel(
+                R.drawable.ic_category_policy,
+                R.string.home_teacher_talk_policy,
+            ),
+            TeacherTalkShortCutModel(
+                R.drawable.ic_category_employee,
+                R.string.home_teacher_talk_employee,
+            ),
+            TeacherTalkShortCutModel(
+                R.drawable.ic_category_operate,
+                R.string.home_teacher_talk_operate,
+            ),
+            TeacherTalkShortCutModel(
                 R.drawable.ic_category_marketing,
                 R.string.home_teacher_talk_marketing,
             ),
@@ -76,20 +88,8 @@ class HomeViewModel @Inject constructor(
                 R.string.home_teacher_talk_area,
             ),
             TeacherTalkShortCutModel(
-                R.drawable.ic_category_operate,
-                R.string.home_teacher_talk_operate,
-            ),
-            TeacherTalkShortCutModel(
-                R.drawable.ic_category_employee,
-                R.string.home_teacher_talk_employee,
-            ),
-            TeacherTalkShortCutModel(
                 R.drawable.ic_category_interior,
                 R.string.home_teacher_talk_interior,
-            ),
-            TeacherTalkShortCutModel(
-                R.drawable.ic_category_policy,
-                R.string.home_teacher_talk_policy,
             ),
         )
     }

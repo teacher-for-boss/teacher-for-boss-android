@@ -64,32 +64,32 @@ class HomeViewModel @Inject constructor(
         _teacherTalkShortcutList.value = listOf(
             TeacherTalkShortCutModel(R.drawable.ic_category_all, R.string.home_teacher_talk_all),
             TeacherTalkShortCutModel(
-                R.drawable.ic_category_marketing,
-                R.string.home_teacher_talk_marketing,
-            ),
-            TeacherTalkShortCutModel(
-                R.drawable.ic_category_hygiene,
-                R.string.home_teacher_talk_hygiene,
-            ),
-            TeacherTalkShortCutModel(
-                R.drawable.ic_category_area,
-                R.string.home_teacher_talk_area,
-            ),
-            TeacherTalkShortCutModel(
-                R.drawable.ic_category_operate,
-                R.string.home_teacher_talk_operate,
+                R.drawable.ic_category_policy,
+                R.string.home_teacher_talk_policy,
             ),
             TeacherTalkShortCutModel(
                 R.drawable.ic_category_employee,
                 R.string.home_teacher_talk_employee,
             ),
             TeacherTalkShortCutModel(
-                R.drawable.ic_category_interior,
-                R.string.home_teacher_talk_interior,
+                R.drawable.ic_category_operate,
+                R.string.home_teacher_talk_operate,
             ),
             TeacherTalkShortCutModel(
-                R.drawable.ic_category_policy,
-                R.string.home_teacher_talk_policy,
+                R.drawable.ic_category_marketing_invalid,
+                R.string.home_teacher_talk_marketing,
+            ),
+            TeacherTalkShortCutModel(
+                R.drawable.ic_category_hygiene_invalid,
+                R.string.home_teacher_talk_hygiene,
+            ),
+            TeacherTalkShortCutModel(
+                R.drawable.ic_category_area_invalid,
+                R.string.home_teacher_talk_area,
+            ),
+            TeacherTalkShortCutModel(
+                R.drawable.ic_category_interior_invalid,
+                R.string.home_teacher_talk_interior,
             ),
         )
     }

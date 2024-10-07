@@ -353,20 +353,23 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                 }
                 signupViewModel._gender.value=gender
 
-                birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
-                val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
-                val birthDate=LocalDate.parse(birthDate_str,formatter)
+                if(user.kakaoAccount?.birthyear!=null && user.kakaoAccount?.birthday!=null) {
+                    birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
+                    val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
+                    val birthDate=LocalDate.parse(birthDate_str,formatter)
+                    signupViewModel._birthDate.value=birthDate.toString()
+                    localDataSource.saveUserInfo(USER_BIRTHDATE,birthDate.toString())
+
+                }
                 val formatted_phone=user.kakaoAccount?.phoneNumber!!
                     .replace("+82","0")
                     .replace("-","")
                     .replace(" ","")
-                signupViewModel._birthDate.value=birthDate.toString()
                 signupViewModel._socialType.value=2
 
                 localDataSource.saveUserInfo(USER_NAME,user.kakaoAccount?.name!!)
                 localDataSource.saveUserInfo(USER_EMAIL,user.kakaoAccount?.email!!)
                 localDataSource.saveUserInfo(USER_PHONE,formatted_phone)
-                localDataSource.saveUserInfo(USER_BIRTHDATE,birthDate.toString())
                 localDataSource.saveUserInfo(USER_PROFILEIMG,user.kakaoAccount?.profile?.thumbnailImageUrl?:"")
                 localDataSource.saveUserInfo(USER_GENDER,gender.toString())
                 localDataSource.saveSignupType(SIGNUP_SOCIAL_KAKAO)

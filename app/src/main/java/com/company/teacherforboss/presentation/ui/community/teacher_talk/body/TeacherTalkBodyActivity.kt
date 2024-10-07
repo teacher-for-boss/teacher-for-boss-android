@@ -2,7 +2,6 @@ package com.company.teacherforboss.presentation.ui.community.teacher_talk.body
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -23,19 +21,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkBodyBinding
-import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterCommentTeacher
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteBodyDialog
+import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
@@ -52,7 +50,6 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_A
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
-import com.company.teacherforboss.util.context.showToast
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -144,8 +141,23 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         // 삭제하기
         binding.deleteBtn.setOnClickListener {
             if (viewModel._isAnswered.value == false){
-                val dialog = DeleteBodyDialog(this, viewModel, this, questionId, TEACHER_TALK)
-                dialog.show()
+                CommunityDialogFragment(
+                    getString(R.string.dialog_delete_teacher_body),
+                    getString(R.string.dialog_exit_button),
+                    getString(R.string.dialog_delete_button),
+                    {},
+                    {
+                        viewModel.deletePost()
+
+                        viewModel.deleteLiveData.observe(this, Observer{
+                            Intent(this, MainActivity::class.java).apply {
+                                putExtra(FRAGMENT_DESTINATION, TEACHER_TALK)
+                                putExtra(SNACK_BAR_MSG, getString(R.string.community_question_deleted))
+                                startActivity(this)
+                            }
+                        })
+                    }
+                ).show(supportFragmentManager, DELETE_DIALOG)
             }
             else {CustomSnackBar.make(binding.root, getString(R.string.community_question_cant_delete) ,1000).show()
             }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.InputFilter
@@ -17,8 +16,6 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -27,8 +24,6 @@ import com.company.teacherforboss.databinding.ActivityTeachertalkAnswerBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.adapter.rvAdapterImageTeacherAnswer
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
@@ -37,15 +32,16 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIV
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_ANSWERID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.WRITE_EXIT_DIALOG
 import com.company.teacherforboss.util.base.UploadUtil
+import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBinding>(R.layout.activity_teachertalk_answer), WriteExitDialogListener {
+class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBinding>(R.layout.activity_teachertalk_answer) {
     private val viewModel: TeacherTalkAnswerViewModel by viewModels()
 
     private var questionId:Long=0
@@ -257,20 +253,29 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this,TEACHER_TALK,purpose,this)
-            dialog.show()
+            DialogPopupFragment(
+                getString(R.string.dialog_write_exit),
+                "",
+                getString(R.string.dialog_exit),
+                getString(R.string.dialog_write_btn),
+                { finish() },
+                { }
+                ).show(supportFragmentManager, WRITE_EXIT_DIALOG)
+
         }
     }
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            val dialog = WriteExitDialog(this@TeacherTalkAnswerActivity, TEACHER_TALK,purpose,this@TeacherTalkAnswerActivity)
-            dialog.show()
-        }
-    }
+            DialogPopupFragment(
+                getString(R.string.dialog_write_exit),
+                "",
+                getString(R.string.dialog_exit),
+                getString(R.string.dialog_write_btn),
+                { finish() },
+                { }
+            ).show(supportFragmentManager, WRITE_EXIT_DIALOG)
 
-    override fun onExitBtnClicked() {
-        onBackPressedCallback.isEnabled = false
-        onBackPressed()
+        }
     }
 
     fun IsValidPost() {

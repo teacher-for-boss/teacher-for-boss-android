@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/layout_dialog_delete_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_deemed">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:background="@drawable/background_radius12_white"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="27dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="27dp" />
+
+        <TextView
+            android:id="@+id/tv_dialog_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다이얼로그메시지"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Title2"
+            app:layout_constraintStart_toStartOf="@id/guideline_left"
+            app:layout_constraintEnd_toEndOf="@id/guideline_right"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="22dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dialog_left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Theme.TeacherForBoss.Button.ALL"
+            android:backgroundTint="@color/Gray300"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Label5"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_message"
+            app:layout_constraintStart_toStartOf="@id/guideline_left"
+            app:layout_constraintEnd_toStartOf="@id/btn_dialog_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="22dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dialog_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Theme.TeacherForBoss.Button.ALL"
+            android:backgroundTint="@color/Purple600"
+            android:textAppearance="@style/TextAppearance.TeacherForBoss.Label5"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_message"
+            app:layout_constraintEnd_toEndOf="@id/guideline_right"
+            app:layout_constraintStart_toEndOf="@id/btn_dialog_left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="22dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

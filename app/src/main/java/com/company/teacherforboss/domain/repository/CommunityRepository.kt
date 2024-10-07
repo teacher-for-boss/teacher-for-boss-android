@@ -1,6 +1,6 @@
 package com.company.teacherforboss.domain.repository
 
-import com.company.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentListResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity

@@ -57,6 +57,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
     private val viewModel by viewModels<BossTalkBodyViewModel>()
     private val notificationViewModel by viewModels<NotificationViewModel>()
+    private lateinit var rvAdapterCommentBoss: rvAdapterCommentBoss
 
     private var postId: Long = 0
 
@@ -317,43 +318,27 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                     lifecycleOwner = this,
                     context = this,
                     commentList = viewModel.getCommentListValue(),
-                    viewModel = viewModel
-                ) { btnOption ->
-                    if (currentOptionButton != null && currentOptionButton != btnOption) {
-                        currentOptionButton?.visibility = View.GONE
-                    }
-                    currentOptionButton = btnOption
-                }
-
-                adapter.setDispatchTouchEventListener { ev ->
-                    handleTouchEvent(ev)
-                }
-
+                    viewModel = viewModel,
+                    clearCommentListSelection = ::clearCommentListSelection,
+                    updateMyCommentListSelectedPosition = ::updateMyCommentListSelectedPosition
+                )
                 binding.rvComment.adapter = adapter
                 binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             }
         })
     }
-    private fun handleTouchEvent(ev: MotionEvent): Boolean {
-        if (currentOptionButton != null && ev.action == MotionEvent.ACTION_UP) {
-            val optionButtonLocation = IntArray(2)
-            currentOptionButton?.getLocationOnScreen(optionButtonLocation)
-            val optionButtonRect = Rect(
-                optionButtonLocation[0],
-                optionButtonLocation[1],
-                optionButtonLocation[0] + currentOptionButton!!.width,
-                optionButtonLocation[1] + currentOptionButton!!.height
-            )
 
-            if (!optionButtonRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                currentOptionButton?.visibility = View.GONE
-                currentOptionButton = null
-                return true
-            }
-        }
-        return false
+    private fun updateMyCommentListSelectedPosition(position: Int) {
+        viewModel.updateMyCommentListSelectedPosition(position)
     }
 
+    private fun clearCommentListSelection() {
+        viewModel.clearCommentListSelection()
+    }
+
+    private fun updateMyCommentListSelectedPosition() {
+        viewModel.clearCommentListSelection()
+    }
     private fun observePostComment() {
         viewModel.postCommentLiveData.observe(this, Observer {
             viewModel.getCommentList()
@@ -370,10 +355,6 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
     private fun hideOptionMenuIfVisible() {
         binding.writerOption.visibility = View.GONE
         binding.nonWriterOption.visibility = View.GONE
-
-        val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
-        adapter?.currentOptionMenu?.visibility = View.GONE
-        adapter?.currentOptionMenu = null
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -385,42 +366,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 v.clearFocus()
             }
 
-            // btnOption 영역의 터치 이벤트 처리
-            val btnOptionLocation = IntArray(2)
-            binding.btnOption.getLocationOnScreen(btnOptionLocation)
-            val btnOptionRect = Rect(
-                btnOptionLocation[0],
-                btnOptionLocation[1],
-                btnOptionLocation[0] + binding.btnOption.width,
-                btnOptionLocation[1] + binding.btnOption.height
-            )
-
-            // 리사이클러뷰의 각 아이템의 btnOption 영역 처리
-            val adapter = binding.rvComment.adapter as? rvAdapterCommentBoss
-            var isInAnyBtnOption = false
-
-            // 현재 btnOption의 터치 여부 확인
-            if (btnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                isInAnyBtnOption = true
-            }
-
-            adapter?.let {
-                for (i in 0 until adapter.itemCount) {
-                    val viewHolder = binding.rvComment.findViewHolderForAdapterPosition(i) as? rvAdapterCommentBoss.ViewHolder
-                    val itemBtnOptionRect = viewHolder?.getBtnOptionRect()
-                    if (itemBtnOptionRect != null && itemBtnOptionRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                        isInAnyBtnOption = true
-                        break
-                    }
-                }
-            }
-
-            // 만약 어떤 btnOption이 터치된 것이 아니라면 옵션 메뉴 숨기기
-            if (!isInAnyBtnOption) {
-                hideOptionMenuIfVisible()
-            }
-
-            binding.rvComment.dispatchTouchEvent(ev)
+               binding.rvComment.dispatchTouchEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }

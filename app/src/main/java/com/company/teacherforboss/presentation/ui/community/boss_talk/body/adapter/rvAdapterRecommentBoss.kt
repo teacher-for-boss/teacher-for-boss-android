@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemRecommentBossBinding
-import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.domain.model.community.boss.CommentEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog

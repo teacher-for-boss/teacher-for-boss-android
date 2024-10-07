@@ -1,4 +1,7 @@
-package com.company.teacherforboss.domain.model.community
+package com.company.teacherforboss.domain.model.community.boss
+
+import androidx.databinding.ObservableBoolean
+import com.company.teacherforboss.domain.model.community.MemberEntity
 
 data class BossTalkCommentListResponseEntity(
     val totalCount:Int,
@@ -12,7 +15,8 @@ data class CommentEntity(
     val liked:Boolean,
     val disliked:Boolean,
     val createdAt:String,
-    val memberInfo:MemberEntity,
+    val memberInfo: MemberEntity,
     val children:ArrayList<CommentEntity>,
-    val isMine: Boolean
+    val isMine: Boolean,
+    var isSelected:ObservableBoolean = ObservableBoolean(false)
 )

@@ -1,7 +1,7 @@
 package com.company.teacherforboss.data.model.response.community.boss
 
-import com.company.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
-import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentListResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.CommentEntity
 import com.google.gson.annotations.SerializedName
 
 data class ResponseBossTalkCommentListDto(

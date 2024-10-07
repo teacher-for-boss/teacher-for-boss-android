@@ -1,7 +1,7 @@
 package com.company.teacherforboss.data.repositoryImpl
 
 import com.company.teacherforboss.data.datasource.remote.CommunityRemoteDataSource
-import com.company.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentListResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsRequestEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnsResponseEntity

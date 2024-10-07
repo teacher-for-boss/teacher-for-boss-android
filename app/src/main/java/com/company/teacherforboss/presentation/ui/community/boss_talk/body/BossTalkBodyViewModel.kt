@@ -1,14 +1,14 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body
 
-import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.company.teacherforboss.domain.model.community.BossTalkCommentListResponseEntity
+import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentListResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkDeletePostResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkCommentLikeResponseEntity
-import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.domain.model.community.boss.CommentEntity
 import com.company.teacherforboss.domain.model.community.MemberEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkBodyResponseEntity
 import com.company.teacherforboss.domain.model.community.boss.BossTalkBookmarkResponseEntity
@@ -26,7 +26,9 @@ import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentD
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentListUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkCommentUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkLikeUseCase
+import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -64,8 +66,9 @@ class BossTalkBodyViewModel @Inject constructor(
     private var _tagList=MutableLiveData<ArrayList<String>>()
     val tagList:LiveData<ArrayList<String>> get() = _tagList
 
-    private var _commentList=MutableLiveData<List<CommentEntity>>().apply { value= emptyList<CommentEntity>()}
-    val commentList:LiveData<List<CommentEntity>> get() = _commentList
+    // stateflow 로 변경해
+    private var _commentList = MutableStateFlow<List<CommentEntity>>(emptyList())
+    val commentList:MutableStateFlow<List<CommentEntity>> get() = _commentList
 
     var _comment=MutableLiveData<String>().apply { "" }
     val comment:LiveData<String> get() = _comment
@@ -106,6 +109,8 @@ class BossTalkBodyViewModel @Inject constructor(
     val memberInfo: LiveData<MemberEntity> get() = _memberInfo
 
     fun getMemberId() = memberId.value
+
+    private var oldPosition = DEFAULT_OLD_POSITION
 
     fun getBossTalkBody(postId: Long) {
         viewModelScope.launch {
@@ -321,4 +326,48 @@ class BossTalkBodyViewModel @Inject constructor(
         return _reCommentLikeLiveDataMap.getOrPut(commentId){ MutableLiveData() }
     }
 
+    fun clearCommentListSelection() {
+        if (oldPosition != DEFAULT_OLD_POSITION && getIsSelected(oldPosition)) {
+            setIsSelected(oldPosition)
+        }
+        oldPosition = DEFAULT_OLD_POSITION
+    }
+
+    fun updateMyCommentListSelectedPosition(newPosition: Int) {
+        when {
+            oldPosition == DEFAULT_OLD_POSITION -> setIsSelected(newPosition)
+
+            oldPosition == newPosition -> {
+                setIsSelected(newPosition)
+                oldPosition = DEFAULT_OLD_POSITION
+            }
+
+            oldPosition >= _commentList.value.size -> {
+                oldPosition = DEFAULT_OLD_POSITION
+                setIsSelected(newPosition)
+            }
+
+            else -> {
+                if (getIsSelected(oldPosition)) setIsSelected(oldPosition)
+                setIsSelected(newPosition)
+                oldPosition = newPosition
+            }
+        }
+    }
+
+    fun updateSelectedPosition(position: Int) {
+        oldPosition = position
+    }
+
+    private fun setIsSelected(position: Int) {
+        _commentList.value[position].isSelected.set(
+            !_commentList.value[position].isSelected.get()
+        )
+    }
+
+    private fun getIsSelected(position: Int) = _commentList.value[position].isSelected.get()
+
+    companion object {
+        private const val DEFAULT_OLD_POSITION = -1
+    }
 }

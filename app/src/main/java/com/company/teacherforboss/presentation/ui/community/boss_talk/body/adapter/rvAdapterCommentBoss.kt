@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentBossBinding
-import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.domain.model.community.boss.CommentEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
@@ -30,15 +30,20 @@ class rvAdapterCommentBoss(
     private val context: Context,
     private val commentList: List<CommentEntity>,
     private val viewModel: BossTalkBodyViewModel,
-    private val optionClickListener: (View) -> Unit
+    private val clearCommentListSelection: () -> Unit,
+    private val updateMyCommentListSelectedPosition: (Int) -> Unit,
 ) : RecyclerView.Adapter<rvAdapterCommentBoss.ViewHolder>() {
-
-    private var dispatchTouchEvent: ((MotionEvent) -> Boolean)? = null
-    var currentOptionMenu: View? = null
 
     inner class ViewHolder(private val binding: RvItemCommentBossBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
 
+            itemView.setOnClickListener {
+                // 선택 해제 호출
+                clearCommentListSelection()
+
+                // 새로운 선택된 포지션 업데이트
+                viewModel.updateSelectedPosition(adapterPosition)
+            }
             // 유저 정보
             val member = comment.memberInfo
             binding.userName.text = member.name
@@ -79,36 +84,6 @@ class rvAdapterCommentBoss(
             binding.rvRecomment.adapter = rvAdapterRecommentBoss(lifecycleOwner, context, reCommentList, viewModel)
             binding.rvRecomment.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
             binding.rvRecomment.isNestedScrollingEnabled = false
-
-            // 더보기 버튼 보여주기
-            binding.btnOption.setOnClickListener {
-                currentOptionMenu?.let {
-                    it.visibility = View.GONE
-                }
-
-                if (comment.isMine) {
-                    binding.deleteBtn.visibility = if (binding.deleteBtn.visibility == View.GONE) {
-                        currentOptionMenu = binding.deleteBtn
-                        View.VISIBLE
-                    } else {
-                        currentOptionMenu = null
-                        View.GONE
-                    }
-                } else {
-                    binding.reportBtn.visibility = if (binding.reportBtn.visibility == View.GONE) {
-                        currentOptionMenu = binding.reportBtn
-                        View.VISIBLE
-                    } else {
-                        currentOptionMenu = null
-                        View.GONE
-                    }
-                }
-
-                // 터치 이벤트 처리
-                binding.root.setOnTouchListener { _, event ->
-                    dispatchTouchEvent?.invoke(event) ?: false
-                }
-            }
 
             //삭제하기
             binding.deleteBtn.setOnClickListener {
@@ -181,20 +156,6 @@ class rvAdapterCommentBoss(
             }
         }
 
-        fun getBtnOptionRect(): Rect? {
-            return if (binding.btnOption.visibility == View.VISIBLE) {
-                val btnOptionLocation = IntArray(2)
-                binding.btnOption.getLocationOnScreen(btnOptionLocation)
-                Rect(
-                    btnOptionLocation[0],
-                    btnOptionLocation[1],
-                    btnOptionLocation[0] + binding.btnOption.width,
-                    btnOptionLocation[1] + binding.btnOption.height
-                )
-            } else {
-                null
-            }
-        }
     }
 
     override fun onCreateViewHolder(
@@ -202,6 +163,9 @@ class rvAdapterCommentBoss(
         viewType: Int
     ): ViewHolder {
         val view = RvItemCommentBossBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        clearCommentListSelection
+        updateMyCommentListSelectedPosition
+
         return ViewHolder(view)
     }
 
@@ -211,9 +175,5 @@ class rvAdapterCommentBoss(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(commentList[position], viewModel = viewModel)
-    }
-
-    fun setDispatchTouchEventListener(listener: (MotionEvent) -> Boolean) {
-        this.dispatchTouchEvent = listener
     }
 }

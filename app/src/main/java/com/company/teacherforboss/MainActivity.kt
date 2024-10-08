@@ -33,6 +33,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.NOTIFICATION_D
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.NOTIFICATION_RESULT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -174,7 +175,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun getNotificationPermission() {
-        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS)
+        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL))
 
         if(!agreementStatus) {
             showDialogFragment("Notification")
@@ -190,11 +191,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     getString(R.string.notification_permission_deny),
                     getString(R.string.notification_permission_accept),
                     {
-                        localDataSource.saveNotificationStatus(NOTIFICATION, false)
+                        localDataSource.saveNotificationStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL), false)
                         showDialogFragment("Marketing")
                     },
                     {
-                        localDataSource.saveNotificationStatus(NOTIFICATION, true)
+                        localDataSource.saveNotificationStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL), true)
                         showDialogFragment("Marketing")
                     },
                     backgroundClickable = false
@@ -208,11 +209,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     getString(R.string.notification_permission_deny),
                     getString(R.string.notification_permission_accept),
                     {
-                        localDataSource.saveNotificationStatus(MARKETING, false)
+                        localDataSource.saveNotificationStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL), false)
                         showDialogFragment("Result")
                     },
                     {
-                        localDataSource.saveNotificationStatus(MARKETING, true)
+                        localDataSource.saveNotificationStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL), true)
                         showDialogFragment("Result")
                     },
                     backgroundClickable = false
@@ -226,8 +227,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     "",
                     getString(R.string.notification_permission_confirm),
                     {},
-                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, true) },
-                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, true) }
+                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL), true) },
+                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL), true) }
                 ).show(supportFragmentManager, NOTIFICATION_RESULT_DIALOG)
             }
         }
@@ -236,12 +237,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun getNotificationResult(): String {
         var notificationResult = ""
 
-        if(localDataSource.getAgreementStatus(NOTIFICATION))
+        if(localDataSource.getAgreementStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL)))
             notificationResult += getString(R.string.notification_permission_result_2)
         else
             notificationResult += getString(R.string.notification_permission_result_1)
 
-        if(localDataSource.getAgreementStatus(MARKETING))
+        if(localDataSource.getAgreementStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL)))
             notificationResult += getString(R.string.notification_permission_result_4)
         else
             notificationResult += getString(R.string.notification_permission_result_3)

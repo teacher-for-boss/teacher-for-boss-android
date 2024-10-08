@@ -26,13 +26,24 @@ class TeacherTalkAskViewModel @Inject constructor(
     private val presignedUrlUseCase: PresignedUrlUseCase
 ): ViewModel() {
     var hashTagList:ArrayList<String> = arrayListOf()
+
+    var imageUrlList:ArrayList<String> = arrayListOf()
     var imageList: ArrayList<Uri> = arrayListOf()
+    var initImageUrlList:ArrayList<String> = arrayListOf()
+    var initImgUriList: ArrayList<Uri> = arrayListOf()
+
     val categoryList = arrayListOf(
         "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
     )
     var _presignedUrlList = MutableLiveData<List<String>>()
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList
     var filtered_presignedList = MutableLiveData<List<String>>()
+
+    var _uuid=MutableLiveData<String>()
+    val uuid: LiveData<String> =_uuid
+
+    var initImageSize=0
+    var initImgUrl=""
 
     var _fileType = MutableLiveData<String>("")
     val fileType: LiveData<String> get()=_fileType
@@ -68,7 +79,6 @@ class TeacherTalkAskViewModel @Inject constructor(
     private val _textTagLength = MutableLiveData<Int>()
     val textTagLength: LiveData<Int> get()=_textTagLength
 
-
     fun uploadPost() {
         viewModelScope.launch {
             try {
@@ -98,7 +108,7 @@ class TeacherTalkAskViewModel @Inject constructor(
                         title = title.value?:"",
                         content = content.value?:"",
                         hashtagList = hashTagList,
-                        imageUrlList = filtered_presignedList.value?: emptyList()
+                        imageUrlList=initImageUrlList+(filtered_presignedList.value?: emptyList())
                     )
                 )
                 _modifyPostLiveData.value = teacherModifyResponseEntity
@@ -123,11 +133,35 @@ class TeacherTalkAskViewModel @Inject constructor(
         }
     }
 
+    fun getModifyPresignedUrlList(){
+        viewModelScope.launch {
+            try {
+                val presignedUrlListEntity=presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = uuid.value,
+                        lastIndex = initImageSize,
+                        imageCount = imageList.size-initImageUrlList.size,
+                        origin = "questions"
+                    )
+                )
+                _presignedUrlListLiveData.value = presignedUrlListEntity
+                Log.d("imageList", _presignedUrlListLiveData.toString())
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun extractUuid(){
+        val regex = Regex("/questions/([a-f0-9\\-]+)_")
+        val matchResult = regex.find(initImgUrl)
+        val extractedValue = matchResult?.groups?.get(1)?.value
+        _uuid.value=extractedValue.toString()
+    }
+
     fun setFilteredImgUrlList() {
         filtered_presignedList.value = presignedUrlList.value?.let {
             it.map { it.substringBefore("?") }
         }
-        Log.d("filteredImageList", filtered_presignedList.toString())
+        Log.d("filteredImageList", filtered_presignedList.value.toString())
     }
 
     fun addHashTag(tag: String) {
@@ -141,6 +175,7 @@ class TeacherTalkAskViewModel @Inject constructor(
         imageList.add(imageUri)
     }
     fun deleteImage(position: Int) {
+        initImageUrlList.removeAt(position)
         imageList.removeAt(position)
     }
 

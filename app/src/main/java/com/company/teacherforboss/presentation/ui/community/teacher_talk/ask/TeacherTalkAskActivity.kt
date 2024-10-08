@@ -103,8 +103,14 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
                 viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
-            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true")
+            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true"){
                 viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+                viewModel.initImageUrlList=intent.getStringArrayListExtra("imgList")!!
+                viewModel.initImgUriList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+                viewModel.initImageSize=viewModel.imageList.size
+                viewModel.initImgUrl=intent.getStringArrayListExtra("imgList")!!.get(0)
+                viewModel.extractUuid()
+            }
         }
 
         //FlexboxLayoutManager
@@ -422,7 +428,11 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     fun uploadPost() {
         //이미지 업로드 시
         if(viewModel.imageList.isNotEmpty()) {
-            viewModel.getPresignedUrlList()
+            // 처음엔 이미지가 없다가 후 or 첫 업로드
+            if(viewModel.initImageSize==0) viewModel.getPresignedUrlList()
+            // 이미지 수정
+            else if(purpose=="modify" && viewModel.initImageSize!=0) viewModel.getModifyPresignedUrlList()
+
             viewModel.presignedUrlLiveData.observe(this, {
                 viewModel._presignedUrlList.value = (it.presignedUrlList)
                 viewModel.setFilteredImgUrlList()
@@ -469,9 +479,12 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     fun uploadImgtoS3() {
         val urlList = viewModel.presignedUrlList.value?:return
         val uriList = viewModel.imageList
+        val initUriList=viewModel.initImgUriList
+
+        val newUriList=uriList.filterNot { initUriList.contains(it) }
 
         val uploadutil = UploadUtil(applicationContext)
-        val requestBodyList = uploadutil.convert_UritoImg(uriList)
+        val requestBodyList = uploadutil.convert_UritoImg(newUriList)
 
         uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
     }

@@ -25,6 +25,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
+import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
@@ -112,6 +113,8 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             binding.profileImage.setOnClickListener(clickListener)
             binding.userNickname.setOnClickListener(clickListener)
         })
+        binding.userLevel.setOnClickListener { showTeacherLevelDialogFragment() }
+
     }
 
     fun readNotification(){
@@ -258,7 +261,6 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
     private fun updateBookmarkUI(isBookmark: Boolean?) {
         val bookmarkCount = viewModel.bossTalkBodyLiveData.value?.bookmarkCount ?: 0
-
         if (bookmarkCount > 0) {
             binding.bookmarkTv.text = getString(R.string.bookmark_any, "${bookmarkCount}개")
         } else {
@@ -291,9 +293,12 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             with(binding) {
                 bodyTitle.text = body.title
                 bodyBody.text = body.content
-                userNickname.text = body.memberInfo.toMemberDto().name
                 profileLevel.text = body.memberInfo.toMemberDto().level
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
+
+                if (body.memberInfo.toMemberDto().role == TEACHER)
+                    userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
+                else  userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
             }
 
             if (body.imageUrlList.isNotEmpty()) {
@@ -464,6 +469,11 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             finish()
         }
     }
+
+    private fun showTeacherLevelDialogFragment() {
+        DialogTeacherLevelFragment().show(supportFragmentManager, ConstsUtils.TEACHER_LEVEL_DIALOG)
+    }
+
 
     fun showKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

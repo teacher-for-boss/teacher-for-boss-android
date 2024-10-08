@@ -103,6 +103,9 @@
     <string name="boss_talk_bookmark_count">%s</string>
     <string name="boss_talk_comment_count">답변 %d개</string>
     <string name="boss_talk_like_count">%s</string>
+    <string name="boss_talk_nickname_teacher">%s 티처</string>
+    <string name="boss_talk_nickname_boss">%s 보스</string>
+
 
 
     <!-- filter chip-->

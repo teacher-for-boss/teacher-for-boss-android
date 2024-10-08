@@ -17,7 +17,7 @@ class rvAdapterTagWrite(
         fun bind(tag: String) {
             binding.hashtagName.text = tag
 
-            binding.deleteHashtag.setOnClickListener {
+            binding.root.setOnClickListener{
                 val position = adapterPosition
                 clickDeleteTag(position)
                 notifyItemRemoved(position)

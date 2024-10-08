@@ -1,10 +1,12 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.search
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,6 +16,7 @@ import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBossTalkSearchBinding
 import com.company.teacherforboss.domain.model.community.boss.PostEntity
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.BossTalkMainViewModel
 import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,12 +67,14 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
         binding.searchBtn.setOnClickListener {
             viewModel.setKeyword(binding.etInputKeyword.text.toString())
             viewModel.searchKeywordBossTalk()
+            hideKeyboard()
         }
         binding.etInputKeyword.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
                 viewModel.setKeyword(binding.etInputKeyword.text.toString())
                 viewModel.searchKeywordBossTalk()
+                hideKeyboard()
                 true
             }
             else {
@@ -83,6 +88,7 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
             hasNext = it.hasNext
             postList = it.postList
 
+
             initView()
         })
     }
@@ -92,6 +98,12 @@ class BossTalkSearchActivity : BindingActivity<ActivityBossTalkSearchBinding>(R.
             finish()
         }
     }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
     companion object{
         const val KEYWORD="keyword"
     }

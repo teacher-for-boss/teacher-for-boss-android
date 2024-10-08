@@ -283,9 +283,12 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             with(binding) {
                 bodyTitle.text = body.title
                 bodyBody.text = body.content
-                userNickname.text = body.memberInfo.toMemberDto().name
                 profileLevel.text = body.memberInfo.toMemberDto().level
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
+
+                if (body.memberInfo.toMemberDto().role == TEACHER)
+                    userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
+                else  userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
             }
 
             if (body.imageUrlList.isNotEmpty()) {

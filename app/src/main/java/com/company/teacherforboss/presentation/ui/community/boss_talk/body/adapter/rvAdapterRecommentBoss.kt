@@ -41,7 +41,10 @@ class rvAdapterRecommentBoss(
             // 유저 정보
             val member=comment.memberInfo
             with (binding) {
-                userName.text = member.name
+                if (member.role == TEACHER)
+                    binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
+                else binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+
                 member.profileImg?.let {
                     if(it!="") BindingImgAdapter.bindImage(userImage,it)
                 }

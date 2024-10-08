@@ -45,13 +45,16 @@ class rvAdapterCommentBoss(
 
             // 유저 정보
             val member = comment.memberInfo
-            binding.userName.text = member.name
+
+            if (member.role == TEACHER)
+                binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
+            else binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+
             member.profileImg?.let {
                 if (it.isNotEmpty()) {
                     BindingImgAdapter.bindImage(binding.userImage, it)
                 }
             }
-
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
                 if (member.role == TEACHER) {

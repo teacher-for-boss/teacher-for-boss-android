@@ -1,6 +1,8 @@
 package com.company.teacherforboss.presentation.ui.mypage
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.data.tokenmanager.TokenManager
@@ -10,7 +12,12 @@ import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
 import com.company.teacherforboss.domain.usecase.auth.WithdrawUsecase
 import com.company.teacherforboss.domain.model.auth.WithdrawResponseEntity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
+import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +43,8 @@ class ManageAccountViewModel @Inject constructor(
 
     val withdrawState get() = _withdrawState.asStateFlow()
 
+    @Inject lateinit var localDataSource: LocalDataSource
+
 
     fun getAccount(){
         viewModelScope.launch {
@@ -51,6 +60,10 @@ class ManageAccountViewModel @Inject constructor(
         viewModelScope.launch {
             logoutUsecase().onSuccess { logoutResponseEntity->
                 _logoutState.value=UiState.Success(logoutResponseEntity)
+
+                val signupType = localDataSource.getSignupType()
+                if(signupType== SIGNUP_SOCIAL_KAKAO) logoutKakao()
+                else if(signupType== SIGNUP_SOCIAL_NAVER) logoutNaver()
             }.onFailure { exception: Throwable ->
                 _logoutState.value=UiState.Error(exception.message)
             }
@@ -65,6 +78,31 @@ class ManageAccountViewModel @Inject constructor(
                 _withdrawState.value=UiState.Error(exception.message)
             }
         }
+    }
+
+    fun logoutKakao(){
+        // 로그아웃
+        UserApiClient.instance.logout { error ->
+            if (error != null) {
+                Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
+            }
+            else {
+                Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
+            }
+        }
+        // 연결 끊기
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                Log.e(TAG, "연결 끊기 실패", error)
+            }
+            else {
+                Log.i(TAG, "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+            }
+        }
+    }
+
+    fun logoutNaver(){
+        NaverIdLoginSDK.logout()
     }
     fun clearTokens() {
         tokenManager.clearAccessToken(context)

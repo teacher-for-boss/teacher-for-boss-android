@@ -207,21 +207,20 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         var phoneNumber=result.profile?.mobile.toString()
                         var imageUrl=result.profile?.profileImage.toString()
 
-                        var gender_int=1
+                        var gender_int=3
                         //사용자 정보 전처리
-                        if(gender=="M"){
-                            gender_int=1
-                        }
-                        else gender_int=2
+                        if(gender=="M")gender_int=1
+                        else if(gender=="F") gender_int=2
 
                         signupViewModel._birthDate.value=birthYear+"-"+birthDay
 
                         localDataSource.saveUserInfo(USER_NAME,result.profile?.name.toString())
                         localDataSource.saveUserInfo(USER_EMAIL,result.profile?.email.toString())
                         localDataSource.saveUserInfo(USER_PHONE,result.profile?.mobile.toString().replace("-",""))
-                        localDataSource.saveUserInfo(USER_BIRTHDATE,birthYear+"-"+birthDay)
-                        localDataSource.saveUserInfo(USER_PROFILEIMG,result.profile?.profileImage.toString())
-                        localDataSource.saveUserInfo(USER_GENDER,gender_int.toString())
+
+                        if(birthDay!="null" && birthYear!="null") localDataSource.saveUserInfo(USER_BIRTHDATE,birthYear+"-"+birthDay)
+                        if(imageUrl!="null")localDataSource.saveUserInfo(USER_PROFILEIMG,imageUrl)
+                       localDataSource.saveUserInfo(USER_GENDER,gender_int.toString())
 
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이름 : $name")
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이메일 : $email")

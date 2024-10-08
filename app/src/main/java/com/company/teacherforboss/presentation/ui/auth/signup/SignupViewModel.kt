@@ -467,7 +467,8 @@ class SignupViewModel @Inject constructor(
                         birthDate=birthDate.value?:null,
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
-                        profileImg=profileImg.value?:"default",
+                        profileImg=profileImg.value?:null,
+
                     )
                     val response = userRepo.socialBossSignup(socialType=type_num,signupRequest = signupBossRequest)
 

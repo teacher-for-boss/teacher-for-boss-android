@@ -462,10 +462,10 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:"null",
+                        birthDate=birthDate.value?:null,
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
-                        profileImg=profileImg.value?:"null",
+                        profileImg=profileImg.value?:null,
                     )
                     val response = userRepo.socialBossSignup(socialType=type_num,signupRequest = signupBossRequest)
 

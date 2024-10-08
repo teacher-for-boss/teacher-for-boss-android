@@ -14,9 +14,9 @@ data class SocialSignupBossRequest(
     @SerializedName("gender")
     var gender:Int,
     @SerializedName("birthDate")
-    var birthDate: String,
+    var birthDate: String?,
     @SerializedName("phone")
     var phone: String,
     @SerializedName("profileImg")
-    var profileImg:String,
+    var profileImg:String?,
     )

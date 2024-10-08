@@ -242,7 +242,12 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
     private fun updateLikeUI(isLike: Boolean?) {
         val likeCount = viewModel.bossTalkBodyLiveData.value?.likeCount ?: 0
-        binding.likeTv.text = getString(R.string.like)
+
+        if (likeCount > 0) {
+            binding.likeTv.text = getString(R.string.like_any, "${likeCount}개")
+        } else {
+            binding.likeTv.text = getString(R.string.like)
+        }
 
         if (isLike == true) {
             binding.likeIv.setImageResource(R.drawable.community_like_on)
@@ -255,7 +260,11 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
     private fun updateBookmarkUI(isBookmark: Boolean?) {
         val bookmarkCount = viewModel.bossTalkBodyLiveData.value?.bookmarkCount ?: 0
+        if (bookmarkCount > 0) {
+            binding.bookmarkTv.text = getString(R.string.bookmark_any, "${bookmarkCount}개")
+        } else {
             binding.bookmarkTv.text = getString(R.string.bookmark)
+        }
 
         if (isBookmark == true) {
             binding.bookmarkIv.setImageResource(R.drawable.community_bookmark_on)

@@ -77,9 +77,9 @@ class rvAdapterRecommentBoss(
                 // 댓글 본문
                 commentBody.text=comment.content
 
-                // 추천, 비추천 갯수
-                commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
-                commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
+//                // 추천, 비추천 갯수
+//                commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
+//                commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
 
                 // 더보기 버튼 보여주기
                 btnOption.setOnClickListener {
@@ -158,32 +158,32 @@ class rvAdapterRecommentBoss(
             }
             handleCommentBtnColor()
 
-            // 추천 비추천 onclick
-            fun updateComment() {
-                viewModel.getReCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
-                    // 추천,비추천 개수 업데이트
-                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
-                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
-                    handleCommentBtnColor()
-                })
-            }
-
-            binding.commentGood.setOnClickListener {
-                isCommentGood = !isCommentGood
-                if(isCommentGood && isCommentBad) {
-                    isCommentBad = !isCommentBad
-                }
-                viewModel.postReCommentLike(comment.commentId)
-                updateComment()
-            }
-            binding.commentBad.setOnClickListener {
-                isCommentBad = !isCommentBad
-                if(isCommentGood && isCommentBad) {
-                    isCommentGood = !isCommentGood
-                }
-                viewModel.postReCommentDisLike(comment.commentId)
-                updateComment()
-            }
+//            // 추천 비추천 onclick
+//            fun updateComment() {
+//                viewModel.getReCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
+//                    // 추천,비추천 개수 업데이트
+//                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+//                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+//                    handleCommentBtnColor()
+//                })
+//            }
+//
+//            binding.commentGood.setOnClickListener {
+//                isCommentGood = !isCommentGood
+//                if(isCommentGood && isCommentBad) {
+//                    isCommentBad = !isCommentBad
+//                }
+//                viewModel.postReCommentLike(comment.commentId)
+//                updateComment()
+//            }
+//            binding.commentBad.setOnClickListener {
+//                isCommentBad = !isCommentBad
+//                if(isCommentGood && isCommentBad) {
+//                    isCommentGood = !isCommentGood
+//                }
+//                viewModel.postReCommentDisLike(comment.commentId)
+//                updateComment()
+//            }
         }
     }
     override fun onCreateViewHolder(

@@ -179,8 +179,11 @@
     <string name="home_weekly_best_teacher_specialty_career">%s분야 | 경력 %s년</string>
 
     <!-- 커뮤니티 -->
-    <string name="recommed_option">추천해요 %d개</string>
-    <string name="not_recommed_option">추천하지 않아요 %d개</string>
+
+    <string name="recommend">추천해요</string>
+    <string name="recommend_any">추천해요 %s개</string>
+    <string name="not_recommend">추천하지 않아요</string>
+    <string name="not_recommend_any">추천하지 않아요 %s개</string>
 
     <string name="comment_cnt">댓글 %d개</string>
 

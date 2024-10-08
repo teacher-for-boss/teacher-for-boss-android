@@ -77,8 +77,8 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             binding.commentBody.text = answer.content
 
             // 추천, 비추천 개수
-            binding.commentGoodTv.text = context.getString(R.string.recommed_option, answer.likeCount)
-            binding.commentBadTv.text = context.getString(R.string.not_recommed_option, answer.dislikeCount)
+            binding.commentGoodTv.text = context.getString(R.string.recommend_any, answer.likeCount.toString())
+            binding.commentBadTv.text = context.getString(R.string.not_recommend_any, answer.dislikeCount.toString())
 
             // 채택된 답변이 있는지
             if(viewModel.isSelected.value!!) {  // 채택된 답변이 있는 경우
@@ -127,8 +127,16 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             fun updateComment() {
                 viewModel.getAnswerLikeLiveData(answer.answerId).observe(lifecycleOwner, Observer {
                     // 추천,비추천 개수 업데이트
-                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
-                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                    if (it.likedCount > 0)
+                        binding.commentGoodTv.text = context.getString(R.string.recommend_any, it.likedCount.toString())
+                    else
+                        binding.commentGoodTv.text = context.getString(R.string.recommend)
+
+                    if (it.dislikedCount > 0)
+                        binding.commentBadTv.text = context.getString(R.string.not_recommend_any, it.dislikedCount.toString())
+                    else
+                        binding.commentBadTv.text = context.getString(R.string.not_recommend)
+
                     handleCommentBtnColor()
                 })
             }

@@ -73,8 +73,8 @@ class BossTalkBodyViewModel @Inject constructor(
     var _postId=MutableLiveData<Long>().apply { value=0L }
     val postId:LiveData<Long> get()=_postId
 
-    var _commnetId = MutableLiveData<Long>().apply { value=0L }
-    val commentId: LiveData<Long> get()=_commnetId
+    var _commentId = MutableLiveData<Long>().apply { value=0L }
+    val commentId: LiveData<Long> get()=_commentId
 
     private var _parentId=MutableLiveData<Long>().apply { value=null }
     val parentId:LiveData<Long> get()=_parentId
@@ -106,6 +106,16 @@ class BossTalkBodyViewModel @Inject constructor(
     val memberInfo: LiveData<MemberEntity> get() = _memberInfo
 
     fun getMemberId() = memberId.value
+
+    private val _isCommentLike = MutableLiveData<Boolean?>().apply { value = null }
+    val isCommentLike: LiveData<Boolean?> get() = _isCommentLike
+
+//    private val _isCommentDisLike = MutableLiveData<Boolean>().apply { value = false }
+//    val isCommentDisLike: LiveData<Boolean> get() = _isCommentDisLike
+
+    private var _bossTalkBodyCommentLiveData=MutableLiveData<BossTalkCommentLikeResponseEntity>()
+    val bossTalkBodyCommentLiveData:LiveData<BossTalkCommentLikeResponseEntity> get() = _bossTalkBodyCommentLiveData
+
 
     fun getBossTalkBody(postId: Long) {
         viewModelScope.launch {
@@ -213,19 +223,56 @@ class BossTalkBodyViewModel @Inject constructor(
 
     fun postCommentLike(commentId:Long){
         viewModelScope.launch {
-            try{
-                val bosstalkCommentLikeResponseEntity=bossTalkCommentLikeUseCase(
-                    BossTalkCommentLikeRequestEntity(
-                        postId = postId.value!!,
-                        commentId = commentId
-                        )
+            try {
+                val response = bossTalkCommentLikeUseCase(BossTalkCommentLikeRequestEntity(postId = postId.value!!, commentId = commentId))
+                Log.d("Server Response", response.toString())  // 여기서부터 null이 false로 옴....
+                val updatedLike = response.liked
+                Log.d("commentLike null", updatedLike.toString())
+                val updatedLikeCount = when (updatedLike) {
+                    true -> {
+                        (bossTalkBodyCommentLiveData.value?.likedCount ?: 0) + 1
+                    }
+                    false -> {
+                        (bossTalkBodyCommentLiveData.value?.likedCount ?: 1) - 1
+                    }
+                    null -> {
+                        bossTalkBodyCommentLiveData.value?.likedCount ?: 0
+                    }
+                }
+                _bossTalkBodyCommentLiveData.value = _bossTalkBodyCommentLiveData.value?.copy(
+                    likedCount = updatedLikeCount,
+                    liked = updatedLike
                 )
-                _commentLikeLiveDataMap[commentId]?.value=bosstalkCommentLikeResponseEntity
-            }catch (ex:Exception){}
+                _isCommentLike.value = updatedLike
+                Log.d("_isCommentLike ", updatedLike.toString())
+
+            } catch (ex: Exception) { }
         }
     }
 
     fun postCommentDisLike(commentId:Long){
+//        viewModelScope.launch {
+//            try {
+//                val response = bossTalkCommentLikeUseCase(BossTalkCommentLikeRequestEntity(postId = postId.value!!, commentId = commentId))
+//                val updatedLike = response.liked
+//
+//                val updatedLikeCount = if (updatedLike == false) {
+//                    (bossTalkBodyCommentLiveData.value?.likedCount ?: 0) + 1
+//                } else {
+//                    (bossTalkBodyCommentLiveData.value?.likedCount ?: 1) - 1
+//                }
+//                Log.d("likedCount ", updatedLikeCount.toString())
+//
+//
+//                _bossTalkBodyCommentLiveData.value = _bossTalkBodyCommentLiveData.value?.copy(
+//                    likedCount = updatedLikeCount,
+//                    liked = updatedLike
+//                )
+//                _isCommentLike.value = updatedLike
+//                Log.d("_isCommentLike ", updatedLike.toString())
+//
+//            } catch (ex: Exception) { }
+//        }
         viewModelScope.launch {
             try{
                 val bossTalkDisLikeResponseEntity=bossTalkCommentDisLikeUseCase(
@@ -295,7 +342,7 @@ class BossTalkBodyViewModel @Inject constructor(
     fun getParentId()=parentId.value?:null
 
     fun setCommentId(id: Long) {
-        _commnetId.value = id
+        _commentId.value = id
     }
 
     fun setRole(role: String) {

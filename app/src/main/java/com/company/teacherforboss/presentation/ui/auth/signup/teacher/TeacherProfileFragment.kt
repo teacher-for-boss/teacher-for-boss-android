@@ -24,6 +24,8 @@ import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment.Companion.INFO_NULL
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
@@ -31,6 +33,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_GENDER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
@@ -165,7 +168,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     showSplash()
                 }
                 is BaseResponse.Error->{
-                    showSplash()
+                    CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
                 }
 
                 else -> {}
@@ -185,7 +188,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     showSplash()
                 }
                 is BaseResponse.Error->{
-
+                    CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
                 }
 
                 else -> {}
@@ -231,8 +234,11 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-                _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-                _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+                if(localDataSource.getUserInfo(USER_BIRTHDATE)!= INFO_NULL) _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                else _birthDate.value=null
+                if(localDataSource.getUserInfo(USER_PROFILEIMG)!= INFO_NULL) _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+                else _profileImg.value=null
+                _gender.value=localDataSource.getUserInfo(USER_GENDER).toInt()
             }
         }
     }
@@ -242,7 +248,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
         viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
             defaultImgUrl?.let {
                 viewModel.setIsUserImgSelected(false)
-                binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
+                if(viewModel.getIsUserImgSelected()==true) binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
             }
         })
 

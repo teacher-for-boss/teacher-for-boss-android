@@ -42,6 +42,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -312,8 +313,8 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 it.context.startActivity(intent)
             }
 
-            if (body.memberInfo.toMemberDto().profileImg != null) {
-                BindingImgAdapter.bindImage(binding.profileImage, body.memberInfo.toMemberDto().profileImg!!)
+            body.memberInfo.toMemberDto().profileImg?.let { binding.profileImage.loadProfileImgFromUrlCoil(it)
+//                BindingImgAdapter.bindImage(binding.profileImage, body.memberInfo.toMemberDto().profileImg!!)
             }
 
             viewModel._isMine.value = body.isMine

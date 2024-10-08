@@ -82,8 +82,14 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         // 댓글 내용, 이미지 가져오기
         if(purpose == "modify") {
             viewModel._content.value = intent.getStringExtra("answerContent")
-            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true")
+            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true"){
                 viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+                viewModel.initImageUrlList=intent.getStringArrayListExtra("imgList")!!
+                viewModel.initImgUriList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+                viewModel.initImageSize=viewModel.imageList.size
+                viewModel.initImgUrl=intent.getStringArrayListExtra("imgList")!!.get(0)
+                viewModel.extractUuid()
+            }
         }
         // rv 설정
         setRecyclerView()
@@ -165,12 +171,17 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         if(resultCode == RESULT_OK && requestCode == 100) {
             val maxImageCount=3
             val clipData = data?.clipData
+            val currentImageCount = viewModel.imageList.size
             if (clipData != null) {
-                if(clipData.itemCount> maxImageCount) CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
+                if(clipData.itemCount + currentImageCount > maxImageCount) CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
 
                 for (i in 0 until clipData.itemCount) {
-                    val imageUri = clipData.getItemAt(i).uri
-                    processImageUri(imageUri)
+                    if (viewModel.imageList.size < maxImageCount) {
+                        val imageUri = clipData.getItemAt(i).uri
+                        processImageUri(imageUri) // 이미지 처리
+                    } else {
+                        break // 3장 초과 시 중단
+                    }
                 }
             } else {
                 // 단일 선택일 경우
@@ -242,11 +253,14 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
     fun uploadImgtoS3() {
         val urlList = viewModel.presignedUrlList.value?:return
         val uriList = viewModel.imageList
+        val initUriList=viewModel.initImgUriList
 
-        val uploadutil = UploadUtil(applicationContext)
-        val requestBodyList = uploadutil.convert_UritoImg(uriList)
+        val newUriList=uriList.filterNot { initUriList.contains(it) }
 
-        uploadutil.uploadPostImage(urlList, requestBodyList,viewModel.getFileType())
+        val uploadUtil=UploadUtil(applicationContext)
+        val requestBodyList=uploadUtil.convert_UritoImg(newUriList)
+
+        uploadUtil.uploadPostImage(urlList,requestBodyList,viewModel.getFileType())
     }
 
     fun deleteImage(positioin:Int)= viewModel.deleteImage(positioin)
@@ -290,8 +304,12 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
 
     fun uploadPostAnswer() {
         //이미지 업로드 시
-        if (viewModel.imageList.isNotEmpty()) {
-            viewModel.getPresignedUrlList()
+        if(viewModel.imageList.isNotEmpty()) {
+            // 처음엔 이미지가 없다가 후 or 첫 업로드
+            if(viewModel.initImageSize==0) viewModel.getPresignedUrlList()
+            // 이미지 수정
+            else if(purpose=="modify" && viewModel.initImageSize!=0) viewModel.getModifyPresignedUrlList()
+
             viewModel.presignedUrlLiveData.observe(this, {
                 viewModel._presignedUrlList.value = (it.presignedUrlList)
                 viewModel.setFilteredImgUrlList()

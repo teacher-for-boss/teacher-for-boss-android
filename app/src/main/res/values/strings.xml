@@ -134,8 +134,10 @@
     <string name="signup_re_verify">다시 인증하기</string>
     <string name="signup_insert_info">정보 입력하러 가기</string>
 
-    <string name="sign_up_finish_boss">%s 보스님, 회원가입을 축하합니다!</string>
-    <string name="sign_up_finish_teacher">%s 티처님, 회원가입을 축하합니다!</string>
+    <string name="sign_up_finish_boss">%s 보스,\n회원가입을 축하합니다!</string>
+    <string name="sign_up_finish_teacher">%s 티처,\n 회원가입을 축하합니다!</string>
+    <string name="sign_up_judge_tilte">"심사가 완료된 후\n티처로 활동할 수 있습니다."</string>
+    <string name="sign_up_judge_sub_tilte">"영업일 기준 3~5일 내에\n가입하신 번호로 연락드리겠습니다."</string>
     <string name="sign_up_finish_teacher_info">적극적인 티처포보스 활동으로\n티처레벨을 올려보세요!</string>
 
     <!-- signup-teacher-->

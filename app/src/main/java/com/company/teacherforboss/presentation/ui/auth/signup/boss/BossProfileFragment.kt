@@ -20,6 +20,7 @@ import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialog
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
@@ -37,6 +38,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -167,7 +169,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                     showSplash()
                 }
                 is BaseResponse.Error->{
-                    showSplash()
+                    CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
                 }
                 else -> {}
             }
@@ -183,7 +185,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                     showSplash()
                 }
                 is BaseResponse.Error->{
-                    showSplash()
+                    CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
                 }
                 else -> {}
             }
@@ -196,7 +198,8 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
         viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
             defaultImgUrl?.let {
                 viewModel.setIsUserImgSelected(false)
-                binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
+                if(viewModel.getIsUserImgSelected()==true)
+                binding.profileImage.loadProfileImgFromUrlCoil(defaultImgUrl)
             }
         })
 
@@ -255,22 +258,24 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
         val signupType= localDataSource.getSignupType()
 
         if (signupType != SIGNUP_DEFAULT){
-
             with(viewModel) {
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)
+
                 _gender.value = localDataSource.getUserInfo(USER_GENDER).toInt()
                 if(localDataSource.getUserInfo(USER_BIRTHDATE) == "INFO_NULL") {
                     _birthDate.value = null
                 } else {
                     _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
                 }
+                _profileImg.value = localDataSource.getUserInfo(USER_PROFILEIMG)
             }
         }
     }
     companion object {
         const val SUCCESS = "success"
         const val ERROR = "error"
+        const val INFO_NULL="INFO_NULL"
     }
 }

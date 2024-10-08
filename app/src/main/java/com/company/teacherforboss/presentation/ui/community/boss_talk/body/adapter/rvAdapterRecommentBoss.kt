@@ -24,6 +24,7 @@ import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 
 class rvAdapterRecommentBoss(
     private val lifecycleOwner: LifecycleOwner,
@@ -45,9 +46,8 @@ class rvAdapterRecommentBoss(
                     binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
                 else binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
 
-                member.profileImg?.let {
-                    if(it!="") BindingImgAdapter.bindImage(userImage,it)
-                }
+                
+            member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
 
                 // 레벨
                 profileLevel.text = comment.memberInfo.level

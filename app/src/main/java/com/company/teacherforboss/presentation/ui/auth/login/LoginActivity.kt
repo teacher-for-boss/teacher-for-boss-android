@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_login){
@@ -219,7 +220,16 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         localDataSource.saveUserInfo(USER_PHONE,result.profile?.mobile.toString().replace("-",""))
 
                         if(birthDay!="null" && birthYear!="null") localDataSource.saveUserInfo(USER_BIRTHDATE,birthYear+"-"+birthDay)
-                        if(imageUrl!="null")localDataSource.saveUserInfo(USER_PROFILEIMG,imageUrl)
+                        if(imageUrl == "null") {
+                            localDataSource.saveUserInfo(USER_PROFILEIMG, DEFAULT_PROFILE_IMG_URL)
+                        } else {
+                            if(imageUrl.contains("img_profile")) {
+                                localDataSource.saveUserInfo(USER_PROFILEIMG, DEFAULT_PROFILE_IMG_URL)
+                            }
+                            else {
+                                localDataSource.saveUserInfo(USER_PROFILEIMG,imageUrl)
+                            }
+                        }
                        localDataSource.saveUserInfo(USER_GENDER,gender_int.toString())
 
                         Log.e("naver", "네이버 로그인한 유저 정보 - 이름 : $name")

@@ -23,7 +23,10 @@ import com.company.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
+import com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment.Companion.INFO_NULL
+import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
@@ -32,6 +35,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_GENDER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
@@ -40,6 +44,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -136,19 +141,27 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
 
     private fun addListeners(){
         binding.nextBtn.setOnClickListener {
-            viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
-                viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
-                viewModel.setProfileUserImg()
-                uploadImgtoS3()
-            })
+            viewModel._keywords.value=selectedChipList
+            if(viewModel.getIsUserImgSelected() == true) {
+                viewModel.getPresignedUrlList()
 
-            viewModel.profileImg.observe(viewLifecycleOwner,{
-                viewModel._keywords.value=selectedChipList
+                viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                    viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                    viewModel.setProfileUserImg()
+                    uploadImgtoS3()
+                })
+
+                viewModel.profileImg.observe(viewLifecycleOwner,{
+                    val signupType=localDataSource.getSignupType()
+                    if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                    else signup()
+//                if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
+                })
+            } else {
                 val signupType=localDataSource.getSignupType()
                 if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
                 else signup()
-//                if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
-            })
+            }
         }
     }
 
@@ -165,7 +178,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     showSplash()
                 }
                 is BaseResponse.Error->{
-                    showSplash()
+                    CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
                 }
 
                 else -> {}
@@ -185,7 +198,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     showSplash()
                 }
                 is BaseResponse.Error->{
-
+                    CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
                 }
 
                 else -> {}
@@ -237,6 +250,8 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 } else {
                     _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
                 }
+                _profileImg.value = localDataSource.getUserInfo(USER_PROFILEIMG)
+                binding.profileImage.loadProfileImgFromUrlCoil(profileImg.value.toString())
             }
         }
     }
@@ -246,15 +261,17 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
         viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
             defaultImgUrl?.let {
                 viewModel.setIsUserImgSelected(false)
-                binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
+                if(viewModel.getIsUserImgSelected()==true) binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
             }
         })
 
         // 사용자 갤러리 이미지
         viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            viewModel.setIsUserImgSelected(true)
-            imgUri?.let {
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            if(imgUri != null) {
+                viewModel.setIsUserImgSelected(true)
+                imgUri?.let {
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
             }
         })
 
@@ -272,7 +289,12 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
 
     private fun showSplash(){
         //TODO: splash
-        val intent = Intent(activity, SignupFinishActivity::class.java)
+        /*val intent = Intent(activity, SignupFinishActivity::class.java)
+        intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
+        intent.putExtra(USER_ROLE,viewModel.role.value)
+        startActivity(intent)*/
+
+        val intent = Intent(activity, SignupJudgeActivity::class.java)
         intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
         intent.putExtra(USER_ROLE,viewModel.role.value)
         startActivity(intent)

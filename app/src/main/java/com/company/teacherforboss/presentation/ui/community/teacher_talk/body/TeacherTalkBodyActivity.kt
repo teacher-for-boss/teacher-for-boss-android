@@ -50,6 +50,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_A
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -326,12 +327,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             if (body.imageUrlList.isNotEmpty()) viewModel.imageUrlList = body.imageUrlList
 
             // 프로필 이미지
-            if (body.memberInfo.toMemberDto().profileImg != null) {
-                BindingImgAdapter.bindImage(
-                    binding.profileImage,
-                    body.memberInfo.toMemberDto().profileImg!!,
-                )
-            }
+            body.memberInfo.toMemberDto().profileImg?.let { binding.profileImage.loadProfileImgFromUrlCoil(it) }
 
             // 사용자 본인 작성 여부
             viewModel._isMine.value = body.isMine

@@ -171,12 +171,17 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         if(resultCode == RESULT_OK && requestCode == 100) {
             val maxImageCount=3
             val clipData = data?.clipData
+            val currentImageCount = viewModel.imageList.size
             if (clipData != null) {
-                if(clipData.itemCount> maxImageCount) CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
+                if(clipData.itemCount + currentImageCount > maxImageCount) CustomSnackBar.make(binding.root, getString(R.string.image_input_number), 2000).show()
 
                 for (i in 0 until clipData.itemCount) {
-                    val imageUri = clipData.getItemAt(i).uri
-                    processImageUri(imageUri)
+                    if (viewModel.imageList.size < maxImageCount) {
+                        val imageUri = clipData.getItemAt(i).uri
+                        processImageUri(imageUri) // 이미지 처리
+                    } else {
+                        break // 3장 초과 시 중단
+                    }
                 }
             } else {
                 // 단일 선택일 경우

@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#7B79E8"
+                android:textColor="#8D37EF"
                 android:textSize="8dp"
                 app:layout_constraintStart_toEndOf="@id/profile_star"
                 app:layout_constraintEnd_toEndOf="parent"

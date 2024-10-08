@@ -26,6 +26,7 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivi
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
@@ -142,12 +143,11 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
             })
 
             viewModel.profileImg.observe(viewLifecycleOwner,{
-                if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
-                    viewModel._keywords.value=selectedChipList
-                    val signupType=localDataSource.getSignupType()
-                    if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
-                    else signup()
-                }
+                viewModel._keywords.value=selectedChipList
+                val signupType=localDataSource.getSignupType()
+                if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                else signup()
+//                if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
             })
         }
     }
@@ -231,8 +231,12 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-                _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-                _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+                _gender.value = localDataSource.getUserInfo(ConstsUtils.USER_GENDER).toInt()
+                if(localDataSource.getUserInfo(USER_BIRTHDATE) == "INFO_NULL") {
+                    _birthDate.value = null
+                } else {
+                    _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                }
             }
         }
     }

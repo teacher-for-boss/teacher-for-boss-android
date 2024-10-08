@@ -35,8 +35,11 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_IMG_FI
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ErrorUtils
+import com.company.teacherforboss.util.base.parseErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import java.time.LocalDate
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -176,8 +179,8 @@ class SignupViewModel @Inject constructor(
     val gender:LiveData<Int>
         get() = _gender
 
-    var _birthDate=MutableLiveData<String>("")
-    val birthDate:LiveData<String>
+    var _birthDate=MutableLiveData<String?>("")
+    val birthDate:LiveData<String?>
         get() = _birthDate
 
     var emailAuthId=MutableLiveData<Long>(0) //test용 원래는 0으로 설정
@@ -307,15 +310,11 @@ class SignupViewModel @Inject constructor(
                 if(response?.code()==200){
                     if (response?.body()?.code=="COMMON200") {
                         emailResult.value = BaseResponse.Success(response.body())
-
                     }
-
                 }
-                else if(response?.code()==400){
-                    val errorbody=ErrorUtils.getErrorResponse(response.errorBody()!!)
-                    Log.d("error body",errorbody.toString()!!)
-                    emailResult.value = BaseResponse.Error(errorbody.message)
-
+                else{
+                    val errorMessage = response?.let { parseErrorResponse(it) }
+                    emailResult.value = BaseResponse.Error(errorMessage)
                 }
             } catch (ex: Exception) {
             }
@@ -338,7 +337,8 @@ class SignupViewModel @Inject constructor(
                     emailCheckResult.value = BaseResponse.Success(response.body())
                     _isEmailVerified.value=true
                 } else {
-                    emailCheckResult.value = BaseResponse.Error(response?.message())
+                    val errorMessage = response?.let { parseErrorResponse(it) }
+                    emailCheckResult.value = BaseResponse.Error(errorMessage)
                 }
             } catch (ex: Exception) {
                 emailCheckResult.value = BaseResponse.Error(ex.message)
@@ -369,8 +369,7 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:"null",
-//                        birthDate = LocalDate.parse(birthDate.value),
+                        birthDate=birthDate.value?:null,
                         phone = phone.value.toString(),
                         emailAuthId = emailAuthId.value!!,//이메일인증식별자,
                         phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
@@ -388,7 +387,8 @@ class SignupViewModel @Inject constructor(
                     if (response?.body()?.code=="COMMON200") {
                         signupResult.value = BaseResponse.Success(response.body())
                     } else {
-                        signupResult.value = BaseResponse.Error(response?.message())
+                        val errorMessage = response?.let { parseErrorResponse(it) }
+                        signupResult.value = BaseResponse.Error(errorMessage)
                     }
                 } catch (ex: Exception) {
                     signupResult.value = BaseResponse.Error(ex.message)
@@ -405,7 +405,7 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:"null",
+                        birthDate=birthDate.value?:null,
                         phone = phone.value.toString(),
                         emailAuthId = emailAuthId.value!!,
                         phoneAuthId = phoneAuthId.value!!,
@@ -432,7 +432,9 @@ class SignupViewModel @Inject constructor(
                     if (response?.body()?.code=="COMMON200") {
                         signupResult.value = BaseResponse.Success(response.body())
                     } else {
-                        signupResult.value = BaseResponse.Error(response?.message())
+                        val errorMessage = response?.let { parseErrorResponse(it) }
+
+                        signupResult.value = BaseResponse.Error(errorMessage)
                     }
 
                 } catch (ex: Exception) {
@@ -466,6 +468,7 @@ class SignupViewModel @Inject constructor(
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
                         profileImg=profileImg.value?:null,
+
                     )
                     val response = userRepo.socialBossSignup(socialType=type_num,signupRequest = signupBossRequest)
 
@@ -473,10 +476,11 @@ class SignupViewModel @Inject constructor(
                         socialSignupResult.value = BaseResponse.Success(response.body())
                     }
                     else {
-                        socialSignupResult.value = BaseResponse.Error(response?.message())
+                        val errorMessage = response?.let { parseErrorResponse(it) }
+                        socialSignupResult.value = BaseResponse.Error(errorMessage ?: "Unknown error")
+
                     }
                 } catch (ex: Exception) {
-
                     socialSignupResult.value = BaseResponse.Error(ex.message)
                 }
             }
@@ -489,7 +493,7 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:"null",
+                        birthDate=birthDate.value?:null,
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
                         profileImg=profileImg.value?:"null",
@@ -510,7 +514,9 @@ class SignupViewModel @Inject constructor(
                     if (response?.body()?.code=="COMMON200") {
                         socialSignupResult.value = BaseResponse.Success(response.body())
                     } else {
-                        socialSignupResult.value = BaseResponse.Error(response?.message())
+                        val errorMessage = response?.let { parseErrorResponse(it) }
+
+                        socialSignupResult.value = BaseResponse.Error(errorMessage)
                     }
 
                 } catch (ex: Exception) {
@@ -538,8 +544,9 @@ class SignupViewModel @Inject constructor(
                     phoneResult.value = BaseResponse.Success(response.body())
                 }
                 else {
-                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
-                    phoneResult.value = BaseResponse.Error(errorbody.message)
+                    val errorMessage = response?.let { parseErrorResponse(it) }
+
+                    phoneResult.value = BaseResponse.Error(errorMessage)
                 }
             } catch (ex: Exception) {
                 phoneResult.value = BaseResponse.Error(ex.message)
@@ -589,8 +596,9 @@ class SignupViewModel @Inject constructor(
                     nicknameResult.value = BaseResponse.Success(response.body())
                 }
                 else {
-                    val errorbody=ErrorUtils.getErrorResponse(response?.errorBody()!!)
-                    nicknameResult.value = BaseResponse.Error(errorbody.message)
+                    val errorMessage = response?.let { parseErrorResponse(it) }
+
+                    nicknameResult.value = BaseResponse.Error(errorMessage)
                 }
             } catch (ex: Exception) { nicknameResult.value = BaseResponse.Error(ex.message)
             }

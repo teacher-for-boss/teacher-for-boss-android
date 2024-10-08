@@ -23,10 +23,12 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_GENDER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
@@ -130,21 +132,27 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
             }
             
             nextBtn.setOnClickListener {
-                viewModel.getPresignedUrlList()
+                if(viewModel.getIsUserImgSelected() == true) {
+                    viewModel.getPresignedUrlList()
 
-                viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
-                    viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
-                    viewModel.setProfileUserImg()
-                    uploadImgtoS3()
-                })
+                    viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                        viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                        viewModel.setProfileUserImg()
+                        uploadImgtoS3()
+                    })
 
-                viewModel.profileImg.observe(viewLifecycleOwner,{
-                    if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
+                    viewModel.profileImg.observe(viewLifecycleOwner,{
                         val signupType= localDataSource.getSignupType()
                         if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
                         else signup()
-                    }
-                })
+//                        if(it!= DEFAULT_BOSS_PROFILE_IMG_URL) {
+                    })
+                }
+                else {
+                    val signupType= localDataSource.getSignupType()
+                    if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                    else signup()
+                }
             }
         }
     }
@@ -194,10 +202,14 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
 
         // 사용자 갤러리 이미지
         viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            viewModel.setIsUserImgSelected(true)
-            imgUri?.let {
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            if(imgUri!=null){
+                viewModel.setIsUserImgSelected(true)
+                imgUri?.let {
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
+
             }
+
         })
 
         // presigned url
@@ -248,8 +260,12 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-                _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-                _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
+                _gender.value = localDataSource.getUserInfo(USER_GENDER).toInt()
+                if(localDataSource.getUserInfo(USER_BIRTHDATE) == "INFO_NULL") {
+                    _birthDate.value = null
+                } else {
+                    _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                }
             }
         }
     }

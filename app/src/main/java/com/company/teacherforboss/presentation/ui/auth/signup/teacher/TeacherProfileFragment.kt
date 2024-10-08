@@ -139,19 +139,27 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
 
     private fun addListeners(){
         binding.nextBtn.setOnClickListener {
-            viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
-                viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
-                viewModel.setProfileUserImg()
-                uploadImgtoS3()
-            })
+            viewModel._keywords.value=selectedChipList
+            if(viewModel.getIsUserImgSelected() == true) {
+                viewModel.getPresignedUrlList()
 
-            viewModel.profileImg.observe(viewLifecycleOwner,{
-                viewModel._keywords.value=selectedChipList
+                viewModel.presignedUrlLiveData.observe(viewLifecycleOwner,{
+                    viewModel._profilePresignedUrl.value=it.presignedUrlList[0]
+                    viewModel.setProfileUserImg()
+                    uploadImgtoS3()
+                })
+
+                viewModel.profileImg.observe(viewLifecycleOwner,{
+                    val signupType=localDataSource.getSignupType()
+                    if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
+                    else signup()
+//                if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
+                })
+            } else {
                 val signupType=localDataSource.getSignupType()
                 if(signupType != SIGNUP_DEFAULT) socialSignup(signupType)
                 else signup()
-//                if(it!=DEFAULT_TEACHER_PROFILE_IMG_URL){
-            })
+            }
         }
     }
 
@@ -234,14 +242,13 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-
-                if(localDataSource.getUserInfo(USER_BIRTHDATE)!= INFO_NULL) _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-                else _birthDate.value=null
-                if(localDataSource.getUserInfo(USER_PROFILEIMG)!= INFO_NULL) _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
-                else _profileImg.value=null
-                _gender.value=localDataSource.getUserInfo(USER_GENDER).toInt()
-
-   
+                _gender.value = localDataSource.getUserInfo(ConstsUtils.USER_GENDER).toInt()
+                if(localDataSource.getUserInfo(USER_BIRTHDATE) == "INFO_NULL") {
+                    _birthDate.value = null
+                } else {
+                    _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                }
+                _profileImg.value = localDataSource.getUserInfo(USER_PROFILEIMG)
             }
         }
     }
@@ -257,9 +264,11 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
 
         // 사용자 갤러리 이미지
         viewModel.profileImgUri.observe(viewLifecycleOwner, { imgUri->
-            viewModel.setIsUserImgSelected(true)
-            imgUri?.let {
-                BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+            if(imgUri != null) {
+                viewModel.setIsUserImgSelected(true)
+                imgUri?.let {
+                    BindingImgAdapter.bindProfileImgUri(binding.profileImage,imgUri)
+                }
             }
         })
 

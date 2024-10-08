@@ -6,6 +6,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentNotificationBinding
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,11 +26,11 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     }
 
     private fun getNotificationPermission() {
-        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS)
+        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL))
 
         if(agreementStatus == true) {
-            val notification = localDataSource.getAgreementStatus(NOTIFICATION)
-            val marketing = localDataSource.getAgreementStatus(MARKETING)
+            val notification = localDataSource.getAgreementStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL))
+            val marketing = localDataSource.getAgreementStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL))
 
             if(notification == true) {
                 binding.switchServiceNotification.isChecked = true
@@ -47,12 +48,12 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
 
     private fun setNotificationPermission() {
         binding.switchServiceNotification.setOnCheckedChangeListener { _, isChecked ->
-            localDataSource.saveNotificationStatus(NOTIFICATION, isChecked)
+            localDataSource.saveNotificationStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL), isChecked)
             showDialogFragment()
         }
 
         binding.switchMarketing.setOnCheckedChangeListener { _, isChecked ->
-            localDataSource.saveNotificationStatus(MARKETING, isChecked)
+            localDataSource.saveNotificationStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL), isChecked)
             showDialogFragment()
         }
     }
@@ -71,12 +72,12 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     private fun getNotificationResult(): String {
         var notificationResult = ""
 
-        if(localDataSource.getAgreementStatus(NOTIFICATION))
+        if(localDataSource.getAgreementStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL)))
             notificationResult += getString(R.string.notification_permission_result_2)
         else
             notificationResult += getString(R.string.notification_permission_result_1)
 
-        if(localDataSource.getAgreementStatus(MARKETING))
+        if(localDataSource.getAgreementStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL)))
             notificationResult += getString(R.string.notification_permission_result_4)
         else
             notificationResult += getString(R.string.notification_permission_result_3)

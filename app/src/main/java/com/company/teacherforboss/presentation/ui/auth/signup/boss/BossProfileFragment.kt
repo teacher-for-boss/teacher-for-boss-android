@@ -261,12 +261,14 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                 _name.value=localDataSource.getUserInfo(USER_NAME)
                 liveEmail.value=localDataSource.getUserInfo(USER_EMAIL)
                 livePhone.value=localDataSource.getUserInfo(USER_PHONE)
-                
-                if(localDataSource.getUserInfo(USER_BIRTHDATE)!= INFO_NULL) _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
-                else _birthDate.value=null
-                if(localDataSource.getUserInfo(USER_PROFILEIMG)!= INFO_NULL) _profileImg.value=localDataSource.getUserInfo(USER_PROFILEIMG)
-                else _profileImg.value=null
-                _gender.value=localDataSource.getUserInfo(USER_GENDER).toInt()
+
+                _gender.value = localDataSource.getUserInfo(USER_GENDER).toInt()
+                if(localDataSource.getUserInfo(USER_BIRTHDATE) == "INFO_NULL") {
+                    _birthDate.value = null
+                } else {
+                    _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
+                }
+                _profileImg.value = localDataSource.getUserInfo(USER_PROFILEIMG)
             }
         }
     }

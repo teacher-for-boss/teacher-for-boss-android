@@ -33,7 +33,7 @@ class TeacherTalkAskViewModel @Inject constructor(
     var initImgUriList: ArrayList<Uri> = arrayListOf()
 
     val categoryList = arrayListOf(
-        "마케팅", "위생", "상권", "운영", "직원관리", "인테리어", "정책"
+        "세무", "노무", "노하우" ,"마케팅", "위생", "상권", "인테리어"
     )
     var _presignedUrlList = MutableLiveData<List<String>>()
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList

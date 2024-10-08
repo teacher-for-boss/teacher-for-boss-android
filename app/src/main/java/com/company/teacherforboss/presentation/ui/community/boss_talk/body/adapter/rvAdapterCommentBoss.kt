@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,10 +19,10 @@ import com.company.teacherforboss.databinding.RvItemCommentBossBinding
 import com.company.teacherforboss.domain.model.community.CommentEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.DeleteCommentDialog
+import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_TALK
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
@@ -113,8 +114,17 @@ class rvAdapterCommentBoss(
             //삭제하기
             binding.deleteBtn.setOnClickListener {
                 viewModel.setCommentId(comment.commentId)
-                val dialog = DeleteCommentDialog(binding.root.context, viewModel, lifecycleOwner, BOSS_TALK)
-                dialog.show()
+                if(context is FragmentActivity) {
+                    CommunityDialogFragment(
+                        context.getString(R.string.dialog_delete_boss_comment),
+                        context.getString(R.string.dialog_exit_button),
+                        context.getString(R.string.dialog_delete_button),
+                        {},
+                        {
+                            viewModel.deleteComment()
+                        }
+                    ).show(context.supportFragmentManager, DELETE_DIALOG)
+                }
             }
 
             //신고하기

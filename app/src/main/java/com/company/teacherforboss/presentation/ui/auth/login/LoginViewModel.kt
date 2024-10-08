@@ -57,38 +57,42 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun socialLogin(type:String,email:String){
-        socialLoginResult.value= BaseResponse.Loading()
+    fun socialLogin(type: String, email: String) {
+        socialLoginResult.value = BaseResponse.Loading()
 
-        viewModelScope.launch{
-            try{
-                val socialLoginRequest= SocialLoginRequest(
-                    email=email
+        viewModelScope.launch {
+            try {
+                val socialLoginRequest = SocialLoginRequest(
+                    email = email
                 )
 
-                var response: Response<socialLoginResponse>?=null
+                val normalizedType = type.uppercase()
+                var response: Response<socialLoginResponse>? = null
 
-                if(type== SIGNUP_SOCIAL_KAKAO) {response=userRepo.kakaoLogin(socialLoginRequest)}
-                else if(type== SIGNUP_SOCIAL_NAVER){
-                    response=userRepo.naverLogin(socialLoginRequest)
-                }
-                else{
-                    socialLoginResult.value= BaseResponse.Error("not kakao or naver")
+                if (normalizedType == SIGNUP_SOCIAL_KAKAO) {
+                    response = userRepo.kakaoLogin(socialLoginRequest)
+                } else if (normalizedType == SIGNUP_SOCIAL_NAVER) {
+                    response = userRepo.naverLogin(socialLoginRequest)
+                } else {
+                    socialLoginResult.value = BaseResponse.Error("not kakao or naver")
+                    return@launch
                 }
 
-                if(response?.body()?.code=="COMMON200"){
-                    socialLoginResult.value= BaseResponse.Success(response.body())
+                if (response == null) {
+                    socialLoginResult.value = BaseResponse.Error("Network request returned null response")
+                } else if (response.isSuccessful) {
+                    if (response.body()?.code == "COMMON200") {
+                        socialLoginResult.value = BaseResponse.Success(response.body())
+                    } else {
+                        socialLoginResult.value = BaseResponse.Error(response.message())
+                    }
+                } else {
+                    socialLoginResult.value = BaseResponse.Error("Network request failed with code ${response.code()}")
                 }
-                else{
-                    Log.d("social?",response?.body().toString())
-                    socialLoginResult.value= BaseResponse.Error(response?.message())
-                }
-            }catch (exception:Exception){
-                socialLoginResult.value= BaseResponse.Error(exception.message)
-
+            } catch (exception: Exception) {
+                socialLoginResult.value = BaseResponse.Error(exception.message)
             }
         }
-
     }
 
     fun getAcessToken()=tokenManager.getAccessToken(context)

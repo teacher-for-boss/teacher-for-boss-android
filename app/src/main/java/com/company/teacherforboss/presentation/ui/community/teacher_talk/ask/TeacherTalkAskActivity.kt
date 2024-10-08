@@ -20,22 +20,17 @@ import android.webkit.MimeTypeMap
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkAskBinding
-import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.write.BossTalkWriteActivity.Companion.REQUEST_CODE_READ_EXTERNAL_STORAGE
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialog
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterCategory
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterImageTeacherAsk
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.adapter.rvAdapterTagTeacher
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
-import com.company.teacherforboss.presentation.ui.community.teacher_talk.dialog.WriteExitDialogListener
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
@@ -47,9 +42,10 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIV
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.WRITE_EXIT_DIALOG
 import com.company.teacherforboss.util.base.UploadUtil
+import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -58,7 +54,7 @@ import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.layout.activity_teachertalk_ask),WriteExitDialogListener {
+class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.layout.activity_teachertalk_ask) {
     private val viewModel: TeacherTalkAskViewModel by viewModels()
 
     private val adapterTag:rvAdapterTagTeacher by lazy { rvAdapterTagTeacher(viewModel.hashTagList,::deleteHashTag) }
@@ -493,21 +489,28 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
     fun showExitDialog() {
         binding.exitBtn.setOnClickListener {
-            val dialog = WriteExitDialog(this, TEACHER_TALK,purpose,this)
-            dialog.show()
+            DialogPopupFragment(
+                getString(R.string.dialog_write_exit),
+                "",
+                getString(R.string.dialog_exit),
+                getString(R.string.dialog_write_btn),
+                { finish() },
+                { }
+            ).show(supportFragmentManager, WRITE_EXIT_DIALOG)
         }
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            val dialog = WriteExitDialog(this@TeacherTalkAskActivity, TEACHER_TALK,purpose,this@TeacherTalkAskActivity)
-            dialog.show()
+            DialogPopupFragment(
+                getString(R.string.dialog_write_exit),
+                "",
+                getString(R.string.dialog_exit),
+                getString(R.string.dialog_write_btn),
+                { finish() },
+                { }
+            ).show(supportFragmentManager, WRITE_EXIT_DIALOG)
         }
-    }
-
-    override fun onExitBtnClicked() {
-        onBackPressedCallback.isEnabled = false
-        onBackPressed()
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

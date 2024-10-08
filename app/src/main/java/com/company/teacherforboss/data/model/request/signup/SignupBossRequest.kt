@@ -18,7 +18,7 @@ data class SignupBossRequest(
     @SerializedName("gender")
     var gender:Int,
     @SerializedName("birthDate")
-    var birthDate: String,
+    var birthDate: String?,
     @SerializedName("phone")
     var phone: String,
     @SerializedName("emailAuthId")
@@ -26,7 +26,7 @@ data class SignupBossRequest(
     @SerializedName("phoneAuthId")
     var phoneAuthId:Long,
     @SerializedName("profileImg")
-    var profileImg:String,
+    var profileImg:String?,
     @SerializedName("agreementUsage")
     var agreementUsage:String,
 

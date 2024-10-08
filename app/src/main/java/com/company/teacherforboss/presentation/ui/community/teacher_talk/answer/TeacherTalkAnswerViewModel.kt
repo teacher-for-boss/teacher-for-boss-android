@@ -26,10 +26,21 @@ class TeacherTalkAnswerViewModel @Inject constructor(
     private val teacherTalkModifyAnswerUseCase: TeacherTalkModifyAnswerUseCase,
     private val presignedUrlUseCase: PresignedUrlUseCase
 ): ViewModel() {
+
+    var imageUrlList:ArrayList<String> = arrayListOf()
     var imageList: ArrayList<Uri> = arrayListOf()
+    var initImageUrlList:ArrayList<String> = arrayListOf()
+    var initImgUriList: ArrayList<Uri> = arrayListOf()
+
     var _presignedUrlList = MutableLiveData<List<String>>()
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList
     var filtered_presignedList = MutableLiveData<List<String>>()
+
+    var _uuid=MutableLiveData<String>()
+    val uuid: LiveData<String> =_uuid
+
+    var initImageSize=0
+    var initImgUrl=""
 
     var _fileType = MutableLiveData<String>("")
     val fileType: LiveData<String> get()=_fileType
@@ -85,32 +96,12 @@ class TeacherTalkAnswerViewModel @Inject constructor(
                     ),
                     teacherAnswerPostRequestEntity = TeacherAnswerPostRequestEntity(
                         content = content.value?:"",
-                        imageUrlList = filtered_presignedList.value?: emptyList()
+                        imageUrlList = initImageUrlList+(filtered_presignedList.value?: emptyList())
                     )
                 )
                 _modifyAnswerLiveData.value = teacherTalkModifyAnswerResponseEntity
             } catch (ex:Exception) {}
         }
-    }
-
-
-
-    fun addImage(imageUri: Uri) {
-        imageList.add(imageUri)
-    }
-    fun deleteImage(position: Int) {
-        imageList.removeAt(position)
-    }
-    fun setQuestionId(questionId: Long) {
-        _questionId.value = questionId
-    }
-
-    fun setAnswerId(answerId: Long) {
-        _answerId.value = answerId
-    }
-
-    fun setBodyLength(length: Int) {
-        _textBodyLength.value = length
     }
 
     fun getPresignedUrlList() {
@@ -130,11 +121,54 @@ class TeacherTalkAnswerViewModel @Inject constructor(
         }
     }
 
+    fun getModifyPresignedUrlList(){
+        viewModelScope.launch {
+            try {
+                val presignedUrlListEntity=presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = uuid.value,
+                        lastIndex = initImageSize,
+                        imageCount = imageList.size-initImageUrlList.size,
+                        origin = "answers"
+                    )
+                )
+                _presignedUrlListLiveData.value = presignedUrlListEntity
+                Log.d("imageList", _presignedUrlListLiveData.toString())
+            } catch (ex:Exception) {}
+        }
+    }
+
     fun setFilteredImgUrlList() {
         filtered_presignedList.value = presignedUrlList.value?.let {
             it.map { it.substringBefore("?") }
         }
         Log.d("filteredImageList", filtered_presignedList.toString())
+    }
+
+    fun extractUuid(){
+        val regex = Regex("/answers/([a-f0-9\\-]+)_")
+        val matchResult = regex.find(initImgUrl)
+        val extractedValue = matchResult?.groups?.get(1)?.value
+        _uuid.value=extractedValue.toString()
+    }
+
+    fun addImage(imageUri: Uri) {
+        imageList.add(imageUri)
+    }
+    fun deleteImage(position: Int) {
+        initImageUrlList.removeAt(position)
+        imageList.removeAt(position)
+    }
+    fun setQuestionId(questionId: Long) {
+        _questionId.value = questionId
+    }
+
+    fun setAnswerId(answerId: Long) {
+        _answerId.value = answerId
+    }
+
+    fun setBodyLength(length: Int) {
+        _textBodyLength.value = length
     }
 
     fun setFileType(fileType:String){

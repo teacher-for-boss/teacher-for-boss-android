@@ -51,6 +51,8 @@ object SvgBindingAdapter {
     }
 
     fun ImageView.loadImageFromUrlCoil(imageUrl: String) {
+        this.scaleType = ImageView.ScaleType.CENTER_CROP // Center Crop 설정
+
         val imageLoader = ImageLoader.Builder(this.context)
             .componentRegistry { add(SvgDecoder(context))
             }

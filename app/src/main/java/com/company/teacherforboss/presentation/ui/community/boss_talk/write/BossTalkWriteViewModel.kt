@@ -34,15 +34,25 @@ class BossTalkWriteViewModel @Inject constructor(
     val content:LiveData<String> get() = _content
 
     var hashTagList:ArrayList<String> = arrayListOf()
+
+    var imageUrlList:ArrayList<String> = arrayListOf()
     var imageList: ArrayList<Uri> = arrayListOf()
+    var initImageUrlList:ArrayList<String> = arrayListOf()
+    var initImgUriList: ArrayList<Uri> = arrayListOf()
+
     var _presignedUrlList = MutableLiveData <List<String>> ()
     val presignedUrlList : LiveData<List<String>> = _presignedUrlList
 
-    var filtered_presigendList=MutableLiveData<List<String>> ()
+    var filtered_presignedList=MutableLiveData<List<String>> ()
 
     var _fileType = MutableLiveData<String>("")
     val fileType: LiveData<String> get()=_fileType
 
+    var _uuid=MutableLiveData<String>()
+    val uuid: LiveData<String> =_uuid
+
+    var initImageSize=0
+    var initImgUrl=""
 
     private val _textTitleLength = MutableLiveData<Int>()
     val textTitleLength: LiveData<Int> get()=_textTitleLength
@@ -74,6 +84,7 @@ class BossTalkWriteViewModel @Inject constructor(
         imageList.add(imageUri)
     }
     fun deleteImage(position: Int) {
+        initImageUrlList.removeAt(position)
         imageList.removeAt(position)
     }
 
@@ -95,7 +106,7 @@ class BossTalkWriteViewModel @Inject constructor(
                     bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
                         title=title.value?:"",
                         content=content.value?:"",
-                        imageUrlList = filtered_presigendList.value?: emptyList(),
+                        imageUrlList = filtered_presignedList.value?: emptyList(),
                         hashtagList = hashTagList
                     )
                 )
@@ -127,7 +138,6 @@ class BossTalkWriteViewModel @Inject constructor(
 
     fun modifyPost(){
         viewModelScope.launch {
-            Log.d("test","m1")
             try{
                 val bossTalkModifyPostResponseEntity=bossTalkModifyBodyUseCase(
                     bossTalkRequestEntity= BossTalkRequestEntity(
@@ -136,7 +146,7 @@ class BossTalkWriteViewModel @Inject constructor(
                     bossTalkUploadPostRequestEntity = BossTalkUploadPostRequestEntity(
                         title=title.value?:"",
                         content=content.value?:"",
-                        imageUrlList = filtered_presigendList.value?: emptyList<String>(),
+                        imageUrlList = initImageUrlList+(filtered_presignedList.value?: emptyList<String>()),
                         hashtagList = hashTagList
                     )
                 )
@@ -146,8 +156,33 @@ class BossTalkWriteViewModel @Inject constructor(
             }
         }
     }
+
+    fun getModifyPresignedUrlList(){
+        viewModelScope.launch {
+            try {
+                val presignedUrlListEntity=presignedUrlUseCase(
+                    getPresingedUrlEntity(
+                        uuid = uuid.value,
+                        lastIndex = initImageSize,
+                        imageCount = imageList.size-initImageUrlList.size,
+                        origin = "posts"
+                    )
+                )
+                _presignedUrlListLiveData.value = presignedUrlListEntity
+                Log.d("imageList", _presignedUrlListLiveData.toString())
+            } catch (ex:Exception) {}
+        }
+    }
+
+    fun extractUuid(){
+        val regex = Regex("/posts/([a-f0-9\\-]+)_")
+        val matchResult = regex.find(initImgUrl)
+        val extractedValue = matchResult?.groups?.get(1)?.value
+        _uuid.value=extractedValue.toString()
+    }
+
     fun setFilteredImgUrlList(){
-       filtered_presigendList.value=presignedUrlList.value?.let{
+        filtered_presignedList.value=presignedUrlList.value?.let{
            it.map { it.substringBefore("?") }
        }
     }

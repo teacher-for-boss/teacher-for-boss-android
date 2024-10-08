@@ -79,7 +79,14 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             viewModel._title.value=intent.getStringExtra(POST_TITLE).toString()
             viewModel._content.value=intent.getStringExtra(POST_BODY).toString()
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true") viewModel.hashTagList=intent.getStringArrayListExtra("tagList")!!
-            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true") viewModel.imageList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse(it) } as ArrayList<Uri>
+            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true"){
+                viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+                viewModel.initImageUrlList=intent.getStringArrayListExtra("imgList")!!
+                viewModel.initImgUriList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
+                viewModel.initImageSize=viewModel.imageList.size
+                viewModel.initImgUrl=intent.getStringArrayListExtra("imgList")!!.get(0)
+                viewModel.extractUuid()
+            }
         }
         //FlexboxLayoutManager
         val layoutManager = FlexboxLayoutManager(this)
@@ -382,21 +389,24 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
     }
 
     fun uploadPost(){
-        // 이미지 업로드 시
+        //이미지 업로드 시
         if(viewModel.imageList.isNotEmpty()) {
-            viewModel.getPresignedUrlList()
+            // 처음엔 이미지가 없다가 후 or 첫 업로드
+            if(viewModel.initImageSize==0) viewModel.getPresignedUrlList()
+            // 이미지 수정
+            else if(purpose=="modify" && viewModel.initImageSize!=0) viewModel.getModifyPresignedUrlList()
+
             viewModel.presignedUrlLiveData.observe(this, {
                 viewModel._presignedUrlList.value = (it.presignedUrlList)
-                viewModel.setFilteredImgUrlList() //post를 위해 이미지 url slicing
+                viewModel.setFilteredImgUrlList()
 
                 uploadImgtoS3()
             })
 
-            viewModel.filtered_presigendList.observe(this,{
-                if (purpose == "modify") viewModel.modifyPost()
+            viewModel.filtered_presignedList.observe(this, {
+                if(purpose == "modify") viewModel.modifyPost()
                 else viewModel.uploadPost()
             })
-
         }
 
         // 이미지 없이 업로드시
@@ -409,11 +419,14 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
     }
 
     fun uploadImgtoS3(){
-        val urlList=viewModel.presignedUrlList.value?:return
-        val uriList=viewModel.imageList
+        val urlList = viewModel.presignedUrlList.value?:return
+        val uriList = viewModel.imageList
+        val initUriList=viewModel.initImgUriList
+
+        val newUriList=uriList.filterNot { initUriList.contains(it) }
 
         val uploadUtil=UploadUtil(applicationContext)
-        val requestBodyList=uploadUtil.convert_UritoImg(uriList)
+        val requestBodyList=uploadUtil.convert_UritoImg(newUriList)
 
         uploadUtil.uploadPostImage(urlList,requestBodyList,viewModel.getFileType())
     }

@@ -25,6 +25,7 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
@@ -303,15 +304,8 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     }
 
     private fun getKakaoUserInfo(){
-
-        var email:String=""
-        var phoneNumber:String=""
-        var name:String=""
-        var gender:Int?=0
-        var birthDate: LocalDate?
+        var gender: Int
         var birthDate_str:String?=""
-        var imageUrl:String?=""
-
 
         // 사용자 정보 요청 (기본)
         UserApiClient.instance.me { user, error ->
@@ -331,33 +325,15 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                 )
 
-
                 // 티쳐 포 보스 소셜 로그인 api 요청
-
-                //데이터 전처리
-                with(signupViewModel){
-                    liveEmail.value=user.kakaoAccount?.email!!
-                    _name.value=user.kakaoAccount?.name!!
-                    livePhone.value=user.kakaoAccount?.phoneNumber!!
-                        .replace("+82","0")
-                        .replace("-","")
-                        .replace(" ","")
-                    _profileImg.value=user.kakaoAccount?.profile?.thumbnailImageUrl
-                }
-
-                if(user.kakaoAccount?.gender.toString()=="남자"){
-                    gender=1
-                }
-                else{
-                    gender=2
-                }
-                signupViewModel._gender.value=gender
+                if(user.kakaoAccount?.gender.toString()=="MALE"){ gender = 1 }
+                else if(user.kakaoAccount?.gender.toString()=="FEMALE"){ gender = 2 }
+                else { gender = 3 }
 
                 if(user.kakaoAccount?.birthyear!=null && user.kakaoAccount?.birthday!=null) {
                     birthDate_str=user.kakaoAccount?.birthyear.toString()+user.kakaoAccount?.birthday.toString()
                     val formatter=DateTimeFormatter.ofPattern("yyyyMMdd")
                     val birthDate=LocalDate.parse(birthDate_str,formatter)
-                    signupViewModel._birthDate.value=birthDate.toString()
                     localDataSource.saveUserInfo(USER_BIRTHDATE,birthDate.toString())
 
                 }
@@ -365,12 +341,20 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     .replace("+82","0")
                     .replace("-","")
                     .replace(" ","")
-                signupViewModel._socialType.value=2
 
                 localDataSource.saveUserInfo(USER_NAME,user.kakaoAccount?.name!!)
                 localDataSource.saveUserInfo(USER_EMAIL,user.kakaoAccount?.email!!)
                 localDataSource.saveUserInfo(USER_PHONE,formatted_phone)
-                localDataSource.saveUserInfo(USER_PROFILEIMG,user.kakaoAccount?.profile?.thumbnailImageUrl?:"")
+
+                if(user.kakaoAccount?.profile?.thumbnailImageUrl == null) {
+                    localDataSource.saveUserInfo(USER_PROFILEIMG, DEFAULT_PROFILE_IMG_URL)
+                } else {
+                    if(user.kakaoAccount?.profile?.thumbnailImageUrl!!.contains("default_profile")) {
+                        localDataSource.saveUserInfo(USER_PROFILEIMG, DEFAULT_PROFILE_IMG_URL)
+                    } else {
+                        localDataSource.saveUserInfo(USER_PROFILEIMG,user.kakaoAccount?.profile?.thumbnailImageUrl!!)
+                    }
+                }
                 localDataSource.saveUserInfo(USER_GENDER,gender.toString())
                 localDataSource.saveSignupType(SIGNUP_SOCIAL_KAKAO)
                 loginViewModel.socialLogin(SIGNUP_SOCIAL_KAKAO,user.kakaoAccount?.email!!)

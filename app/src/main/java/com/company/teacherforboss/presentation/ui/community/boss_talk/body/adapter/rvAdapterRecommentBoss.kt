@@ -18,6 +18,7 @@ import com.company.teacherforboss.domain.model.community.CommentEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
+import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
@@ -39,88 +40,96 @@ class rvAdapterRecommentBoss(
 
             // 유저 정보
             val member=comment.memberInfo
-            binding.userName.text = member.name
-            member.profileImg?.let {
-                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
-            }
-
-            // 레벨
-            binding.profileLevel.text = comment.memberInfo.level
-
-            // 프로필 클릭 시 상세 프로필 이동
-            val clickListener = View.OnClickListener {
-                if (member.role == TEACHER) {
-                    Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
-                        putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
-                        binding.root.context.startActivity(this)
-                    }
-                }
-            }
-
-            binding.userImage.setOnClickListener(clickListener)
-            binding.userName.setOnClickListener(clickListener)
-
-
-            // 날짜
-            binding.createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
-
-            // 댓글 본문
-            binding.commentBody.text=comment.content
-
-            // 추천, 비추천 갯수
-            binding.commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
-            binding.commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
-
-            // 더보기 버튼 보여주기
-            binding.btnOption.setOnClickListener {
-                currentOptionMenu?.let {
-                    it.visibility = View.GONE
+            with (binding) {
+                userName.text = member.name
+                member.profileImg?.let {
+                    if(it!="") BindingImgAdapter.bindImage(userImage,it)
                 }
 
-                if (comment.isMine) {
-                    binding.deleteBtn.visibility = if (binding.deleteBtn.visibility == View.GONE) {
-                        currentOptionMenu = binding.deleteBtn
-                        View.VISIBLE
-                    } else {
-                        currentOptionMenu = null
-                        View.GONE
-                    }
-                } else {
-                    binding.reportBtn.visibility = if (binding.reportBtn.visibility == View.GONE) {
-                        currentOptionMenu = binding.reportBtn
-                        View.VISIBLE
-                    } else {
-                        currentOptionMenu = null
-                        View.GONE
-                    }
+                // 레벨
+                profileLevel.text = comment.memberInfo.level
+
+                if (member.role == ConstsUtils.BOSS) {
+                    profileStar.visibility = View.GONE
+                    profileLevel.visibility = View.GONE
                 }
 
-                // 터치 이벤트 처리
-                binding.root.setOnTouchListener { _, event ->
-                    dispatchTouchEvent?.invoke(event) ?: false
-                }
-            }
-
-            // 삭제하기
-            binding.deleteBtn.setOnClickListener {
-                viewModel.setCommentId(comment.commentId)
-                if(context is FragmentActivity) {
-                    CommunityDialogFragment(
-                        context.getString(R.string.dialog_delete_boss_comment),
-                        context.getString(R.string.dialog_exit_button),
-                        context.getString(R.string.dialog_delete_button),
-                        {},
-                        {
-                            viewModel.deleteComment()
+                // 프로필 클릭 시 상세 프로필 이동
+                val clickListener = View.OnClickListener {
+                    if (member.role == TEACHER) {
+                        Intent(root.context, TeacherProfileActivity::class.java).apply {
+                            putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
+                            root.context.startActivity(this)
                         }
-                    ).show(context.supportFragmentManager, DELETE_DIALOG)
+                    }
                 }
-            }
 
-            // 신고하기
-            binding.reportBtn.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
-                binding.root.context.startActivity(intent)
+                userImage.setOnClickListener(clickListener)
+                userName.setOnClickListener(clickListener)
+
+
+                // 날짜
+                createdAt.text=LocalDateFormatter.extractDate(comment.createdAt)
+
+                // 댓글 본문
+                commentBody.text=comment.content
+
+                // 추천, 비추천 갯수
+                commentGoodTv.text=context.getString(R.string.recommed_option,comment.likeCount)
+                commentBadTv.text=context.getString(R.string.not_recommed_option,comment.dislikeCount)
+
+                // 더보기 버튼 보여주기
+                btnOption.setOnClickListener {
+                    currentOptionMenu?.let {
+                        it.visibility = View.GONE
+                    }
+
+                    if (comment.isMine) {
+                        deleteBtn.visibility = if (deleteBtn.visibility == View.GONE) {
+                            currentOptionMenu = deleteBtn
+                            View.VISIBLE
+                        } else {
+                            currentOptionMenu = null
+                            View.GONE
+                        }
+                    } else {
+                        reportBtn.visibility = if (reportBtn.visibility == View.GONE) {
+                            currentOptionMenu = reportBtn
+                            View.VISIBLE
+                        } else {
+                            currentOptionMenu = null
+                            View.GONE
+                        }
+                    }
+
+                    // 터치 이벤트 처리
+                    root.setOnTouchListener { _, event ->
+                        dispatchTouchEvent?.invoke(event) ?: false
+                    }
+                }
+
+                // 삭제하기
+                deleteBtn.setOnClickListener {
+                    viewModel.setCommentId(comment.commentId)
+                    if(context is FragmentActivity) {
+                        CommunityDialogFragment(
+                            context.getString(R.string.dialog_delete_boss_comment),
+                            context.getString(R.string.dialog_exit_button),
+                            context.getString(R.string.dialog_delete_button),
+                            {},
+                            {
+                                viewModel.deleteComment()
+                            }
+                        ).show(context.supportFragmentManager, DELETE_DIALOG)
+                    }
+                }
+
+                // 신고하기
+                reportBtn.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/3Tr8cfAoWC2949aMA"))
+                    root.context.startActivity(intent)
+                }
+                userLevel.setOnClickListener { showTeacherLevelDialogFragment() }
             }
 
             //사용자의 추천 비추천 여부
@@ -192,5 +201,13 @@ class rvAdapterRecommentBoss(
 
     fun setDispatchTouchEventListener(listener: (MotionEvent) -> Boolean) {
         this.dispatchTouchEvent = listener
+    }
+    private fun showTeacherLevelDialogFragment() {
+        val fragmentActivity = context as? FragmentActivity
+        fragmentActivity?.let {
+            DialogTeacherLevelFragment().show(it.supportFragmentManager,
+                ConstsUtils.TEACHER_LEVEL_DIALOG
+            )
+        }
     }
 }

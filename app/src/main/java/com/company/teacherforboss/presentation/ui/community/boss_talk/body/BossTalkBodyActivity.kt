@@ -25,6 +25,7 @@ import com.company.teacherforboss.presentation.ui.community.boss_talk.write.Boss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.adapter.rvAdapterTag
 import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
+import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.presentation.ui.notification.NotificationViewModel
 import com.company.teacherforboss.presentation.ui.notification.TFBFirebaseMessagingService.Companion.NOTIFICATION_ID
 import com.company.teacherforboss.util.CustomSnackBar
@@ -111,6 +112,8 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             binding.profileImage.setOnClickListener(clickListener)
             binding.userNickname.setOnClickListener(clickListener)
         })
+        binding.userLevel.setOnClickListener { showTeacherLevelDialogFragment() }
+
     }
 
     fun readNotification(){
@@ -463,6 +466,11 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             finish()
         }
     }
+
+    private fun showTeacherLevelDialogFragment() {
+        DialogTeacherLevelFragment().show(supportFragmentManager, ConstsUtils.TEACHER_LEVEL_DIALOG)
+    }
+
 
     fun showKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -38,6 +38,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -198,7 +199,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
             defaultImgUrl?.let {
                 viewModel.setIsUserImgSelected(false)
                 if(viewModel.getIsUserImgSelected()==true)
-                binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
+                binding.profileImage.loadProfileImgFromUrlCoil(defaultImgUrl)
             }
         })
 

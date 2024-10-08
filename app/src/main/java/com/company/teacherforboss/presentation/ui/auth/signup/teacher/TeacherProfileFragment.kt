@@ -44,6 +44,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrl
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -250,6 +251,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                     _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
                 }
                 _profileImg.value = localDataSource.getUserInfo(USER_PROFILEIMG)
+                binding.profileImage.loadProfileImgFromUrlCoil(profileImg.value.toString())
             }
         }
     }

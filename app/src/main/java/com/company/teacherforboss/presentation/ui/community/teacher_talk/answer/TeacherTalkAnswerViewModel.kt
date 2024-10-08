@@ -156,7 +156,7 @@ class TeacherTalkAnswerViewModel @Inject constructor(
         imageList.add(imageUri)
     }
     fun deleteImage(position: Int) {
-        initImageUrlList.removeAt(position)
+        if(initImageUrlList.size!=0)initImageUrlList.removeAt(position)
         imageList.removeAt(position)
     }
     fun setQuestionId(questionId: Long) {

@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_login){
@@ -219,7 +220,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         localDataSource.saveUserInfo(USER_PHONE,result.profile?.mobile.toString().replace("-",""))
 
                         if(birthDay!="null" && birthYear!="null") localDataSource.saveUserInfo(USER_BIRTHDATE,birthYear+"-"+birthDay)
-                        if(imageUrl == null) {
+                        if(imageUrl == "null") {
                             localDataSource.saveUserInfo(USER_PROFILEIMG, DEFAULT_PROFILE_IMG_URL)
                         } else {
                             if(imageUrl.contains("img_profile")) {

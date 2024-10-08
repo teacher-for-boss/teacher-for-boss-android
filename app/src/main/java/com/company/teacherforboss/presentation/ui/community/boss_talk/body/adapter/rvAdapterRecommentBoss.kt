@@ -23,6 +23,7 @@ import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 
 class rvAdapterRecommentBoss(
     private val lifecycleOwner: LifecycleOwner,
@@ -40,9 +41,10 @@ class rvAdapterRecommentBoss(
             // 유저 정보
             val member=comment.memberInfo
             binding.userName.text = member.name
-            member.profileImg?.let {
-                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
-            }
+            member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
+//            member.profileImg?.let {
+//                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
+//            }
 
             // 레벨
             binding.profileLevel.text = comment.memberInfo.level

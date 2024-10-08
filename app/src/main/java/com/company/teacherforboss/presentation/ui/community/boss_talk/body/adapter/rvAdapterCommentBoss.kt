@@ -25,6 +25,7 @@ import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 
 class rvAdapterCommentBoss(
     private val lifecycleOwner: LifecycleOwner,
@@ -45,7 +46,8 @@ class rvAdapterCommentBoss(
             binding.userName.text = member.name
             member.profileImg?.let {
                 if (it.isNotEmpty()) {
-                    BindingImgAdapter.bindImage(binding.userImage, it)
+                    binding.userImage.loadProfileImgFromUrlCoil(it)
+//                    BindingImgAdapter.bindImage(binding.userImage, it)
                 }
             }
 

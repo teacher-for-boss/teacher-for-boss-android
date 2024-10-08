@@ -23,6 +23,7 @@ import com.company.teacherforboss.presentation.ui.auth.login.LoginViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.ProfileImageDialogFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupFinishActivity
+import com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
@@ -268,7 +269,12 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
 
     private fun showSplash(){
         //TODO: splash
-        val intent = Intent(activity, SignupFinishActivity::class.java)
+        /*val intent = Intent(activity, SignupFinishActivity::class.java)
+        intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
+        intent.putExtra(USER_ROLE,viewModel.role.value)
+        startActivity(intent)*/
+
+        val intent = Intent(activity, SignupJudgeActivity::class.java)
         intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
         intent.putExtra(USER_ROLE,viewModel.role.value)
         startActivity(intent)

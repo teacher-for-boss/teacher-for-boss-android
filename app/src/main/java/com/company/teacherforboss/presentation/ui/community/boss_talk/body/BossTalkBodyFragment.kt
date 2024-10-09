@@ -29,6 +29,8 @@ class BossTalkBodyFragment : BindingFragment<FragmentBosstalkBodyBinding>(R.layo
 
     fun hideCommentKeyboard(){
         (activity as BossTalkBodyActivity).hideKeyboard()
+        binding.recommentIv.visibility=View.GONE
+
     }
 
 

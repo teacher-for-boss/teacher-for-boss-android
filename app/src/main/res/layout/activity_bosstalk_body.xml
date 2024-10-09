@@ -76,8 +76,8 @@
 
                 <ImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/profile_image"
                     app:layout_constraintTop_toBottomOf="@id/body_title"
                     app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,8 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textColor="@color/Gray700"
-                    android:textSize="10dp"
+                    android:textSize="13dp"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintTop_toTopOf="@id/profile_image"
                     app:layout_constraintStart_toEndOf="@id/profile_image"
                     android:layout_marginStart="4dp"/>
@@ -101,6 +102,7 @@
                     android:background="@drawable/background_radius8_purple100"
                     app:layout_constraintStart_toEndOf="@id/user_nickname"
                     app:layout_constraintTop_toTopOf="@id/user_nickname"
+                    app:layout_constraintBottom_toBottomOf="@id/user_nickname"
                     android:layout_marginStart="4dp">
 
                     <ImageView

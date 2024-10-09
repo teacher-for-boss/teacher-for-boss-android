@@ -36,6 +36,8 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PROFILEIMG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_EMAIL_AGREEMENT
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_SMS_AGREEMENT
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -109,6 +111,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         }
                         SocialLoginUiState.KakaoLoginSuccess->{
                             getKakaoUserInfo()
+                            checkKakaoAgreement()
                         }
                         SocialLoginUiState.LoginFail->{
                             CustomSnackBar.make(binding.root, getString(R.string.social_login_fail), 2000).show()
@@ -368,6 +371,28 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                 localDataSource.saveSignupType(SIGNUP_SOCIAL_KAKAO)
                 loginViewModel.socialLogin(SIGNUP_SOCIAL_KAKAO,user.kakaoAccount?.email!!)
 //                loginViewModel.socialLogin(type="kakao",email,name,phoneNumber,gender, birthDate = birthDate.toString(),imageUrl)
+            }
+        }
+    }
+
+    private fun checkKakaoAgreement(){
+        // 서비스 약관 동의 내역 확인하기
+        UserApiClient.instance.serviceTerms { userServiceTerms, error ->
+            if (error != null) {
+                Log.e(TAG, "서비스 약관 동의 내역 확인하기 실패", error)
+            } else if (userServiceTerms != null) {
+                Log.i(
+                    TAG, "서비스 약관 동의 내역 확인하기 성공" +
+                            "\n회원번호: ${userServiceTerms.id}" +
+                            "\n동의한 약관: \n${userServiceTerms.serviceTerms?.joinToString("\n")}"
+                )
+
+                val AgreementMarketingInfoSms=userServiceTerms.serviceTerms!![1].agreed
+                val AgreementMarketingInfoEmail=userServiceTerms.serviceTerms!![2].agreed
+                localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_SMS_AGREEMENT,AgreementMarketingInfoSms)
+                localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_EMAIL_AGREEMENT, AgreementMarketingInfoEmail)
+
+                // localDataSource.getMarketingAgreementStatus(SOCIAL_MARKETING_SNS_AGREEMENT)
             }
         }
     }

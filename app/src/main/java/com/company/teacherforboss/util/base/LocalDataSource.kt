@@ -74,6 +74,17 @@ class LocalDataSource @Inject constructor(
         editor.commit()
     }
 
+    fun saveMarketingAgreementStatus(key:String,value: Boolean){
+        val prefs=getPreferences(APP_PREF)
+        val editor=prefs.edit()
+        editor.putBoolean(key,value)
+        editor.commit()
+    }
+    fun getMarketingAgreementStatus(key:String):Boolean{
+        val prefs = getPreferences(APP_PREF)
+        return prefs.getBoolean(key,false)
+    }
+
     companion object {
         const val USER_INFO="USER_INFO"
         const val INFO_NULL="INFO_NULL"
@@ -83,5 +94,7 @@ class LocalDataSource @Inject constructor(
         const val AGREEMENT_STATUS = "AgreementStatus"
         const val NOTIFICATION = "NotificationAgreement"
         const val MARKETING = "MarketingAgreement"
+        const val SOCIAL_MARKETING_SMS_AGREEMENT="SOCIAL_MARKETING_SMS_AGREEMENT"
+        const val SOCIAL_MARKETING_EMAIL_AGREEMENT="SOCIAL_MARKETING_EMAIL_AGREEMENT"
     }
 }

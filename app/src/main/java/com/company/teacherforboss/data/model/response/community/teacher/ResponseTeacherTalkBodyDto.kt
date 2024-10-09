@@ -27,6 +27,8 @@ data class ResponseTeacherTalkBodyDto(
     val likeCount: Int,
     @SerializedName("bookmarkCount")
     val bookmarkCount: Int,
+    @SerializedName("answerCount")
+    val answerCount: Int,
     @SerializedName("createdAt")
     val createdAt: String,
     @SerializedName("isMine")
@@ -44,6 +46,7 @@ data class ResponseTeacherTalkBodyDto(
             bookmarked=bookmarked,
             likeCount=likeCount,
             bookmarkCount=bookmarkCount,
+            answerCount = answerCount,
             createdAt=createdAt,
             memberInfo=memberEntities,
             isMine=isMine

@@ -321,6 +321,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                 bodyBody.text = body.content
                 userNickname.text = body.memberInfo.toMemberDto().name
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
+                commentNumber.text = getString(R.string.teacher_talk_comment_count, body.answerCount)
             }
 
             // 본문 업로드 이미지
@@ -389,8 +390,6 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             adapter.setDispatchTouchEventListener { ev ->
                 handleTouchEvent(ev)
             }
-
-            binding.commentNumber.text = getString(R.string.teacher_talk_comment_count, answerListResponse.answerList.size)
 
             binding.rvComment.adapter = adapter
             binding.rvComment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

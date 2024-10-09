@@ -26,4 +26,9 @@ class NotificationRepositoryImpl @Inject constructor(
         runCatching {
             notificationRemoteDataSource.getNotificationSetting().result.toNotificationSettingEntity()
         }
+
+    override suspend fun postNotificationSetting(notificationSettingEntity: NotificationSettingEntity): Result<NotificationSettingEntity> =
+        runCatching {
+            notificationRemoteDataSource.postNotificationSetting(notificationSettingDto = notificationSettingEntity.toNotificationSettingDto()).result.toNotificationSettingEntity()
+        }
 }

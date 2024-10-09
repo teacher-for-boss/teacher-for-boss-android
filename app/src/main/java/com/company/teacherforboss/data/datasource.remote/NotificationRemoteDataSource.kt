@@ -12,4 +12,6 @@ interface NotificationRemoteDataSource {
     suspend fun readNotification(notificationRequestDto: NotificationRequestDto):BaseResponse<NotificationReadDto>
 
     suspend fun getNotificationSetting(): BaseResponse<NotificationSettingDto>
+
+    suspend fun postNotificationSetting(notificationSettingDto: NotificationSettingDto): BaseResponse<NotificationSettingDto>
 }

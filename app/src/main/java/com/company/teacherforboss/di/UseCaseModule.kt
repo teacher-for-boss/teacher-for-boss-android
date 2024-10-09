@@ -59,7 +59,8 @@ import com.company.teacherforboss.domain.usecase.mypage.ChipInfoUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageCommentedPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyPostsUseCase
 import com.company.teacherforboss.domain.usecase.mypage.MyPageMyQuestionUseCase
-import com.company.teacherforboss.domain.usecase.notification.NotificationSettingUseCase
+import com.company.teacherforboss.domain.usecase.notification.NotificationSettingGetUseCase
+import com.company.teacherforboss.domain.usecase.notification.NotificationSettingPostUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
@@ -345,6 +346,11 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesNotificationSetting(notificationRepository: NotificationRepository): NotificationSettingUseCase =
-        NotificationSettingUseCase(notificationRepository)
+    fun providesNotificationSetting(notificationRepository: NotificationRepository): NotificationSettingGetUseCase =
+        NotificationSettingGetUseCase(notificationRepository)
+
+    @Provides
+    @Singleton
+    fun providesNotificationPostSetting(notificationRepository: NotificationRepository): NotificationSettingPostUseCase =
+        NotificationSettingPostUseCase(notificationRepository)
 }

@@ -17,4 +17,6 @@ class NotificationRemoteDataSourceImpl @Inject constructor(
     override suspend fun readNotification(notificationRequestDto: NotificationRequestDto): BaseResponse<NotificationReadDto> = notificationService.readNotification(notificationId = notificationRequestDto.notificationId)
 
     override suspend fun getNotificationSetting(): BaseResponse<NotificationSettingDto> = notificationService.getNotificationSetting()
+
+    override suspend fun postNotificationSetting(notificationSettingDto: NotificationSettingDto): BaseResponse<NotificationSettingDto> = notificationService.postNotificationSetting(notificationSettingDto = notificationSettingDto)
 }

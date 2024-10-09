@@ -10,4 +10,6 @@ interface NotificationRepository {
     suspend fun readNotification(notificatioinId:Long):Result<NotificationReadEntity>
 
     suspend fun getNotificationSetting(): Result<NotificationSettingEntity>
+
+    suspend fun postNotificationSetting(notificationSettingEntity: NotificationSettingEntity): Result<NotificationSettingEntity>
 }

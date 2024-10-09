@@ -7,9 +7,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentNotificationBinding
+import com.company.teacherforboss.domain.model.notification.NotificationSettingEntity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.view.UiState
@@ -22,37 +22,18 @@ import javax.inject.Inject
 class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
     @Inject lateinit var localDataSource: LocalDataSource
     private val viewModel: NotificationSettingViewModel by viewModels()
+    var isListenerEnabled: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         getNotificationPermission()
+        setNotificationPermission()
         collectData()
-//        setNotificationPermission()
     }
 
     private fun getNotificationPermission() {
         viewModel.getNotificationSetting()
-
-
-//        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL))
-//
-//        if(agreementStatus == true) {
-//            val notification = localDataSource.getAgreementStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL))
-//            val marketing = localDataSource.getAgreementStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL))
-//
-//            if(notification == true) {
-//                binding.switchServiceNotification.isChecked = true
-//            } else {
-//                binding.switchServiceNotification.isChecked = false
-//            }
-//
-//            if(marketing == true) {
-//                binding.switchMarketing.isChecked = true
-//            } else {
-//                binding.switchMarketing.isChecked = false
-//            }
-//        }
     }
 
     private fun collectData( ) {
@@ -61,30 +42,64 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
                 when(getNotificationSettingState) {
                     is UiState.Success -> {
                         val notificationSetting = getNotificationSettingState.data
-
+                        setNotificationValues(notificationSetting)
                         with(binding) {
                             switchServiceNotification.isChecked = notificationSetting.serviceNotification
                             switchMarketingPush.isChecked = notificationSetting.marketingNotification.push
                             switchMarketingEmail.isChecked = notificationSetting.marketingNotification.email
                             switchMarketingSms.isChecked = notificationSetting.marketingNotification.sms
                         }
+
+                        isListenerEnabled = true
+                    }
+                    else -> Unit
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.postNotificationSettingState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { postNotificationSettingState ->
+                when(postNotificationSettingState) {
+                    is UiState.Success -> {
+                        val notificationSetting = postNotificationSettingState.data
+                        setNotificationValues(notificationSetting)
+
+                        showDialogFragment()
                     }
                     else -> Unit
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-//    private fun setNotificationPermission() {
-//        binding.switchServiceNotification.setOnCheckedChangeListener { _, isChecked ->
-//            localDataSource.saveNotificationStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL), isChecked)
-//            showDialogFragment()
-//        }
-//
-//        binding.switchMarketing.setOnCheckedChangeListener { _, isChecked ->
-//            localDataSource.saveNotificationStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL), isChecked)
-//            showDialogFragment()
-//        }
-//    }
+    private fun setNotificationPermission() {
+        binding.switchServiceNotification.setOnCheckedChangeListener { _, isChecked ->
+            if(isListenerEnabled) {
+                viewModel.setServiceNotification(isChecked)
+                viewModel.postNotificationSetting()
+            }
+        }
+
+        binding.switchMarketingPush.setOnCheckedChangeListener { _, isChecked ->
+            if(isListenerEnabled) {
+                viewModel.setMarketingPush(isChecked)
+                viewModel.postNotificationSetting()
+            }
+        }
+
+        binding.switchMarketingEmail.setOnCheckedChangeListener { _, isChecked ->
+            if(isListenerEnabled) {
+                viewModel.setMarketingEmail(isChecked)
+                viewModel.postNotificationSetting()
+            }
+        }
+
+        binding.switchMarketingSms.setOnCheckedChangeListener { _, isChecked ->
+            if(isListenerEnabled) {
+                viewModel.setMarketingSMS(isChecked)
+                viewModel.postNotificationSetting()
+            }
+        }
+
+    }
 
     private fun showDialogFragment() {
         DialogPopupFragment(
@@ -100,23 +115,35 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     private fun getNotificationResult(): String {
         var notificationResult = ""
 
-        if(localDataSource.getAgreementStatus(NOTIFICATION, localDataSource.getUserInfo(USER_EMAIL)))
-            notificationResult += getString(R.string.notification_permission_result_2)
-        else
+        if(viewModel.serviceNotification.value!! == false)
             notificationResult += getString(R.string.notification_permission_result_1)
-
-        if(localDataSource.getAgreementStatus(MARKETING, localDataSource.getUserInfo(USER_EMAIL)))
-            notificationResult += getString(R.string.notification_permission_result_4)
         else
+            notificationResult += getString(R.string.notification_permission_result_2)
+
+        if(viewModel.marketingNotificationPush.value!! == false)
             notificationResult += getString(R.string.notification_permission_result_3)
+        else
+            notificationResult += getString(R.string.notification_permission_result_4)
+
+        if(viewModel.marketingNotificationEmail.value!! == false)
+            notificationResult += getString(R.string.notification_permission_result_5)
+        else
+            notificationResult += getString(R.string.notification_permission_result_6)
+
+        if(viewModel.marketingNotificationSMS.value!! == false)
+            notificationResult += getString(R.string.notification_permission_result_7)
+        else
+            notificationResult += getString(R.string.notification_permission_result_8)
 
         notificationResult += getString(R.string.notification_permission_info)
+
         return notificationResult
     }
 
-    companion object {
-        private val AGREEMENT_STATUS = "AgreementStatus"
-        private val NOTIFICATION = "NotificationAgreement"
-        private val MARKETING = "MarketingAgreement"
+    private fun setNotificationValues(notificationSetting: NotificationSettingEntity) {
+        viewModel.setServiceNotification(notificationSetting.serviceNotification)
+        viewModel.setMarketingPush(notificationSetting.marketingNotification.push)
+        viewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
+        viewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
     }
 }

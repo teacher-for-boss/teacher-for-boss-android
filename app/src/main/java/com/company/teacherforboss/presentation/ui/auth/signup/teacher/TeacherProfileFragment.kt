@@ -259,7 +259,8 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
         viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
             defaultImgUrl?.let {
                 viewModel.setIsUserImgSelected(false)
-                if(viewModel.getIsUserImgSelected()==true) binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
+//                if(viewModel.getIsUserImgSelected()==true)
+                    binding.profileImage.loadImageFromUrlCoil(defaultImgUrl)
             }
         })
 
@@ -286,7 +287,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
     }
 
     private fun showSplash(){
-        //TODO: splash
         /*val intent = Intent(activity, SignupFinishActivity::class.java)
         intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
         intent.putExtra(USER_ROLE,viewModel.role.value)
@@ -294,7 +294,7 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
 
         val intent = Intent(activity, SignupJudgeActivity::class.java)
         intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
-        intent.putExtra(USER_ROLE,viewModel.role.value)
+//        intent.putExtra(USER_ROLE,viewModel.role.value)
         startActivity(intent)
     }
 

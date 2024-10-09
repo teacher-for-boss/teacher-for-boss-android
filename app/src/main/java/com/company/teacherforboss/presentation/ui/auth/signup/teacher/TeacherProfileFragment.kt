@@ -174,7 +174,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
                     Log.d("signup",it.data?.result.toString())
-                    // TODO: spllash
                     showSplash()
                 }
                 is BaseResponse.Error->{
@@ -194,7 +193,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
                     Log.d("social signup",it.data?.result.toString())
-                    // TODO: splash
                     showSplash()
                 }
                 is BaseResponse.Error->{

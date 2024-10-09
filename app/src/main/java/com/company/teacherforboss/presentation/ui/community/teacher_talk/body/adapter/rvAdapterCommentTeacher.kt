@@ -31,6 +31,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.SELECT_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
+import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
 import com.google.android.material.tabs.TabLayoutMediator
 
 class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerListResponseEntity.AnswerEntity>,
@@ -52,8 +53,7 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             val member = answer.memberInfo
             binding.userName.text = member.name
             binding.profileLevel.text = member.level
-            member.profileImg?.let {
-                if(it!="") BindingImgAdapter.bindImage(binding.userImage, it)
+            member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it)
             }
 
             // 프로필 클릭 시 상세 프로필 이동

@@ -270,6 +270,7 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
                     _birthDate.value=localDataSource.getUserInfo(USER_BIRTHDATE)
                 }
                 _profileImg.value = localDataSource.getUserInfo(USER_PROFILEIMG)
+                binding.profileImage.loadProfileImgFromUrlCoil(profileImg.value.toString())
             }
         }
     }

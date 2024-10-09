@@ -46,9 +46,7 @@ class rvAdapterCommentBoss(
             binding.userName.text = member.name
             member.profileImg?.let {
                 if (it.isNotEmpty()) {
-                    binding.userImage.loadProfileImgFromUrlCoil(it)
-//                    BindingImgAdapter.bindImage(binding.userImage, it)
-                }
+                    binding.userImage.loadProfileImgFromUrlCoil(it) }
             }
 
             // 프로필 클릭 시 상세 프로필 이동

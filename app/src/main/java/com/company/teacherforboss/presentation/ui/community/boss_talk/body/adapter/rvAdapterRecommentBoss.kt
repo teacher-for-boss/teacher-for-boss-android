@@ -41,10 +41,9 @@ class rvAdapterRecommentBoss(
             // 유저 정보
             val member=comment.memberInfo
             binding.userName.text = member.name
-            member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
-//            member.profileImg?.let {
-//                if(it!="") BindingImgAdapter.bindImage(binding.userImage,it)
-//            }
+            member.profileImg?.let {
+                binding.userImage.loadProfileImgFromUrlCoil(it)
+            }
 
             // 레벨
             binding.profileLevel.text = comment.memberInfo.level

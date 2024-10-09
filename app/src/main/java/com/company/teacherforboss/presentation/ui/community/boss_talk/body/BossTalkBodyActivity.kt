@@ -308,8 +308,8 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 it.context.startActivity(intent)
             }
 
-            body.memberInfo.toMemberDto().profileImg?.let { binding.profileImage.loadProfileImgFromUrlCoil(it)
-//                BindingImgAdapter.bindImage(binding.profileImage, body.memberInfo.toMemberDto().profileImg!!)
+            body.memberInfo.toMemberDto().profileImg?.let {
+                binding.profileImage.loadProfileImgFromUrlCoil(it)
             }
 
             viewModel._isMine.value = body.isMine

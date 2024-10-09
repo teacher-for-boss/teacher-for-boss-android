@@ -6,7 +6,7 @@ import com.company.teacherforboss.util.base.BaseResponse
 
 interface AuthRemoteDataSource {
 
-    suspend fun logout():BaseResponse<LogoutResponse>
+    suspend fun logout(fcmToken:String):BaseResponse<LogoutResponse>
 
     suspend fun withdraw():BaseResponse<WithdrawResponse>
 }

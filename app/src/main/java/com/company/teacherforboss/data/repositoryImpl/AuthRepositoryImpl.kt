@@ -9,8 +9,8 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ):AuthRepository {
-    override suspend fun logout(): Result<LogoutResponseEntity> =
-        runCatching { authRemoteDataSource.logout().result.toLogoutResponseEntity() }
+    override suspend fun logout(fcmToken:String): Result<LogoutResponseEntity> =
+        runCatching { authRemoteDataSource.logout(fcmToken).result.toLogoutResponseEntity() }
 
     override suspend fun withdraw(): Result<WithdrawResponseEntity> =
         runCatching { authRemoteDataSource.withdraw().result.toWithdrawEntity() }

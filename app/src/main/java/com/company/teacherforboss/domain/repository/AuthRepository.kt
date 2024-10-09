@@ -5,7 +5,7 @@ import com.company.teacherforboss.domain.model.auth.WithdrawResponseEntity
 
 interface AuthRepository {
 
-    suspend fun logout():Result<LogoutResponseEntity>
+    suspend fun logout(fcmToken:String):Result<LogoutResponseEntity>
 
     suspend fun withdraw():Result<WithdrawResponseEntity>
 }

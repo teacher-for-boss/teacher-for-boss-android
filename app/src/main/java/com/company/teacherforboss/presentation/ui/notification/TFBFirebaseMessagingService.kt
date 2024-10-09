@@ -11,11 +11,15 @@ import androidx.core.app.NotificationCompat
 import com.company.teacherforboss.R
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.INFO_NULL
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.Random
+import javax.inject.Inject
 
 class TFBFirebaseMessagingService: FirebaseMessagingService() {
     companion object {
@@ -33,8 +37,11 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         const val HOME="HOME"
         const val EXCHANGE="EXCHANGE"
     }
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     override fun onNewToken(token: String) {
+       localDataSource.saveUserInfo(FCM_TOKEN,token)
         Log.d("FCM Log", "Refreshed token: $token")
     }
 
@@ -46,6 +53,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         var title=""
         var body=""
         remoteMessage.notification?.let {
+            // 로그안찍힘
             title=it.title!!
             body=it.body!!
             Log.d("FCM Log", "Notification Title: $title")
@@ -54,7 +62,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         remoteMessage.data.let { data->
             val fullType=data[NOTIFICATIONTYPE]?:""
             var type=fullType.split("_")[0]
-            val notificationId = data[NOTIFICATION_ID]?.toLong() ?: -1L
+//            val notificationId = data[NOTIFICATION_ID]?.toLong() ?: -1L
 
             var dataIdName:String?=null
             var dataId:Long?=null
@@ -76,13 +84,13 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
 
             Log.d("FCM Log", "Notification type: $type")
             Log.d("FCM Log", "Notification id: $dataId")
-            showNotification(title,body,type,notificationId,dataId)
+            showNotification(title,body,type,dataId)
         }
 
 
     }
 
-    private fun showNotification(title: String, body: String,type:String,notificationId:Long,dataId:Long?) {
+    private fun showNotification(title: String, body: String,type:String,dataId:Long?) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)

@@ -295,6 +295,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 bodyBody.text = body.content
                 profileLevel.text = body.memberInfo.toMemberDto().level
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
+                commentNumber.text = getString(R.string.comment_cnt, body.commentCount)
 
                 if (body.memberInfo.toMemberDto().role == TEACHER)
                     userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
@@ -327,8 +328,6 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         viewModel.getCommentListLiveData.observe(this, Observer { commentListResponse ->
             if (commentListResponse.commentList.isNotEmpty()) {
                 viewModel.setCommentListValue(commentListResponse.commentList)
-
-                binding.commentNumber.text = getString(R.string.comment_cnt, commentListResponse.commentList.size)
 
                 val adapter = rvAdapterCommentBoss(
                     lifecycleOwner = this,
@@ -377,10 +376,12 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
     private fun observeComment() {
         viewModel.postCommentLiveData.observe(this, Observer {
+            viewModel.getBossTalkBody(postId)
             viewModel.getCommentList()
         })
 
         viewModel.deleteCommentLiveData.observe(this, Observer {
+            viewModel.getBossTalkBody(postId)
             viewModel.getCommentList()
         })
     }

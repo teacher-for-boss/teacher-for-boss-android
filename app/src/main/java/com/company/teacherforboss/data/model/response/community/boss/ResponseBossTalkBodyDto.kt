@@ -24,6 +24,8 @@ data class ResponseBossTalkBodyDto(
     val likeCount: Int,
     @SerializedName("bookmarkCount")
     val bookmarkCount: Int,
+    @SerializedName("commentCount")
+    val commentCount: Int,
     @SerializedName("createdAt")
     val createdAt: String,
     @SerializedName("isMine")
@@ -40,6 +42,7 @@ data class ResponseBossTalkBodyDto(
             bookmarked=bookmarked,
             likeCount=likeCount,
             bookmarkCount=bookmarkCount,
+            commentCount=commentCount,
             createdAt=createdAt,
             memberInfo=memberEntities,
             isMine=isMine,

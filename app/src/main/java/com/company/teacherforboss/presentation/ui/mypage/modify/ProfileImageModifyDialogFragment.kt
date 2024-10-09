@@ -72,7 +72,10 @@ class ProfileImageModifyDialogFragment(
     }
 
     private fun <T : ProfileAnimal> setImgView(profileList: List<T>) {
-        binding.profileImage.loadImageFromUrlCoil(viewModel.profileImg.value!!)
+        if(viewModel.isUserImgSelected.value!! && viewModel.profileImgUri.value!=null) BindingImgAdapter.bindProfileImgUri(binding.profileImage, viewModel.profileImgUri.value!!)
+        else BindingImgAdapter.bindProfileImgUrl(binding.profileImage, viewModel.profileImg.value!!)
+
+//        binding.profileImage.loadImageFromUrlCoil(viewModel.profileImg.value!!)
 
         val bindingImgList = listOf(
             binding.p1, binding.p2, binding.p3, binding.p4, binding.p5, binding.p6,

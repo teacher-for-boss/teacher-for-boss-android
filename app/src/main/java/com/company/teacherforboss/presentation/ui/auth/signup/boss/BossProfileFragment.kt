@@ -198,8 +198,8 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
         viewModel.profileImg.observe(viewLifecycleOwner, { defaultImgUrl ->
             defaultImgUrl?.let {
                 viewModel.setIsUserImgSelected(false)
-                if(viewModel.getIsUserImgSelected()==true)
-                binding.profileImage.loadProfileImgFromUrlCoil(defaultImgUrl)
+//                if(viewModel.getIsUserImgSelected()==true)
+                    binding.profileImage.loadProfileImgFromUrlCoil(defaultImgUrl)
             }
         })
 

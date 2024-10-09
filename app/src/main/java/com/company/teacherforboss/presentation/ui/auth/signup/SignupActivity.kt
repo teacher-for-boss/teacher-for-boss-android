@@ -190,6 +190,7 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
             }
             if (imageUri != null) {
                 viewModel.setUserImageUri(imageUri)
+                viewModel.setIsUserImgSelected(true)
                 viewModel.getPresignedUrlList()
             }
         }

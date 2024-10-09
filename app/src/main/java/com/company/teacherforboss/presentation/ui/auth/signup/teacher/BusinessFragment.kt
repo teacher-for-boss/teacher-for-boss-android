@@ -60,12 +60,13 @@ class BusinessFragment : BindingFragment<FragmentBusinessBinding>(R.layout.fragm
             calendar.setOnClickListener {
                 val cal=Calendar.getInstance()
                 val data=DatePickerDialog.OnDateSetListener{view,year,month,day->
-                    val dateString = LocalDate.of(year, month, day).toString()
+                    val dateString = LocalDate.of(year, month+1, day).toString()
                     val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
-                    val formatted_openDate = LocalDate.parse(dateString, formatter)
-                    viewModel._openDateStr.value=formatted_openDate.toString()
+                    val formatted_openDate = LocalDate.parse(dateString, formatter).toString()
 
-                    binding.openDate.text="${year}-${month+1}-${day}"
+                    viewModel._openDateStr.value=formatted_openDate
+
+                    binding.openDate.text=formatted_openDate
                 }
                 context?.let { it1 ->
                     DatePickerDialog(

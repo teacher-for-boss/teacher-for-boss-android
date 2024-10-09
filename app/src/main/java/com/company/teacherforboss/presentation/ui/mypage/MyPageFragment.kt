@@ -19,6 +19,7 @@ import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivi
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
+import com.company.teacherforboss.presentation.ui.mypage.notification_setting.ManageNotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS

@@ -4,6 +4,7 @@ import com.company.teacherforboss.data.datasource.remote.NotificationRemoteDataS
 import com.company.teacherforboss.data.model.request.notification.NotificationRequestDto
 import com.company.teacherforboss.data.model.response.notification.NotificationListDto
 import com.company.teacherforboss.data.model.response.notification.NotificationReadDto
+import com.company.teacherforboss.data.model.response.notification.NotificationSettingDto
 import com.company.teacherforboss.data.service.NotificationService
 import com.company.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
@@ -14,4 +15,6 @@ class NotificationRemoteDataSourceImpl @Inject constructor(
     override suspend fun getNotifications(): BaseResponse<NotificationListDto> = notificationService.getNotifications()
 
     override suspend fun readNotification(notificationRequestDto: NotificationRequestDto): BaseResponse<NotificationReadDto> = notificationService.readNotification(notificationId = notificationRequestDto.notificationId)
+
+    override suspend fun getNotificationSetting(): BaseResponse<NotificationSettingDto> = notificationService.getNotificationSetting()
 }

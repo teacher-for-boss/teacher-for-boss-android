@@ -38,17 +38,50 @@
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
                 app:layout_constraintTop_toBottomOf="@id/tv_notification_title" />
 
+            <TextView
+                android:id="@+id/tv_marketing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="마케팅 정보 수신 설정"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
+                android:textColor="@color/Gray600"
+                app:layout_constraintTop_toBottomOf="@id/switch_service_notification"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="15dp" />
+
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_marketing"
+                android:id="@+id/switch_marketing_push"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:thumb="@drawable/selector_thumb"
                 app:track="@drawable/selector_switch"
-                android:text="마케팅 정보 수신 설정"
+                android:text="푸시 알림"
                 android:textColor="@color/Gray600"
                 android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
-                app:layout_constraintTop_toBottomOf="@id/switch_service_notification" />
+                app:layout_constraintTop_toBottomOf="@id/tv_marketing"
+                android:layout_marginTop="15dp"/>
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_marketing_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/selector_thumb"
+                app:track="@drawable/selector_switch"
+                android:text="이메일"
+                android:textColor="@color/Gray600"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
+                app:layout_constraintTop_toBottomOf="@id/switch_marketing_push" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_marketing_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/selector_thumb"
+                app:track="@drawable/selector_switch"
+                android:text="SMS"
+                android:textColor="@color/Gray600"
+                android:textAppearance="@style/TextAppearance.TeacherForBoss.Label7"
+                app:layout_constraintTop_toBottomOf="@id/switch_marketing_email" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

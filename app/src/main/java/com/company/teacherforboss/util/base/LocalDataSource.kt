@@ -96,5 +96,6 @@ class LocalDataSource @Inject constructor(
         const val MARKETING = "MarketingAgreement"
         const val SOCIAL_MARKETING_SMS_AGREEMENT="SOCIAL_MARKETING_SMS_AGREEMENT"
         const val SOCIAL_MARKETING_EMAIL_AGREEMENT="SOCIAL_MARKETING_EMAIL_AGREEMENT"
+        const val FCM_TOKEN="FCM_TOKEN"
     }
 }

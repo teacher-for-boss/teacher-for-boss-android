@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.auth.login
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,8 @@ import com.company.teacherforboss.data.model.response.login.socialLoginResponse
 import com.company.teacherforboss.data.tokenmanager.TokenManager
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
+import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -35,14 +38,27 @@ class LoginViewModel @Inject constructor(
     val isSocialLoginSinup : LiveData<Boolean>
         get() = _isSocialLoginSignup
 
-    fun loginUser(email:String,pwd:String){
-        loginResult.value= BaseResponse.Loading()
 
+    @Inject lateinit var localDataSource: LocalDataSource
+
+    fun loginUser(email:String,pwd:String){
+
+        val model = Build.MODEL.toString() // 모델명
+        val brand = Build.BRAND.toString() // 브랜드명
+        val device = Build.DEVICE.toString() // 기기명
+        val product = Build.PRODUCT.toString() // 제품명
+
+        Log.d("Test",("{${model}/$brand/$device/$product"))
+        loginResult.value= BaseResponse.Loading()
         viewModelScope.launch {
             try{
                 val loginRequest= LoginRequest(
                     email=email,
-                    password=pwd
+                    password=pwd,
+                    deviceInfo= LoginRequest.DeviceInfo(
+                        fcmToken = localDataSource.getUserInfo(FCM_TOKEN),
+                        platform = model+"/"+brand
+                    )
                 )
                 val response=userRepo.loginUser(loginRequest=loginRequest)
                 if(response?.body()?.code=="COMMON200"){

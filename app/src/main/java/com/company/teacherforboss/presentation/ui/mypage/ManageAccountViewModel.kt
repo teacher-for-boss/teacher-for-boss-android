@@ -15,6 +15,7 @@ import com.company.teacherforboss.domain.model.auth.WithdrawResponseEntity
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
 import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import com.company.teacherforboss.util.view.UiState
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
@@ -57,8 +58,9 @@ class ManageAccountViewModel @Inject constructor(
     }
 
     fun postLogout(){
+        val fcmToken=localDataSource.getUserInfo(FCM_TOKEN)
         viewModelScope.launch {
-            logoutUsecase().onSuccess { logoutResponseEntity->
+            logoutUsecase(fcmToken).onSuccess { logoutResponseEntity->
                 _logoutState.value=UiState.Success(logoutResponseEntity)
 
                 val signupType = localDataSource.getSignupType()

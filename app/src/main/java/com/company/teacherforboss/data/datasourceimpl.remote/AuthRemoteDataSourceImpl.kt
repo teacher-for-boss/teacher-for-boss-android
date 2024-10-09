@@ -10,7 +10,7 @@ import javax.inject.Inject
 class AuthRemoteDataSourceImpl @Inject constructor(
     private val authService: AuthService
 ) :AuthRemoteDataSource{
-    override suspend fun logout(): BaseResponse<LogoutResponse> = authService.logout()
+    override suspend fun logout(fcmToken:String): BaseResponse<LogoutResponse> = authService.logout(fcmToken = fcmToken)
     override suspend fun withdraw(): BaseResponse<WithdrawResponse> = authService.withdraw()
 
 }

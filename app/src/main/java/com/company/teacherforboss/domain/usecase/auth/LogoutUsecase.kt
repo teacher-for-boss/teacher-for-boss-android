@@ -6,6 +6,6 @@ import com.company.teacherforboss.domain.repository.AuthRepository
 class LogoutUsecase(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke():Result<LogoutResponseEntity> = authRepository.logout()
+    suspend operator fun invoke(fcmToken:String):Result<LogoutResponseEntity> = authRepository.logout(fcmToken)
 
 }

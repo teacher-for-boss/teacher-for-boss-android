@@ -119,6 +119,7 @@ interface AuthService {
 
     @POST("auth/logout")
     suspend fun logout(
+        @Header("FCM-Token") fcmToken: String
     ):BaseResponse<LogoutResponse>
 
     @DELETE("auth/withdraw")

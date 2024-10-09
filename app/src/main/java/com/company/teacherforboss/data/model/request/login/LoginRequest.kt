@@ -4,7 +4,20 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginRequest(
     @SerializedName("email")
-    var email:String,
+    var email: String,
+
     @SerializedName("password")
-    var password:String
-)
+    var password: String,
+
+    @SerializedName("deviceInfo")
+    var deviceInfo: DeviceInfo
+){
+    data class DeviceInfo(
+        @SerializedName("fcmToken")
+        var fcmToken: String,
+
+        @SerializedName("platform")
+        var platform: String
+    )
+
+}

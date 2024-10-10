@@ -41,6 +41,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -357,6 +358,11 @@ class SignupViewModel @Inject constructor(
             getFilteredPresingedUrl()?.let { finalProfileImg=it }
         }else finalProfileImg=profileImg.value!!
 
+        val dateString = openDate_str.value
+        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val formatted_openDate = LocalDate.parse(dateString, formatter)
+        Log.d("test",formatted_openDate.toString())
+
         viewModelScope.launch {
             // boss
             if(role.value==1){
@@ -412,7 +418,7 @@ class SignupViewModel @Inject constructor(
                         profileImg=profileImg.value?:"null",
                         businessNumber=businessNum.value?:"null",
                         representative=representative.value?:"사장님",
-                        openDate=openDate_str.value?: "null",
+                        openDate=formatted_openDate.toString()?: "null",
                         field=field.value?:"null",
                         career=_carrer_str.value!!.toInt(),
                         introduction = introduction.value?:"",
@@ -453,6 +459,11 @@ class SignupViewModel @Inject constructor(
         var type_num=0
         if(type=="KAKAO") type_num=2
         else type_num=3
+
+        val dateString = openDate_str.value
+        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val formatted_openDate = LocalDate.parse(dateString, formatter)
+        Log.d("test",formatted_openDate.toString())
 
         viewModelScope.launch {
             // boss
@@ -499,7 +510,7 @@ class SignupViewModel @Inject constructor(
                         profileImg=profileImg.value?:"null",
                         businessNumber=businessNum.value?:"null",
                         representative=representative.value?:"사장님",
-                        openDate=openDate_str.value?: "null",
+                        openDate=formatted_openDate.toString()?: "null",
                         field=field.value?:"null",
                         career=_carrer_str.value!!.toInt(),
 //                        career=career.value?:0,
@@ -610,10 +621,13 @@ class SignupViewModel @Inject constructor(
 
     suspend fun businessNumCheck():Boolean{
 
+        val dateString = openDate_str.value
+        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+        val formatted_openDate = LocalDate.parse(dateString, formatter)
         return try {
             val businessNumCheckRequest = BusinessNumberCheckRequest(
                 businessNumber = businessNum.value ?: "null",
-                openDate = openDate_str.value ?: "",
+                openDate = formatted_openDate.toString()?: "",
                 representative = representative.value ?: "null"
             )
 

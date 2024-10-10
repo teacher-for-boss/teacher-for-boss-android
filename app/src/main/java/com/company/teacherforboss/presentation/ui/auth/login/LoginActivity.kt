@@ -3,11 +3,13 @@ package com.company.teacherforboss.presentation.ui.auth.login
 import android.content.Intent
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +38,10 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PHONE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_PROFILEIMG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_EMAIL_AGREEMENT
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_SMS_AGREEMENT
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -69,6 +75,9 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
 
         localDataSource.deleteUserInfo()
         localDataSource.resetSignupType()
+
+        fetchFirebaseToken()
+        askNotificationPermission()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
@@ -109,6 +118,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         }
                         SocialLoginUiState.KakaoLoginSuccess->{
                             getKakaoUserInfo()
+                            checkKakaoAgreement()
                         }
                         SocialLoginUiState.LoginFail->{
                             CustomSnackBar.make(binding.root, getString(R.string.social_login_fail), 2000).show()
@@ -372,6 +382,28 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         }
     }
 
+    private fun checkKakaoAgreement(){
+        // 서비스 약관 동의 내역 확인하기
+        UserApiClient.instance.serviceTerms { userServiceTerms, error ->
+            if (error != null) {
+                Log.e(TAG, "서비스 약관 동의 내역 확인하기 실패", error)
+            } else if (userServiceTerms != null) {
+                Log.i(
+                    TAG, "서비스 약관 동의 내역 확인하기 성공" +
+                            "\n회원번호: ${userServiceTerms.id}" +
+                            "\n동의한 약관: \n${userServiceTerms.serviceTerms?.joinToString("\n")}"
+                )
+
+                val AgreementMarketingInfoSms=userServiceTerms.serviceTerms!![1].agreed
+                val AgreementMarketingInfoEmail=userServiceTerms.serviceTerms!![2].agreed
+                localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_SMS_AGREEMENT,AgreementMarketingInfoSms)
+                localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_EMAIL_AGREEMENT, AgreementMarketingInfoEmail)
+
+                // localDataSource.getMarketingAgreementStatus(SOCIAL_MARKETING_SNS_AGREEMENT)
+            }
+        }
+    }
+
     private fun gotoSignupActivity(){
         val intent = Intent(context, SignupActivity::class.java)
         startActivity(intent)
@@ -479,4 +511,34 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         }
     }
 
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API Level 33 이상
+            requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            fetchFirebaseToken()
+        }
+    }
+
+   // fcm messaging 권한 요청
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+        }
+    }
+
+    private fun fetchFirebaseToken() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    localDataSource.saveUserInfo(FCM_TOKEN, token)
+                    Log.d("FCM Log login", "New FCM token: $token")
+                } else {
+                    Log.e("FCM Log login", "Failed to get new FCM token", task.exception)
+                }
+            }
+    }
 }

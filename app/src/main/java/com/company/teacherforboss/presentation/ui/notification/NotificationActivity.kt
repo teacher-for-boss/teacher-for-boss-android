@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -35,10 +35,11 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
 
         setNotificationView()
         setFirebaseMessaging()
+        addListeners()
     }
 
     fun setNotificationView(){
-        notificationAdapter = NotificationAdapter(this, emptyList())
+        notificationAdapter = NotificationAdapter(this, mutableListOf())
 
         viewModel.getNotifications()
 
@@ -46,11 +47,22 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
             .onEach { notificationState->
                 when(notificationState){
                     is UiState.Success->{
-                        notificationAdapter.updateData(notificationState.data.notificationList)
-                        Log.d("okhttp", notificationState.data.notificationList.toString())
-
+                        val notificationList = notificationState.data.notificationList
                         val previousLastNotificationId = viewModel.getLastPostId()
-                        val lastNotificationId = notificationState.data.notificationList.lastIndex
+                        val lastNotificationId = notificationList.get(notificationList.lastIndex).notificationId
+                        viewModel.setLastPostId(lastNotificationId)
+
+                        if(previousLastNotificationId.toInt() == 0) notificationAdapter.updateData(notificationList)
+                        else notificationAdapter.addMoreData(notificationList)
+
+                        if(notificationState.data.hasNext) {
+                            binding.btnNotificationMore.visibility = View.VISIBLE
+                            binding.tvNotificationInfo.visibility = View.GONE
+                        }
+                        else  {
+                            binding.btnNotificationMore.visibility = View.GONE
+                            binding.tvNotificationInfo.visibility = View.VISIBLE
+                        }
                     }
                     else-> Unit
                 }
@@ -67,6 +79,12 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
     fun readNotification(){
         val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
         viewModel.readNotification(notifiationId)
+    }
+
+    private fun addListeners() {
+        binding.btnNotificationMore.setOnClickListener {
+            viewModel.getNotifications()
+        }
     }
 
     fun updateNotificationState(){

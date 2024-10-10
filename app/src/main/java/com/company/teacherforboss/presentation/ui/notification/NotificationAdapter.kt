@@ -10,7 +10,7 @@ import com.company.teacherforboss.databinding.RvItemNotificationBinding
 import com.company.teacherforboss.domain.model.notification.NotificationEntity
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class NotificationAdapter(context: Context, private var notificationList:List<NotificationEntity>
+class NotificationAdapter(context: Context, private var notificationList: MutableList<NotificationEntity>
 ):RecyclerView.Adapter<NotificationAdapter.AlarmItemViewHolder>() {
     private val inflater by lazy{LayoutInflater.from(context)}
     private val context=context
@@ -48,7 +48,16 @@ class NotificationAdapter(context: Context, private var notificationList:List<No
     }
 
     fun updateData(newNotificationList: List<NotificationEntity>) {
-        notificationList = newNotificationList
+        notificationList = newNotificationList.toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun addMoreData(newNotificationList: List<NotificationEntity>) {
+        val currentSize = notificationList.size
+        val newItemSize = newNotificationList.size
+        if(newItemSize > 0) {
+            notificationList.addAll(newNotificationList)
+            notifyItemRangeInserted(currentSize,newItemSize)
+        }
     }
 }

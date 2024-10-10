@@ -219,6 +219,11 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             binding.vpImgSlider.visibility = View.VISIBLE
             binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imgUrlList)
 
+            binding.vpImgSlider.offscreenPageLimit = 1
+
+
+
+
             if(viewModel.imgUrlList.size > 1) {
                 binding.tabIndicator.visibility = View.VISIBLE
                 TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->

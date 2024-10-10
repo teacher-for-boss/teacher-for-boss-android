@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -144,14 +146,20 @@ class TeacherTalkMainFragment :
                 // 보유 티포
                 exchangeViewModel.getTeacherPoint()
                 exchangeViewModel.currentTeacherPoint.observe(viewLifecycleOwner) { currentTeacherPoint ->
-                    tvQuestionPayBtn.text = getString(R.string.tv_question_pay_teacher_btn, exchangeViewModel.currentTeacherPoint.value)
-                }
+                    val text = getString(R.string.tv_question_pay_teacher_btn, exchangeViewModel.currentTeacherPoint.value)
+
+                    val spannableString = SpannableString(text)
+                    spannableString.setSpan(UnderlineSpan(), 0, spannableString.length, 0)
+
+                    tvQuestionPayBtn.text = spannableString                }
             }
             else  {
 
                 // TODO: 질문권 개수 서버통신으로 받아와서 연결 (릴리즈 직후 이후에)
-                tvQuestionPayBtn.text = getString(R.string.tv_question_pay_boss_btn)
-            }
+                val spannableString = SpannableString(getString(R.string.tv_question_pay_boss_btn))
+                spannableString.setSpan(UnderlineSpan(), 0, spannableString.length, 0)
+
+                tvQuestionPayBtn.text = spannableString                  }
 
             //scrollview
             svTeacherTalkMain.run {

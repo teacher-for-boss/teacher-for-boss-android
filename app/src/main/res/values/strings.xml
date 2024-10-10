@@ -54,8 +54,8 @@
 
     <!-- teacher_talk -->
     <string name="tv_teacher_talk">티처톡</string>
-    <string name="tv_question_pay_teacher_btn">티포 %dTP</string>
-    <string name="tv_question_pay_boss_btn">질문권 무료 체험 중</string>
+    <string name="tv_question_pay_teacher_btn"><u>티포 %dTP</u></string>
+    <string name="tv_question_pay_boss_btn"><u>질문권 무료 체험 중</u></string>
     <string name="teacher_talk_main_text1">티처Talk에서 궁금증을 해결할 수 있어요</string>
     <string name="teacher_talk_main_text2"><b>티처에게 물어보세요!</b></string>
     <string name="teacher_talk_ask_hint">※ 티처Talk 질문 작성 요령\n

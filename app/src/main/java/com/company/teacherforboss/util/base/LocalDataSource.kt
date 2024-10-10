@@ -54,13 +54,10 @@ class LocalDataSource @Inject constructor(
 
     fun getAgreementStatus(key: String, userinfo: String): Boolean {
         val prefs = getPreferences(APP_PREF)
-
         val keyWithInfo = key + "_" + userinfo
 
         return when (keyWithInfo) {
             "${AGREEMENT_STATUS}_${userinfo}" -> prefs.getBoolean("${AGREEMENT_STATUS}_${userinfo}", false)
-            "${NOTIFICATION}_${userinfo}" -> prefs.getBoolean("${NOTIFICATION}_${userinfo}", false)
-            "${MARKETING}_${userinfo}" -> prefs.getBoolean("${MARKETING}_${userinfo}", false)
             else -> false
         }
     }
@@ -69,7 +66,6 @@ class LocalDataSource @Inject constructor(
         val prefs = getPreferences(APP_PREF)
         val editor = prefs.edit()
 
-//        editor.putBoolean(key, value)
         editor.putBoolean("${key}_${userinfo}", value)
         editor.commit()
     }

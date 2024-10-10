@@ -1,8 +1,9 @@
-package com.company.teacherforboss.presentation.ui.mypage
+package com.company.teacherforboss.presentation.ui.mypage.notification_setting
 
 import android.os.Bundle
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityManageNotificationBinding
+import com.company.teacherforboss.presentation.ui.mypage.notification_setting.NotificationFragment
 import com.company.teacherforboss.util.base.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 

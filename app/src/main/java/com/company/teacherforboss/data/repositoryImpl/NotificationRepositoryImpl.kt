@@ -4,6 +4,7 @@ import com.company.teacherforboss.data.datasource.remote.NotificationRemoteDataS
 import com.company.teacherforboss.data.model.request.notification.NotificationRequestDto
 import com.company.teacherforboss.domain.model.notification.NotificationListEntity
 import com.company.teacherforboss.domain.model.notification.NotificationReadEntity
+import com.company.teacherforboss.domain.model.notification.NotificationSettingEntity
 import com.company.teacherforboss.domain.repository.NotificationRepository
 import javax.inject.Inject
 
@@ -19,5 +20,15 @@ class NotificationRepositoryImpl @Inject constructor(
         kotlin.runCatching {
             notificationRemoteDataSource.readNotification(notificationRequestDto = NotificationRequestDto(notificationId = notificatioinId))
                 .result.toNotificationReadEntity()
+        }
+
+    override suspend fun getNotificationSetting(): Result<NotificationSettingEntity> =
+        runCatching {
+            notificationRemoteDataSource.getNotificationSetting().result.toNotificationSettingEntity()
+        }
+
+    override suspend fun postNotificationSetting(notificationSettingEntity: NotificationSettingEntity): Result<NotificationSettingEntity> =
+        runCatching {
+            notificationRemoteDataSource.postNotificationSetting(notificationSettingDto = notificationSettingEntity.toNotificationSettingDto()).result.toNotificationSettingEntity()
         }
 }

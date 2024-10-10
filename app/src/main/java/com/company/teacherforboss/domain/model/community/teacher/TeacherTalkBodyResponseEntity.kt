@@ -14,21 +14,7 @@ data class TeacherTalkBodyResponseEntity(
     val bookmarked: Boolean,
     val likeCount: Int,
     val bookmarkCount: Int,
+    val answerCount: Int,
     val createdAt: String,
     val isMine: Boolean
-){
-    fun toResponseTeacherTalkBodyDto() = ResponseTeacherTalkBodyDto(
-        title =title,
-        content =content,
-        category =category,
-        imageUrlList = imageUrlList,
-        hashtagList =hashtagList,
-        liked =liked,
-        bookmarked =bookmarked,
-        likeCount =likeCount,
-        bookmarkCount =bookmarkCount,
-        createdAt =createdAt,
-        memberInfo =memberInfo.toMemberDto(),
-        isMine =isMine
-    )
-}
+)

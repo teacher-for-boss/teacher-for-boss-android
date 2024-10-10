@@ -218,46 +218,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     getString(R.string.notification_permission_accept),
                     {
                         notificationSettingViewModel.setMarketingPush(false)
-                        showDialogFragment("MarketingEmail")
-                    },
-                    {
-                        notificationSettingViewModel.setMarketingPush(true)
-                        showDialogFragment("MarketingEmail")
-                    },
-                    backgroundClickable = false
-                ).show(supportFragmentManager, MARKETING_DIALOG)
-            }
-
-            "MarketingEmail" -> {
-                DialogPopupFragment(
-                    getString(R.string.notification_marketing_title),
-                    getString(R.string.notification_marketing_content_email),
-                    getString(R.string.notification_permission_deny),
-                    getString(R.string.notification_permission_accept),
-                    {
-                        notificationSettingViewModel.setMarketingEmail(false)
-                        showDialogFragment("MarketingSMS")
-                    },
-                    {
-                        notificationSettingViewModel.setMarketingEmail(true)
-                        showDialogFragment("MarketingSMS")
-                    },
-                    backgroundClickable = false
-                ).show(supportFragmentManager, MARKETING_DIALOG)
-            }
-
-            "MarketingSMS" -> {
-                DialogPopupFragment(
-                    getString(R.string.notification_marketing_title),
-                    getString(R.string.notification_marketing_content_sms),
-                    getString(R.string.notification_permission_deny),
-                    getString(R.string.notification_permission_accept),
-                    {
-                        notificationSettingViewModel.setMarketingSMS(false)
                         notificationSettingViewModel.postNotificationSetting()
                     },
                     {
-                        notificationSettingViewModel.setMarketingSMS(true)
+                        notificationSettingViewModel.setMarketingPush(true)
                         notificationSettingViewModel.postNotificationSetting()
                     },
                     backgroundClickable = false

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -158,7 +159,7 @@ class rvAdapterCommentBoss(
 
             fun handleCommentBtnColor() {
                 if (isCommentGood) {
-                    binding.commentGoodTv.setTextColor(Color.parseColor("#5F5CE8"))
+                    binding.commentGoodTv.setTextColor(Color.parseColor("#8D37EF"))
                     binding.commentGoodIv.setImageResource(R.drawable.comment_good_on)
                 } else {
                     binding.commentGoodTv.setTextColor(Color.parseColor("#8490A0"))
@@ -166,7 +167,7 @@ class rvAdapterCommentBoss(
                 }
 
                 if (isCommentBad) {
-                    binding.commentBadTv.setTextColor(Color.parseColor("#5F5CE8"))
+                    binding.commentBadTv.setTextColor(Color.parseColor("#8D37EF"))
                     binding.commentBadIv.setImageResource(R.drawable.comment_bad_on)
                 } else {
                     binding.commentBadTv.setTextColor(Color.parseColor("#8490A0"))

@@ -40,12 +40,18 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
     fun setNotificationView(){
         notificationAdapter = NotificationAdapter(this, emptyList())
 
-        viewModel.getNotificatioins()
+        viewModel.getNotifications()
 
         viewModel.notificationState.flowWithLifecycle(this.lifecycle)
             .onEach { notificationState->
                 when(notificationState){
-                    is UiState.Success-> notificationAdapter=NotificationAdapter(this,notificationState.data.notificationList)
+                    is UiState.Success->{
+                        notificationAdapter.updateData(notificationState.data.notificationList)
+                        Log.d("okhttp", notificationState.data.notificationList.toString())
+
+                        val previousLastNotificationId = viewModel.getLastPostId()
+                        val lastNotificationId = notificationState.data.notificationList.lastIndex
+                    }
                     else-> Unit
                 }
             }.launchIn(this.lifecycleScope)

@@ -12,7 +12,8 @@ import javax.inject.Inject
 class NotificationRemoteDataSourceImpl @Inject constructor(
     private val notificationService: NotificationService
 ):NotificationRemoteDataSource {
-    override suspend fun getNotifications(): BaseResponse<NotificationListDto> = notificationService.getNotifications()
+    override suspend fun getNotifications(notificationRequestDto: NotificationRequestDto): BaseResponse<NotificationListDto> =
+        notificationService.getNotifications(notificationRequestDto.notificationId)
 
     override suspend fun readNotification(notificationRequestDto: NotificationRequestDto): BaseResponse<NotificationReadDto> = notificationService.readNotification(notificationId = notificationRequestDto.notificationId)
 

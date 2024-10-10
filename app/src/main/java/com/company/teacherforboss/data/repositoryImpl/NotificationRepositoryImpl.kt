@@ -11,9 +11,10 @@ import javax.inject.Inject
 class NotificationRepositoryImpl @Inject constructor(
     private val notificationRemoteDataSource: NotificationRemoteDataSource
 ):NotificationRepository {
-    override suspend fun getNotifications(): Result<NotificationListEntity> =
+    override suspend fun getNotifications(lastNotificationId: Long): Result<NotificationListEntity> =
         runCatching{
-            notificationRemoteDataSource.getNotifications().result.toNotificationListEntity()
+            notificationRemoteDataSource.getNotifications(notificationRequestDto = NotificationRequestDto(notificationId = lastNotificationId))
+                .result.toNotificationListEntity()
         }
 
     override suspend fun readNotification(notificatioinId: Long): Result<NotificationReadEntity> =

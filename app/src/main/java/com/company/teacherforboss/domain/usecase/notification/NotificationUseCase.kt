@@ -6,5 +6,6 @@ import com.company.teacherforboss.domain.repository.NotificationRepository
 class NotificationUseCase(
     private val notificationRepository: NotificationRepository
 ){
-    suspend operator fun invoke():Result<NotificationListEntity> = notificationRepository.getNotifications()
+    suspend operator fun invoke(lastNotificationId: Long):Result<NotificationListEntity> =
+        notificationRepository.getNotifications(lastNotificationId = lastNotificationId)
 }

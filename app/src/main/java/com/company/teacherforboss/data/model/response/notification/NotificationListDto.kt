@@ -4,7 +4,10 @@ import com.company.teacherforboss.domain.model.notification.NotificationListEnti
 import com.google.gson.annotations.SerializedName
 
 data class NotificationListDto(
+    @SerializedName("hasNext") val hasNext: Boolean,
     @SerializedName("notificationList") val notificationList:List<NotificationDto>
 ){
-    fun toNotificationListEntity()=NotificationListEntity(notificationList = notificationList.map { it.toNotificationEntity() })
+    fun toNotificationListEntity()=NotificationListEntity(
+        hasNext = hasNext,
+        notificationList = notificationList.map { it.toNotificationEntity() })
 }

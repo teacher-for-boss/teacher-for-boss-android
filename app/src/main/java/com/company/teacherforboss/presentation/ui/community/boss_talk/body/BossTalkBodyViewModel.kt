@@ -221,35 +221,43 @@ class BossTalkBodyViewModel @Inject constructor(
         }
     }
 
-    fun postCommentLike(commentId:Long){
+    fun postCommentLike(commentId: Long) {
         viewModelScope.launch {
             try {
-                val response = bossTalkCommentLikeUseCase(BossTalkCommentLikeRequestEntity(postId = postId.value!!, commentId = commentId))
-                Log.d("Server Response", response.toString())  // 여기서부터 null이 false로 옴....
-                val updatedLike = response.liked
-                Log.d("commentLike null", updatedLike.toString())
-                val updatedLikeCount = when (updatedLike) {
-                    true -> {
-                        (bossTalkBodyCommentLiveData.value?.likedCount ?: 0) + 1
-                    }
-                    false -> {
-                        (bossTalkBodyCommentLiveData.value?.likedCount ?: 1) - 1
-                    }
-                    null -> {
-                        bossTalkBodyCommentLiveData.value?.likedCount ?: 0
-                    }
+                val response = bossTalkCommentLikeUseCase(
+                    BossTalkCommentLikeRequestEntity(postId = postId.value!!, commentId = commentId)
+                )
+
+                // 서버에서 받은 `liked` 값이 null인지 확인
+                val updatedLike = response.liked ?: run {
+                    Log.d("Null Response", "liked is null")
+                    null  // null로 설정, 추가 처리 가능
                 }
+
+                Log.d("commentLike null", updatedLike.toString())
+
+                // 좋아요 수 업데이트
+                val updatedLikeCount = when (updatedLike) {
+                    true -> (bossTalkBodyCommentLiveData.value?.likedCount ?: 0) + 1
+                    false -> (bossTalkBodyCommentLiveData.value?.likedCount ?: 1) - 1
+                    null -> bossTalkBodyCommentLiveData.value?.likedCount ?: 0
+                }
+
+                // LiveData 업데이트
                 _bossTalkBodyCommentLiveData.value = _bossTalkBodyCommentLiveData.value?.copy(
                     likedCount = updatedLikeCount,
                     liked = updatedLike
                 )
-                _isCommentLike.value = updatedLike
-                Log.d("_isCommentLike ", updatedLike.toString())
 
-            } catch (ex: Exception) { }
+                // UI 업데이트를 위한 LiveData 값 설정
+                _isCommentLike.value = updatedLike
+                Log.d("_isCommentLike", updatedLike.toString())
+
+            } catch (ex: Exception) {
+                Log.e("Error", ex.toString())
+            }
         }
     }
-
     fun postCommentDisLike(commentId:Long){
 //        viewModelScope.launch {
 //            try {

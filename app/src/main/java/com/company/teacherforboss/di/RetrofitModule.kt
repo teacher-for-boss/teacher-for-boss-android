@@ -6,6 +6,8 @@ import com.company.teacherforboss.data.intercepter.AuthInterceptor
 import com.company.teacherforboss.data.tokenmanager.TokenManager
 import com.company.teacherforboss.di.qualifier.Anonymous
 import com.company.teacherforboss.di.qualifier.Auth
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +55,14 @@ object RetrofitModule {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
+    }
+    // Gson 커스터마이징 적용
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return GsonBuilder()
+            .serializeNulls()  // null 값을 명시적으로 직렬화/역직렬화
+            .create()
     }
 
     @Provides

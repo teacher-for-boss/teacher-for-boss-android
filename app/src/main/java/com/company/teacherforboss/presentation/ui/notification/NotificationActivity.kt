@@ -48,20 +48,26 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
                 when(notificationState){
                     is UiState.Success->{
                         val notificationList = notificationState.data.notificationList
-                        val previousLastNotificationId = viewModel.getLastPostId()
-                        val lastNotificationId = notificationList.get(notificationList.lastIndex).notificationId
-                        viewModel.setLastPostId(lastNotificationId)
 
-                        if(previousLastNotificationId.toInt() == 0) notificationAdapter.updateData(notificationList)
-                        else notificationAdapter.addMoreData(notificationList)
-
-                        if(notificationState.data.hasNext) {
-                            binding.btnNotificationMore.visibility = View.VISIBLE
-                            binding.tvNotificationInfo.visibility = View.GONE
-                        }
-                        else  {
+                        if(notificationList.isEmpty()) {
                             binding.btnNotificationMore.visibility = View.GONE
                             binding.tvNotificationInfo.visibility = View.VISIBLE
+                        } else {
+                            val previousLastNotificationId = viewModel.getLastPostId()
+                            val lastNotificationId = notificationList.get(notificationList.lastIndex).notificationId
+                            viewModel.setLastPostId(lastNotificationId)
+
+                            if(previousLastNotificationId.toInt() == 0) notificationAdapter.updateData(notificationList)
+                            else notificationAdapter.addMoreData(notificationList)
+
+                            if(notificationState.data.hasNext) {
+                                binding.btnNotificationMore.visibility = View.VISIBLE
+                                binding.tvNotificationInfo.visibility = View.GONE
+                            }
+                            else  {
+                                binding.btnNotificationMore.visibility = View.GONE
+                                binding.tvNotificationInfo.visibility = View.VISIBLE
+                            }
                         }
                     }
                     else-> Unit

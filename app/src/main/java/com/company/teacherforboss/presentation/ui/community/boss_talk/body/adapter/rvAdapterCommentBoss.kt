@@ -176,14 +176,13 @@ class rvAdapterCommentBoss(
             handleCommentBtnColor()
 
             // 추천 비추천 onclick
-            fun updateComment() {
-                viewModel.getCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
-                    // 추천,비추천 개수 업데이트
-                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
-                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
-                    handleCommentBtnColor()
-                })
-            }
+            viewModel.getCommentLikeLiveData(comment.commentId).observe(lifecycleOwner, Observer {
+                // 추천,비추천 개수 업데이트
+                binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+                binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                handleCommentBtnColor()
+            })
+
 
             binding.commentGood.setOnClickListener {
                 isCommentGood = !isCommentGood
@@ -191,7 +190,6 @@ class rvAdapterCommentBoss(
                     isCommentBad = !isCommentBad
                 }
                 viewModel.postCommentLike(comment.commentId)
-                updateComment()
             }
             binding.commentBad.setOnClickListener {
                 isCommentBad = !isCommentBad
@@ -199,7 +197,6 @@ class rvAdapterCommentBoss(
                     isCommentGood = !isCommentGood
                 }
                 viewModel.postCommentDisLike(comment.commentId)
-                updateComment()
             }
 
             // 답글쓰기

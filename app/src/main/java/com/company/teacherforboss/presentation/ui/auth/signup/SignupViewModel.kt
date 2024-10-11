@@ -359,7 +359,7 @@ class SignupViewModel @Inject constructor(
         }else finalProfileImg=profileImg.value!!
 
         var formatted_openDate=""
-        if(openDate_str.value!=null && openDate_str.value!=""){
+        if(openDate_str.value!=null && openDate_str.value!="YYYY-MM-DD"){
             val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
             formatted_openDate = LocalDate.parse(openDate_str.value, formatter).toString()
             Log.d("test",formatted_openDate.toString())
@@ -469,7 +469,7 @@ class SignupViewModel @Inject constructor(
         else type_num=3
 
         var formatted_openDate=""
-        if(openDate_str.value!=null && openDate_str.value!=""){
+        if(openDate_str.value!=null && openDate_str.value!="YYYY-MM-DD"){
             val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
             formatted_openDate = LocalDate.parse(openDate_str.value, formatter).toString()
             Log.d("test",formatted_openDate.toString())

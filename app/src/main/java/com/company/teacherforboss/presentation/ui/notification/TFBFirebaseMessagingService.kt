@@ -5,12 +5,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.company.teacherforboss.R
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.INFO_NULL
@@ -29,6 +33,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         const val NOTIFICATION_ID="notificationId"
         const val INFO="INFO"
 
+        const val NOTIFICATION="notification"
         const val NOTIFICATIONTYPE="notificationType"
         const val NOTIFICATIONLINKDATA="notificationLinkData"
 
@@ -36,6 +41,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         const val POST="POST"
         const val HOME="HOME"
         const val EXCHANGE="EXCHANGE"
+        const val QUESTION_AUTO_DELETE="QUESTION_AUTO_DELETE"
     }
     @Inject
     lateinit var localDataSource: LocalDataSource
@@ -44,50 +50,53 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
        localDataSource.saveUserInfo(FCM_TOKEN,token)
         Log.d("FCM Log", "Refreshed token: $token")
     }
-
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-
         Log.d("FCM Log", "Message received from: ${remoteMessage.from}")
 
         var title=""
         var body=""
-        remoteMessage.notification?.let {
-            // 로그안찍힘
-            title=it.title!!
-            body=it.body!!
-            Log.d("FCM Log", "Notification Title: $title")
-            Log.d("FCM Log", "Notification Body: $body")
-        }
-        remoteMessage.data.let { data->
-            val fullType=data[NOTIFICATIONTYPE]?:""
-            var type=fullType.split("_")[0]
-//            val notificationId = data[NOTIFICATION_ID]?.toLong() ?: -1L
 
-            var dataIdName:String?=null
-            var dataId:Long?=null
-
-            when(type){
-                QUESTION -> dataIdName=TEACHER_QUESTIONID
-                POST-> dataIdName= BOSS_POSTID
+        remoteMessage.data.let { data ->
+            val notificationDefault = data["default"]?.let { defaultData ->
+                JSONObject(defaultData)
             }
 
-            Log.d("fcm log",remoteMessage.data.toString())
-            dataIdName?.let {
-                dataId=remoteMessage.data[NOTIFICATIONLINKDATA]?.let{
-                    try{
-                        val jsonObject=JSONObject(it)
-                        jsonObject.getLong(dataIdName)
-                    }catch (e:JSONException){null}
+            notificationDefault?.let {
+                val notification = it.optJSONObject(NOTIFICATION)
+                title = notification?.optString("title", "No Title") ?: "No Title"
+                body = notification?.optString("body", "No Body") ?: "No Body"
+
+                Log.d("fcm log",notificationDefault.toString())
+                Log.d("FCM Log", "Notification Title: $title")
+                Log.d("FCM Log", "Notification Body: $body")
+
+                val notificationData=it.optJSONObject("data")
+                val notificationType=notificationData?.optString(NOTIFICATIONTYPE)?:""
+
+                var type=""
+                if(notificationType==QUESTION_AUTO_DELETE) type=notificationType
+                else type=notificationType.split("_")[0]
+
+                var dataIdName: String? = null
+                var dataId: Long? = null
+
+                when(type){
+                    QUESTION -> dataIdName=TEACHER_QUESTIONID
+                    POST-> dataIdName= BOSS_POSTID
                 }
+
+                dataIdName?.let{
+                    val notificationLinkData=notificationData.optJSONObject(NOTIFICATIONLINKDATA)
+                    dataId=notificationLinkData?.optString(dataIdName)?.toLong()
+
+                }
+                Log.d("FCM Log", "Notification type: $type")
+                Log.d("FCM Log", "Notification id: $dataId")
+                Log.d("FCM Log", "Notification data id name: $dataIdName")
+                showNotification(title,body,type,dataId)
             }
-
-            Log.d("FCM Log", "Notification type: $type")
-            Log.d("FCM Log", "Notification id: $dataId")
-            showNotification(title,body,type,dataId)
         }
-
-
     }
 
     private fun showNotification(title: String, body: String,type:String,dataId:Long?) {
@@ -97,13 +106,18 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         }
         val notificationId=Random().nextInt()
 
+        val uniqueRequestCode = Random().nextInt() // 각 알림에 대해 고유한 요청 코드 생성
+
         // 화면 전환 도착지
         val notificationNavigationType=NotificationNavigationType.from(type)
         val destinationActivity=notificationNavigationType?.destinationActivity
+        Log.d("fcm log destination activity",destinationActivity.toString())
 
         val intent=Intent(this,destinationActivity).apply{
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            putExtra(NOTIFICATION_ID,notificationId)
+//            putExtra(NOTIFICATION_ID,notificationId)
+            if (type== QUESTION_AUTO_DELETE) putExtra(FRAGMENT_DESTINATION, TEACHER_TALK)
+            Log.d("fcm log data id",dataId.toString())
             dataId?.let {
                 when(type){
                     QUESTION->putExtra(TEACHER_QUESTIONID,it)
@@ -113,16 +127,18 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         }
 
         val pendingIntent=PendingIntent.getActivity(
-            this,0,intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            this,uniqueRequestCode,intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
+        val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.logo_teacherforboss)
 
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
-            .setSmallIcon(R.drawable.logo_teacherforboss)
+            .setLargeIcon(largeIcon)
             .setContentTitle(title)
             .setContentText(body)
             .setContentInfo(INFO)
+            .setColor(ContextCompat.getColor(this, R.color.Primary01))
             .setContentIntent(pendingIntent)
         notificationManager.notify(notificationId, notificationBuilder.build())
     }

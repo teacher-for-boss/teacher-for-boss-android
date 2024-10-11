@@ -12,7 +12,8 @@ enum class NotificationNavigationType(val destinationActivity: Class<out Activit
     QUESTION(TeacherTalkBodyActivity::class.java, TEACHER_QUESTIONID),
     POST(BossTalkBodyActivity::class.java, BOSS_POSTID),
     HOME(MainActivity::class.java),
-    EXCHANGE(ExchangeHistoryActivity::class.java);
+    EXCHANGE(ExchangeHistoryActivity::class.java),
+    QUESTION_AUTO_DELETE(MainActivity::class.java);
 
     companion object{
         fun from(type:String):NotificationNavigationType?{

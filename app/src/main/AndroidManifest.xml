@@ -105,6 +105,10 @@
             android:exported="false"
             android:theme="@style/Theme.TeacherForBoss" />
         <activity
+            android:name="com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TeacherForBoss" />
+        <activity
             android:name="com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity"
             android:exported="true"
             android:theme="@style/Theme.TeacherForBoss" />
@@ -176,6 +180,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"/>
+
     </application>
 
 </manifest>

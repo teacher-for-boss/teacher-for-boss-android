@@ -65,7 +65,7 @@ class ModifyProfileViewModel @Inject constructor(
     val isUserImgSelected: LiveData<Boolean>
         get() = _isUserImgSelected
 
-    var _profileImg= MutableLiveData<String>("https://teacherforboss-bucket.s3.ap-northeast-2.amazonaws.com/profiles/common/profile_cat_owner.png")
+    var _profileImg= MutableLiveData<String>()
     val profileImg: LiveData<String>
         get() = _profileImg
 
@@ -75,6 +75,12 @@ class ModifyProfileViewModel @Inject constructor(
 
     val _profilePresignedUrl= MutableLiveData<String>()
     val profilePresignedUrl: LiveData<String> =_profilePresignedUrl
+
+    var _uuid=MutableLiveData<String?>(null)
+    val uuid:LiveData<String?> = _uuid
+
+    var _lastIndex=MutableLiveData<Int>(0)
+    val lastIndex :LiveData<Int> = _lastIndex
 
     var _fileType = MutableLiveData<String>("")
     val fileType: LiveData<String> get()=_fileType
@@ -139,6 +145,13 @@ class ModifyProfileViewModel @Inject constructor(
             _nicknameCount.value = "${it.length}/10"
         }
     }
+    fun setUuid(uuid:String){
+        _uuid.value=uuid
+    }
+    fun setLastIndex(index:Int){
+        _lastIndex.value=index
+    }
+
     fun setPhoneReveal(reveal: Boolean) {
         _phoneReveal.value = reveal
     }
@@ -236,8 +249,8 @@ class ModifyProfileViewModel @Inject constructor(
             try{
                 val presignedUrlListEntity= presignedUrlUseCase(
                     getPresingedUrlEntity(
-                        uuid = null,
-                        lastIndex=0,
+                        uuid = uuid.value,
+                        lastIndex=lastIndex.value?:0,
                         imageCount = 1,
                         origin="profiles"
                     )
@@ -410,4 +423,8 @@ class ModifyProfileViewModel @Inject constructor(
         isModified.value = modified
     }
 
+    fun checkIsDefaultProfileImg():Boolean{
+        val regex="/profiles/common".toRegex()
+        return regex.containsMatchIn(profileImg.value.toString())
+    }
 }

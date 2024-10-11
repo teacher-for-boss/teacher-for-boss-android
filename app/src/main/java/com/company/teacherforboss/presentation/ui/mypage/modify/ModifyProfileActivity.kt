@@ -106,9 +106,9 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
 
     private fun openGallery() {
         val gallery =
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            gallery.type = "image/*"
-            startActivityForResult(gallery, 100)
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        gallery.type = "image/*"
+        startActivityForResult(gallery, 100)
 
     }
 
@@ -138,13 +138,25 @@ class ModifyProfileActivity : BindingActivity<ActivityModifyProfileBinding>(R.la
                     CustomSnackBar.make(binding.root, getString(R.string.image_dialog_file_size_5MB), 2000).show()
                     return
                 }
-            }
-            if (imageUri != null) {
                 viewModel.setIsUserImgSelected(true)
                 viewModel.setUserImageUri(imageUri)
-                viewModel.getPresignedUrlList()
             }
+
+            if(!viewModel.checkIsDefaultProfileImg()) getModifyImgUuid()
+            viewModel.getPresignedUrlList()
         }
+    }
+
+    private fun getModifyImgUuid(){
+        val regex_uuid = "[0-9a-fA-F-]{36}".toRegex()
+        val uuid=regex_uuid.find(viewModel.profileImg.value.toString())?.value.toString()
+
+        val regex_index = Regex("\\d$") // Regex to match the last digit in the string
+        val index=regex_index.find(viewModel.profileImg.value.toString())?.value.toString()
+
+        viewModel.setUuid(uuid)
+        viewModel.setLastIndex(index.toInt())
+
     }
 
     fun requestPermissions() {

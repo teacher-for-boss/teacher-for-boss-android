@@ -38,15 +38,14 @@ class LoginViewModel @Inject constructor(
     val isSocialLoginSinup : LiveData<Boolean>
         get() = _isSocialLoginSignup
 
+    val model = Build.MODEL.toString() // 모델명
+    val brand = Build.BRAND.toString() // 브랜드명
+    val device = Build.DEVICE.toString() // 기기명
+    val product = Build.PRODUCT.toString() // 제품명
 
     @Inject lateinit var localDataSource: LocalDataSource
 
     fun loginUser(email:String,pwd:String){
-
-        val model = Build.MODEL.toString() // 모델명
-        val brand = Build.BRAND.toString() // 브랜드명
-        val device = Build.DEVICE.toString() // 기기명
-        val product = Build.PRODUCT.toString() // 제품명
 
         Log.d("Test",("{${model}/$brand/$device/$product"))
         loginResult.value= BaseResponse.Loading()
@@ -79,7 +78,11 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val socialLoginRequest = SocialLoginRequest(
-                    email = email
+                    email = email,
+                    deviceInfo = SocialLoginRequest.DeviceInfo(
+                        fcmToken = localDataSource.getUserInfo(FCM_TOKEN),
+                        platform = model+"/"+brand
+                    )
                 )
 
                 val normalizedType = type.uppercase()

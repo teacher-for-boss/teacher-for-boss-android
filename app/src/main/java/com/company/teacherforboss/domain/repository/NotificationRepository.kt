@@ -5,7 +5,7 @@ import com.company.teacherforboss.domain.model.notification.NotificationReadEnti
 import com.company.teacherforboss.domain.model.notification.NotificationSettingEntity
 
 interface NotificationRepository {
-    suspend fun getNotifications():Result<NotificationListEntity>
+    suspend fun getNotifications(lastNotificationId: Long):Result<NotificationListEntity>
 
     suspend fun readNotification(notificatioinId:Long):Result<NotificationReadEntity>
 

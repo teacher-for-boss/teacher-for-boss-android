@@ -7,7 +7,7 @@ import com.company.teacherforboss.data.model.response.notification.NotificationS
 import com.company.teacherforboss.util.base.BaseResponse
 
 interface NotificationRemoteDataSource {
-    suspend fun getNotifications():BaseResponse<NotificationListDto>
+    suspend fun getNotifications(notificationRequestDto: NotificationRequestDto):BaseResponse<NotificationListDto>
 
     suspend fun readNotification(notificationRequestDto: NotificationRequestDto):BaseResponse<NotificationReadDto>
 

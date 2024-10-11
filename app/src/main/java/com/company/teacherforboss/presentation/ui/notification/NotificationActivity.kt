@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -35,17 +35,35 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
 
         setNotificationView()
         setFirebaseMessaging()
+        addListeners()
     }
 
     fun setNotificationView(){
-        notificationAdapter = NotificationAdapter(this, emptyList())
+        notificationAdapter = NotificationAdapter(this, mutableListOf())
 
-        viewModel.getNotificatioins()
+        viewModel.getNotifications()
 
         viewModel.notificationState.flowWithLifecycle(this.lifecycle)
             .onEach { notificationState->
                 when(notificationState){
-                    is UiState.Success-> notificationAdapter=NotificationAdapter(this,notificationState.data.notificationList)
+                    is UiState.Success->{
+                        val notificationList = notificationState.data.notificationList
+                        val previousLastNotificationId = viewModel.getLastPostId()
+                        val lastNotificationId = notificationList.get(notificationList.lastIndex).notificationId
+                        viewModel.setLastPostId(lastNotificationId)
+
+                        if(previousLastNotificationId.toInt() == 0) notificationAdapter.updateData(notificationList)
+                        else notificationAdapter.addMoreData(notificationList)
+
+                        if(notificationState.data.hasNext) {
+                            binding.btnNotificationMore.visibility = View.VISIBLE
+                            binding.tvNotificationInfo.visibility = View.GONE
+                        }
+                        else  {
+                            binding.btnNotificationMore.visibility = View.GONE
+                            binding.tvNotificationInfo.visibility = View.VISIBLE
+                        }
+                    }
                     else-> Unit
                 }
             }.launchIn(this.lifecycleScope)
@@ -61,6 +79,12 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
     fun readNotification(){
         val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
         viewModel.readNotification(notifiationId)
+    }
+
+    private fun addListeners() {
+        binding.btnNotificationMore.setOnClickListener {
+            viewModel.getNotifications()
+        }
     }
 
     fun updateNotificationState(){

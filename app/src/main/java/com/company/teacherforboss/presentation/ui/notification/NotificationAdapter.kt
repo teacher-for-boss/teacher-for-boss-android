@@ -10,7 +10,7 @@ import com.company.teacherforboss.databinding.RvItemNotificationBinding
 import com.company.teacherforboss.domain.model.notification.NotificationEntity
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class NotificationAdapter(context: Context, private val notificationList:List<NotificationEntity>
+class NotificationAdapter(context: Context, private var notificationList: MutableList<NotificationEntity>
 ):RecyclerView.Adapter<NotificationAdapter.AlarmItemViewHolder>() {
     private val inflater by lazy{LayoutInflater.from(context)}
     private val context=context
@@ -19,10 +19,10 @@ class NotificationAdapter(context: Context, private val notificationList:List<No
             RecyclerView.ViewHolder(binding.root){
                 fun onBind(notificationEntity: NotificationEntity){
                     with(binding){
-                        icNotification.setImageResource(notificationEntity.notificationType.notificationIcon)
-                        tvNotificationType.text=context.resources.getString(notificationEntity.notificationType.notificationType)
-                        tvNotificationTitle.text=notificationEntity.contents
-//                        tvNotificationContent.text=dummyNotificationEntity.notificationContent
+                        icNotification.setImageResource(notificationEntity.type.notificationIcon)
+                        tvNotificationType.text=context.resources.getString(notificationEntity.type.notificationType)
+                        tvNotificationTitle.text=notificationEntity.title
+                        tvNotificationContent.text=notificationEntity.content
                         tvNotificationLeftTime.text=LocalDateFormatter.extractDate(notificationEntity.createdAt)
 
                         if(notificationEntity.read){
@@ -45,5 +45,19 @@ class NotificationAdapter(context: Context, private val notificationList:List<No
 
     override fun onBindViewHolder(holder: AlarmItemViewHolder, position: Int) {
        holder.onBind(notificationList[position])
+    }
+
+    fun updateData(newNotificationList: List<NotificationEntity>) {
+        notificationList = newNotificationList.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun addMoreData(newNotificationList: List<NotificationEntity>) {
+        val currentSize = notificationList.size
+        val newItemSize = newNotificationList.size
+        if(newItemSize > 0) {
+            notificationList.addAll(newNotificationList)
+            notifyItemRangeInserted(currentSize,newItemSize)
+        }
     }
 }

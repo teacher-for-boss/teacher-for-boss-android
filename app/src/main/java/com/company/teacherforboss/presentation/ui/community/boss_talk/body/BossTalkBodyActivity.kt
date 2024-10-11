@@ -303,13 +303,20 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             with(binding) {
                 bodyTitle.text = body.title
                 bodyBody.text = body.content
-                profileLevel.text = body.memberInfo.toMemberDto().level
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
                 commentNumber.text = getString(R.string.comment_cnt, body.commentCount)
 
-                if (body.memberInfo.toMemberDto().role == TEACHER)
+                if (body.memberInfo.toMemberDto().role == TEACHER) {
                     userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
-                else  userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
+                    profileLevel.text = body.memberInfo.toMemberDto().level
+                    userLevel.visibility = View.VISIBLE
+                    profileLevel.visibility = View.VISIBLE
+
+                }
+                else {
+                    userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
+                    profileStar.visibility ==View.GONE
+                }
             }
 
             if (body.imageUrlList.isNotEmpty()) {

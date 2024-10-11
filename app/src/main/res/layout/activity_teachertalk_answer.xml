@@ -149,7 +149,7 @@
                     android:id="@+id/body_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/5000"
+                    android:text="0/3000"
                     android:textSize="14dp"
                     android:textColor="@color/Gray400"
                     app:layout_constraintBottom_toBottomOf="@id/input_answer"

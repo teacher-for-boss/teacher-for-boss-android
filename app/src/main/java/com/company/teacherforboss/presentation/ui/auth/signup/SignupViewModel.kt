@@ -463,6 +463,8 @@ class SignupViewModel @Inject constructor(
         val dateString = openDate_str.value
         val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
         val formatted_openDate = LocalDate.parse(dateString, formatter)
+        val birthDateStr=birthDate.value
+        val formatted_BirthDate=birthDateStr?.replace(Regex("\\+"), "-")
         Log.d("test",formatted_openDate.toString())
 
         viewModelScope.launch {
@@ -475,7 +477,7 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:null,
+                        birthDate=formatted_BirthDate?:null,
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
                         profileImg=profileImg.value?:null,
@@ -504,7 +506,7 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:null,
+                        birthDate=formatted_BirthDate?:null,
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
                         profileImg=profileImg.value?:"null",

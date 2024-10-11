@@ -365,7 +365,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
 
         //현재 글자수 업데이트
         viewModel.textBodyLength.observe(this, Observer{ length->
-            binding.bodyLength.text = "$length/5000"
+            binding.bodyLength.text = "$length/3000"
         })
 
         //최대글자수 지정

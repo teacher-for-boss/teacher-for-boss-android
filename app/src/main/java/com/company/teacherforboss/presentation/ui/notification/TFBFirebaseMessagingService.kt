@@ -135,7 +135,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
             .setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
             .setSmallIcon(R.drawable.teacherforboss_small_icon)
-            .setLargeIcon(largeIcon)
+//            .setLargeIcon(largeIcon)
             .setContentTitle(title)
             .setContentText(body)
             .setContentInfo(INFO)

@@ -60,7 +60,7 @@
                 android:id="@+id/profile_star"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:src="@drawable/start_profile"
+                android:src="@drawable/iv_star"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

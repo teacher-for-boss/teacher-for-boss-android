@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
@@ -218,6 +219,11 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
             binding.vpImgSlider.visibility = View.VISIBLE
             binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imgUrlList)
 
+            binding.vpImgSlider.offscreenPageLimit = 1
+
+
+
+
             if(viewModel.imgUrlList.size > 1) {
                 binding.tabIndicator.visibility = View.VISIBLE
                 TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->
@@ -283,9 +289,13 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
         }
     }
 
+    private var currentImagePosition = 0
+
     private fun setBodyView() {
         viewModel.bossTalkBodyLiveData.observe(this, Observer { body ->
-            if (body.hashtagList.isNotEmpty()) viewModel.setTagList(body.hashtagList as ArrayList<String>)
+            if (body.hashtagList.isNotEmpty()) {
+                viewModel.setTagList(body.hashtagList as ArrayList<String>)
+            }
 
             updateLikeUI(body.liked)
             updateBookmarkUI(body.bookmarked)
@@ -304,10 +314,28 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
             if (body.imageUrlList.isNotEmpty()) {
                 viewModel.imgUrlList = body.imageUrlList
+
+                binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imgUrlList)
+
+                binding.vpImgSlider.setCurrentItem(currentImagePosition, false)
+
+                binding.vpImgSlider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        currentImagePosition = position
+                    }
+                })
+
+                if (viewModel.imgUrlList.size > 1) {
+                    binding.tabIndicator.visibility = View.VISIBLE
+                    TabLayoutMediator(binding.tabIndicator, binding.vpImgSlider) { tab, position ->
+                        val tabView = LayoutInflater.from(this).inflate(R.layout.indicator_dot, null)
+                        tab.customView = tabView
+                    }.attach()
+                }
             }
 
             binding.vpImgSlider.setOnClickListener {
-                val selectedImageUrl = viewModel.imgUrlList[0]
+                val selectedImageUrl = viewModel.imgUrlList[currentImagePosition] // 현재 보고 있는 이미지
                 val intent = Intent(it.context, FullScreenImageActivity::class.java).apply {
                     putExtra("IMAGE_URL", selectedImageUrl)
                 }

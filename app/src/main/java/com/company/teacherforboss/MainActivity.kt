@@ -50,6 +50,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
+    private var isResultDialogShown = false
 
     private val notificationViewModel by viewModels<NotificationViewModel>()
     private val notificationSettingViewModel by viewModels<NotificationSettingViewModel>()
@@ -281,7 +282,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                             notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
                             notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
 
-                            showDialogFragment("Result")
+                            if(!isResultDialogShown) {
+                                showDialogFragment("Result")
+                                isResultDialogShown = true
+                            }
                         }
                         else -> Unit
                     }

@@ -134,6 +134,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.teacherforboss_small_icon)
             .setLargeIcon(largeIcon)
             .setContentTitle(title)
             .setContentText(body)

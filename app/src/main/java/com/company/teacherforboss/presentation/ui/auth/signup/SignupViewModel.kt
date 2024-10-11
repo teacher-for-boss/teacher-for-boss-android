@@ -358,10 +358,18 @@ class SignupViewModel @Inject constructor(
             getFilteredPresingedUrl()?.let { finalProfileImg=it }
         }else finalProfileImg=profileImg.value!!
 
-        val dateString = openDate_str.value
-        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
-        val formatted_openDate = LocalDate.parse(dateString, formatter)
-        Log.d("test",formatted_openDate.toString())
+        var formatted_openDate=""
+        if(openDate_str.value!=null && openDate_str.value!=""){
+            val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+            formatted_openDate = LocalDate.parse(openDate_str.value, formatter).toString()
+            Log.d("test",formatted_openDate.toString())
+        }
+
+        var formatted_BirthDate=""
+        if(birthDate.value!=null && birthDate.value!=""){
+            formatted_BirthDate=birthDate.value.toString().replace(Regex("\\+"), "-")
+            Log.d("test",formatted_BirthDate.toString())
+        }
 
         viewModelScope.launch {
             // boss
@@ -375,7 +383,7 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:null,
+                        birthDate=formatted_BirthDate?:null,
                         phone = phone.value.toString(),
                         emailAuthId = emailAuthId.value!!,//이메일인증식별자,
                         phoneAuthId = phoneAuthId.value!!, //전화번호인증식별자
@@ -411,14 +419,14 @@ class SignupViewModel @Inject constructor(
                         name = name.value.toString(),
                         nickname=nickname.value?:"default",
                         gender = gender.value!!,
-                        birthDate=birthDate.value?:null,
+                        birthDate=formatted_BirthDate?:null,
                         phone = phone.value.toString(),
                         emailAuthId = emailAuthId.value!!,
                         phoneAuthId = phoneAuthId.value!!,
                         profileImg=profileImg.value?:"null",
                         businessNumber=businessNum.value?:"null",
                         representative=representative.value?:"사장님",
-                        openDate=formatted_openDate.toString()?: "null",
+                        openDate=formatted_openDate?: "null",
                         field=field.value?:"null",
                         career=_carrer_str.value!!.toInt(),
                         introduction = introduction.value?:"",
@@ -460,12 +468,19 @@ class SignupViewModel @Inject constructor(
         if(type=="KAKAO") type_num=2
         else type_num=3
 
-        val dateString = openDate_str.value
-        val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
-        val formatted_openDate = LocalDate.parse(dateString, formatter)
-        val birthDateStr=birthDate.value
-        val formatted_BirthDate=birthDateStr?.replace(Regex("\\+"), "-")
-        Log.d("test",formatted_openDate.toString())
+        var formatted_openDate=""
+        if(openDate_str.value!=null && openDate_str.value!=""){
+            val formatter = DateTimeFormatter.ofPattern("yyyy-M-d")
+            formatted_openDate = LocalDate.parse(openDate_str.value, formatter).toString()
+            Log.d("test",formatted_openDate.toString())
+        }
+
+        var formatted_BirthDate=""
+        if(birthDate.value!=null && birthDate.value!=""){
+            formatted_BirthDate=birthDate.value.toString().replace(Regex("\\+"), "-")
+            Log.d("test",formatted_BirthDate.toString())
+
+        }
 
         viewModelScope.launch {
             // boss

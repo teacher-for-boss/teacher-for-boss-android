@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkBodyBinding
@@ -260,6 +261,8 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         }
     }
 
+    private var currentImagePosition = 0
+
     @SuppressLint("ResourceType")
     fun setRecyclerView() {
         // FlexboxLayoutManager
@@ -275,6 +278,13 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         if (viewModel.imageUrlList.isNotEmpty()) {
             binding.vpImgSlider.visibility = View.VISIBLE
             binding.vpImgSlider.adapter = ImgSliderAdapter(viewModel.imageUrlList)
+            binding.vpImgSlider.setCurrentItem(currentImagePosition, false)
+
+            binding.vpImgSlider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    currentImagePosition = position
+                }
+            })
 
             if(viewModel.imageUrlList.size > 1) {
                 binding.tabIndicator.visibility = View.VISIBLE

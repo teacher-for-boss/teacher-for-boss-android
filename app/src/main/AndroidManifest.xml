@@ -181,8 +181,8 @@
             </intent-filter>
         </service>
 
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"/>
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_icon"/>-->
 
     </application>
 

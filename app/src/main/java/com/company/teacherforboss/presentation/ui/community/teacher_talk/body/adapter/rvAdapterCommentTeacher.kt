@@ -124,21 +124,20 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             handleCommentBtnColor()
 
             // 추천, 비추천 onclick
-            fun updateComment() {
-                viewModel.getAnswerLikeLiveData(answer.answerId).observe(lifecycleOwner, Observer {
-                    // 추천,비추천 개수 업데이트
-                    binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
-                    binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
-                    handleCommentBtnColor()
-                })
-            }
+
+            viewModel.getAnswerLikeLiveData(answer.answerId).observe(lifecycleOwner, Observer {
+                // 추천,비추천 개수 업데이트
+                binding.commentGoodTv.text = context.getString(R.string.recommed_option, it.likedCount)
+                binding.commentBadTv.text = context.getString(R.string.not_recommed_option, it.dislikedCount)
+                handleCommentBtnColor()
+            })
+
             binding.commentGood.setOnClickListener {
                 isCommentGood = !isCommentGood
                 if(isCommentGood && isCommentBad) {
                     isCommentBad = !isCommentBad
                 }
                 viewModel.postAnswerLike(answer.answerId)
-                updateComment()
             }
             binding.commentBad.setOnClickListener {
                 isCommentBad = !isCommentBad
@@ -146,7 +145,6 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
                     isCommentGood = !isCommentGood
                 }
                 viewModel.postAnswerDisLike(answer.answerId)
-                updateComment()
             }
 
             // image vp

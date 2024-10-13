@@ -76,16 +76,16 @@ class HomeViewModel @Inject constructor(
                 R.string.home_teacher_talk_operate,
             ),
             TeacherTalkShortCutModel(
+                R.drawable.ic_category_area,
+                R.string.home_teacher_talk_area,
+            ),
+            TeacherTalkShortCutModel(
                 R.drawable.ic_category_marketing_invalid,
                 R.string.home_teacher_talk_marketing,
             ),
             TeacherTalkShortCutModel(
                 R.drawable.ic_category_hygiene_invalid,
                 R.string.home_teacher_talk_hygiene,
-            ),
-            TeacherTalkShortCutModel(
-                R.drawable.ic_category_area_invalid,
-                R.string.home_teacher_talk_area,
             ),
             TeacherTalkShortCutModel(
                 R.drawable.ic_category_interior_invalid,

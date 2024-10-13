@@ -30,7 +30,7 @@ class TeacherTalkMainViewModel @Inject constructor(
     val lastQuestionId: LiveData<Long>
         get() = _lastQuestionId
     val categoryList = arrayListOf(
-        "전체", "세무", "노무", "노하우" ,"마케팅", "위생", "상권", "인테리어"
+        "전체", "세무", "직원관리", "노하우", "상권", "마케팅", "위생", "인테리어"
     )
     var lastQuestionIdMap= mutableMapOf<String,Long>().apply {
         categoryList.forEach { put(it, DEFAULT_LASTID) }

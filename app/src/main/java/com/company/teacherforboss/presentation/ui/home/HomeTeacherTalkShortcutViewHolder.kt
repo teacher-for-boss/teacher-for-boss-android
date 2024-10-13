@@ -14,7 +14,7 @@ class HomeTeacherTalkShortcutViewHolder(
             teacherTalkShortcutItem = item
             ivCategoryImage.setImageResource(item.shortCutImage)
             binding.viewCategory.setOnClickListener {
-                if (tvCategoryName.text in listOf("전체", "세무", "노무", "노하우")) {
+                if (tvCategoryName.text in listOf("전체", "세무", "직원관리", "노하우", "상권")) {
                     itemClickListener?.onItemClicked(binding.tvCategoryName.text.toString())
                 }
             }

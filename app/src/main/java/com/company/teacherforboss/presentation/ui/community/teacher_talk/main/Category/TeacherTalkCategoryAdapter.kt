@@ -48,7 +48,7 @@ class TeacherTalkCategoryAdapter(
                 } else if (position == previousItemPosition) {
                     setTextColor(Color.parseColor("#A15AF2"))  // purple500
                     setBackgroundResource(R.drawable.background_radius8_purple200)
-                } else if (category in listOf("전체", "세무", "노무", "노하우")){
+                } else if (category in listOf("전체", "세무", "직원관리", "노하우", "상권")){
                     setTextColor(Color.parseColor("#A15AF2"))  // purple500
                     setBackgroundResource(R.drawable.background_radius8_purple200)
                 } else{

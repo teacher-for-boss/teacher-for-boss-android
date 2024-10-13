@@ -128,7 +128,7 @@
                     android:layout_height="600dp"
                     android:background="@color/transparent"
                     android:gravity="top"
-                    android:hint="※ 티처Talk 질문 작성 요령\n
+                    android:hint="※ 티처Talk 답변 작성 요령\n
 • 구체적이고 양질의 답변을 남길 수록 채택 확률이 올라가요.\n\n
 
 ※ 티처Talk 답변 정책\n

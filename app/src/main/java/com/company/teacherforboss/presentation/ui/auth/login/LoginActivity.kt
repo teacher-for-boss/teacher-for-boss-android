@@ -40,6 +40,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_EMAIL_AGREEMENT
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_KAKAO
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_SMS_AGREEMENT
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.auth.AuthApiClient
@@ -393,13 +394,19 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                             "\n회원번호: ${userServiceTerms.id}" +
                             "\n동의한 약관: \n${userServiceTerms.serviceTerms?.joinToString("\n")}"
                 )
+                val termsTags = userServiceTerms.serviceTerms?.map { it.tag }
 
-                val AgreementMarketingInfoSms=userServiceTerms.serviceTerms!![1].agreed
-                val AgreementMarketingInfoEmail=userServiceTerms.serviceTerms!![2].agreed
+                var AgreementMarketingKakao = false
+                var AgreementMarketingInfoEmail = false
+                var AgreementMarketingInfoSms = false
+
+                if(termsTags!!.contains("AgreementMarketingInfoKakao")) { AgreementMarketingKakao = true }
+                if(termsTags!!.contains("AgreementMarketingInfoEmail")) { AgreementMarketingInfoEmail = true }
+                if(termsTags!!.contains("AgreementMarketingInfoSms")) { AgreementMarketingInfoSms = true }
+
+                localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_KAKAO, AgreementMarketingKakao)
                 localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_SMS_AGREEMENT,AgreementMarketingInfoSms)
                 localDataSource.saveMarketingAgreementStatus(SOCIAL_MARKETING_EMAIL_AGREEMENT, AgreementMarketingInfoEmail)
-
-                // localDataSource.getMarketingAgreementStatus(SOCIAL_MARKETING_SNS_AGREEMENT)
             }
         }
     }

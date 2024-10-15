@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentSignupStartBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.boss.BossProfileFragment
+import com.company.teacherforboss.presentation.ui.auth.signup.teacher.AccountFragment
 import com.company.teacherforboss.presentation.ui.auth.signup.teacher.BusinessInfoFragment
 import com.company.teacherforboss.signup.fragment.EmailFragment
 import com.company.teacherforboss.util.base.BindingFragment
@@ -60,7 +61,8 @@ class SignupStartFragment : BindingFragment<FragmentSignupStartBinding>(R.layout
             } else {
                 viewModel.setTeacherMode()
                 viewModel.changeToTeacherPageSize()
-                activity.gotoNextFragment(BusinessInfoFragment())
+//                activity.gotoNextFragment(BusinessInfoFragment())
+                activity.gotoNextFragment(AccountFragment())
             }
         }
     }

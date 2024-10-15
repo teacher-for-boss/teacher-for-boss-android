@@ -306,7 +306,7 @@ class SignupActivity: BindingActivity<ActivitySignupBinding>(R.layout.activity_s
         // 온보딩1, 보스 1, 티처 6, 기본 회원가입 3
         private const val DEFAULT_PROGRESSBAR=1f
         private const val BOSS_FRAGMENT_SZIE=5f
-        private const val TEACHER_FRAGMENT_SZIE=10f
+        private const val TEACHER_FRAGMENT_SZIE=8f
         private const val DEFAULT_SIGNUP_SIZE=3f
     }
 

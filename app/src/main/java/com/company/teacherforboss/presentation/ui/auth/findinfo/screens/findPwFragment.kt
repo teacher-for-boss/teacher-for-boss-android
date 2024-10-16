@@ -47,20 +47,14 @@ class findPwFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController=Navigation.findNavController(view)
 
+        addListeners()
+
         binding.timeOverText.paintFlags = binding.timeOverText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         val emailVerifyBtn = binding.emailVerifyBtn
         viewModel.email.observe(viewLifecycleOwner){
             if(viewModel.emailCheck()) emailVerifyBtn.isEnabled = true
             else emailVerifyBtn.isEnabled = false
-        }
-
-
-        //이메일 인증하기 버튼 클릭시
-        binding.emailVerifyBtn.setOnClickListener {
-            viewModel.emailUser()
-            emailVerifyBtn.isEnabled = false
-
         }
 
         //이메일 인증결과 수신
@@ -92,12 +86,6 @@ class findPwFragment : Fragment() {
 
         }
 
-        //코드 입력 후 확인버튼
-        binding.emailConfirmBtn.setOnClickListener {
-            val emailCode=binding.emailCodeBox.text.toString()
-            viewModel.emailCheckUser(emailCode)
-        }
-
         //email check 결과
         viewModel.emailCheckResult.observe(viewLifecycleOwner) {
             when(it){
@@ -117,17 +105,10 @@ class findPwFragment : Fragment() {
                 is BaseResponse.Error->{
                     //showToast(it.msg!!)
                     binding.checkVery.visibility=View.VISIBLE
-                    binding.timeOverText.translationY = 50f
-
                 }
 
                 else -> {}
             }
-        }
-
-
-        binding.findPwBtn.setOnClickListener {
-            viewModel.postFindPw()
         }
 
         // post auth/find/password 결과 수신
@@ -151,23 +132,54 @@ class findPwFragment : Fragment() {
 
             }
         }
+    }
 
-        // 키보드 숨김
-        binding.root.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+    private fun addListeners() {
+        with(binding) {
+            // 이메일 인증하기 버튼 클릭시
+            emailVerifyBtn.setOnClickListener {
+                viewModel.emailUser()
+                emailVerifyBtn.isEnabled = false
             }
-            false
+
+            // 코드 입력 후 확인버튼
+            emailConfirmBtn.setOnClickListener {
+                val emailCode=binding.emailCodeBox.text.toString()
+                viewModel.emailCheckUser(emailCode)
+            }
+
+            findPwBtn.setOnClickListener {
+                viewModel.postFindPw()
+            }
+
+            // 인증번호 다시 받기
+            timeOverText.setOnClickListener {
+                if (viewModel.PwtimeOverState.value == true) {
+                    viewModel.emailUser()
+                    binding.emailCodeBox.text.clear()
+                } else {
+                    if (timeOverText.text == getString(R.string.timeover_false)) {
+                        timeOverText.text = getString(R.string.timeover_true)
+                    } else {
+                        viewModel.emailUser()
+                        binding.emailCodeBox.text.clear()
+                        timeOverText.text = getString(R.string.timeover_false)
+                    }
+                }
+            }
+
+            // 키보드 숨김
+            root.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+                }
+                false
+            }
+
         }
-
-
     }
 
-
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
     fun showToast(msg:String){
         Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
     }

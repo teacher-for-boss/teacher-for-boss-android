@@ -32,7 +32,7 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
-        val activity=activity as SignupActivity
+        addListeners()
 
         binding.timeOverText.paintFlags = binding.timeOverText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
@@ -41,12 +41,7 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
             viewModel.email_check.value=emailRegex.matches(viewModel.liveEmail.value.toString())
         }
 
-        //이메일 인증하기버튼 눌렀을때
-        binding.emailVerifyBtn.setOnClickListener {
-            binding.veryInfo.visibility=View.VISIBLE
-            binding.emailVerifyBtn.isEnabled = false
-            viewModel.emailUser() //서버로 auth/email
-        }
+
         //이메일 인증결과 수신
         viewModel.emailResult.observe(viewLifecycleOwner){
             when(it){
@@ -80,11 +75,6 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
                 }
                 else -> {}
             }
-        }
-        //이메일 코드 입력 후 확인 버튼
-        binding.emailConfirmBtn.setOnClickListener {
-            emailCode=binding.emailCodeBox.text.toString()
-            viewModel.emailCheckUser(emailCode) //서버로 /auth/email/check
         }
 
         viewModel.emailCheckResult.observe(viewLifecycleOwner){
@@ -128,25 +118,48 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
                 else -> {}
             }
         }
+    }
+
+    private fun addListeners() {
         with(binding) {
+            // 이메일 인증하기버튼 눌렀을때
+            emailVerifyBtn.setOnClickListener {
+                veryInfo.visibility=View.VISIBLE
+                emailVerifyBtn.isEnabled = false
+                viewModel.emailUser() //서버로 auth/email
+            }
+
+            // 이메일 코드 입력 후 확인 버튼
+            emailConfirmBtn.setOnClickListener {
+                emailCode=binding.emailCodeBox.text.toString()
+                viewModel.emailCheckUser(emailCode) //서버로 /auth/email/check
+            }
+
+            // 인증번호 다시 받기
             timeOverText.setOnClickListener{
                 if (viewModel.timeOverState.value == true){
                     viewModel.emailUser()
                     binding.emailCodeBox.text.clear()
                 }
+                else {
+                    if(timeOverText.text == getString(R.string.timeover_false)) {
+                        timeOverText.text = getString(R.string.timeover_true)
+                    }
+                    else  {
+                        viewModel.emailUser()
+                        binding.emailCodeBox.text.clear()
+                    }
+                }
             }
+
             nextBtn.setOnClickListener {
+                val activity=activity as SignupActivity
                 viewModel.plusCurrentPage()
                 activity.gotoNextFragment(PasswordFragment())
             }
         }
     }
 
-
-
-    fun processError(msg:String?){
-        showToast("error:"+msg)
-    }
     fun showToast(msg:String){
         Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show()
     }

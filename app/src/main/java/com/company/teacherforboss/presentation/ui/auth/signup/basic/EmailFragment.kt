@@ -1,5 +1,6 @@
 package com.company.teacherforboss.signup.fragment
 
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +33,8 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
         binding.lifecycleOwner=this
 
         val activity=activity as SignupActivity
+
+        binding.timeOverText.paintFlags = binding.timeOverText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         viewModel.liveEmail.observe(viewLifecycleOwner){
             val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")

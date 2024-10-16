@@ -2,6 +2,7 @@ package com.company.teacherforboss.presentation.ui.auth.findinfo.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -45,6 +46,8 @@ class findPwFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController=Navigation.findNavController(view)
+
+        binding.timeOverText.paintFlags = binding.timeOverText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         val emailVerifyBtn = binding.emailVerifyBtn
         viewModel.email.observe(viewLifecycleOwner){

@@ -169,8 +169,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text='@{signupViewModel.timeOverState?@string/timeover_true:@string/timeover_false}'
-                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                    android:textAppearance="@style/TextAppearance.TeacherForBoss.Label6"
                     android:textColor="@color/gray_01"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="24dp"
                     android:visibility="invisible">
 
                 </TextView>

@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.databinding.RvItemBankBinding
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.presentation.ui.mypage.account.BankAccount
 
 class rvAdapterBank(
-    private val bankList: List<Bank>,
+    private val bankList: List<BankAccount>,
     private val signupViewModel: SignupViewModel,
     private val activity: SignupActivity,
     private val parentFragmentManager: FragmentManager,

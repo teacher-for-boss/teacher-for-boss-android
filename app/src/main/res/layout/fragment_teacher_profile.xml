@@ -325,7 +325,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="첵임감 있는"/>
+                        android:text="책임감 있는"/>
 
                     <com.google.android.material.chip.Chip
                         style="@style/TeacherProfileKeywordUnSelected"

@@ -41,6 +41,7 @@
     <string name="verify_phone">전화번호는 10 ~ 11 자리의 숫자만 입력 가능합니다.</string>
     <string name="verify_email">이메일 형식이 아닙니다.</string>
     <string name="email_unavailable">이미 가입된 이메일 주소입니다.</string>
+    <string name="phone_unavailable">이미 가입된 전화번호입니다.</string>
 
     <!--timer    -->
     <string name="timeover_true">"인증번호 다시 받기"</string>

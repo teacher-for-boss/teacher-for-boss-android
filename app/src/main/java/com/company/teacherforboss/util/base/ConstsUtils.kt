@@ -43,6 +43,7 @@ class ConstsUtils {
 
         // 티처톡
         const val TEACHER="TEACHER"
+        const val TEACHER_RV="TEACHER_RV"
         const val TEACHER_QUESTIONID="questionId"
         const val TEACHER_ANSWERID="answerId"
         const val TEACHER_CATAEGORYNAME="categoryName"

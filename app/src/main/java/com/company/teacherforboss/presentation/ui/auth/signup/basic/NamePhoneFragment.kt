@@ -79,11 +79,17 @@ class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fra
                     viewModel.phoneAuthId.value=it.data?.result?.phoneAuthId!!
                 }
                 is BaseResponse.Error->{
-                    binding.veryInfo.text = getString(R.string.verify_phone_info)
-                    binding.phoneVerifyBtn.isEnabled = false
-                    binding.inputPhoneCode.visibility=View.VISIBLE
-                    binding.timeOverText.visibility=View.VISIBLE
-                    viewModel.startTimer()
+                    if(it.msg == "이미 가입된 전화번호입니다.") {
+                        binding.veryInfo.text = getString(R.string.phone_unavailable)
+
+                        binding.phoneVerifyBtn.isEnabled = false
+                        binding.inputPhoneCode.visibility=View.INVISIBLE
+                        viewModel.stopTimer()
+                        binding.timeOverText.visibility=View.INVISIBLE
+                    }
+                    else  {
+                        showToast("error:"+it.msg)
+                    }
 
                 }
 

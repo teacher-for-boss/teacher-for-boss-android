@@ -28,6 +28,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_LEVEL_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_RV
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.UiState
@@ -63,7 +64,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         viewModel.setProfileImg(profile.profileImg)
         viewModel.setNickname(profile.nickname)
         val role = profile.role
-        if (role == TEACHER) {
+        if (role == TEACHER || role == TEACHER_RV) {
             setTeacherMenuLayout()
             setTeacherMenuBarLayout()
             setTeacherProfileLayoutByAPI(profile)

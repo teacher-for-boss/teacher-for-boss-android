@@ -74,7 +74,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         binding=ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        localDataSource.deleteUserInfo()
+//        localDataSource.deleteUserInfo()
         localDataSource.resetSignupType()
 
         fetchFirebaseToken()

@@ -66,6 +66,8 @@ class ManageAccountViewModel @Inject constructor(
                 val signupType = localDataSource.getSignupType()
                 if(signupType== SIGNUP_SOCIAL_KAKAO) logoutKakao()
                 else if(signupType== SIGNUP_SOCIAL_NAVER) logoutNaver()
+
+                localDataSource.resetSignupType()
             }.onFailure { exception: Throwable ->
                 _logoutState.value=UiState.Error(exception.message)
             }

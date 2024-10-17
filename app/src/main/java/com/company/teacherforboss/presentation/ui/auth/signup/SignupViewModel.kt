@@ -315,7 +315,7 @@ class SignupViewModel @Inject constructor(
                 }
                 else{
                     val errorMessage = response?.let { parseErrorResponse(it) }
-                    emailResult.value = BaseResponse.Error(errorMessage)
+                    errorMessage?.let { emailResult.value = BaseResponse.Error(errorMessage) }
                 }
             } catch (ex: Exception) {
             }
@@ -339,7 +339,7 @@ class SignupViewModel @Inject constructor(
                     _isEmailVerified.value=true
                 } else {
                     val errorMessage = response?.let { parseErrorResponse(it) }
-                    emailCheckResult.value = BaseResponse.Error(errorMessage)
+                    errorMessage?.let { emailCheckResult.value = BaseResponse.Error(errorMessage) }
                 }
             } catch (ex: Exception) {
                 emailCheckResult.value = BaseResponse.Error(ex.message)
@@ -402,7 +402,7 @@ class SignupViewModel @Inject constructor(
                         signupResult.value = BaseResponse.Success(response.body())
                     } else {
                         val errorMessage = response?.let { parseErrorResponse(it) }
-                        signupResult.value = BaseResponse.Error(errorMessage)
+                        errorMessage?.let { signupResult.value = BaseResponse.Error(errorMessage) }
                     }
                 } catch (ex: Exception) {
                     signupResult.value = BaseResponse.Error(ex.message)
@@ -447,8 +447,7 @@ class SignupViewModel @Inject constructor(
                         signupResult.value = BaseResponse.Success(response.body())
                     } else {
                         val errorMessage = response?.let { parseErrorResponse(it) }
-
-                        signupResult.value = BaseResponse.Error(errorMessage)
+                        errorMessage?.let { signupResult.value = BaseResponse.Error(errorMessage) }
                     }
 
                 } catch (ex: Exception) {
@@ -505,8 +504,7 @@ class SignupViewModel @Inject constructor(
                     }
                     else {
                         val errorMessage = response?.let { parseErrorResponse(it) }
-                        socialSignupResult.value = BaseResponse.Error(errorMessage ?: "Unknown error")
-
+                        errorMessage?.let { socialSignupResult.value = BaseResponse.Error(errorMessage ?: "Unknown error") }
                     }
                 } catch (ex: Exception) {
                     socialSignupResult.value = BaseResponse.Error(ex.message)
@@ -543,8 +541,7 @@ class SignupViewModel @Inject constructor(
                         socialSignupResult.value = BaseResponse.Success(response.body())
                     } else {
                         val errorMessage = response?.let { parseErrorResponse(it) }
-
-                        socialSignupResult.value = BaseResponse.Error(errorMessage)
+                        errorMessage?.let { socialSignupResult.value = BaseResponse.Error(errorMessage) }
                     }
 
                 } catch (ex: Exception) {
@@ -573,8 +570,7 @@ class SignupViewModel @Inject constructor(
                 }
                 else {
                     val errorMessage = response?.let { parseErrorResponse(it) }
-
-                    phoneResult.value = BaseResponse.Error(errorMessage)
+                    errorMessage?.let { phoneResult.value = BaseResponse.Error(errorMessage) }
                 }
             } catch (ex: Exception) {
                 phoneResult.value = BaseResponse.Error(ex.message)
@@ -625,8 +621,7 @@ class SignupViewModel @Inject constructor(
                 }
                 else {
                     val errorMessage = response?.let { parseErrorResponse(it) }
-
-                    nicknameResult.value = BaseResponse.Error(errorMessage)
+                    errorMessage?.let { nicknameResult.value = BaseResponse.Error(errorMessage) }
                 }
             } catch (ex: Exception) { nicknameResult.value = BaseResponse.Error(ex.message)
             }

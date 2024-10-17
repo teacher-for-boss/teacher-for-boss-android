@@ -155,7 +155,8 @@
                 android:textColor="@color/gray_01"
                 android:visibility="invisible"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                android:padding="5dp">
 
             </TextView>
 

@@ -8,48 +8,17 @@ import org.json.JSONObject
 
 fun <T> parseErrorResponse(response: retrofit2.Response<T>): String? {
     val errorBody = response.errorBody()?.string()
-
-    if (!errorBody.isNullOrBlank()) {
+    if (errorBody != null && errorBody.isNotBlank()) {
         return try {
-            // 1. JSON 파싱 시도
-            val jsonObject = JSONObject(errorBody)
+            val jsonObject = JSONObject(errorBody) // JSON으로 변환
             jsonObject.getString("message") // "message" 필드에서 에러 메시지 추출
-        } catch (jsonException: JSONException) {
-            Log.e("ErrorResponse", "Failed to parse JSON error body", jsonException)
-
-            try {
-                // 2. JSON 파싱 실패 시 XML 파싱 시도
-                if (errorBody.startsWith("<")) {
-                    // XML 시작 태그 여부로 확인
-                    val xmlMessage = extractMessageFromXml(errorBody)
-                    xmlMessage ?: "Unknown XML error"
-                } else {
-                    "Unknown error format"
-                }
-            } catch (xmlException: Exception) {
-                Log.e("ErrorResponse", "Failed to parse XML error body", xmlException)
-                "Failed to parse error response"
-            }
+        } catch (e: JSONException) {
+            Log.e("ErrorResponse", "Failed to parse error body", e)
+            null
         }
     }
-    return "Unknown error"
+    return null
 }
-
-// XML에서 에러 메시지를 추출하는 함수
-fun extractMessageFromXml(xml: String): String? {
-    return try {
-        val factory = javax.xml.parsers.DocumentBuilderFactory.newInstance()
-        val builder = factory.newDocumentBuilder()
-        val inputStream = xml.byteInputStream()
-        val document = builder.parse(inputStream)
-        val messageNode = document.getElementsByTagName("message").item(0)
-        messageNode?.textContent
-    } catch (e: Exception) {
-        Log.e("ErrorResponse", "XML parsing error", e)
-        null
-    }
-}
-
 
 object ErrorUtils {
 //    fun getErrorResponse(errorbody: ResponseBody):ErrorUtils{

@@ -1,6 +1,7 @@
 package com.company.teacherforboss.signup.fragment
 
 import AppSignatureHelper
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -31,17 +32,8 @@ class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fra
         binding.signupViewModel=viewModel
         binding.lifecycleOwner=this
 
-
-
-        val activity=activity as SignupActivity
-
-        val helper=AppSignatureHelper(activity)
-        val hash=helper.getAppSignatures()?.get(0)
-        Log.d("auth hash",hash.toString())
-
-        binding.nextBtn.setOnClickListener {
-            activity.gotoNextFragment(GenderBirthFragment())
-        }
+        addListeners()
+        binding.timeOverText.paintFlags = binding.timeOverText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         viewModel.phone.observe(viewLifecycleOwner){
             viewModel.phone_validation()
@@ -50,16 +42,6 @@ class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fra
             }
             else{
                 binding.veryInfo.visibility = View.VISIBLE
-            }
-
-        }
-
-        //휴대폰 인증하기버튼 눌렀을때
-        binding.phoneVerifyBtn.setOnClickListener {
-            binding.veryInfo.visibility=View.VISIBLE
-
-            if(viewModel.phone_check.value==true){
-                viewModel.phoneUser(hash.toString())
             }
 
         }
@@ -97,12 +79,6 @@ class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fra
             }
         }
 
-        //휴대폰 코드 입력 후 확인 버튼
-        binding.phoneConfirmBtn.setOnClickListener {
-            phoneCode = binding.phoneCodeBox.text.toString()
-            viewModel.phoneCheckUser(phoneCode)
-        }
-
         viewModel.phoneCheckResult.observe(viewLifecycleOwner) {
             when(it){
                 is BaseResponse.Loading->{ }
@@ -114,6 +90,7 @@ class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fra
                         binding.phoneConfirmBtn.isEnabled = false
                     }
                     binding.checkVery.visibility=View.VISIBLE
+                    binding.timeOverText.visibility = View.INVISIBLE
                 }
                 is BaseResponse.Error->{
                     viewModel._isPhoneVerified_str.value="F"
@@ -124,13 +101,54 @@ class NamePhoneFragment : BindingFragment<FragmentNamePhoneBinding>(R.layout.fra
                 else -> {}
             }
         }
-        binding.timeOverText.setOnClickListener{
-            if (viewModel.timeOverState.value == true){
-                viewModel.phoneUser(hash.toString())
-                binding.phoneCodeBox.text.clear()
+    }
+
+    private fun addListeners() {
+        val activity=activity as SignupActivity
+        val helper=AppSignatureHelper(activity)
+        val hash=helper.getAppSignatures()?.get(0)
+
+        with(binding) {
+            nextBtn.setOnClickListener {
+                activity.gotoNextFragment(GenderBirthFragment())
             }
+
+            // 휴대폰 인증하기버튼 눌렀을때
+            phoneVerifyBtn.setOnClickListener {
+                veryInfo.visibility=View.VISIBLE
+
+                if(viewModel.phone_check.value==true){
+                    viewModel.phoneUser(hash.toString())
+                }
+            }
+
+            // 휴대폰 코드 입력 후 확인 버튼
+            phoneConfirmBtn.setOnClickListener {
+                phoneCode = phoneCodeBox.text.toString()
+                viewModel.phoneCheckUser(phoneCode)
+            }
+
+            // 인증번호 다시 받기
+            timeOverText.setOnClickListener{
+                if (viewModel.timeOverState.value == true){
+                    viewModel.phoneUser(hash.toString())
+                    phoneCodeBox.text.clear()
+                    checkVery.visibility = View.INVISIBLE
+                }
+                else {
+                    if(timeOverText.text == getString(R.string.timeover_false)) {
+                        timeOverText.text = getString(R.string.timeover_true)
+                    } else {
+                        viewModel.phoneUser(hash.toString())
+                        phoneCodeBox.text.clear()
+                        checkVery.visibility = View.INVISIBLE
+                    }
+                }
+            }
+
         }
     }
+
     fun processError(msg:String?){
         showToast("error:"+msg)
     }

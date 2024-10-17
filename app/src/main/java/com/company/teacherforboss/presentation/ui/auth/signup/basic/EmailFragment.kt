@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
@@ -131,7 +130,7 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
 
             // 이메일 코드 입력 후 확인 버튼
             emailConfirmBtn.setOnClickListener {
-                emailCode=binding.emailCodeBox.text.toString()
+                emailCode=emailCodeBox.text.toString()
                 viewModel.emailCheckUser(emailCode) //서버로 /auth/email/check
             }
 
@@ -139,7 +138,8 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
             timeOverText.setOnClickListener{
                 if (viewModel.timeOverState.value == true){
                     viewModel.emailUser()
-                    binding.emailCodeBox.text.clear()
+                    emailCodeBox.text.clear()
+                    checkVery.visibility = View.INVISIBLE
                 }
                 else {
                     if(timeOverText.text == getString(R.string.timeover_false)) {
@@ -147,7 +147,8 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
                     }
                     else  {
                         viewModel.emailUser()
-                        binding.emailCodeBox.text.clear()
+                        emailCodeBox.text.clear()
+                        checkVery.visibility = View.INVISIBLE
                     }
                 }
             }

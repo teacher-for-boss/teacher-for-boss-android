@@ -144,7 +144,7 @@ class findPwFragment : Fragment() {
 
             // 코드 입력 후 확인버튼
             emailConfirmBtn.setOnClickListener {
-                val emailCode=binding.emailCodeBox.text.toString()
+                val emailCode=emailCodeBox.text.toString()
                 viewModel.emailCheckUser(emailCode)
             }
 
@@ -156,14 +156,17 @@ class findPwFragment : Fragment() {
             timeOverText.setOnClickListener {
                 if (viewModel.PwtimeOverState.value == true) {
                     viewModel.emailUser()
-                    binding.emailCodeBox.text.clear()
+                    emailCodeBox.text.clear()
+                    checkVery.visibility = View.INVISIBLE
+                    timeOverText.text = getString(R.string.timeover_false)
                 } else {
                     if (timeOverText.text == getString(R.string.timeover_false)) {
                         timeOverText.text = getString(R.string.timeover_true)
                     } else {
                         viewModel.emailUser()
-                        binding.emailCodeBox.text.clear()
+                        emailCodeBox.text.clear()
                         timeOverText.text = getString(R.string.timeover_false)
+                        checkVery.visibility = View.INVISIBLE
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.auth.findinfo.screens
 
 import AppSignatureHelper
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -26,8 +27,6 @@ class findEmailFragment : Fragment() {
     private lateinit var binding:FragmentFindEmailBinding
     private val viewModel by activityViewModels<FindPwViewModel>()
 
-    var tempTime = 0  //타이머 임시시간
-
     lateinit var navController: NavController
 
     override fun onCreateView(
@@ -38,25 +37,17 @@ class findEmailFragment : Fragment() {
         binding.findPwviewModel=viewModel
         binding.lifecycleOwner=this
 
-        val activity=activity as FindPwActivity
-        binding.findEmailBtn.setOnClickListener {
-//            findNavController().navigate(R.id.action_findEmailFragment_to_findEmailFragment2)
-        }
-
-
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController=Navigation.findNavController(view)
 
+        addListeners()
+        binding.timeOverText.paintFlags = binding.timeOverText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         val activity=activity as FindPwActivity
-        val helper=AppSignatureHelper(activity)
-        val hash=helper.getAppSignatures()?.get(0)
 
         // 키보드 바깥 화면 터치 시 키보드 내리기
         view.setOnTouchListener { _, event ->
@@ -98,10 +89,6 @@ class findEmailFragment : Fragment() {
         }
 
          */
-        binding.phoneVerifyBtn.setOnClickListener{
-            viewModel.phoneUser(hash.toString())
-            phoneVerifyBtn.isEnabled = false
-        }
 
         //휴대폰 인증결과 수신
         viewModel.phoneResult.observe(viewLifecycleOwner) {
@@ -125,12 +112,6 @@ class findEmailFragment : Fragment() {
 
                 else -> {}
             }
-        }
-
-        //휴대폰 코드 입력 후 확인 버튼
-        binding.phoneConfirmBtn.setOnClickListener {
-            val phoneCode = binding.phoneCodeBox.text.toString()
-            viewModel.phoneCheckUser(viewModel.phoneAuthId.value!!, phoneCode)
         }
 
         viewModel.phoneCheckResult.observe(viewLifecycleOwner) {
@@ -158,19 +139,10 @@ class findEmailFragment : Fragment() {
                 }
                 is BaseResponse.Error->{
                     binding.checkVery.visibility = View.VISIBLE
-                    binding.timeOverText.translationY = 50f
                 }
 
                 else -> {}
             }
-        }
-
-        binding.findEmailBtn.setOnClickListener {
-            //서버로 이메일 찾기 api 요청-> 응답이 성공일 시에 다음 fragment 전환
-            //activity.gotoNextFragment(findEmailFragment2())
-            viewModel.postFindEmail()
-//            navController.navigate(R.id.action_findEmailFragment_to_findEmailFragment2)
-
         }
 
         //postfindEmail 결과 수신
@@ -202,8 +174,53 @@ class findEmailFragment : Fragment() {
             }
 
         }
+    }
 
+    private fun addListeners() {
+        with(binding) {
+            val activity=activity as FindPwActivity
+            val helper=AppSignatureHelper(activity)
+            val hash=helper.getAppSignatures()?.get(0)
 
+            phoneVerifyBtn.setOnClickListener{
+                viewModel.phoneUser(hash.toString())
+                phoneVerifyBtn.isEnabled = false
+            }
+
+            //휴대폰 코드 입력 후 확인 버튼
+            phoneConfirmBtn.setOnClickListener {
+                val phoneCode = phoneCodeBox.text.toString()
+                viewModel.phoneCheckUser(viewModel.phoneAuthId.value!!, phoneCode)
+            }
+
+            findEmailBtn.setOnClickListener {
+                //서버로 이메일 찾기 api 요청-> 응답이 성공일 시에 다음 fragment 전환
+                //activity.gotoNextFragment(findEmailFragment2())
+                viewModel.postFindEmail()
+//            navController.navigate(R.id.action_findEmailFragment_to_findEmailFragment2)
+
+            }
+
+            // 인증번호 다시 받기
+            timeOverText.setOnClickListener{
+                if (viewModel.EmailtimeOverState.value == true){
+                    viewModel.phoneUser(hash.toString())
+                    phoneCodeBox.text.clear()
+                    checkVery.visibility = View.INVISIBLE
+                    timeOverText.text = getString(R.string.timeover_false)
+                }
+                else {
+                    if(timeOverText.text == getString(R.string.timeover_false)) {
+                        timeOverText.text = getString(R.string.timeover_true)
+                    } else {
+                        viewModel.phoneUser(hash.toString())
+                        phoneCodeBox.text.clear()
+                        checkVery.visibility = View.INVISIBLE
+                        timeOverText.text = getString(R.string.timeover_false)
+                    }
+                }
+            }
+        }
     }
 
 

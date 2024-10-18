@@ -59,6 +59,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
                     android:host="teacherforboss.com"
@@ -176,9 +181,6 @@
                     android:scheme="kakao42b7099d84917d3e71d68005595043b5" />
             </intent-filter>
         </activity>
-        <activity android:name="com.navercorp.nid.oauth.NidOAuthBridgeActivity"
-            android:exported="true" />
-
         <service
             android:name=".presentation.ui.notification.TFBFirebaseMessagingService"
             android:exported="false">

@@ -169,7 +169,7 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="kakao50baba15ac88207a1244824c310190e1" />
+                    android:scheme="kakao42b7099d84917d3e71d68005595043b5" />
             </intent-filter>
         </activity>
 

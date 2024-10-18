@@ -236,7 +236,7 @@
     <string name="my_page_menu_account_change">계좌 확인 및 변경</string>
     <string name="my_page_menu_exchange">티포 환전하기</string>
     <string name="my_page_menu_exchange_details">환전 내역</string>
-    <string name="my_page_menu_payment_question_ticket">질문권 결제</string>
+    <string name="my_page_menu_payment_question_ticket">구독권 결제</string>
     <string name="my_page_menu_payment_history">결제 내역</string>
     <string name="my_page_menu_saved_post">저장한 글</string>
     <string name="my_page_menu_teacher_talk_answered_post">티처톡 - 답변한 질문글</string>
@@ -338,8 +338,8 @@
     <string name="manage_account_delete">탈퇴하기</string>
 
     <!-- ask payment -->
-    <string name="ask_payment_title">질문권 결제</string>
-    <string name="ask_payment_head">질문권 구매하고\n마음껏 질문하세요.</string>
+    <string name="ask_payment_title">구독권 결제</string>
+    <string name="ask_payment_head">구독권 구매하고\n티처에게 질문하세요.</string>
     <string name="ask_payment_check">✔️ 질문권 1개로 전문가에게 빠르게 답변 받기\n✔️ 여러명의 전문가에게 답변을 받아요\n✔️ 24시간 365일 답변받을 수 있어요</string>
     <string name="ask_payment_buy">구매하기</string>
 

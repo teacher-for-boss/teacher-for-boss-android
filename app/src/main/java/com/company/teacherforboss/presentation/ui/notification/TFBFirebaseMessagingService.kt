@@ -20,11 +20,13 @@ import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.INFO_NULL
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.Random
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class TFBFirebaseMessagingService: FirebaseMessagingService() {
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "teacherForBoss"

@@ -17,13 +17,15 @@ class AskPaymentFragment : BindingFragment<FragmentAskPaymentBinding>(R.layout.f
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val items = listOf(
-            AskPaymentItemData("질문권 1개", "","10,000원"),
-            AskPaymentItemData("질문권 5개", "50,000원","47,500원"),
-            AskPaymentItemData("질문권 10개", "100,000원","90,000원"),
-            AskPaymentItemData("질문권 20개", "200,000원","174,500원"),
+            AskPaymentItemData("무료 이벤트", "선착순 500명","", "소진 시 마감", "0원"),
+            AskPaymentItemData("베이직 구독권", "티처톡 열람권 + 질문권 3개","14,700", "33% 할인", " -> 9,900원"),
+            AskPaymentItemData("스탠다드 구독권", "티처톡 열람권 + 질문권 5개","24,500", "40% 할인", " -> 14,900원"),
+            AskPaymentItemData("프리미엄 구독권", "티처톡 열람권 + 질문권 10개","49,000", "33% 할인", " -> 25,900원"),
             )
 
-        val adapter = AskPaymentAdapter(items)
+        val adapter = AskPaymentAdapter(items) { isItemSelected ->
+            binding.btnBuy.isEnabled = isItemSelected
+        }
         recyclerView.adapter = adapter
         onBackBtnPressed()
     }

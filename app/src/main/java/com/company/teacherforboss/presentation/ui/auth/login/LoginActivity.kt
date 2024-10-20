@@ -22,6 +22,7 @@ import com.company.teacherforboss.presentation.ui.auth.findinfo.screens.FindPwAc
 import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginUiState
 import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginViewModel
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
+import com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
@@ -30,6 +31,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTI
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_RV
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_EMAIL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_GENDER
@@ -79,32 +81,12 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
 
         fetchFirebaseToken()
         askNotificationPermission()
+        handleLoginResult()
+        handleSocialLoginResult()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
-        if (!token.isNullOrBlank()) { gotoMainActivity() }
-
-        //기본 로그인
-        loginViewModel.loginResult.observe(this){
-            when(it){
-                is BaseResponse.Loading ->{
-                    // 로딩창
-                }
-                is BaseResponse.Success ->{
-                    loginViewModel.saveToken(it.data)
-                    localDataSource.saveUserInfo(USER_NAME,it.data?.result?.name?:"")
-                    localDataSource.saveUserInfo(USER_ROLE,it.data?.result?.role?:"boss")
-                    localDataSource.saveUserInfo(USER_EMAIL,it.data?.result?.email!!)
-                    gotoMainActivity()
-                }
-                is BaseResponse.Error ->{
-                    CustomSnackBar.make(binding.root, getString(R.string.id_or_pw_different), 2000).show()
-                }
-                else->{
-                    //loading 종료시
-                }
-            }
-        }
+        if (!token.isNullOrBlank() && localDataSource.getUserInfo(USER_ROLE) != TEACHER_RV) { gotoMainActivity() }
 
         // 소셜 로그인
         lifecycleScope.launch {
@@ -128,29 +110,6 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         }
 
                     }
-                }
-            }
-        }
-
-        // 소셜 로그인 (3.로그인 요청)
-        loginViewModel.socialLoginResult.observe(this){
-            when(it){
-                is BaseResponse.Loading ->{CustomSnackBar.make(binding.root,getString(R.string.login_loading),1000).show() }
-                is BaseResponse.Success ->{
-                    loginViewModel.saveToken(it.data)
-                    localDataSource.saveUserInfo(USER_NAME,it.data?.result?.name!!.toString())
-                    localDataSource.saveUserInfo(USER_ROLE,it.data?.result?.role?:"boss")
-                    gotoMainActivity()
-                }
-                is BaseResponse.Error ->{
-                    // 회원가입 진행
-                    CustomSnackBar.make(binding.root,getString(R.string.login_loading),1000).show()
-                    loginViewModel._isSocialLoginSignup.value=true
-                    gotoSignupActivity()
-
-                }
-                else->{
-                    //loading 종료시
                 }
             }
         }
@@ -189,6 +148,69 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
 
 
     }
+
+    private fun handleLoginResult() {
+        //기본 로그인
+        loginViewModel.loginResult.observe(this){ loginResponse ->
+            when(loginResponse){
+                is BaseResponse.Loading ->{
+                    // 로딩창
+                }
+                is BaseResponse.Success ->{
+                    loginViewModel.saveToken(loginResponse.data)
+                    localDataSource.saveUserInfo(USER_NAME,loginResponse.data?.result?.name?:"")
+                    localDataSource.saveUserInfo(USER_ROLE,loginResponse.data?.result?.role?:"boss")
+                    localDataSource.saveUserInfo(USER_EMAIL,loginResponse.data?.result?.email!!)
+
+                    if(loginResponse.data.result.role != TEACHER_RV) { gotoMainActivity() }
+                    else {
+                        Intent(this, SignupJudgeActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                    }
+
+                }
+                is BaseResponse.Error ->{
+                    CustomSnackBar.make(binding.root, getString(R.string.id_or_pw_different), 2000).show()
+                }
+                else->{
+                    //loading 종료시
+                }
+            }
+        }
+    }
+
+    private fun handleSocialLoginResult() {
+        // 소셜 로그인 (3.로그인 요청)
+        loginViewModel.socialLoginResult.observe(this){ socialLoginResult ->
+            when(socialLoginResult){
+                is BaseResponse.Loading ->{CustomSnackBar.make(binding.root,getString(R.string.login_loading),1000).show() }
+                is BaseResponse.Success ->{
+                    loginViewModel.saveToken(socialLoginResult.data)
+                    localDataSource.saveUserInfo(USER_NAME,socialLoginResult.data?.result?.name!!.toString())
+                    localDataSource.saveUserInfo(USER_ROLE,socialLoginResult.data?.result?.role?:"boss")
+
+                    if(socialLoginResult.data.result.role != TEACHER_RV) { gotoMainActivity() }
+                    else {
+                        Intent(this, SignupJudgeActivity::class.java).apply {
+                            startActivity(this)
+                        }
+                    }
+                }
+                is BaseResponse.Error ->{
+                    // 회원가입 진행
+                    CustomSnackBar.make(binding.root,getString(R.string.login_loading),1000).show()
+                    loginViewModel._isSocialLoginSignup.value=true
+                    gotoSignupActivity()
+
+                }
+                else->{
+                    //loading 종료시
+                }
+            }
+        }
+    }
+
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

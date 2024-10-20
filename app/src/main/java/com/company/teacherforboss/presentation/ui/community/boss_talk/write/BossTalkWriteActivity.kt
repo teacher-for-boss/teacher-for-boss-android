@@ -344,7 +344,7 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
         }
     }
 
-    fun addListenrs(){
+    fun addListenrs() {
         // 등록 유효 확인 후 uploadPost
         IsValidPost()
         //나가기
@@ -357,21 +357,9 @@ class BossTalkWriteActivity : BindingActivity<ActivityBosstalkWriteBinding>(R.la
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
 
-                true
-            }
-            else {
-                false
-            }
-        }
-        binding.inputBody.setOnEditorActionListener { v, actionId, event ->
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+                imm?.hideSoftInputFromWindow(v.windowToken, 0)
 
                 true
             }

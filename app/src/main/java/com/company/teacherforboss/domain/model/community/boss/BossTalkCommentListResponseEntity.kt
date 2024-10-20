@@ -1,7 +1,7 @@
 package com.company.teacherforboss.domain.model.community
 
 data class BossTalkCommentListResponseEntity(
-    val totalCount:Int,
+    val hasNext:Boolean,
     val commentList:ArrayList<CommentEntity>
 )
 data class CommentEntity(
@@ -12,7 +12,8 @@ data class CommentEntity(
     val liked:Boolean,
     val disliked:Boolean,
     val createdAt:String,
-    val memberInfo:MemberEntity,
+    val memberInfo:MemberEntity?,
     val children:ArrayList<CommentEntity>,
-    val isMine: Boolean
+    val isMine: Boolean,
+    val deleted: Boolean
 )

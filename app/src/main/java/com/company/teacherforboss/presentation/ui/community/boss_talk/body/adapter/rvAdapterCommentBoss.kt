@@ -1,5 +1,6 @@
 package com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -45,20 +46,38 @@ class rvAdapterCommentBoss(
     inner class ViewHolder(private val binding: RvItemCommentBossBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: CommentEntity, viewModel: BossTalkBodyViewModel) {
 
+            if(comment.deleted == true) {
+                binding.commentDeleted.visibility = View.VISIBLE
+
+                val reCommentRv = binding.rvRecomment
+                val layoutParams = reCommentRv.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.topMargin = 0
+                reCommentRv.layoutParams = layoutParams
+
+                binding.userImage.visibility = View.GONE
+                binding.userName.visibility = View.GONE
+                binding.btnOption.visibility = View.GONE
+                binding.userLevel.visibility = View.GONE
+                binding.createdAt.visibility = View.GONE
+                binding.option.visibility = View.GONE
+                binding.commentBody.visibility = View.GONE
+            }
+
             // 유저 정보
             val member = comment.memberInfo
 
-            if (member.role == TEACHER)
+            if (member?.role == TEACHER)
                 binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
-            else binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+            else if (member?.role == BOSS)
+                binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
 
-            member.profileImg?.let {
+            member?.profileImg?.let {
                 if (it.isNotEmpty()) {
                     binding.userImage.loadProfileImgFromUrlCoil(it) }
             }
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
-                if (member.role == TEACHER) {
+                if (member?.role == TEACHER) {
                     Intent(binding.root.context, TeacherProfileActivity::class.java).apply {
                         putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
                         binding.root.context.startActivity(this)
@@ -77,9 +96,9 @@ class rvAdapterCommentBoss(
                 userName.setOnClickListener(clickListener)
 
                 // 유저 레벨
-                profileLevel.text = comment.memberInfo.level
+                profileLevel.text = comment.memberInfo?.level
 
-                if (member.role == BOSS) {
+                if (member?.role == BOSS) {
                     profileStar.visibility = View.GONE
                     profileLevel.visibility = View.GONE
                 }

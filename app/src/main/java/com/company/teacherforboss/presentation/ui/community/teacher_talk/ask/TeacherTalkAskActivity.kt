@@ -136,7 +136,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         focusOnEditText()
     }
 
-    fun addListeners(){
+    fun addListeners() {
         // 등록 유효 확인 후 uploadPost
         IsValidPost()
         // 나가기
@@ -152,19 +152,6 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
 
                 imm?.hideSoftInputFromWindow(v.windowToken, 0)
-
-                true
-            }
-            else {
-                false
-            }
-        }
-        binding.inputBody.setOnEditorActionListener { v, actionId, event ->
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
 
                 true
             }

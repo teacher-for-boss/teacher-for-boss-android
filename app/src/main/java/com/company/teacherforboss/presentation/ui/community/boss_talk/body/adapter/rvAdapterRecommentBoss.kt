@@ -21,6 +21,7 @@ import com.company.teacherforboss.presentation.ui.community.common.CommunityDial
 import com.company.teacherforboss.presentation.ui.mypage.DialogTeacherLevelFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -42,24 +43,25 @@ class rvAdapterRecommentBoss(
             // 유저 정보
             val member=comment.memberInfo
             with (binding) {
-                if (member.role == TEACHER)
+                if (member?.role == TEACHER)
                     binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
-                else binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+                else if(member?.role == BOSS)
+                    binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
 
                 
-            member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
+            member?.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
 
                 // 레벨
-                profileLevel.text = comment.memberInfo.level
+                profileLevel.text = comment.memberInfo?.level
 
-                if (member.role == ConstsUtils.BOSS) {
+                if (member?.role == ConstsUtils.BOSS) {
                     profileStar.visibility = View.GONE
                     profileLevel.visibility = View.GONE
                 }
 
                 // 프로필 클릭 시 상세 프로필 이동
                 val clickListener = View.OnClickListener {
-                    if (member.role == TEACHER) {
+                    if (member?.role == TEACHER) {
                         Intent(root.context, TeacherProfileActivity::class.java).apply {
                             putExtra(ConstsUtils.TEACHER_PROFILE_ID, member.memberId)
                             root.context.startActivity(this)

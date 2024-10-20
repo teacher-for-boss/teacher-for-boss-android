@@ -64,7 +64,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         viewModel.setProfileImg(profile.profileImg)
         viewModel.setNickname(profile.nickname)
         val role = profile.role
-        if (role == TEACHER || role == TEACHER_RV) {
+        if (role == TEACHER) {
             setTeacherMenuLayout()
             setTeacherMenuBarLayout()
             setTeacherProfileLayoutByAPI(profile)

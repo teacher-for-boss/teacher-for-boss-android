@@ -367,8 +367,7 @@ class SignupViewModel @Inject constructor(
 
         var formatted_BirthDate=""
         if(birthDate.value!=null && birthDate.value!=""){
-            formatted_BirthDate=birthDate.value.toString().replace(Regex("\\+"), "-")
-            Log.d("test",formatted_BirthDate.toString())
+            formatted_BirthDate = formatBirthDate(birthDate.value.toString())
         }
 
         viewModelScope.launch {
@@ -476,9 +475,7 @@ class SignupViewModel @Inject constructor(
 
         var formatted_BirthDate=""
         if(birthDate.value!=null && birthDate.value!=""){
-            formatted_BirthDate=birthDate.value.toString().replace(Regex("\\+"), "-")
-            Log.d("test",formatted_BirthDate.toString())
-
+            formatted_BirthDate = formatBirthDate(birthDate.value.toString())
         }
 
         viewModelScope.launch {
@@ -619,6 +616,9 @@ class SignupViewModel @Inject constructor(
                 if (response?.body()?.result?.nicknameCheck==true) {
                     nicknameResult.value = BaseResponse.Success(response.body())
                 }
+                else if (response?.body()?.result?.nicknameCheck==false) {
+                    nicknameResult.value = BaseResponse.Error("닉네임 사용 불가")
+                }
                 else {
                     val errorMessage = response?.let { parseErrorResponse(it) }
                     errorMessage?.let { nicknameResult.value = BaseResponse.Error(errorMessage) }
@@ -691,6 +691,21 @@ class SignupViewModel @Inject constructor(
     fun nickname_pattern_validation() {
         val nicknamePattern = Regex("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+")
         nicknamePrevCheck.value = !_nickname.value.isNullOrEmpty() && !nicknamePattern.containsMatchIn(_nickname.value!!)
+    }
+
+    fun formatBirthDate(birthDate: String?): String {
+        if (!birthDate.isNullOrEmpty()) {
+            val dateParts = birthDate.replace(Regex("\\+"), "-").split("-")
+
+            if (dateParts.size == 3) {
+                val year = dateParts[0]
+                val month = dateParts[1]
+                val day = dateParts[2].padStart(2, '0')
+
+                return "$year-$month-$day"
+            }
+        }
+        return ""
     }
 
     fun checkFilled() {

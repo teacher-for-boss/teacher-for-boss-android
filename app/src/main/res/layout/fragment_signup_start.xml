@@ -69,23 +69,29 @@
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
                             android:textColor="@drawable/tab_text_color"/>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/sign_up_boss_info1"
-                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
-                            android:textColor="@color/Gray500"/>
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center_vertical">
 
-                        <TextView
-                            android:id="@+id/textView7"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sign_up_boss_info2"
-                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
-                            android:textColor="@color/Gray500"
-                            android:layout_marginTop="8dp"
-                            android:lineHeight="15dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sign_up_boss_info1"
+                                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                                android:textColor="@color/Gray500"/>
+
+                            <TextView
+                                android:id="@+id/textView7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sign_up_boss_info2"
+                                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                                android:textColor="@color/Gray500"
+                                android:layout_marginTop="8dp"
+                                android:lineHeight="15dp"/>
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -132,22 +138,28 @@
                             android:textAppearance="@style/TextAppearance.TeacherForBoss.Title.SemiBold.20"
                             android:textColor="@drawable/tab_text_color"/>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/sign_up_teacher_info1"
-                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
-                            android:textColor="@color/Gray500"/>
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center_vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sign_up_teacher_info2"
-                            android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
-                            android:textColor="@color/Gray500"
-                            android:layout_marginTop="8dp"
-                            android:lineHeight="15dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sign_up_teacher_info1"
+                                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                                android:textColor="@color/Gray500"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sign_up_teacher_info2"
+                                android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.10"
+                                android:textColor="@color/Gray500"
+                                android:layout_marginTop="8dp"
+                                android:lineHeight="15dp"/>
+                        </LinearLayout>
 
                     </LinearLayout>
 

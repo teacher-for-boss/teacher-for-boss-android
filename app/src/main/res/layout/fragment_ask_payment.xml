@@ -81,6 +81,10 @@
     (10,000원)으로 차감되어 환불됩니다. (수수료 별도, 결제 대행사/은행 수수료를 따름)"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body7"
                     android:textColor="@color/Gray400" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

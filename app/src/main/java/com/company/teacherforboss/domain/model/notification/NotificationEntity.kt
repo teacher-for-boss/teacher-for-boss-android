@@ -7,6 +7,7 @@ data class NotificationEntity(
     val title: String,
     val content: String,
     val type: NotificationType,
+    val originalType: String,
     val read:Boolean,
     val createdAt:String
 )

@@ -29,6 +29,7 @@ data class NotificationDto(
         title=title,
         content=content,
         type=mapType(),
+        originalType=type,
         read=read,
         createdAt=createdAt
     )

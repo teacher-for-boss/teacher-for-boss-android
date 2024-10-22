@@ -48,11 +48,19 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(UiState.Empty)
     val weeklyBestTeacherListState get() = _weeklyBestTeacherListState.asStateFlow()
 
-    fun setBannerItems() {
+    fun setTeacherBannerItems() {
         _bannerItemList.value = listOf(
-            BannerModel(R.drawable.item_home_banner_guide, BANNER_GUIDE_LINK),
+            BannerModel(R.drawable.item_home_banner_teacher_guide, BANNER_TEACHER_GUIDE_LINK),
             BannerModel(R.drawable.item_home_banner_event, BANNER_EVENT_LINK),
-            BannerModel(R.drawable.item_home_banner_teacher, BANNER_TEACHER_LINK),
+            BannerModel(R.drawable.item_home_banner_teacher, BANNER_TEACHER_LINK)
+        )
+    }
+
+    fun setBossBannerItems() {
+        _bannerItemList.value = listOf(
+            BannerModel(R.drawable.item_home_banner_boss_guide, BANNER_BOSS_GUIDE_LINK),
+            BannerModel(R.drawable.item_home_banner_event, BANNER_EVENT_LINK),
+            BannerModel(R.drawable.item_home_banner_teacher, BANNER_TEACHER_LINK)
         )
     }
 
@@ -127,8 +135,10 @@ class HomeViewModel @Inject constructor(
 
     companion object {
         private const val FIRST_BANNER_POSITION = 0
-        private const val BANNER_GUIDE_LINK =
-            "https://beautiful-pharaoh-385.notion.site/2a26c9826eef47adbc6852a8ad400691?pvs=4"
+        private const val BANNER_TEACHER_GUIDE_LINK =
+            "https://www.notion.so/297d5abaf3264a118e0c40a0282919a7"
+        private const val BANNER_BOSS_GUIDE_LINK =
+            "https://www.notion.so/2a26c9826eef47adbc6852a8ad400691"
         private const val BANNER_EVENT_LINK =
             "https://beautiful-pharaoh-385.notion.site/55ccfe37dcf946d08430f3c5e2fd72c8?pvs=4"
         private const val BANNER_TEACHER_LINK =

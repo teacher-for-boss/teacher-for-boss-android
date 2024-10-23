@@ -1,4 +1,4 @@
-### 자영업자 사장님들을 위한 멘토링 커뮤니티 앱, 티쳐 포 보스 👨‍👦
+### 자영업자 사장님들을 위한 멘토링 커뮤니티 앱, 티처 포 보스 👨‍👦
 ![image](https://github.com/user-attachments/assets/c56dae89-68b6-41b2-9c02-cc1478c3a3fb)
 
 ### 프로젝트 소개

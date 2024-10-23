@@ -63,6 +63,7 @@ import com.company.teacherforboss.domain.usecase.notification.NotificationSettin
 import com.company.teacherforboss.domain.usecase.notification.NotificationSettingPostUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountChangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
+import com.company.teacherforboss.domain.usecase.payment.ExchangeListUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.TeacherPointUseCase
 import dagger.Module
@@ -353,4 +354,9 @@ class UseCaseModule {
     @Singleton
     fun providesNotificationPostSetting(notificationRepository: NotificationRepository): NotificationSettingPostUseCase =
         NotificationSettingPostUseCase(notificationRepository)
+
+    @Provides
+    @Singleton
+    fun providesExchangeListUseCase(paymentRepository: PaymentRepository): ExchangeListUseCase =
+        ExchangeListUseCase(paymentRepository)
 }

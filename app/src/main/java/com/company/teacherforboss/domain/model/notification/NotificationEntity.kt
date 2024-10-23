@@ -7,6 +7,14 @@ data class NotificationEntity(
     val title: String,
     val content: String,
     val type: NotificationType,
+    val originalType: String,
     val read:Boolean,
-    val createdAt:String
-)
+    val createdAt:String,
+    val data: NotificationDataEntity?
+) {
+    data class NotificationDataEntity(
+        val type: String,
+        val questionId: Long?,
+        val postId: Long?
+    )
+}

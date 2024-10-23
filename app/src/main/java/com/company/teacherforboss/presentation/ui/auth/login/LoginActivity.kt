@@ -367,7 +367,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                         "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                 )
 
-                // 티쳐 포 보스 소셜 로그인 api 요청
+                // 티처 포 보스 소셜 로그인 api 요청
                 if(user.kakaoAccount?.gender.toString()=="MALE"){ gender = 1 }
                 else if(user.kakaoAccount?.gender.toString()=="FEMALE"){ gender = 2 }
                 else { gender = 3 }

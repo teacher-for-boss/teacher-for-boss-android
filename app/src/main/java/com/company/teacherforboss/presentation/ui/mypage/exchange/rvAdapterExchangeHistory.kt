@@ -9,29 +9,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemAskPaymentHistoryBinding
 import com.company.teacherforboss.databinding.RvItemExchangeHistoryBinding
+import com.company.teacherforboss.domain.model.exchange.ExchangeListResponseEntity
 
 class rvAdapterExchangeHistory(
     private val context: Context,
-    private val ExchangeHistoryList: List<ExchangeHistoryItem>
+    private var ExchangeHistoryList: MutableList<ExchangeListResponseEntity.ExchangeEntity>
 ) : RecyclerView.Adapter<rvAdapterExchangeHistory.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemExchangeHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind (/*history:ExchangeHistoryEntity*/ history:ExchangeHistoryItem){
-            binding.rvExchangeHistoryTime.text = history.time
-            when (history.type){
-                "exchange" -> {
-                    binding.apply {
-                        rvExchangeHistoryName.text = context.getString(R.string.exchange_history_exchange)
-                        rvExchangeHistoryTp.text = "+${history.points}TP"
-                    }
+        fun bind (exchangeEntity: ExchangeListResponseEntity.ExchangeEntity) {
+            with(binding) {
+                if(exchangeEntity.type == "exchange") {
+                    rvExchangeHistoryName.text =
+                        context.getString(R.string.exchange_history_exchange)
                 }
-                "refund" -> {
-                    binding.apply {
-                        rvExchangeHistoryName.text = context.getString(R.string.exchange_history_refund)
-                        rvExchangeHistoryTp.text = "-${history.points}TP"
-                    }
+                else {
+                    rvExchangeHistoryName.text = context.getString(R.string.exchange_history_refund)
+                }
 
-                }
+                rvExchangeHistoryTp.text = context.getString(R.string.exchange_history_points, exchangeEntity.points)
+                rvExchangeHistoryTime.text = exchangeEntity.time
             }
         }
     }
@@ -49,5 +46,17 @@ class rvAdapterExchangeHistory(
         holder.bind(ExchangeHistoryList[position])
     }
 
+    fun updateData(newExchangeList: List<ExchangeListResponseEntity.ExchangeEntity>) {
+        ExchangeHistoryList = newExchangeList.toMutableList()
+        notifyDataSetChanged()
+    }
 
+    fun addMoreData(newExchangeList: List<ExchangeListResponseEntity.ExchangeEntity>) {
+        val currentSize = ExchangeHistoryList.size
+        val newItemSize = newExchangeList.size
+        if(newItemSize > 0) {
+            ExchangeHistoryList.addAll(newExchangeList)
+            notifyItemRangeInserted(currentSize, newItemSize)
+        }
+    }
 }

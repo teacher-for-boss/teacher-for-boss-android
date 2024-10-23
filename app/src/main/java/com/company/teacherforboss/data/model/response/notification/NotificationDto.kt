@@ -10,8 +10,21 @@ data class NotificationDto(
     @SerializedName("content") val content:String,
     @SerializedName("type") val type:String,
     @SerializedName("read") val read:Boolean,
-    @SerializedName("createdAt")val createdAt:String
+    @SerializedName("createdAt")val createdAt:String,
+    @SerializedName("data") val data: NotificationDataDto?
 ){
+    data class NotificationDataDto (
+        @SerializedName("type") val type: String,
+        @SerializedName("questionId") val questionId: Long?,
+        @SerializedName("postId") val postId: Long?
+    ) {
+        fun toNotificationDataEntity() = NotificationEntity.NotificationDataEntity(
+            type = type,
+            questionId = questionId,
+            postId = postId
+        )
+    }
+
     fun mapType():NotificationType{
         return when(type.split("_")[0]) {
             NOTIFICATION_TEACHER-> NotificationType.TeacherTalk
@@ -31,7 +44,8 @@ data class NotificationDto(
         type=mapType(),
         originalType=type,
         read=read,
-        createdAt=createdAt
+        createdAt=createdAt,
+        data = data?.toNotificationDataEntity()
     )
 
     companion object{

@@ -66,18 +66,22 @@ class NotificationAdapter(context: Context, private var notificationList: Mutabl
                                 }
                                 // 티처톡 특정 질문글 이동
                                 else {
-//                                    Intent(context, TeacherTalkBodyActivity::class.java).apply {
-//                                        putExtra(TEACHER_QUESTIONID, -1L)
-//                                        context.startActivity(this)
-//                                    }
+                                    if(notificationEntity.data?.type == "question") {
+                                        Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                                            putExtra(TEACHER_QUESTIONID, notificationEntity.data.questionId)
+                                            context.startActivity(this)
+                                        }
+                                    }
                                 }
                             }
                             else if(notificationEntity.type.name == "BossTalk") {
                                 // 보스톡 특정 게시글 이동
-//                                Intent(context, BossTalkBodyActivity::class.java).apply {
-//                                    putExtra(BOSS_POSTID, -1L)
-//                                    context.startActivity(this)
-//                                }
+                                if(notificationEntity.data?.type == "post") {
+                                    Intent(context, BossTalkBodyActivity::class.java).apply {
+                                        putExtra(BOSS_POSTID, notificationEntity.data.postId)
+                                        context.startActivity(this)
+                                    }
+                                }
                             }
                             else if(notificationEntity.type.name == "Exchange") {
                                 Intent(context, ExchangeHistoryActivity::class.java).apply {

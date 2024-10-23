@@ -2,6 +2,8 @@ package com.company.teacherforboss.signup.fragment
 
 import android.graphics.Paint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -158,6 +160,30 @@ class EmailFragment : BindingFragment<FragmentEmailBinding>(R.layout.fragment_em
                 viewModel.plusCurrentPage()
                 activity.gotoNextFragment(PasswordFragment())
             }
+
+            emailBox.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val noSpacesText = s?.toString()?.replace("\\s".toRegex(), "")
+                    if (noSpacesText != s.toString()) {
+                        emailBox.setText(noSpacesText)
+                        emailBox.setSelection(noSpacesText?.length ?: 0)
+                    }
+                }
+            })
+
+            emailCodeBox.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val noSpacesText = s?.toString()?.replace("\\s".toRegex(), "")
+                    if (noSpacesText != s.toString()) {
+                        emailCodeBox.setText(noSpacesText)
+                        emailCodeBox.setSelection(noSpacesText?.length ?: 0)
+                    }
+                }
+            })
         }
     }
 

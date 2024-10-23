@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.GlobalApplication
 import com.company.teacherforboss.data.model.request.payment.RequestExchangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseExchangeDto
+import com.company.teacherforboss.domain.model.exchange.ExchangeListRequestEntity
+import com.company.teacherforboss.domain.model.exchange.ExchangeListResponseEntity
 import com.company.teacherforboss.domain.model.exchange.ExchangeRequestEntity
 import com.company.teacherforboss.domain.model.exchange.ExchangeResponseEntity
 import com.company.teacherforboss.domain.model.payment.BankAccountResponseEntity
@@ -16,6 +18,7 @@ import com.company.teacherforboss.domain.model.payment.TeacherPointResponseEntit
 import com.company.teacherforboss.domain.repository.PaymentRepository
 import com.company.teacherforboss.domain.usecase.Member.AccountUsecase
 import com.company.teacherforboss.domain.usecase.payment.BankAccountUseCase
+import com.company.teacherforboss.domain.usecase.payment.ExchangeListUseCase
 import com.company.teacherforboss.domain.usecase.payment.ExchangeUseCase
 import com.company.teacherforboss.domain.usecase.payment.TeacherPointUseCase
 import com.company.teacherforboss.util.base.LocalDataSource
@@ -34,6 +37,7 @@ class ExchangeViewModel @Inject constructor(
     private val exchangeUseCase: ExchangeUseCase,
     private val accountUseCase: BankAccountUseCase,
     private val teacherPointUseCase: TeacherPointUseCase,
+    private val exchangeListUseCase: ExchangeListUseCase
 ) : ViewModel() {
 
     private val _getAccountState: MutableStateFlow<UiState<BankAccountResponseEntity>> = MutableStateFlow(UiState.Empty)
@@ -44,6 +48,9 @@ class ExchangeViewModel @Inject constructor(
 
     private val _getExchangeUiState: MutableStateFlow<UiState<ExchangeResponseEntity>> = MutableStateFlow(UiState.Empty)
     val getExchangeUiState get() = _getExchangeUiState.asStateFlow()
+
+    private val _getExchangeListUiState: MutableStateFlow<UiState<ExchangeListResponseEntity>> = MutableStateFlow(UiState.Empty)
+    val getExchangeListUiState get() = _getExchangeListUiState.asStateFlow()
 
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> get() = _userName
@@ -102,6 +109,18 @@ class ExchangeViewModel @Inject constructor(
                 _getExchangeUiState.value = UiState.Success(exchangeResponse)
             }.onFailure { throwable ->
                 _getExchangeUiState.value = UiState.Error(throwable.message)
+            }
+        }
+    }
+
+    fun getExchangeList() {
+        viewModelScope.launch {
+            exchangeListUseCase(exchangeListRequestEntity = ExchangeListRequestEntity(
+                lastExchangeId = 0,
+                size = 10)).onSuccess { exchangeListEntity ->
+                _getExchangeListUiState.value = UiState.Success(exchangeListEntity)
+            }.onFailure { exception: Throwable ->
+                _getExchangeListUiState.value = UiState.Error(exception.message)
             }
         }
     }

@@ -13,7 +13,7 @@ import com.company.teacherforboss.domain.model.exchange.ExchangeListResponseEnti
 
 class rvAdapterExchangeHistory(
     private val context: Context,
-    private var ExchangeHistoryList: List<ExchangeListResponseEntity.ExchangeEntity>
+    private var ExchangeHistoryList: MutableList<ExchangeListResponseEntity.ExchangeEntity>
 ) : RecyclerView.Adapter<rvAdapterExchangeHistory.ViewHolder>() {
     inner class ViewHolder(private val binding: RvItemExchangeHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -46,8 +46,17 @@ class rvAdapterExchangeHistory(
         holder.bind(ExchangeHistoryList[position])
     }
 
-    fun updateData(newItemList: List<ExchangeListResponseEntity.ExchangeEntity>) {
-        ExchangeHistoryList = newItemList
+    fun updateData(newExchangeList: List<ExchangeListResponseEntity.ExchangeEntity>) {
+        ExchangeHistoryList = newExchangeList.toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun addMoreData(newExchangeList: List<ExchangeListResponseEntity.ExchangeEntity>) {
+        val currentSize = ExchangeHistoryList.size
+        val newItemSize = newExchangeList.size
+        if(newItemSize > 0) {
+            ExchangeHistoryList.addAll(newExchangeList)
+            notifyItemRangeInserted(currentSize, newItemSize)
+        }
     }
 }

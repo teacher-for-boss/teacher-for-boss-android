@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.mypage.exchange
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
@@ -27,10 +28,18 @@ class ExchangeHistoryActivity : BindingActivity<ActivityExchangeHistoryBinding>(
         setContentView(binding.root)
 
         exchangeViewModel.getExchangeList()
+
+        addListeners()
         initAdapter()
         readNotification()
         onBackBtnPressed()
         collectData()
+    }
+
+    private fun addListeners() {
+        binding.btnExchangeListMore.setOnClickListener {
+            exchangeViewModel.getExchangeList()
+        }
     }
 
     private fun collectData() {
@@ -41,10 +50,22 @@ class ExchangeHistoryActivity : BindingActivity<ActivityExchangeHistoryBinding>(
                         val exchangeList = exchangeListState.data.exchangeList
 
                         if(exchangeList.isEmpty()) {
-
+                            binding.btnExchangeListMore.visibility = View.GONE
                         }
                         else {
-                            exchangeListAdapter.updateData(exchangeList)
+                            val previousLastExchangeId = exchangeViewModel.getLastExchangeId()
+                            val lastExchangeId = exchangeList.get(exchangeList.lastIndex).exchangeId
+                            exchangeViewModel.setLastExchangeId(lastExchangeId)
+
+                            if(previousLastExchangeId.toInt() == 0) exchangeListAdapter.updateData(exchangeList)
+                            else exchangeListAdapter.addMoreData(exchangeList)
+
+                            if(exchangeListState.data.hasNext) {
+                                binding.btnExchangeListMore.visibility = View.VISIBLE
+                            }
+                            else {
+                                binding.btnExchangeListMore.visibility = View.GONE
+                            }
                         }
                     }
                     else -> Unit
@@ -53,7 +74,7 @@ class ExchangeHistoryActivity : BindingActivity<ActivityExchangeHistoryBinding>(
     }
 
     private fun initAdapter() {
-        exchangeListAdapter = rvAdapterExchangeHistory(this, emptyList())
+        exchangeListAdapter = rvAdapterExchangeHistory(this, mutableListOf())
         binding.rvExchangeHistory.adapter = exchangeListAdapter
         binding.rvExchangeHistory.layoutManager = LinearLayoutManager(this)
     }

@@ -52,6 +52,9 @@ class ExchangeViewModel @Inject constructor(
     private val _getExchangeListUiState: MutableStateFlow<UiState<ExchangeListResponseEntity>> = MutableStateFlow(UiState.Empty)
     val getExchangeListUiState get() = _getExchangeListUiState.asStateFlow()
 
+    var _lastExchangeId = MutableLiveData<Long>(0)
+    val lastExchangeId: LiveData<Long> get() = _lastExchangeId
+
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> get() = _userName
 
@@ -116,13 +119,21 @@ class ExchangeViewModel @Inject constructor(
     fun getExchangeList() {
         viewModelScope.launch {
             exchangeListUseCase(exchangeListRequestEntity = ExchangeListRequestEntity(
-                lastExchangeId = 0,
+                lastExchangeId = getLastExchangeId(),
                 size = 10)).onSuccess { exchangeListEntity ->
                 _getExchangeListUiState.value = UiState.Success(exchangeListEntity)
             }.onFailure { exception: Throwable ->
                 _getExchangeListUiState.value = UiState.Error(exception.message)
             }
         }
+    }
+
+    fun getLastExchangeId(): Long {
+        return lastExchangeId.value!!
+    }
+
+    fun setLastExchangeId(id: Long) {
+        _lastExchangeId.value = id
     }
 
     fun updateGetExchangeUiState(data: ExchangeResponseEntity) {

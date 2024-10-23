@@ -290,6 +290,7 @@
     <string name="exchange_history_exchange">티포 환전</string>
     <string name="exchange_history_refund">환전 취소</string>
     <string name="exchange_history_points">%dTP</string>
+    <string name="exchange_history_more">환전 내역 더 불러오기</string>
 
 
     <string name="account_change_title">계좌 확인 몇 변경</string>

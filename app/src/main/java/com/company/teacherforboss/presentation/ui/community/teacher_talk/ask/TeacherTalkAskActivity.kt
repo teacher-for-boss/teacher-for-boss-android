@@ -96,6 +96,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             //category
             viewModel.categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME)!!
             categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
+            viewModel.selectCategoryId(categoryIndex.toLong())
 
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
                 viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!

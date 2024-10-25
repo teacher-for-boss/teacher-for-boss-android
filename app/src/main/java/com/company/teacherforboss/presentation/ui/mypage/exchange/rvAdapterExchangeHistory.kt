@@ -10,6 +10,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemAskPaymentHistoryBinding
 import com.company.teacherforboss.databinding.RvItemExchangeHistoryBinding
 import com.company.teacherforboss.domain.model.exchange.ExchangeListResponseEntity
+import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class rvAdapterExchangeHistory(
     private val context: Context,
@@ -28,7 +29,7 @@ class rvAdapterExchangeHistory(
                 }
 
                 rvExchangeHistoryTp.text = context.getString(R.string.exchange_history_points, exchangeEntity.points)
-                rvExchangeHistoryTime.text = exchangeEntity.time
+                rvExchangeHistoryTime.text = LocalDateFormatter.extractDate3(exchangeEntity.time)
             }
         }
     }

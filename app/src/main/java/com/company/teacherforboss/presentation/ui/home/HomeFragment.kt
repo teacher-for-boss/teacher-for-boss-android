@@ -23,14 +23,18 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.TeacherTalkMainViewModel
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.main.basic.TeacherTalkMainFragment
 import com.company.teacherforboss.util.base.BindingFragment
+import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home), ItemClickListener {
@@ -41,6 +45,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val teacherTalkPopularPostAdapter: HomeTeacherTalkPopularPostAdapter by lazy { HomeTeacherTalkPopularPostAdapter(::navigateToTeacherTalkPost) }
     private val bossTalkPopularPostAdapter: HomeBossTalkPopularPostAdapter by lazy { HomeBossTalkPopularPostAdapter(::navigateToBossTalkPost) }
     private val weeklyBestTeacherAdapter: HomeWeeklyBestTeacherAdapter by lazy { HomeWeeklyBestTeacherAdapter(::navigateToTeacherProfile) }
+    @Inject
+    lateinit var localDataSource: LocalDataSource
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
@@ -78,7 +84,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initLayout() {
         initAdapter()
         viewModel.apply {
-            setBannerItems()
+            val role = localDataSource.getUserInfo(ConstsUtils.USER_ROLE)
+            if(role == TEACHER) { setTeacherBannerItems() }
+            else { setBossBannerItems() }
+
             setTeacherTalkShortcutItems()
             getTeacherTalkPopularPost()
             getBossTalkPopularPost()

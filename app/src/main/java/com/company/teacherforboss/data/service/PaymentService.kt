@@ -2,6 +2,7 @@ package com.company.teacherforboss.data.service
 
 import com.company.teacherforboss.data.model.request.payment.RequestExchangeDto
 import com.company.teacherforboss.data.model.response.community.boss.ResponseBossTalkLikeDto
+import com.company.teacherforboss.data.model.response.exchange.ResponseExchangeListDto
 import com.company.teacherforboss.data.model.response.payment.RequestBankAccountChangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseBankAccountChangeDto
 import com.company.teacherforboss.data.model.response.payment.ResponseBankAccountDto
@@ -12,7 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PaymentService {
     @GET("payments/accounts")
@@ -32,4 +33,10 @@ interface PaymentService {
     @GET("payments/points")
     suspend fun getTeacherPoint(
     ): BaseResponse<ResponseTeacherPointDto>
+
+    @GET("payments/payments/exchanges/history?")
+    suspend fun getExchangeList(
+        @Query("lastExchangeId") lastExchangeId: Long,
+        @Query("size") size: Int
+    ): BaseResponse<ResponseExchangeListDto>
 }

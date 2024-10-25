@@ -33,7 +33,7 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가나다라마바사아차 티쳐"
+            android:text=""
             android:textSize="14dp"
             android:textColor="@color/Gray700"
             app:layout_constraintStart_toEndOf="@id/user_image"

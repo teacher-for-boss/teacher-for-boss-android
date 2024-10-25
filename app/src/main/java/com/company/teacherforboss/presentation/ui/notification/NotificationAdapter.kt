@@ -1,13 +1,24 @@
 package com.company.teacherforboss.presentation.ui.notification
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemNotificationBinding
 import com.company.teacherforboss.domain.model.notification.NotificationEntity
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
+import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
+import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
+import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
 class NotificationAdapter(context: Context, private var notificationList: MutableList<NotificationEntity>
@@ -31,6 +42,55 @@ class NotificationAdapter(context: Context, private var notificationList: Mutabl
                             binding.root.setBackgroundColor(clickedBgColor)
                             tvNotificationTitle.setTextColor(clickedTextColor)
                             tvNotificationContent.setTextColor(clickedTextColor)
+                        }
+
+                        root.setOnClickListener {
+                            if(notificationEntity.type.name == "Home") {
+                                Intent(context, MainActivity::class.java).apply {
+                                    context.startActivity(this)
+                                }
+                            }
+                            else if(notificationEntity.type.name == "TeacherTalk") {
+                                // 홈화면 이동
+                                if(notificationEntity.originalType == "QUESTION_AUTO_DELETE") {
+                                    Intent(context, MainActivity::class.java).apply {
+                                        context.startActivity(this)
+                                    }
+                                }
+                                // 티처톡 메인 이동
+                                else if(notificationEntity.originalType == "QUESTION_NEW") {
+                                    Intent(context, MainActivity::class.java).apply {
+                                        putExtra(FRAGMENT_DESTINATION, TEACHER_TALK)
+                                        context.startActivity(this)
+                                    }
+                                }
+                                // 티처톡 특정 질문글 이동
+                                else {
+                                    if(notificationEntity.data?.type == "question") {
+                                        Intent(context, TeacherTalkBodyActivity::class.java).apply {
+                                            putExtra(TEACHER_QUESTIONID, notificationEntity.data.questionId)
+                                            context.startActivity(this)
+                                        }
+                                    }
+                                }
+                            }
+                            else if(notificationEntity.type.name == "BossTalk") {
+                                // 보스톡 특정 게시글 이동
+                                if(notificationEntity.data?.type == "post") {
+                                    Intent(context, BossTalkBodyActivity::class.java).apply {
+                                        putExtra(BOSS_POSTID, notificationEntity.data.postId)
+                                        context.startActivity(this)
+                                    }
+                                }
+                            }
+                            else if(notificationEntity.type.name == "Exchange") {
+                                Intent(context, ExchangeHistoryActivity::class.java).apply {
+                                    context.startActivity(this)
+                                }
+                            }
+                            else {
+
+                            }
                         }
                     }
                 }

@@ -23,7 +23,7 @@
         >
 
         <TextView
-            android:text="이용약관에 동의하시면\n티쳐 포 보스를 시작할 수 있어요"
+            android:text="이용약관에 동의하시면\n티처 포 보스를 시작할 수 있어요"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:textStyle="bold"
@@ -259,7 +259,8 @@
                 android:textSize="14dp"
                 android:textColor="@color/black"
                 android:layout_marginLeft="13dp"
-                android:layout_toRightOf="@id/sms_checkbox"/>
+                android:layout_toRightOf="@id/sms_checkbox"
+                android:layout_centerVertical="true"/>
 
             <CheckBox
                 android:id="@+id/email_checkbox"

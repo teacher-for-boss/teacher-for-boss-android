@@ -1,9 +1,11 @@
 package com.company.teacherforboss.presentation.ui.community.teacher_talk.answer
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -11,12 +13,16 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
+import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.company.teacherforboss.R
@@ -38,11 +44,14 @@ import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import com.gun0912.tedpermission.provider.TedPermissionProvider.context
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBinding>(R.layout.activity_teachertalk_answer) {
     private val viewModel: TeacherTalkAnswerViewModel by viewModels()
+    private lateinit var mDetector: GestureDetectorCompat
+    private var prevFocus: View? = null
 
     private var questionId:Long=0
     private var answerId: Long=0
@@ -72,6 +81,7 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         addListeners()
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+        mDetector = GestureDetectorCompat(this, SingleTapListener())
     }
 
     fun setInitView() {
@@ -372,12 +382,32 @@ class TeacherTalkAnswerActivity : BindingActivity<ActivityTeachertalkAnswerBindi
         binding.inputAnswer.filters = arrayOf(InputFilter.LengthFilter(5000))
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null && ev?.action == MotionEvent.ACTION_DOWN) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-            currentFocus?.clearFocus()
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_UP)
+            prevFocus = currentFocus
+        val result = super.dispatchTouchEvent(ev)
+        mDetector.onTouchEvent(ev)
+        return result
+    }
+
+    private inner class SingleTapListener : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            if (e.action == MotionEvent.ACTION_UP && prevFocus is EditText) {
+                val prevFocus = prevFocus ?: return false
+                val hitRect = Rect()
+                prevFocus.getGlobalVisibleRect(hitRect)
+
+                if (!hitRect.contains(e.x.toInt(), e.y.toInt())) {
+                    if (currentFocus is EditText && currentFocus != prevFocus) {
+                        return false
+                    } else {
+                        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.hideSoftInputFromWindow(prevFocus.windowToken, 0)
+                        prevFocus.clearFocus()
+                    }
+                }
+            }
+            return super.onSingleTapUp(e)
         }
-        return super.dispatchTouchEvent(ev)
     }
 }

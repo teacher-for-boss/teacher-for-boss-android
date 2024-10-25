@@ -379,7 +379,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="티쳐를 가장 잘 나타낼 수 있는 키워드를 선택해주세요(최대 5개)"
+                    android:text="티처를 가장 잘 나타낼 수 있는 키워드를 선택해주세요(최대 5개)"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body.Medium.12"
                     android:textColor="@color/Gray400"
                     app:layout_constraintStart_toStartOf="parent"

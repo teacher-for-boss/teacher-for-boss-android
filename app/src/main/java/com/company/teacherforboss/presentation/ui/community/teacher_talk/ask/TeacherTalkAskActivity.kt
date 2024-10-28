@@ -80,6 +80,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         purpose = intent.getStringExtra(POST_PURPOSE)?:"write"
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+        mDetector = GestureDetectorCompat(this, SingleTapListener())
 
         // 초기 뷰 설정
         initView()

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.InputFilter
@@ -27,6 +26,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
@@ -83,16 +83,13 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         mDetector = GestureDetectorCompat(this, SingleTapListener())
 
         // 초기 뷰 설정
-        initView()
+        initLayout()
         // 해시태그 입력
         inputHashtag()
-
         addListeners()
-
-
     }
 
-    fun initView() {
+    private fun initLayout() {
         if(purpose=="modify") {
             viewModel.questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
             Log.d("test modi",intent.getLongExtra(TEACHER_QUESTIONID,-1L).toString())
@@ -131,8 +128,6 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         }
 
         val categoryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCategory.layoutManager = categoryLayoutManager
-
         // 선택된 카테고리 index로 스크롤
         if (categoryIndex != -1) {
             binding.rvCategory.post {
@@ -140,13 +135,11 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             }
         }
 
-        //글자수
+        // 글자수 및 editText 배경
         setTextLength()
-        //editText 배경설정
-        focusOnEditText()
     }
 
-    fun addListeners() {
+    private fun addListeners() {
         // 등록 유효 확인 후 uploadPost
         IsValidPost()
         // 나가기
@@ -155,14 +148,11 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         binding.inputImage.setOnClickListener {
             checkAndRequestPermissions()
         }
-        binding.inputTitle.setOnEditorActionListener { v, actionId, event ->
+        binding.etInputTitle.setOnEditorActionListener { v, actionId, event ->
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-
                 imm?.hideSoftInputFromWindow(v.windowToken, 0)
-
                 true
             }
             else {
@@ -173,9 +163,9 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
     fun selectCategory(positioin:Long) = viewModel.selectCategoryId(positioin)
 
-    fun inputHashtag() {
+    private fun inputHashtag() {
         //스페이스바 입력 막기
-        binding.inputHashtag.addTextChangedListener(object : TextWatcher {
+        binding.etInputHashtag.addTextChangedListener(object : TextWatcher {
 
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
@@ -189,18 +179,18 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                     if (text.endsWith(' ')) {
                         val start = it.length - 1
                         // UI 스레드에서 지연 실행
-                        binding.inputHashtag.post {
+                        binding.etInputHashtag.post {
                             it.delete(start, start + 1)
-                            binding.inputHashtag.setSelection(start)
+                            binding.etInputHashtag.setSelection(start)
                         }
                     }
                 }
             }
         })
         //해시태그 입력
-        binding.inputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        binding.etInputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
-                val inputText = binding.inputHashtag.text.toString()
+                val inputText = binding.etInputHashtag.text.toString()
 
                 if(inputText.isNotBlank()) {
                     if(viewModel.hashTagList.size < 5) {
@@ -208,7 +198,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                             viewModel.addHashTag(inputText)
                             adapterTag.notifyDataSetChanged()
 
-                            binding.inputHashtag.text.clear()
+                            binding.etInputHashtag.text.clear()
                         }
                         else  {
                             CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_duplicated), 2000).show()
@@ -346,66 +336,70 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
     }
 
-    fun setTextLength() {
-        binding.inputTitle.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setTitleLength(s?.length?: 0)
-            }
-            override fun afterTextChanged(s: Editable?) {}
+    private fun setTextLength() {
+        // textChangedListener
+        addTextLengthWatcher(binding.etInputTitle, "title")
+        addTextLengthWatcher(binding.etInputBody, "body")
+        addTextLengthWatcher(binding.etInputHashtag, "tag")
+        addTextLengthWatcher(binding.etQuestionDetail1, "detail1")
+        addTextLengthWatcher(binding.etQuestionDetail2, "detail2")
+        addTextLengthWatcher(binding.etQuestionDetail3, "detail3")
+        addTextLengthWatcher(binding.etQuestionDetail4, "detail4")
+        addTextLengthWatcher(binding.etQuestionDetail5, "detail5")
 
-        })
+        // 현재 글자수 업데이트
+        updateTextLength(viewModel.textTitleLength, binding.tvTitleLength, 30)
+        updateTextLength(viewModel.textBodyLength, binding.tvBodyLength, 1000)
+        updateTextLength(viewModel.textTagLength, binding.tvHashtagLength, 10)
+        updateTextLength(viewModel.textLengthDetail1, binding.tvLengthDetail1, 100)
+        updateTextLength(viewModel.textLengthDetail2, binding.tvLengthDetail2, 100)
+        updateTextLength(viewModel.textLengthDetail3, binding.tvLengthDetail3, 100)
+        updateTextLength(viewModel.textLengthDetail4, binding.tvLengthDetail4, 100)
+        updateTextLength(viewModel.textLengthDetail5, binding.tvLengthDetail5, 100)
 
-        binding.inputBody.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setBodyLength(s?.length?: 0)
-            }
-            override fun afterTextChanged(s: Editable?) {}
+        // 최대글자수 지정
+        binding.etInputTitle.filters = arrayOf(InputFilter.LengthFilter(30))
+        binding.etInputBody.filters = arrayOf(InputFilter.LengthFilter(1000))
+        binding.etInputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
+        binding.etQuestionDetail1.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail2.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail3.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail4.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail5.filters = arrayOf(InputFilter.LengthFilter(100))
 
-        })
-
-        binding.inputHashtag.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setTagLength(s?.length?: 0)
-            }
-            override fun afterTextChanged(s: Editable?) {}
-
-        })
-
-        //현재 글자수 업데이트
-        viewModel.textTitleLength.observe(this, Observer { length ->
-            binding.titleLength.text = "$length/30"
-        })
-        viewModel.textBodyLength.observe(this, Observer{ length->
-            binding.bodyLength.text = "$length/1000"
-        })
-        viewModel.textTagLength.observe(this, Observer{ length->
-            binding.hashtagLength.text = "$length/10"
-        })
-
-        //최대글자수 지정
-        binding.inputTitle.filters = arrayOf(InputFilter.LengthFilter(30))
-        binding.inputBody.filters = arrayOf(InputFilter.LengthFilter(1000))
-        binding.inputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
+        // editText 배경설정
+        focusOnEditText(binding.etInputTitle)
+        focusOnEditText(binding.etInputBody)
+        focusOnEditText(binding.etInputHashtag)
+        focusOnEditText(binding.etQuestionDetail1)
+        focusOnEditText(binding.etQuestionDetail2)
+        focusOnEditText(binding.etQuestionDetail3)
+        focusOnEditText(binding.etQuestionDetail4)
+        focusOnEditText(binding.etQuestionDetail5)
     }
 
-    fun focusOnEditText() {
-        binding.inputTitle.setOnFocusChangeListener{ v, hasFocus ->
-            if(hasFocus) {
-                v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
+    private fun addTextLengthWatcher(editText: EditText, key: String) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setTextLength(key, s?.length ?: 0)
             }
-            else {
-                v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
-            }
-        }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
 
-        binding.inputBody.setOnFocusChangeListener { v, hasFocus ->
+    private fun updateTextLength(liveData: LiveData<Int>, textView:TextView, maxLength: Int) {
+        liveData.observe(this, Observer { length ->
+            textView.text = "$length/$maxLength"
+        })
+    }
+
+    private fun focusOnEditText(view: View) {
+        view.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus) {
                 v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
             }
-            else {
+            else  {
                 v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
             }
         }
@@ -413,8 +407,8 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
     fun IsValidPost() {
         binding.postBtn.setOnClickListener {
-            val title = binding.inputTitle.text.toString()
-            val body = binding.inputBody.text.toString()
+            val title = binding.etInputTitle.text.toString()
+            val body = binding.etInputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
                 CustomSnackBar.make(binding.root, getString(R.string.community_input_title_body), 2000).show()

@@ -79,6 +79,21 @@ class TeacherTalkAskViewModel @Inject constructor(
     private val _textTagLength = MutableLiveData<Int>()
     val textTagLength: LiveData<Int> get()=_textTagLength
 
+    private val _textLengthDetail1 = MutableLiveData<Int>()
+    val textLengthDetail1: LiveData<Int> get()=_textLengthDetail1
+
+    private val _textLengthDetail2 = MutableLiveData<Int>()
+    val textLengthDetail2: LiveData<Int> get()=_textLengthDetail2
+
+    private val _textLengthDetail3 = MutableLiveData<Int>()
+    val textLengthDetail3: LiveData<Int> get()=_textLengthDetail3
+
+    private val _textLengthDetail4 = MutableLiveData<Int>()
+    val textLengthDetail4: LiveData<Int> get()=_textLengthDetail4
+
+    private val _textLengthDetail5 = MutableLiveData<Int>()
+    val textLengthDetail5: LiveData<Int> get()=_textLengthDetail5
+
     fun uploadPost() {
         viewModelScope.launch {
             try {
@@ -179,14 +194,19 @@ class TeacherTalkAskViewModel @Inject constructor(
         imageList.removeAt(position)
     }
 
-    fun setTitleLength(length: Int) {
-        _textTitleLength.value = length
-    }
-    fun setBodyLength(length: Int) {
-        _textBodyLength.value = length
-    }
-    fun setTagLength(length: Int) {
-        _textTagLength.value = length
+    fun setTextLength(data: String, length: Int) {
+        when(data) {
+            "title" -> _textTitleLength.value = length
+            "body" -> _textBodyLength.value = length
+            "tag" -> _textTagLength.value = length
+            "detail1" -> _textLengthDetail1.value = length
+            "detail2" -> _textLengthDetail2.value = length
+            "detail3" -> _textLengthDetail3.value = length
+            "detail4" -> _textLengthDetail4.value = length
+            "detail5" -> _textLengthDetail5.value = length
+
+            else -> throw IllegalArgumentException("Unknown data type: $data")
+        }
     }
 
     fun selectCategoryId(id: Long) {

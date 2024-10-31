@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemRecommentBossBinding
 import com.company.teacherforboss.domain.model.community.CommentEntity
@@ -47,6 +48,8 @@ class rvAdapterRecommentBoss(
                     binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
                 else if(member?.role == BOSS)
                     binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+                else if (member?.role == null)
+                    binding.userName.text = context.getString(R.string.nickname_none)
 
                 
             member?.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
@@ -54,9 +57,22 @@ class rvAdapterRecommentBoss(
                 // 레벨
                 profileLevel.text = comment.memberInfo?.level
 
-                if (member?.role == ConstsUtils.BOSS) {
+                if (member?.role == null) {
                     profileStar.visibility = View.GONE
                     profileLevel.visibility = View.GONE
+                    createdAt.visibility = View.GONE
+
+                    userImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
+                } else {
+                    member?.profileImg?.let {
+                        if (it.isNotEmpty()) {
+                            binding.userImage.loadProfileImgFromUrlCoil(it) }
+                    }
+                    if (member?.role == BOSS) {
+                        profileStar.visibility = View.GONE
+                        profileLevel.visibility = View.GONE
+                    }
+
                 }
 
                 // 프로필 클릭 시 상세 프로필 이동

@@ -19,9 +19,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import coil.load
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityTeachertalkBodyBinding
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.TeacherTalkAskActivity
@@ -327,18 +329,27 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
             // 본문 글
             with(binding) {
-                bodyTitle.text = getString(R.string.teacher_talk_card_view_question, body.title)
-                bodyBody.text = body.content
-                userNickname.text = body.memberInfo.toMemberDto().name
-                date.text = LocalDateFormatter.extractDate(body.createdAt)
-                commentNumber.text = getString(R.string.teacher_talk_comment_count, body.answerCount)
+
+                if (body.memberInfo.toMemberDto().role == null) {
+                    userNickname.text = getString(R.string.nickname_none)
+                    date.visibility= View.INVISIBLE
+
+                    profileImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
+                } else {
+                    bodyTitle.text = getString(R.string.teacher_talk_card_view_question, body.title)
+                    bodyBody.text = body.content
+                    userNickname.text = body.memberInfo.toMemberDto().name
+                    date.text = LocalDateFormatter.extractDate(body.createdAt)
+                    commentNumber.text = getString(R.string.teacher_talk_comment_count, body.answerCount)
+
+                    // 프로필 이미지
+                    body.memberInfo.toMemberDto().profileImg?.let { binding.profileImage.loadProfileImgFromUrlCoil(it) }
+                }
+
             }
 
             // 본문 업로드 이미지
             if (body.imageUrlList.isNotEmpty()) viewModel.imageUrlList = body.imageUrlList
-
-            // 프로필 이미지
-            body.memberInfo.toMemberDto().profileImg?.let { binding.profileImage.loadProfileImgFromUrlCoil(it) }
 
             // 사용자 본인 작성 여부
             viewModel._isMine.value = body.isMine

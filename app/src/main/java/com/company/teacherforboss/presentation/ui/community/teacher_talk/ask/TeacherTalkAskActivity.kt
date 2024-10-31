@@ -101,8 +101,8 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             viewModel._content.value = intent.getStringExtra(POST_BODY).toString()
             //category
             viewModel.categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME)!!
-            categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
-            viewModel.selectCategoryId(categoryIndex.toLong())
+//            categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
+            viewModel.selectCategoryId(viewModel.categoryName)
 
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
                 viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
@@ -159,9 +159,21 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 false
             }
         }
+
+        binding.radioFirstField.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                R.id.first_field_button1 -> { viewModel.setButtonSelected(1) }
+                R.id.first_field_button2 -> { viewModel.setButtonSelected(2) }
+            }
+        }
     }
 
-    fun selectCategory(positioin:Long) = viewModel.selectCategoryId(positioin)
+    fun selectCategory(positioin:Long) {
+        val categoryName = viewModel.categoryList.getOrNull(positioin.toInt())
+        categoryName?.let { viewModel.selectCategoryId(categoryName) }
+
+//        viewModel.selectCategoryId(positioin)
+    }
 
     private fun inputHashtag() {
         //스페이스바 입력 막기
@@ -418,6 +430,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     }
 
     fun uploadPost() {
+        viewModel.updateExtraField()
         //이미지 업로드 시
         if(viewModel.imageList.isNotEmpty()) {
             // 처음엔 이미지가 없다가 후 or 첫 업로드

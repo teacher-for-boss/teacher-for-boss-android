@@ -155,7 +155,7 @@
                     android:layout_marginTop="24dp" />
 
                 <RadioGroup
-                    android:id="@+id/radio_writer_type"
+                    android:id="@+id/radio_first_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -165,6 +165,7 @@
                     android:layout_marginTop="10dp">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/first_field_button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/selector_radio_button"
@@ -172,6 +173,7 @@
                         android:paddingStart="6dp" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/first_field_button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/selector_radio_button"
@@ -190,7 +192,7 @@
                     android:textColor="@color/Gray700"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="4dp"
-                    app:layout_constraintTop_toBottomOf="@id/radio_writer_type"
+                    app:layout_constraintTop_toBottomOf="@id/radio_first_field"
                     android:layout_marginTop="24dp" />
 
                 <TextView
@@ -210,6 +212,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:text="@={viewModel._secondField}"
                     android:hint="ex. 한식주점(수육, 전통주), 베이커리 카페(크로플, 커피)"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
                     android:textColor="@color/black"
@@ -248,6 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:text="@={viewModel._thirdField}"
                     android:hint="ex. 성북구 삼선교로 대로변에 위치한 20평 규모의 카페"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
                     android:textColor="@color/black"
@@ -286,6 +290,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:text="@={viewModel._fourthField}"
                     android:hint="ex. 20대 여성, 인근 대학교 학생들"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
                     android:textColor="@color/black"
@@ -324,6 +329,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:text="@={viewModel._fifthField}"
                     android:hint="ex. 최근 한달 매출 1천만, 객단가 1만, 배달앱 기준 재주문 13%"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
                     android:textColor="@color/black"
@@ -362,6 +368,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_radius12_transparent_gray200_stroke"
+                    android:text="@={viewModel._sixthField}"
                     android:hint="ex. 마케팅 활용 가능 예산 150만, SONY ZV-10 카메라 보유"
                     android:textAppearance="@style/TextAppearance.TeacherForBoss.Body5"
                     android:textColor="@color/black"

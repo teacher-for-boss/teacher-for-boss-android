@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.teacherforboss.data.model.request.community.teacher.ExtraContent
 import com.company.teacherforboss.domain.model.aws.getPresingedUrlEntity
 import com.company.teacherforboss.domain.model.aws.presignedUrlListEntity
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkRequestEntity
@@ -35,6 +36,15 @@ class TeacherTalkAskViewModel @Inject constructor(
     val categoryList = arrayListOf(
         "세무", "직원관리", "노하우", "상권", "마케팅", "위생", "인테리어"
     )
+    val categoryMap = mapOf(
+        "세무" to 1L,
+        "직원관리" to 2L,
+        "노하우" to 3L,
+        "마케팅" to 4L,
+        "위생" to 5L,
+        "상권" to 6L,
+        "인테리어" to 7L
+    )
     var _presignedUrlList = MutableLiveData<List<String>>()
     val presignedUrlList: LiveData<List<String>> = _presignedUrlList
     var filtered_presignedList = MutableLiveData<List<String>>()
@@ -60,6 +70,29 @@ class TeacherTalkAskViewModel @Inject constructor(
 
     var _content = MutableLiveData<String>("")
     val content: LiveData<String> get()=_content
+
+    private var _buttonSelected = MutableLiveData<Int>(0)
+    val buttonSelected: LiveData<Int> get()=_buttonSelected
+
+    var _firstField = MutableLiveData<String>("")
+    val firstField: LiveData<String> get()=_firstField
+
+    var _secondField = MutableLiveData<String>("")
+    val secondField: LiveData<String> get() = _secondField
+
+    var _thirdField = MutableLiveData<String>("")
+    val thirdField: LiveData<String> get()=_thirdField
+
+    var _fourthField = MutableLiveData<String>("")
+    val fourthField: LiveData<String> get() = _fourthField
+
+    var _fifthField = MutableLiveData<String>("")
+    val fifthField: LiveData<String> get() = _fifthField
+
+    var _sixthField = MutableLiveData<String>("")
+    val sixthField: LiveData<String> get()=_sixthField
+
+    private var extraContent = MutableLiveData<ExtraContent>()
 
     private val _uploadPostLiveData = MutableLiveData<TeacherUploadPostResponseEntity>()
     val uploadPostLiveData: LiveData<TeacherUploadPostResponseEntity> = _uploadPostLiveData
@@ -102,6 +135,7 @@ class TeacherTalkAskViewModel @Inject constructor(
                         categoryId = categoryId.value?:0,
                         title = title.value?:"",
                         content = content.value?:"",
+                        extraContent = extraContent.value,
                         hashtagList = hashTagList,
                         imageUrlList = filtered_presignedList.value?: emptyList()
                     )
@@ -122,8 +156,9 @@ class TeacherTalkAskViewModel @Inject constructor(
                         categoryId = categoryId.value?:0,
                         title = title.value?:"",
                         content = content.value?:"",
+                        extraContent = extraContent.value,
                         hashtagList = hashTagList,
-                        imageUrlList=initImageUrlList+(filtered_presignedList.value?: emptyList())
+                        imageUrlList =initImageUrlList+(filtered_presignedList.value?: emptyList())
                     )
                 )
                 _modifyPostLiveData.value = teacherModifyResponseEntity
@@ -209,8 +244,42 @@ class TeacherTalkAskViewModel @Inject constructor(
         }
     }
 
-    fun selectCategoryId(id: Long) {
-        _categoryId.value = id + 1
+    fun updateExtraField() {
+        setFirstField()
+        val updatedExtraContent = ExtraContent(
+            firstField = firstField.value?:"",
+            secondField = secondField.value?:"",
+            thirdField = thirdField.value?:"",
+            fourthField = fourthField.value?:"",
+            fifthField = fifthField.value?:"",
+            sixthField = sixthField.value?:""
+        )
+        extraContent.value = updatedExtraContent
+    }
+
+    fun setButtonSelected(value: Int) {
+        _buttonSelected.value = value
+    }
+
+    fun setFirstField() {
+        Log.d("okhttp",buttonSelected.value.toString())
+        if(categoryId.value?.toInt() == 3 || categoryId.value?.toInt() == 6) {
+            if(buttonSelected.value == 1) { _firstField.value = "STORE_OWNER" }
+            else { _firstField.value = "ASPIRING_ENTREPRENEUR" }
+        }
+        else if(categoryId.value?.toInt() == 1) {
+            if(buttonSelected.value == 1) { _firstField.value = "TAX_FILLING" }
+            else { _firstField.value = "NO_TAX_FILLING" }
+        }
+        else if(categoryId.value?.toInt() == 2) {
+            if(buttonSelected.value == 1) { _firstField.value = "WITH_CONTRACT" }
+            else { _firstField.value = "WITHOUT_CONTRACT" }
+        }
+    }
+
+    fun selectCategoryId(categoryName: String) {
+        _categoryId.value = categoryMap[categoryName]
+//        _categoryId.value = id + 1
     }
     fun setFileType(fileType:String){
         if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE

@@ -168,11 +168,60 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         }
     }
 
-    fun selectCategory(positioin:Long) {
-        val categoryName = viewModel.categoryList.getOrNull(positioin.toInt())
+    private fun selectCategory(position:Long) {
+        val categoryName = viewModel.categoryList.getOrNull(position.toInt())
         categoryName?.let { viewModel.selectCategoryId(categoryName) }
 
 //        viewModel.selectCategoryId(positioin)
+
+        viewModel.categoryId.observe(this, Observer { categoryId ->
+            with(binding) {
+                when (categoryId) {
+                    1L -> {
+                        firstFieldButton1.text = getString(R.string.investigation_first_field_button1)
+                        firstFieldButton2.text = getString(R.string.investigation_first_field_button2)
+                        tvQuestionDetail1.text = getString(R.string.investigation_second_field_title)
+                        etQuestionDetail1.hint = getString(R.string.investigation_second_field_hint)
+                        tvQuestionDetail2.text = getString(R.string.investigation_third_field_title)
+                        etQuestionDetail2.hint = getString(R.string.investigation_third_field_hint)
+                        tvQuestionDetail3.text = getString(R.string.investigation_fourth_field_title)
+                        etQuestionDetail3.hint = getString(R.string.investigation_fourth_field_hint)
+                        tvQuestionDetail4.text = getString(R.string.investigation_fifth_field_title)
+                        etQuestionDetail4.hint = getString(R.string.investigation_fifth_field_hint)
+                        tvQuestionDetail5.text = getString(R.string.investigation_sixth_field_title)
+                        etQuestionDetail5.hint = getString(R.string.investigation_sixth_field_hint)
+                    }
+                    2L -> {
+                        firstFieldButton1.text = getString(R.string.labor_first_field_button1)
+                        firstFieldButton2.text = getString(R.string.labor_first_field_button2)
+                        tvQuestionDetail1.text = getString(R.string.investigation_second_field_title)
+                        etQuestionDetail1.hint =  getString(R.string.investigation_second_field_hint)
+                        tvQuestionDetail2.text = getString(R.string.labor_third_field_title)
+                        etQuestionDetail2.hint = getString(R.string.labor_third_field_hint)
+                        tvQuestionDetail3.text = getString(R.string.labor_fourth_field_title)
+                        etQuestionDetail3.hint = getString(R.string.labor_fourth_field_hint)
+                        tvQuestionDetail4.text = getString(R.string.labor_fifth_field_title)
+                        etQuestionDetail4.hint = getString(R.string.labor_fifth_field_hint)
+                        tvQuestionDetail5.text = getString(R.string.labor_sixth_field_title)
+                        etQuestionDetail5.hint = getString(R.string.labor_sixth_field_hint)
+                    }
+                    3L, 6L -> {
+                        firstFieldButton1.text = getString(R.string.business_first_field_button1)
+                        firstFieldButton2.text = getString(R.string.business_first_field_button2)
+                        tvQuestionDetail1.text = getString(R.string.business_second_field_title)
+                        etQuestionDetail1.hint =  getString(R.string.business_second_field_hint)
+                        tvQuestionDetail2.text = getString(R.string.business_third_field_title)
+                        etQuestionDetail2.hint = getString(R.string.business_third_field_hint)
+                        tvQuestionDetail3.text = getString(R.string.business_fourth_field_title)
+                        etQuestionDetail3.hint = getString(R.string.business_fourth_field_hint)
+                        tvQuestionDetail4.text = getString(R.string.business_fifth_field_title)
+                        etQuestionDetail4.hint = getString(R.string.business_fifth_field_hint)
+                        tvQuestionDetail5.text = getString(R.string.business_sixth_field_title)
+                        etQuestionDetail5.hint = getString(R.string.business_sixth_field_hint)
+                    }
+                }
+            }
+        })
     }
 
     private fun inputHashtag() {

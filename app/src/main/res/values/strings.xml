@@ -95,6 +95,47 @@
     <string name="bookmark">저장</string>
     <string name="bookmark_any">저장 %s</string>
 
+    <!--    티처톡 질문 가이드-->
+    <!--    세무-->
+    <string name="investigation_first_field_button1">세무 기장 이용 O</string>
+    <string name="investigation_first_field_button2">세무 기장 이용 X</string>
+    <string name="investigation_second_field_title">사업자등록 정보</string>
+    <string name="investigation_second_field_hint">ex. 개업일: 2018.05.10, 업태: 숙박 및 음식점업, 종목: 커피 전문점</string>
+    <string name="investigation_third_field_title">사업장 정보</string>
+    <string name="investigation_third_field_hint">ex. 위치: 서울특별시 성북구, 약 30평 규모 개인 카페 운영 중</string>
+    <string name="investigation_fourth_field_title">직원 관리</string>
+    <string name="investigation_fourth_field_hint">ex. 정규직 직원 2명, 4대 보험 가입 처리</string>
+    <string name="investigation_fifth_field_title">구입 증빙</string>
+    <string name="investigation_fifth_field_hint">ex. 식자재는 거래처로부터 세금계산서 발급, 일부 현금영수증 발행</string>
+    <string name="investigation_sixth_field_title">매출 규모 및 사업자 구분(개인/법인)</string>
+    <string name="investigation_sixth_field_hint">ex. 연 매출액 5천만원, 개인 사업자</string>
+
+    <!--    직원관리-->
+    <string name="labor_first_field_button1">근로계약서 작성 O</string>
+    <string name="labor_first_field_button2">근로계약서 작성 X</string>
+    
+    <string name="labor_third_field_title">직원 계약 형태 및 기간</string>
+    <string name="labor_third_field_hint">ex. 아르바이트 3명(6개월)</string>
+    <string name="labor_fourth_field_title">직원 근로시간 및 휴게시간</string>
+    <string name="labor_fourth_field_hint">ex. 주 20시간 근무, 4시간마다 30분 휴게 시간</string>
+    <string name="labor_fifth_field_title">급여 정보</string>
+    <string name="labor_fifth_field_hint">ex. 시급 11,000원, 주말 근무 시간당 1.5배 수당</string>
+    <string name="labor_sixth_field_title">법적 복리후생</string>
+    <string name="labor_sixth_field_hint">ex. 아르바이트 직원 미가입</string>
+
+    <!--    노하우, 상권-->
+    <string name="business_first_field_button1">매장 운영중</string>
+    <string name="business_first_field_button2">예비 자영업자</string>
+    <string name="business_second_field_title">업종 및 주요 메뉴</string>
+    <string name="business_second_field_hint">ex. 한식주점(수육, 전통주), 베이커리 카페(크로플, 커피)</string>
+    <string name="business_third_field_title">매장 위치 및 규모</string>
+    <string name="business_third_field_hint">ex. 성북구 삼선교로 대로변에 위치한 20평 규모의 카페</string>
+    <string name="business_fourth_field_title">주요 고객 및 목표 고객</string>
+    <string name="business_fourth_field_hint">ex. 20대 여성, 인근 대학교 학생들</string>
+    <string name="business_fifth_field_title">매장 정보(매출, 객단가, 주문 수 등)</string>
+    <string name="business_fifth_field_hint">ex. 최근 한달 매출 1천만, 객단가 1만, 배달앱 기준 재주문 13%</string>
+    <string name="business_sixth_field_title">가용 예산</string>
+    <string name="business_sixth_field_hint">ex. 마케팅 활용 가능 예산 150만, SONY ZV-10 카메라 보유</string>
 
 
     <!-- boss talk item-->

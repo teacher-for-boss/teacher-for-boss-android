@@ -347,6 +347,73 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             categoryName = body.category
             viewModel.setCategory(body.category)
 
+            // extraData
+            with(binding) {
+
+                firstFieldTitle.text = getString(R.string.extra_data_user_type)
+                // 세무
+                if(body.extraData.type == getString(R.string.category_tax)) {
+                    secondFieldTitle.text = getString(R.string.investigation_second_field_title)
+                    thirdFieldTitle.text = getString(R.string.investigation_third_field_title)
+                    fourthFieldTitle.text = getString(R.string.investigation_fourth_field_title)
+                    fifthFieldTitle.text = getString(R.string.investigation_fifth_field_title)
+                    sixthFieldTitle.text = getString(R.string.extra_sales_scale)
+
+                    if(body.extraData.taxBookKeepingStatus == "TAX_FILLING") {
+                        firstFieldContent.text = getString(R.string.investigation_first_field_button1)
+                    }
+                    else {
+                        firstFieldContent.text = getString(R.string.investigation_first_field_button2)
+                    }
+                    secondFieldContent.text = body.extraData.businessType
+                    thirdFieldContent.text = body.extraData.branchInfo
+                    fourthFieldContent.text = body.extraData.employeeManagement
+                    fifthFieldContent.text = body.extraData.purchaseEvidence
+                    sixthFieldContent.text = body.extraData.salesScale
+                }
+                // 직원관리
+                else if(body.extraData.type == getString(R.string.category_labor)) {
+                    secondFieldTitle.text = getString(R.string.investigation_second_field_title)
+                    thirdFieldTitle.text = getString(R.string.extra_employment_type_duration)
+                    fourthFieldTitle.text = getString(R.string.extra_work_break_hours)
+                    fifthFieldTitle.text = getString(R.string.labor_fifth_field_title)
+                    sixthFieldTitle.text = getString(R.string.labor_sixth_field_title)
+
+                    if(body.extraData.contractStatus == "WITH_CONTRACT") {
+                        firstFieldContent.text = getString(R.string.labor_first_field_button1)
+                    }
+                    else {
+                        firstFieldContent.text = getString(R.string.labor_first_field_button2)
+                    }
+                    secondFieldContent.text = body.extraData.businessType
+                    thirdFieldContent.text = body.extraData.employmentTypeAndDuration
+                    fourthFieldContent.text = body.extraData.workAndBreakHours
+                    fifthFieldContent.text = body.extraData.salaryAndAllowance
+                    sixthFieldContent.text = body.extraData.statutoryBenefits
+                }
+                // 노하우, 상권
+                else if(body.extraData.type == getString(R.string.category_market)) {
+                    secondFieldTitle.text = getString(R.string.extra_business_type_menu)
+                    thirdFieldTitle.text = getString(R.string.extra_location_scale)
+                    fourthFieldTitle.text = getString(R.string.extra_customer_type)
+                    fifthFieldTitle.text = getString(R.string.extra_store_info)
+                    sixthFieldTitle.text = getString(R.string.business_sixth_field_title)
+
+                    if(body.extraData.bossType == "STORE_OWNER") {
+                        firstFieldContent.text = getString(R.string.business_first_field_button1)
+                    }
+                    else {
+                        firstFieldContent.text = getString(R.string.business_first_field_button2)
+
+                    }
+                    secondFieldContent.text = body.extraData.businessType
+                    thirdFieldContent.text = body.extraData.location
+                    fourthFieldContent.text = body.extraData.customerType
+                    fifthFieldContent.text = body.extraData.storeInfo
+                    sixthFieldContent.text = body.extraData.budget
+                }
+            }
+
             setRecyclerView()
             setTextColor()
 

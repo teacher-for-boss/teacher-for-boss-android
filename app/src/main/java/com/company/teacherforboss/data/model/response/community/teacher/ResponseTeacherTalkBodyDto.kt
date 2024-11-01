@@ -1,7 +1,9 @@
 package com.company.teacherforboss.data.model.response.community.teacher
 
+import com.company.teacherforboss.data.model.request.community.teacher.ExtraContent
 import com.company.teacherforboss.data.model.response.community.MemberDto
 import com.company.teacherforboss.domain.model.community.MemberEntity
+import com.company.teacherforboss.domain.model.community.teacher.ExtraData
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkBodyResponseEntity
 import com.google.gson.annotations.SerializedName
 
@@ -11,6 +13,8 @@ data class ResponseTeacherTalkBodyDto(
     val title: String,
     @SerializedName("content")
     val content: String,
+    @SerializedName("extraData")
+    val extraData: ExtraData,
     @SerializedName("category")
     val category: String,
     @SerializedName("imageUrlList")
@@ -39,6 +43,7 @@ data class ResponseTeacherTalkBodyDto(
         return TeacherTalkBodyResponseEntity(
             title=title,
             content=content,
+            extraData = extraData,
             category=category,
             imageUrlList = imageUrlList,
             hashtagList=hashtagList,
@@ -52,25 +57,4 @@ data class ResponseTeacherTalkBodyDto(
             isMine=isMine
         )
     }
-
-}
-data class MemberDto(
-    @SerializedName("memberId")
-    val memberId: Long,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("profileImg")
-    val profileImg: String?,
-    @SerializedName("level")
-    val level: String?,
-    @SerializedName("role")
-    val role: String
-){
-    fun toMemberEntity()= MemberEntity(
-        memberId=memberId,
-        name=name,
-        profileImg=profileImg,
-        level = level,
-        role = role
-    )
 }

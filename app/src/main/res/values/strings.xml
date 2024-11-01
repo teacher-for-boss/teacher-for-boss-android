@@ -95,7 +95,7 @@
     <string name="bookmark">저장</string>
     <string name="bookmark_any">저장 %s</string>
 
-    <!--    티처톡 질문 가이드-->
+    <!--    teacher talk ask guideline-->
     <!--    세무-->
     <string name="investigation_first_field_button1">세무 기장 이용 O</string>
     <string name="investigation_first_field_button2">세무 기장 이용 X</string>
@@ -136,6 +136,20 @@
     <string name="business_fifth_field_hint">ex. 최근 한달 매출 1천만, 객단가 1만, 배달앱 기준 재주문 13%</string>
     <string name="business_sixth_field_title">가용 예산</string>
     <string name="business_sixth_field_hint">ex. 마케팅 활용 가능 예산 150만, SONY ZV-10 카메라 보유</string>
+
+    <!--    teacher talk body extraData title-->
+    <string name="category_market">market</string>
+    <string name="category_tax">tax</string>
+    <string name="category_labor">labor</string>
+    <string name="extra_data_user_type">작성자 유형</string>
+    <string name="extra_business_type">사업자등록 정보</string>
+    <string name="extra_sales_scale">매출 규모/사업자 구분</string>
+    <string name="extra_employment_type_duration">직원 계약 형태/기간</string>
+    <string name="extra_work_break_hours">직원 근로/휴게 시간</string>
+    <string name="extra_business_type_menu">업종/메뉴</string>
+    <string name="extra_location_scale">매장 위치/규모</string>
+    <string name="extra_customer_type">타겟층</string>
+    <string name="extra_store_info">매장 정보</string>
 
 
     <!-- boss talk item-->

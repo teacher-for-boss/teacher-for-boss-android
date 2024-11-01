@@ -11,7 +11,7 @@ data class RequestTeacherUploadPostDto(
     @SerializedName("imageUrlList") val imageUrlList: List<String>
 )
 data class ExtraContent(
-    @SerializedName("firstField") val firstField: String,
+    @SerializedName("userType") val userType: String,
     @SerializedName("secondField") val secondField: String?,
     @SerializedName("thirdField") val thirdField: String?,
     @SerializedName("fourthField") val fourthField: String?,

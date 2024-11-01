@@ -247,7 +247,7 @@ class TeacherTalkAskViewModel @Inject constructor(
     fun updateExtraField() {
         setFirstField()
         val updatedExtraContent = ExtraContent(
-            firstField = firstField.value?:"",
+            userType = firstField.value?:"",
             secondField = secondField.value?:"",
             thirdField = thirdField.value?:"",
             fourthField = fourthField.value?:"",

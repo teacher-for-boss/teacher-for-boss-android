@@ -10,7 +10,10 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.InputFilter
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.GestureDetector
 import android.view.KeyEvent
@@ -137,6 +140,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
         // 글자수 및 editText 배경
         setTextLength()
+        setTextColor()
     }
 
     private fun addListeners() {
@@ -171,8 +175,6 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     private fun selectCategory(position:Long) {
         val categoryName = viewModel.categoryList.getOrNull(position.toInt())
         categoryName?.let { viewModel.selectCategoryId(categoryName) }
-
-//        viewModel.selectCategoryId(positioin)
 
         viewModel.categoryId.observe(this, Observer { categoryId ->
             with(binding) {
@@ -556,6 +558,32 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 { }
             ).show(supportFragmentManager, WRITE_EXIT_DIALOG)
         }
+    }
+
+    private fun setTextColor() {
+        with(binding) {
+            categoryTv.text = getColoredText("카테고리*", "*")
+            tvTitle.text = getColoredText("제목*", "*")
+            tvWriterType.text = getColoredText("작성자 유형*", "*")
+            tvBody.text = getColoredText("글 본문*", "*")
+            tvImageInfo.text = getColoredText("메뉴, 내부 인테리어, 가게 사진 등 관련 사진 및 자료를 첨부해 주세요", "메뉴, 내부 인테리어, 가게 사진")
+        }
+    }
+
+    private fun getColoredText(fullText: String, targetText: String): SpannableString {
+        val spannableString = SpannableString(fullText)
+        val startIndex = fullText.indexOf(targetText)
+
+        if (startIndex != -1) {
+            spannableString.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(this, R.color.Purple600)),
+                startIndex,
+                startIndex + targetText.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        return spannableString
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {

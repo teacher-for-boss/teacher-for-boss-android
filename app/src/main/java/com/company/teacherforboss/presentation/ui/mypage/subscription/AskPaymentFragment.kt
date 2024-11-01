@@ -1,4 +1,4 @@
-package com.company.teacherforboss.presentation.ui.mypage
+package com.company.teacherforboss.presentation.ui.mypage.subscription
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.FragmentAskPaymentBinding
 import com.company.teacherforboss.presentation.model.AskPaymentItemData
+import com.company.teacherforboss.presentation.ui.mypage.subscription.AskPaymentAdapter
 import com.company.teacherforboss.util.base.BindingFragment
 
 class AskPaymentFragment : BindingFragment<FragmentAskPaymentBinding>(R.layout.fragment_ask_payment) {

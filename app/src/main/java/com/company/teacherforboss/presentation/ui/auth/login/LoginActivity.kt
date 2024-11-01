@@ -6,6 +6,8 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
@@ -83,6 +85,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         askNotificationPermission()
         handleLoginResult()
         handleSocialLoginResult()
+        addListeners()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
@@ -113,7 +116,9 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                 }
             }
         }
+    }
 
+    private fun addListeners() {
         binding.loginBtn.setOnClickListener {
             val email=binding.idBox.text.toString()
             val password=binding.pwBox.text.toString()
@@ -147,6 +152,31 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         }
 
 
+        with(binding) {
+            idBox.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val noSpacesText = s?.toString()?.replace("\\s".toRegex(), "")
+                    if (noSpacesText != s.toString()) {
+                        idBox.setText(noSpacesText)
+                        idBox.setSelection(noSpacesText?.length ?: 0)
+                    }
+                }
+            })
+
+            pwBox.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val noSpacesText = s?.toString()?.replace("\\s".toRegex(), "")
+                    if (noSpacesText != s.toString()) {
+                        pwBox.setText(noSpacesText)
+                        pwBox.setSelection(noSpacesText?.length ?: 0)
+                    }
+                }
+            })
+        }
     }
 
     private fun handleLoginResult() {

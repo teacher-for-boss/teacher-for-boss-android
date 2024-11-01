@@ -161,10 +161,6 @@
             android:name="com.company.teacherforboss.presentation.FullScreenImageActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name="com.company.teacherforboss.presentation.ui.mypage.subscription.SubscriptionActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

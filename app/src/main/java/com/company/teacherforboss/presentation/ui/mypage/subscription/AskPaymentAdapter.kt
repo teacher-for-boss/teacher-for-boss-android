@@ -1,4 +1,4 @@
-package com.company.teacherforboss.presentation.ui.mypage
+package com.company.teacherforboss.presentation.ui.mypage.subscription
 
 import android.graphics.Paint
 import android.view.LayoutInflater

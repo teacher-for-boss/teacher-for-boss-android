@@ -21,6 +21,7 @@ import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistor
 import com.company.teacherforboss.presentation.ui.mypage.modify.ModifyProfileActivity
 import com.company.teacherforboss.presentation.ui.mypage.notification_setting.ManageNotificationActivity
 import com.company.teacherforboss.presentation.ui.mypage.saved.SavedTalkActivity
+import com.company.teacherforboss.presentation.ui.mypage.subscription.AskPaymentFragment
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.LOGOUT_DIALOG
@@ -28,7 +29,6 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.ROLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_LEVEL_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_PROFILE_ID
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_RV
 import com.company.teacherforboss.util.component.DialogPopupFragment
 import com.company.teacherforboss.util.context.navigateToWebView
 import com.company.teacherforboss.util.view.UiState

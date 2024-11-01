@@ -35,6 +35,9 @@ import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIFTH_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIRST_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FOURTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
@@ -42,12 +45,15 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SECOND_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIXTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.THIRD_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -174,6 +180,12 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                     putExtra(POST_BODY, binding.bodyBody.text.toString())
                     putExtra(TEACHER_QUESTIONID, questionId)
                     putExtra(TEACHER_CATAEGORYNAME, categoryName)
+                    putExtra(FIRST_FIELD, binding.firstFieldContent.text)
+                    putExtra(SECOND_FIELD, binding.secondFieldContent.text)
+                    putExtra(THIRD_FIELD, binding.thirdFieldContent.text)
+                    putExtra(FOURTH_FIELD, binding.fourthFieldContent.text)
+                    putExtra(FIFTH_FIELD, binding.fifthFieldContent.text)
+                    putExtra(SIXTH_FIELD, binding.sixthFieldContent.text)
 
                     viewModel.getTagList()?.let {
                         if (it.isNotEmpty()) {

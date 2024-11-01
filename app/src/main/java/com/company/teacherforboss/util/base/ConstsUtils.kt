@@ -47,6 +47,12 @@ class ConstsUtils {
         const val TEACHER_QUESTIONID="questionId"
         const val TEACHER_ANSWERID="answerId"
         const val TEACHER_CATAEGORYNAME="categoryName"
+        const val FIRST_FIELD = "firstField"
+        const val SECOND_FIELD = "secondField"
+        const val THIRD_FIELD = "thirdField"
+        const val FOURTH_FIELD = "fourthField"
+        const val FIFTH_FIELD = "fifthField"
+        const val SIXTH_FIELD = "sixthField"
 
         // 경로 변경
         const val ACTIVITY_DESTINATION="ACTIVITY_DESTINATION"

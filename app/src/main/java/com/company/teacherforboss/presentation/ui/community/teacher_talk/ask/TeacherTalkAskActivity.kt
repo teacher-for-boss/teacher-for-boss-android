@@ -41,16 +41,22 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIFTH_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIRST_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FOURTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SECOND_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIXTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.THIRD_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.WRITE_EXIT_DIALOG
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.component.DialogPopupFragment
@@ -90,6 +96,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         // 해시태그 입력
         inputHashtag()
         addListeners()
+        observeCategoryId()
     }
 
     private fun initLayout() {
@@ -104,9 +111,47 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             viewModel._content.value = intent.getStringExtra(POST_BODY).toString()
             //category
             viewModel.categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME)!!
-//            categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
+            categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
             viewModel.selectCategoryId(viewModel.categoryName)
+            // extraData
+            intent.getStringExtra(FIFTH_FIELD)
+            viewModel._secondField.value = intent.getStringExtra(SECOND_FIELD)
+            viewModel._thirdField.value = intent.getStringExtra(THIRD_FIELD)
+            viewModel._fourthField.value = intent.getStringExtra(FOURTH_FIELD)
+            viewModel._fifthField.value = intent.getStringExtra(FIFTH_FIELD)
+            viewModel._sixthField.value = intent.getStringExtra(SIXTH_FIELD)
 
+            if(viewModel.categoryName == getString(R.string.home_teacher_talk_policy)) {
+                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.investigation_first_field_button1)) {
+                    binding.firstFieldButton1.isChecked = true
+                    viewModel.setButtonSelected(1)
+                }
+                else {
+                    binding.firstFieldButton2.isChecked = true
+                    viewModel.setButtonSelected(2)
+                }
+            }
+            else if(viewModel.categoryName == getString(R.string.home_teacher_talk_employee)) {
+                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.labor_first_field_button1)) {
+                    binding.firstFieldButton1.isChecked = true
+                    viewModel.setButtonSelected(1)
+                }
+                else {
+                    binding.firstFieldButton2.isChecked = true
+                    viewModel.setButtonSelected(2)
+                }
+            }
+            else if(viewModel.categoryName == getString(R.string.home_teacher_talk_area) || viewModel.categoryName == getString(R.string.home_teacher_talk_operate)) {
+                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.business_first_field_button1)) {
+                    binding.firstFieldButton1.isChecked = true
+                    viewModel.setButtonSelected(1)
+                }
+                else {
+                    binding.firstFieldButton2.isChecked = true
+                    viewModel.setButtonSelected(2)
+                }
+            }
+            // image
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
                 viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
             if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true"){
@@ -175,7 +220,9 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     private fun selectCategory(position:Long) {
         val categoryName = viewModel.categoryList.getOrNull(position.toInt())
         categoryName?.let { viewModel.selectCategoryId(categoryName) }
+    }
 
+    private fun observeCategoryId() {
         viewModel.categoryId.observe(this, Observer { categoryId ->
             with(binding) {
                 when (categoryId) {

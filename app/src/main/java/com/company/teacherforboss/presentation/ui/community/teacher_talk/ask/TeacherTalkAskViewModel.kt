@@ -279,8 +279,8 @@ class TeacherTalkAskViewModel @Inject constructor(
 
     fun selectCategoryId(categoryName: String) {
         _categoryId.value = categoryMap[categoryName]
-//        _categoryId.value = id + 1
     }
+
     fun setFileType(fileType:String){
         if(fileType=="jpg") _fileType.value= DEFAULT_IMG_FILE_TYPE
         else _fileType.value="image/"+fileType

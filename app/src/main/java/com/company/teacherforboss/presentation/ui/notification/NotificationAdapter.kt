@@ -21,7 +21,9 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTI
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.LocalDateFormatter
 
-class NotificationAdapter(context: Context, private var notificationList: MutableList<NotificationEntity>
+class NotificationAdapter(context: Context,
+                          private var notificationList: MutableList<NotificationEntity>,
+                          private val viewModel: NotificationViewModel
 ):RecyclerView.Adapter<NotificationAdapter.AlarmItemViewHolder>() {
     private val inflater by lazy{LayoutInflater.from(context)}
     private val context=context
@@ -36,7 +38,11 @@ class NotificationAdapter(context: Context, private var notificationList: Mutabl
                         tvNotificationContent.text=notificationEntity.content
                         tvNotificationLeftTime.text=LocalDateFormatter.extractDate(notificationEntity.createdAt)
 
-                        if(notificationEntity.read){
+                        root.setBackgroundColor(ContextCompat.getColor(context,R.color.white))
+                        tvNotificationTitle.setTextColor(ContextCompat.getColor(context,R.color.Gray700))
+                        tvNotificationContent.setTextColor(ContextCompat.getColor(context,R.color.Gray700))
+
+                            if(notificationEntity.read){
                             val clickedBgColor=ContextCompat.getColor(context,R.color.Gray200)
                             val clickedTextColor=ContextCompat.getColor(context,R.color.Gray400)
                             binding.root.setBackgroundColor(clickedBgColor)
@@ -90,6 +96,11 @@ class NotificationAdapter(context: Context, private var notificationList: Mutabl
                             }
                             else {
 
+                            }
+
+                            // 알림 읽음 처리
+                            if(!notificationEntity.read) {
+                                viewModel.readNotification(notificationEntity.notificationId)
                             }
                         }
                     }

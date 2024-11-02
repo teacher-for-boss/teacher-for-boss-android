@@ -2,14 +2,11 @@ package com.company.teacherforboss.presentation.ui.community.teacher_talk.main.b
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
@@ -31,20 +28,18 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.Te
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.search.TeacherTalkSearchActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeViewModel
-import com.company.teacherforboss.presentation.ui.mypage.subscription.SubscriptionActivity
 import com.company.teacherforboss.presentation.ui.notification.NotificationActivity
 import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_LASTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
-import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.Flow.Subscription
 import javax.inject.Inject
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.transition.TransitionManager
+import com.company.teacherforboss.presentation.ui.mypage.subscription.AskPaymentFragment
 
 @AndroidEntryPoint
 class TeacherTalkMainFragment :
@@ -340,9 +335,10 @@ class TeacherTalkMainFragment :
         (activity as MainActivity).hideKeyboard()
     }
 
-
     private fun navigateToSubscription() {
-        val intent = Intent(requireContext(), SubscriptionActivity::class.java)
-        startActivity(intent)
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.fcv_teacher_for_boss, AskPaymentFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

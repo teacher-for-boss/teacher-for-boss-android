@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.domain.model.notification.NotificationListEntity
-import com.company.teacherforboss.domain.model.notification.NotificationReadEntity
 import com.company.teacherforboss.domain.usecase.notification.NotificationUseCase
 import com.company.teacherforboss.domain.usecase.notification.ReadNotificationUseCase
 import com.company.teacherforboss.util.view.UiState
@@ -36,13 +35,13 @@ class NotificationViewModel @Inject constructor(
        }
     }
 
-    private val _readNotificationState= MutableStateFlow<UiState<NotificationReadEntity>>(UiState.Empty)
+    private val _readNotificationState= MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val readNotificationState=_readNotificationState.asStateFlow()
 
     fun readNotification(notificationId:Long){
         viewModelScope.launch {
-            readNotificationUseCase(notificationId).onSuccess { readState->
-                _readNotificationState.value=UiState.Success(readState)
+            readNotificationUseCase(notificationId).onSuccess {
+                _readNotificationState.value=UiState.Success(Unit)
             }.onFailure {
                 _readNotificationState.value=UiState.Error(it.message)
             }
@@ -55,5 +54,10 @@ class NotificationViewModel @Inject constructor(
 
     fun getLastPostId(): Long {
         return lastNotificationId.value!!
+    }
+
+    fun clearData() {
+        _notificationState.value = UiState.Empty
+        _lastNotificationId.value = 0
     }
 }

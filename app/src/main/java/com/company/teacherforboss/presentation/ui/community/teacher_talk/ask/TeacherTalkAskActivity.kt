@@ -7,11 +7,13 @@ import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.InputFilter
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.GestureDetector
 import android.view.KeyEvent
@@ -27,6 +29,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.company.teacherforboss.R
@@ -38,16 +41,22 @@ import com.company.teacherforboss.presentation.ui.community.teacher_talk.ask.ada
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
 import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIFTH_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIRST_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FOURTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SECOND_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIXTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.THIRD_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.WRITE_EXIT_DIALOG
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.component.DialogPopupFragment
@@ -83,16 +92,14 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         mDetector = GestureDetectorCompat(this, SingleTapListener())
 
         // 초기 뷰 설정
-        initView()
+        initLayout()
         // 해시태그 입력
         inputHashtag()
-
         addListeners()
-
-
+        observeCategoryId()
     }
 
-    fun initView() {
+    private fun initLayout() {
         if(purpose=="modify") {
             viewModel.questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
             Log.d("test modi",intent.getLongExtra(TEACHER_QUESTIONID,-1L).toString())
@@ -105,8 +112,46 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             //category
             viewModel.categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME)!!
             categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
-            viewModel.selectCategoryId(categoryIndex.toLong())
+            viewModel.selectCategoryId(viewModel.categoryName)
+            // extraData
+            intent.getStringExtra(FIFTH_FIELD)
+            viewModel._secondField.value = intent.getStringExtra(SECOND_FIELD).takeIf {it != "-"}
+            viewModel._thirdField.value = intent.getStringExtra(THIRD_FIELD).takeIf {it != "-"}
+            viewModel._fourthField.value = intent.getStringExtra(FOURTH_FIELD).takeIf {it != "-"}
+            viewModel._fifthField.value = intent.getStringExtra(FIFTH_FIELD).takeIf {it != "-"}
+            viewModel._sixthField.value = intent.getStringExtra(SIXTH_FIELD).takeIf {it != "-"}
 
+            if(viewModel.categoryName == getString(R.string.home_teacher_talk_policy)) {
+                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.investigation_first_field_button1)) {
+                    binding.firstFieldButton1.isChecked = true
+                    viewModel.setButtonSelected(1)
+                }
+                else {
+                    binding.firstFieldButton2.isChecked = true
+                    viewModel.setButtonSelected(2)
+                }
+            }
+            else if(viewModel.categoryName == getString(R.string.home_teacher_talk_employee)) {
+                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.labor_first_field_button1)) {
+                    binding.firstFieldButton1.isChecked = true
+                    viewModel.setButtonSelected(1)
+                }
+                else {
+                    binding.firstFieldButton2.isChecked = true
+                    viewModel.setButtonSelected(2)
+                }
+            }
+            else if(viewModel.categoryName == getString(R.string.home_teacher_talk_area) || viewModel.categoryName == getString(R.string.home_teacher_talk_operate)) {
+                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.business_first_field_button1)) {
+                    binding.firstFieldButton1.isChecked = true
+                    viewModel.setButtonSelected(1)
+                }
+                else {
+                    binding.firstFieldButton2.isChecked = true
+                    viewModel.setButtonSelected(2)
+                }
+            }
+            // image
             if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
                 viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
             if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true"){
@@ -131,8 +176,6 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         }
 
         val categoryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCategory.layoutManager = categoryLayoutManager
-
         // 선택된 카테고리 index로 스크롤
         if (categoryIndex != -1) {
             binding.rvCategory.post {
@@ -140,13 +183,12 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             }
         }
 
-        //글자수
+        // 글자수 및 editText 배경
         setTextLength()
-        //editText 배경설정
-        focusOnEditText()
+        setTextColor()
     }
 
-    fun addListeners() {
+    private fun addListeners() {
         // 등록 유효 확인 후 uploadPost
         IsValidPost()
         // 나가기
@@ -155,27 +197,85 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         binding.inputImage.setOnClickListener {
             checkAndRequestPermissions()
         }
-        binding.inputTitle.setOnEditorActionListener { v, actionId, event ->
+        binding.etInputTitle.setOnEditorActionListener { v, actionId, event ->
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-
                 imm?.hideSoftInputFromWindow(v.windowToken, 0)
-
                 true
             }
             else {
                 false
             }
         }
+
+        binding.radioFirstField.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                R.id.first_field_button1 -> { viewModel.setButtonSelected(1) }
+                R.id.first_field_button2 -> { viewModel.setButtonSelected(2) }
+            }
+        }
     }
 
-    fun selectCategory(positioin:Long) = viewModel.selectCategoryId(positioin)
+    private fun selectCategory(position:Long) {
+        val categoryName = viewModel.categoryList.getOrNull(position.toInt())
+        categoryName?.let { viewModel.selectCategoryId(categoryName) }
+    }
 
-    fun inputHashtag() {
+    private fun observeCategoryId() {
+        viewModel.categoryId.observe(this, Observer { categoryId ->
+            with(binding) {
+                when (categoryId) {
+                    1L -> {
+                        firstFieldButton1.text = getString(R.string.investigation_first_field_button1)
+                        firstFieldButton2.text = getString(R.string.investigation_first_field_button2)
+                        tvQuestionDetail1.text = getString(R.string.investigation_second_field_title)
+                        etQuestionDetail1.hint = getString(R.string.investigation_second_field_hint)
+                        tvQuestionDetail2.text = getString(R.string.investigation_third_field_title)
+                        etQuestionDetail2.hint = getString(R.string.investigation_third_field_hint)
+                        tvQuestionDetail3.text = getString(R.string.investigation_fourth_field_title)
+                        etQuestionDetail3.hint = getString(R.string.investigation_fourth_field_hint)
+                        tvQuestionDetail4.text = getString(R.string.investigation_fifth_field_title)
+                        etQuestionDetail4.hint = getString(R.string.investigation_fifth_field_hint)
+                        tvQuestionDetail5.text = getString(R.string.investigation_sixth_field_title)
+                        etQuestionDetail5.hint = getString(R.string.investigation_sixth_field_hint)
+                    }
+                    2L -> {
+                        firstFieldButton1.text = getString(R.string.labor_first_field_button1)
+                        firstFieldButton2.text = getString(R.string.labor_first_field_button2)
+                        tvQuestionDetail1.text = getString(R.string.investigation_second_field_title)
+                        etQuestionDetail1.hint =  getString(R.string.investigation_second_field_hint)
+                        tvQuestionDetail2.text = getString(R.string.labor_third_field_title)
+                        etQuestionDetail2.hint = getString(R.string.labor_third_field_hint)
+                        tvQuestionDetail3.text = getString(R.string.labor_fourth_field_title)
+                        etQuestionDetail3.hint = getString(R.string.labor_fourth_field_hint)
+                        tvQuestionDetail4.text = getString(R.string.labor_fifth_field_title)
+                        etQuestionDetail4.hint = getString(R.string.labor_fifth_field_hint)
+                        tvQuestionDetail5.text = getString(R.string.labor_sixth_field_title)
+                        etQuestionDetail5.hint = getString(R.string.labor_sixth_field_hint)
+                    }
+                    3L, 6L -> {
+                        firstFieldButton1.text = getString(R.string.business_first_field_button1)
+                        firstFieldButton2.text = getString(R.string.business_first_field_button2)
+                        tvQuestionDetail1.text = getString(R.string.business_second_field_title)
+                        etQuestionDetail1.hint =  getString(R.string.business_second_field_hint)
+                        tvQuestionDetail2.text = getString(R.string.business_third_field_title)
+                        etQuestionDetail2.hint = getString(R.string.business_third_field_hint)
+                        tvQuestionDetail3.text = getString(R.string.business_fourth_field_title)
+                        etQuestionDetail3.hint = getString(R.string.business_fourth_field_hint)
+                        tvQuestionDetail4.text = getString(R.string.business_fifth_field_title)
+                        etQuestionDetail4.hint = getString(R.string.business_fifth_field_hint)
+                        tvQuestionDetail5.text = getString(R.string.business_sixth_field_title)
+                        etQuestionDetail5.hint = getString(R.string.business_sixth_field_hint)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun inputHashtag() {
         //스페이스바 입력 막기
-        binding.inputHashtag.addTextChangedListener(object : TextWatcher {
+        binding.etInputHashtag.addTextChangedListener(object : TextWatcher {
 
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
@@ -189,18 +289,18 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                     if (text.endsWith(' ')) {
                         val start = it.length - 1
                         // UI 스레드에서 지연 실행
-                        binding.inputHashtag.post {
+                        binding.etInputHashtag.post {
                             it.delete(start, start + 1)
-                            binding.inputHashtag.setSelection(start)
+                            binding.etInputHashtag.setSelection(start)
                         }
                     }
                 }
             }
         })
         //해시태그 입력
-        binding.inputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        binding.etInputHashtag.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
-                val inputText = binding.inputHashtag.text.toString()
+                val inputText = binding.etInputHashtag.text.toString()
 
                 if(inputText.isNotBlank()) {
                     if(viewModel.hashTagList.size < 5) {
@@ -208,7 +308,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                             viewModel.addHashTag(inputText)
                             adapterTag.notifyDataSetChanged()
 
-                            binding.inputHashtag.text.clear()
+                            binding.etInputHashtag.text.clear()
                         }
                         else  {
                             CustomSnackBar.make(binding.root, getString(R.string.community_hashtag_input_duplicated), 2000).show()
@@ -346,66 +446,70 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
     }
 
-    fun setTextLength() {
-        binding.inputTitle.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setTitleLength(s?.length?: 0)
-            }
-            override fun afterTextChanged(s: Editable?) {}
+    private fun setTextLength() {
+        // textChangedListener
+        addTextLengthWatcher(binding.etInputTitle, "title")
+        addTextLengthWatcher(binding.etInputBody, "body")
+        addTextLengthWatcher(binding.etInputHashtag, "tag")
+        addTextLengthWatcher(binding.etQuestionDetail1, "detail1")
+        addTextLengthWatcher(binding.etQuestionDetail2, "detail2")
+        addTextLengthWatcher(binding.etQuestionDetail3, "detail3")
+        addTextLengthWatcher(binding.etQuestionDetail4, "detail4")
+        addTextLengthWatcher(binding.etQuestionDetail5, "detail5")
 
-        })
+        // 현재 글자수 업데이트
+        updateTextLength(viewModel.textTitleLength, binding.tvTitleLength, 30)
+        updateTextLength(viewModel.textBodyLength, binding.tvBodyLength, 1000)
+        updateTextLength(viewModel.textTagLength, binding.tvHashtagLength, 10)
+        updateTextLength(viewModel.textLengthDetail1, binding.tvLengthDetail1, 100)
+        updateTextLength(viewModel.textLengthDetail2, binding.tvLengthDetail2, 100)
+        updateTextLength(viewModel.textLengthDetail3, binding.tvLengthDetail3, 100)
+        updateTextLength(viewModel.textLengthDetail4, binding.tvLengthDetail4, 100)
+        updateTextLength(viewModel.textLengthDetail5, binding.tvLengthDetail5, 100)
 
-        binding.inputBody.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setBodyLength(s?.length?: 0)
-            }
-            override fun afterTextChanged(s: Editable?) {}
+        // 최대글자수 지정
+        binding.etInputTitle.filters = arrayOf(InputFilter.LengthFilter(30))
+        binding.etInputBody.filters = arrayOf(InputFilter.LengthFilter(1000))
+        binding.etInputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
+        binding.etQuestionDetail1.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail2.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail3.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail4.filters = arrayOf(InputFilter.LengthFilter(100))
+        binding.etQuestionDetail5.filters = arrayOf(InputFilter.LengthFilter(100))
 
-        })
-
-        binding.inputHashtag.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setTagLength(s?.length?: 0)
-            }
-            override fun afterTextChanged(s: Editable?) {}
-
-        })
-
-        //현재 글자수 업데이트
-        viewModel.textTitleLength.observe(this, Observer { length ->
-            binding.titleLength.text = "$length/30"
-        })
-        viewModel.textBodyLength.observe(this, Observer{ length->
-            binding.bodyLength.text = "$length/1000"
-        })
-        viewModel.textTagLength.observe(this, Observer{ length->
-            binding.hashtagLength.text = "$length/10"
-        })
-
-        //최대글자수 지정
-        binding.inputTitle.filters = arrayOf(InputFilter.LengthFilter(30))
-        binding.inputBody.filters = arrayOf(InputFilter.LengthFilter(1000))
-        binding.inputHashtag.filters = arrayOf(InputFilter.LengthFilter(10))
+        // editText 배경설정
+        focusOnEditText(binding.etInputTitle)
+        focusOnEditText(binding.etInputBody)
+        focusOnEditText(binding.etInputHashtag)
+        focusOnEditText(binding.etQuestionDetail1)
+        focusOnEditText(binding.etQuestionDetail2)
+        focusOnEditText(binding.etQuestionDetail3)
+        focusOnEditText(binding.etQuestionDetail4)
+        focusOnEditText(binding.etQuestionDetail5)
     }
 
-    fun focusOnEditText() {
-        binding.inputTitle.setOnFocusChangeListener{ v, hasFocus ->
-            if(hasFocus) {
-                v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
+    private fun addTextLengthWatcher(editText: EditText, key: String) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setTextLength(key, s?.length ?: 0)
             }
-            else {
-                v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
-            }
-        }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
 
-        binding.inputBody.setOnFocusChangeListener { v, hasFocus ->
+    private fun updateTextLength(liveData: LiveData<Int>, textView:TextView, maxLength: Int) {
+        liveData.observe(this, Observer { length ->
+            textView.text = "$length/$maxLength"
+        })
+    }
+
+    private fun focusOnEditText(view: View) {
+        view.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus) {
                 v.setBackgroundResource(R.drawable.background_radius12_transparent_purple600_stroke)
             }
-            else {
+            else  {
                 v.setBackgroundResource(R.drawable.background_radius12_transparent_gray200_stroke)
             }
         }
@@ -413,8 +517,8 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
 
     fun IsValidPost() {
         binding.postBtn.setOnClickListener {
-            val title = binding.inputTitle.text.toString()
-            val body = binding.inputBody.text.toString()
+            val title = binding.etInputTitle.text.toString()
+            val body = binding.etInputBody.text.toString()
 
             if(title.isNullOrEmpty() || body.isNullOrEmpty()) {
                 CustomSnackBar.make(binding.root, getString(R.string.community_input_title_body), 2000).show()
@@ -424,6 +528,7 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     }
 
     fun uploadPost() {
+        viewModel.updateExtraField()
         //이미지 업로드 시
         if(viewModel.imageList.isNotEmpty()) {
             // 처음엔 이미지가 없다가 후 or 첫 업로드
@@ -500,6 +605,32 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
                 { }
             ).show(supportFragmentManager, WRITE_EXIT_DIALOG)
         }
+    }
+
+    private fun setTextColor() {
+        with(binding) {
+            categoryTv.text = getColoredText("카테고리*", "*")
+            tvTitle.text = getColoredText("제목*", "*")
+            tvWriterType.text = getColoredText("작성자 유형*", "*")
+            tvBody.text = getColoredText("글 본문*", "*")
+            tvImageInfo.text = getColoredText("메뉴, 내부 인테리어, 가게 사진 등 관련 사진 및 자료를 첨부해 주세요", "메뉴, 내부 인테리어, 가게 사진")
+        }
+    }
+
+    private fun getColoredText(fullText: String, targetText: String): SpannableString {
+        val spannableString = SpannableString(fullText)
+        val startIndex = fullText.indexOf(targetText)
+
+        if (startIndex != -1) {
+            spannableString.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(this, R.color.Purple600)),
+                startIndex,
+                startIndex + targetText.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        return spannableString
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {

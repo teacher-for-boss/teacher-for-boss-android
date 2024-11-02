@@ -38,8 +38,15 @@ class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layo
         addListeners()
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        viewModel.clearData()
+
+        viewModel.getNotifications()
+    }
+
     fun setNotificationView(){
-        notificationAdapter = NotificationAdapter(this, mutableListOf())
+        notificationAdapter = NotificationAdapter(this, mutableListOf(), viewModel)
 
         viewModel.getNotifications()
 

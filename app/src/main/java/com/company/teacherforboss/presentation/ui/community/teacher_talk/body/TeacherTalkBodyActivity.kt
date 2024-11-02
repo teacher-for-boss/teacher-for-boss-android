@@ -35,6 +35,9 @@ import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIFTH_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FIRST_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.FOURTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.FRAGMENT_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISIMGLIST
@@ -42,12 +45,15 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_ISTAGLIST
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_PURPOSE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_TITLE
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.PREVIOUS_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SECOND_FIELD
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIXTH_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SNACK_BAR_MSG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_QUESTIONID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ANSWER_ACTIVITY
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_TALK_ASK_ACTIVITY
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.THIRD_FIELD
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import com.company.teacherforboss.util.base.LocalDataSource
 import com.company.teacherforboss.util.base.LocalDateFormatter
@@ -174,6 +180,12 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
                     putExtra(POST_BODY, binding.bodyBody.text.toString())
                     putExtra(TEACHER_QUESTIONID, questionId)
                     putExtra(TEACHER_CATAEGORYNAME, categoryName)
+                    putExtra(FIRST_FIELD, binding.firstFieldContent.text)
+                    putExtra(SECOND_FIELD, binding.secondFieldContent.text)
+                    putExtra(THIRD_FIELD, binding.thirdFieldContent.text)
+                    putExtra(FOURTH_FIELD, binding.fourthFieldContent.text)
+                    putExtra(FIFTH_FIELD, binding.fifthFieldContent.text)
+                    putExtra(SIXTH_FIELD, binding.sixthFieldContent.text)
 
                     viewModel.getTagList()?.let {
                         if (it.isNotEmpty()) {
@@ -346,6 +358,79 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             // 카테고리
             categoryName = body.category
             viewModel.setCategory(body.category)
+
+            // extraData
+            with(binding) {
+
+                if(body.extraData == null) {
+                    layoutQuestionGuideline.visibility = View.GONE
+                    bodyLine.visibility = View.GONE
+                }
+                else {
+                    firstFieldTitle.text = getString(R.string.extra_data_user_type)
+                    // 세무
+                    if(body.extraData.type == getString(R.string.category_tax)) {
+                        secondFieldTitle.text = getString(R.string.investigation_second_field_title)
+                        thirdFieldTitle.text = getString(R.string.investigation_third_field_title)
+                        fourthFieldTitle.text = getString(R.string.investigation_fourth_field_title)
+                        fifthFieldTitle.text = getString(R.string.investigation_fifth_field_title)
+                        sixthFieldTitle.text = getString(R.string.extra_sales_scale)
+
+                        if(body.extraData.taxBookKeepingStatus == "TAX_FILLING") {
+                            firstFieldContent.text = getString(R.string.investigation_first_field_button1)
+                        }
+                        else {
+                            firstFieldContent.text = getString(R.string.investigation_first_field_button2)
+                        }
+                        secondFieldContent.text = body.extraData.businessType.orDash()
+                        thirdFieldContent.text = body.extraData.branchInfo.orDash()
+                        fourthFieldContent.text = body.extraData.employeeManagement.orDash()
+                        fifthFieldContent.text = body.extraData.purchaseEvidence.orDash()
+                        sixthFieldContent.text = body.extraData.salesScale.orDash()
+                    }
+                    // 직원관리
+                    else if(body.extraData.type == getString(R.string.category_labor)) {
+                        secondFieldTitle.text = getString(R.string.investigation_second_field_title)
+                        thirdFieldTitle.text = getString(R.string.extra_employment_type_duration)
+                        fourthFieldTitle.text = getString(R.string.extra_work_break_hours)
+                        fifthFieldTitle.text = getString(R.string.labor_fifth_field_title)
+                        sixthFieldTitle.text = getString(R.string.labor_sixth_field_title)
+
+                        if(body.extraData.contractStatus == "WITH_CONTRACT") {
+                            firstFieldContent.text = getString(R.string.labor_first_field_button1)
+                        }
+                        else {
+                            firstFieldContent.text = getString(R.string.labor_first_field_button2)
+                        }
+                        secondFieldContent.text = body.extraData.businessType.orDash()
+                        thirdFieldContent.text = body.extraData.employmentTypeAndDuration.orDash()
+                        fourthFieldContent.text = body.extraData.workAndBreakHours.orDash()
+                        fifthFieldContent.text = body.extraData.salaryAndAllowance.orDash()
+                        sixthFieldContent.text = body.extraData.statutoryBenefits.orDash()
+                    }
+                    // 노하우, 상권
+                    else if(body.extraData.type == getString(R.string.category_market)) {
+                        secondFieldTitle.text = getString(R.string.extra_business_type_menu)
+                        thirdFieldTitle.text = getString(R.string.extra_location_scale)
+                        fourthFieldTitle.text = getString(R.string.extra_customer_type)
+                        fifthFieldTitle.text = getString(R.string.extra_store_info)
+                        sixthFieldTitle.text = getString(R.string.business_sixth_field_title)
+
+                        if(body.extraData.bossType == "STORE_OWNER") {
+                            firstFieldContent.text = getString(R.string.business_first_field_button1)
+                        }
+                        else {
+                            firstFieldContent.text = getString(R.string.business_first_field_button2)
+
+                        }
+                        secondFieldContent.text = body.extraData.businessType.orDash()
+                        thirdFieldContent.text = body.extraData.location.orDash()
+                        fourthFieldContent.text = body.extraData.customerType.orDash()
+                        fifthFieldContent.text = body.extraData.storeInfo.orDash()
+                        sixthFieldContent.text = body.extraData.budget.orDash()
+                    }
+                }
+            }
 
             setRecyclerView()
             setTextColor()
@@ -535,5 +620,9 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
         )
 
         title.text = spannableString
+    }
+
+    private fun String?.orDash(): String {
+        return if(this.isNullOrEmpty()) "-" else this
     }
 }

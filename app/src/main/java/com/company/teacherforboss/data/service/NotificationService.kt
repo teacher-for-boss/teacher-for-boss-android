@@ -1,12 +1,10 @@
 package com.company.teacherforboss.data.service
 
 import com.company.teacherforboss.data.model.response.notification.NotificationListDto
-import com.company.teacherforboss.data.model.response.notification.NotificationReadDto
 import com.company.teacherforboss.data.model.response.notification.NotificationSettingDto
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -21,10 +19,10 @@ interface NotificationService {
         @Query("lastNotificationId") lastNotificationId: Long
     ):BaseResponse<NotificationListDto>
 
-    @PATCH("${NOTIFICATION}")
+    @POST("${NOTIFICATION}/{notificationId}/read")
     suspend fun readNotification(
         @Path("notificationId") notificationId:Long,
-    ):BaseResponse<NotificationReadDto>
+    ):BaseResponse<Unit>
 
     @GET("${NOTIFICATION}/settings")
     suspend fun getNotificationSetting(): BaseResponse<NotificationSettingDto>

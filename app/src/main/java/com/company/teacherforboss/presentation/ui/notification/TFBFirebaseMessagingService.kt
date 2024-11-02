@@ -44,6 +44,8 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
         const val HOME="HOME"
         const val EXCHANGE="EXCHANGE"
         const val QUESTION_AUTO_DELETE="QUESTION_AUTO_DELETE"
+        const val TEACHER_SIGNUP_COMPLETE="TEACHER_SIGNUP_COMPLETE"
+        const val TEACHER_SIGNUP_REJECT="TEACHER_SIGNUP_REJECT"
     }
     @Inject
     lateinit var localDataSource: LocalDataSource
@@ -58,6 +60,8 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
 
         var title=""
         var body=""
+        val typeUnsplittedList= listOf(QUESTION_AUTO_DELETE, TEACHER_SIGNUP_COMPLETE,
+            TEACHER_SIGNUP_REJECT)
 
         remoteMessage.data.let { data ->
             val notificationDefault = data["default"]?.let { defaultData ->
@@ -77,7 +81,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
                 val notificationType=notificationData?.optString(NOTIFICATIONTYPE)?:""
 
                 var type=""
-                if(notificationType==QUESTION_AUTO_DELETE) type=notificationType
+                if (notificationType in typeUnsplittedList) type=notificationType
                 else type=notificationType.split("_")[0]
 
                 var dataIdName: String? = null

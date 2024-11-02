@@ -115,11 +115,11 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
             viewModel.selectCategoryId(viewModel.categoryName)
             // extraData
             intent.getStringExtra(FIFTH_FIELD)
-            viewModel._secondField.value = intent.getStringExtra(SECOND_FIELD)
-            viewModel._thirdField.value = intent.getStringExtra(THIRD_FIELD)
-            viewModel._fourthField.value = intent.getStringExtra(FOURTH_FIELD)
-            viewModel._fifthField.value = intent.getStringExtra(FIFTH_FIELD)
-            viewModel._sixthField.value = intent.getStringExtra(SIXTH_FIELD)
+            viewModel._secondField.value = intent.getStringExtra(SECOND_FIELD).takeIf {it != "-"}
+            viewModel._thirdField.value = intent.getStringExtra(THIRD_FIELD).takeIf {it != "-"}
+            viewModel._fourthField.value = intent.getStringExtra(FOURTH_FIELD).takeIf {it != "-"}
+            viewModel._fifthField.value = intent.getStringExtra(FIFTH_FIELD).takeIf {it != "-"}
+            viewModel._sixthField.value = intent.getStringExtra(SIXTH_FIELD).takeIf {it != "-"}
 
             if(viewModel.categoryName == getString(R.string.home_teacher_talk_policy)) {
                 if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.investigation_first_field_button1)) {

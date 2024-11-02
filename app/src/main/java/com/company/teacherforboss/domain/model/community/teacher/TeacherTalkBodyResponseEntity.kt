@@ -5,7 +5,7 @@ import com.company.teacherforboss.domain.model.community.Member
 data class TeacherTalkBodyResponseEntity(
     val title:String,
     val content: String,
-    val extraData: ExtraData,
+    val extraData: ExtraData?,
     val category: String,
     val imageUrlList: List<String>,
     val hashtagList: List<String>?,

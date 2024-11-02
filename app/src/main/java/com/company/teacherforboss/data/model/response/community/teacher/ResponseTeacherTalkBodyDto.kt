@@ -14,7 +14,7 @@ data class ResponseTeacherTalkBodyDto(
     @SerializedName("content")
     val content: String,
     @SerializedName("extraData")
-    val extraData: ExtraData,
+    val extraData: ExtraData?,
     @SerializedName("category")
     val category: String,
     @SerializedName("imageUrlList")

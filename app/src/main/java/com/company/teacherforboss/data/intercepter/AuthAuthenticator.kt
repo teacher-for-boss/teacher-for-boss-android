@@ -1,9 +1,12 @@
 package com.company.teacherforboss.data.intercepter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.company.teacherforboss.data.repositoryImpl.UserRepositoryImpl
 import com.company.teacherforboss.data.tokenmanager.TokenManager
+import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
+import com.company.teacherforboss.util.base.parseErrorCode
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,23 +52,6 @@ class AuthAuthenticator @Inject constructor(
         }
 
         return replaceToken(newAccessToken,response)
-
-//        val newAccessToken= runBlocking {
-//            try {
-//                reissueToken(refreshToken)
-//            }catch (e:Exception){
-//                Log.e("token", "토큰 재발급 중 예외 발생", e)
-//                null
-//            }
-//        }
-//
-//        if(newAccessToken==null){
-//            Log.e("token","액세스 토큰이 비어있습니다")
-//            return null
-//        }
-//        tokenManager.saveAccessToken(context,newAccessToken)
-//
-//        return replaceToken(newAccessToken,response)
     }
 
     private fun replaceToken(newToken:String,response: Response):Request=
@@ -89,12 +75,28 @@ class AuthAuthenticator @Inject constructor(
                     throw IllegalArgumentException("재발급된 토큰이 비어있음")
                 }
             }
+
+        }else if(response.code()==404){
+            val errorCode = response?.let { parseErrorCode(it) }
+            if(errorCode==AUTH_ERROR_CODE) gotoLoginActivity()
         }
         Log.e("token", "토큰 재발급 실패")
         throw IllegalArgumentException("토큰 재발급 실패")
         }
 
+    private fun gotoLoginActivity(){
+
+        tokenManager.clearAccessToken(context)
+        tokenManager.clearRefreshToken(context)
+
+        val intent= Intent(context,LoginActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        context.startActivity(intent)
+    }
+
     companion object{
         const val AUTHORIZATION="Authorization"
+        const val AUTH_ERROR_CODE="AUTH4041"
         }
     }

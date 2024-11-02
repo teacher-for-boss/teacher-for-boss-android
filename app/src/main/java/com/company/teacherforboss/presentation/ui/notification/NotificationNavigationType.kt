@@ -2,6 +2,7 @@ package com.company.teacherforboss.presentation.ui.notification
 
 import android.app.Activity
 import com.company.teacherforboss.MainActivity
+import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.presentation.ui.mypage.exchange.ExchangeHistoryActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyActivity
@@ -13,7 +14,10 @@ enum class NotificationNavigationType(val destinationActivity: Class<out Activit
     POST(BossTalkBodyActivity::class.java, BOSS_POSTID),
     HOME(MainActivity::class.java),
     EXCHANGE(ExchangeHistoryActivity::class.java),
-    QUESTION_AUTO_DELETE(MainActivity::class.java);
+    QUESTION_AUTO_DELETE(MainActivity::class.java),
+    TEACHER_SIGNUP_COMPLETE(MainActivity::class.java),
+    TEACHER_SIGNUP_REJECT(LoginActivity::class.java);
+
 
     companion object{
         fun from(type:String):NotificationNavigationType?{

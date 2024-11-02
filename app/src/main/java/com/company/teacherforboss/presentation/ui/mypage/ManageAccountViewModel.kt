@@ -78,6 +78,12 @@ class ManageAccountViewModel @Inject constructor(
         viewModelScope.launch {
             withdrawUsecase().onSuccess { withdrawEntity->
                 _withdrawState.value=UiState.Success(withdrawEntity)
+
+                val signupType = localDataSource.getSignupType()
+                if(signupType== SIGNUP_SOCIAL_KAKAO) withdrawKakao()
+
+                localDataSource.resetSignupType()
+
             }.onFailure { exception: Throwable ->
                 _withdrawState.value=UiState.Error(exception.message)
             }
@@ -94,6 +100,9 @@ class ManageAccountViewModel @Inject constructor(
                 Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
             }
         }
+
+    }
+    fun withdrawKakao(){
         // 연결 끊기
         UserApiClient.instance.unlink { error ->
             if (error != null) {

@@ -30,6 +30,20 @@ fun <T> parseErrorResponse(response: retrofit2.Response<T>): String? {
     return null // errorBody가 비어있거나 null일 경우 기본 메시지
 }
 
+fun <T> parseErrorCode(response: retrofit2.Response<T>): String? {
+    val errorBody = response.errorBody()?.string()
+
+    if (!errorBody.isNullOrBlank()) {
+        return try {
+            val jsonObject = JSONObject(errorBody)
+            jsonObject.getString("code") // "message" 필드에서 에러 메시지 추출
+        } catch (jsonException: JSONException) {
+            throw jsonException
+        }
+    }
+    return null
+}
+
 
 object ErrorUtils {
 //    fun getErrorResponse(errorbody: ResponseBody):ErrorUtils{

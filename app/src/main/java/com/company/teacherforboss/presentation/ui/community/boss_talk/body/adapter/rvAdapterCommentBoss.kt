@@ -16,9 +16,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.bumptech.glide.Glide
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentBossBinding
 import com.company.teacherforboss.domain.model.community.CommentEntity
+import com.company.teacherforboss.presentation.ui.auth.signup.BossProfileAnimal
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
 import com.company.teacherforboss.presentation.ui.community.boss_talk.body.BossTalkBodyViewModel
 import com.company.teacherforboss.presentation.ui.community.common.CommunityDialogFragment
@@ -31,6 +34,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_LEVEL_DIALOG
 import com.company.teacherforboss.util.base.LocalDateFormatter
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadProfileImgFromUrlCoil
+import com.company.teacherforboss.util.base.UrlConfig
 
 class rvAdapterCommentBoss(
     private val lifecycleOwner: LifecycleOwner,
@@ -70,11 +74,9 @@ class rvAdapterCommentBoss(
                 binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
             else if (member?.role == BOSS)
                 binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+            else if (member?.role == null)
+                binding.userName.text = context.getString(R.string.nickname_none)
 
-            member?.profileImg?.let {
-                if (it.isNotEmpty()) {
-                    binding.userImage.loadProfileImgFromUrlCoil(it) }
-            }
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
                 if (member?.role == TEACHER) {
@@ -98,9 +100,22 @@ class rvAdapterCommentBoss(
                 // 유저 레벨
                 profileLevel.text = comment.memberInfo?.level
 
-                if (member?.role == BOSS) {
+                if (member?.role == null) {
                     profileStar.visibility = View.GONE
                     profileLevel.visibility = View.GONE
+                    createdAt.visibility = View.GONE
+
+                    userImage.load(IMG_BASE_URL + "profile_cat_owner.png")
+                } else {
+                    member?.profileImg?.let {
+                        if (it.isNotEmpty()) {
+                            binding.userImage.loadProfileImgFromUrlCoil(it) }
+                    }
+                    if (member?.role == BOSS) {
+                        profileStar.visibility = View.GONE
+                        profileLevel.visibility = View.GONE
+                    }
+
                 }
 
                 // 날짜
@@ -268,5 +283,9 @@ class rvAdapterCommentBoss(
         fragmentActivity?.let {
             DialogTeacherLevelFragment().show(it.supportFragmentManager, TEACHER_LEVEL_DIALOG)
         }
+    }
+
+    companion object {
+        const val IMG_BASE_URL = UrlConfig.AWS_BASE_URL + UrlConfig.PROFILE_PARAM
     }
 }

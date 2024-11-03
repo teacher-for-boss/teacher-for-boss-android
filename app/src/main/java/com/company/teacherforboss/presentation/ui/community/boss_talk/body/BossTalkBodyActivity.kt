@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import coil.load
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivityBosstalkBodyBinding
@@ -33,6 +34,7 @@ import com.company.teacherforboss.util.CustomSnackBar
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.BOSS_POSTID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DELETE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.POST_BODY
@@ -306,16 +308,34 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
                 commentNumber.text = getString(R.string.comment_cnt, body.commentCount)
 
-                if (body.memberInfo.toMemberDto().role == TEACHER) {
+                if (body.memberInfo.toMemberDto().role == null) {
+                    userNickname.text = getString(R.string.nickname_none)
+                    userLevel.visibility = View.INVISIBLE
+                    profileLevel.visibility = View.INVISIBLE
+                    date.visibility= View.INVISIBLE
+
+                    profileImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
+
+                }
+                else if (body.memberInfo.toMemberDto().role == BOSS) {
+                    userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
+                    profileStar.visibility ==View.GONE
+
+                    body.memberInfo.toMemberDto().profileImg?.let {
+                        binding.profileImage.loadProfileImgFromUrlCoil(it)
+                    }
+                }
+                else if (body.memberInfo.toMemberDto().role == TEACHER){
                     userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
                     profileLevel.text = body.memberInfo.toMemberDto().level
                     userLevel.visibility = View.VISIBLE
                     profileLevel.visibility = View.VISIBLE
 
-                }
-                else {
-                    userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
-                    profileStar.visibility ==View.GONE
+                    body.memberInfo.toMemberDto().profileImg?.let {
+                        binding.profileImage.loadProfileImgFromUrlCoil(it)
+                    }
+                } else {
+
                 }
             }
 
@@ -347,10 +367,6 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                     putExtra("IMAGE_URL", selectedImageUrl)
                 }
                 it.context.startActivity(intent)
-            }
-
-            body.memberInfo.toMemberDto().profileImg?.let {
-                binding.profileImage.loadProfileImgFromUrlCoil(it)
             }
 
             viewModel._isMine.value = body.isMine

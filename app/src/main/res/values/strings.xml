@@ -162,6 +162,8 @@
     <string name="boss_talk_nickname_teacher">%s 티처</string>
     <string name="boss_talk_nickname_boss">%s 보스</string>
 
+    <string name="nickname_none">(알 수 없음)</string>
+
 
 
     <!-- filter chip-->

@@ -13,11 +13,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.RvItemCommentTeacherBinding
 import com.company.teacherforboss.domain.model.community.teacher.TeacherTalkAnswerListResponseEntity
 import com.company.teacherforboss.presentation.ui.common.TeacherProfileActivity
+import com.company.teacherforboss.presentation.ui.community.boss_talk.body.adapter.rvAdapterCommentBoss
 import com.company.teacherforboss.presentation.ui.community.common.ImgSliderAdapter
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.answer.TeacherTalkAnswerActivity
 import com.company.teacherforboss.presentation.ui.community.teacher_talk.body.TeacherTalkBodyViewModel
@@ -51,9 +53,22 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
 
             // 유저 정보
             val member = answer.memberInfo
-            binding.userName.text = member.name
-            binding.profileLevel.text = member.level
-            member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it)
+
+            if (member?.role == null) {
+                binding.profileStar.visibility = View.GONE
+                binding.profileLevel.visibility = View.GONE
+                binding.createdAt.visibility = View.GONE
+
+                binding.userImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
+            } else {
+                member?.profileImg?.let {
+                    if (it.isNotEmpty()) {
+                        binding.userImage.loadProfileImgFromUrlCoil(it) }
+                }
+                binding.userName.text = member.name
+                binding.profileLevel.text = member.level
+
+                member.profileImg?.let { binding.userImage.loadProfileImgFromUrlCoil(it) }
             }
 
             // 프로필 클릭 시 상세 프로필 이동

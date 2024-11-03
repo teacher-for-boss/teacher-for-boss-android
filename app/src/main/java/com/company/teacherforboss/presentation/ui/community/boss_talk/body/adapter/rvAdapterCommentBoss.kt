@@ -70,12 +70,15 @@ class rvAdapterCommentBoss(
             // 유저 정보
             val member = comment.memberInfo
 
-            if (member?.role == TEACHER)
-                binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
-            else if (member?.role == BOSS)
-                binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
-            else if (member?.role == null)
+            if(member?.memberId == 0L) {
                 binding.userName.text = context.getString(R.string.nickname_none)
+            }
+            else {
+                if (member?.role == TEACHER)
+                    binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
+                else if (member?.role == BOSS)
+                    binding.userName.text = context.getString(R.string.boss_talk_nickname_boss, member.name)
+            }
 
             // 프로필 클릭 시 상세 프로필 이동
             val clickListener = View.OnClickListener {
@@ -100,7 +103,7 @@ class rvAdapterCommentBoss(
                 // 유저 레벨
                 profileLevel.text = comment.memberInfo?.level
 
-                if (member?.role == null) {
+                if (member?.memberId == 0L) {
                     profileStar.visibility = View.GONE
                     profileLevel.visibility = View.GONE
                     createdAt.visibility = View.GONE

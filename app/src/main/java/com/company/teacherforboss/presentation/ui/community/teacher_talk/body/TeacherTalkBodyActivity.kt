@@ -342,7 +342,7 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             // 본문 글
             with(binding) {
 
-                if (body.memberInfo.toMemberDto().role == null) {
+                if (body.memberInfo.toMemberDto().memberId == 0L) {
                     userNickname.text = getString(R.string.nickname_none)
                     date.visibility= View.INVISIBLE
 
@@ -356,8 +356,9 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
 
                     // 프로필 이미지
                     body.memberInfo.toMemberDto().profileImg?.let { binding.profileImage.loadProfileImgFromUrlCoil(it) }
-                }
 
+                    setTextColor()
+                }
             }
 
             // 본문 업로드 이미지
@@ -444,7 +445,6 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
             }
 
             setRecyclerView()
-            setTextColor()
 
             viewModel._title.value = body.title
             viewModel._content.value = body.content

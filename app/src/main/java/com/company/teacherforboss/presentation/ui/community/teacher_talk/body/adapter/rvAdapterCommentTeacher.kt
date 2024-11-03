@@ -54,7 +54,7 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             // 유저 정보
             val member = answer.memberInfo
 
-            if (member?.role == null) {
+            if (member?.memberId == 0L) {
                 binding.profileStar.visibility = View.GONE
                 binding.profileLevel.visibility = View.GONE
                 binding.createdAt.visibility = View.GONE

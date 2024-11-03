@@ -308,7 +308,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                 date.text = LocalDateFormatter.extractDate(body.createdAt)
                 commentNumber.text = getString(R.string.comment_cnt, body.commentCount)
 
-                if (body.memberInfo.toMemberDto().role == null) {
+                if (body.memberInfo.toMemberDto().memberId == 0L) {
                     userNickname.text = getString(R.string.nickname_none)
                     userLevel.visibility = View.INVISIBLE
                     profileLevel.visibility = View.INVISIBLE
@@ -317,25 +317,25 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                     profileImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
 
                 }
-                else if (body.memberInfo.toMemberDto().role == BOSS) {
-                    userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
-                    profileStar.visibility ==View.GONE
+                else {
+                    if (body.memberInfo.toMemberDto().role == BOSS) {
+                        userNickname.text =  getString(R.string.boss_talk_nickname_boss, body.memberInfo.toMemberDto().name)
+                        profileStar.visibility ==View.GONE
 
-                    body.memberInfo.toMemberDto().profileImg?.let {
-                        binding.profileImage.loadProfileImgFromUrlCoil(it)
+                        body.memberInfo.toMemberDto().profileImg?.let {
+                            binding.profileImage.loadProfileImgFromUrlCoil(it)
+                        }
                     }
-                }
-                else if (body.memberInfo.toMemberDto().role == TEACHER){
-                    userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
-                    profileLevel.text = body.memberInfo.toMemberDto().level
-                    userLevel.visibility = View.VISIBLE
-                    profileLevel.visibility = View.VISIBLE
+                    else if (body.memberInfo.toMemberDto().role == TEACHER){
+                        userNickname.text = getString(R.string.boss_talk_nickname_teacher, body.memberInfo.toMemberDto().name)
+                        profileLevel.text = body.memberInfo.toMemberDto().level
+                        userLevel.visibility = View.VISIBLE
+                        profileLevel.visibility = View.VISIBLE
 
-                    body.memberInfo.toMemberDto().profileImg?.let {
-                        binding.profileImage.loadProfileImgFromUrlCoil(it)
-                    }
-                } else {
-
+                        body.memberInfo.toMemberDto().profileImg?.let {
+                            binding.profileImage.loadProfileImgFromUrlCoil(it)
+                        }
+                    } else { }
                 }
             }
 

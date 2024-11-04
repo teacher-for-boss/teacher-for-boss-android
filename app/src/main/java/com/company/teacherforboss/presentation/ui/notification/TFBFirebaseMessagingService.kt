@@ -78,6 +78,9 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
                 Log.d("FCM Log", "Notification Body: $body")
 
                 val notificationData=it.optJSONObject("data")
+
+                val notificationId = notificationData.optString(NOTIFICATION_ID)?.let { it.toLong() }
+
                 val notificationType=notificationData?.optString(NOTIFICATIONTYPE)?:""
 
                 var type=""
@@ -100,17 +103,17 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
                 Log.d("FCM Log", "Notification type: $type")
                 Log.d("FCM Log", "Notification id: $dataId")
                 Log.d("FCM Log", "Notification data id name: $dataIdName")
-                showNotification(title,body,type,dataId)
+                showNotification(title,body,type,dataId,notificationId)
             }
         }
     }
 
-    private fun showNotification(title: String, body: String,type:String,dataId:Long?) {
+    private fun showNotification(title: String, body: String,type:String,dataId:Long?,notificationId:Long?) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
         }
-        val notificationId=Random().nextInt()
+        val randomNotificationId=Random().nextInt()
 
         val uniqueRequestCode = Random().nextInt() // 각 알림에 대해 고유한 요청 코드 생성
 
@@ -124,6 +127,11 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
 //            putExtra(NOTIFICATION_ID,notificationId)
             if (type== QUESTION_AUTO_DELETE) putExtra(FRAGMENT_DESTINATION, TEACHER_TALK)
             Log.d("fcm log data id",dataId.toString())
+
+            notificationId?.let {
+                putExtra(NOTIFICATION_ID,notificationId)
+            }
+
             dataId?.let {
                 when(type){
                     QUESTION->putExtra(TEACHER_QUESTIONID,it)
@@ -147,7 +155,7 @@ class TFBFirebaseMessagingService: FirebaseMessagingService() {
             .setContentInfo(INFO)
             .setColor(ContextCompat.getColor(this, R.color.Primary01))
             .setContentIntent(pendingIntent)
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationManager.notify(randomNotificationId, notificationBuilder.build())
     }
 
     private fun createNotificationChannel(manager: NotificationManager) {

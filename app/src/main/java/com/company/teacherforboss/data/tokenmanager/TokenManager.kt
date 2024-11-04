@@ -7,7 +7,7 @@ import android.content.SharedPreferences
 //ver1. shared preference
 object TokenManager {
      const val ACCESS_TOKEN="ACCESS_TOKEN"
-     const val REFRESH_TOKEN="REQUEST_TOKEN"
+     const val REFRESH_TOKEN="REFRESH_TOKEN"
      const val USER_INFO="USER_INFO"
 
      fun saveAccessToken(context:Context,token:String){

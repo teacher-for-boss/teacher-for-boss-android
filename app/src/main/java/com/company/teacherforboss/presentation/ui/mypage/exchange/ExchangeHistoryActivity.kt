@@ -81,7 +81,7 @@ class ExchangeHistoryActivity : BindingActivity<ActivityExchangeHistoryBinding>(
 
     fun readNotification(){
         val notificationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
-        notificationViewModel.readNotification(notificationId)
+        if(notificationId!=-1L) notificationViewModel.readNotification(notificationId)
     }
 
     fun onBackBtnPressed(){

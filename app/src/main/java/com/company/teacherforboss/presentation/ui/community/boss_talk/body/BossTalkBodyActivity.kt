@@ -121,8 +121,8 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
     }
 
     fun readNotification(){
-        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
-        notificationViewModel.readNotification(notifiationId)
+        val notificationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        if(notificationId!=-1L) notificationViewModel.readNotification(notificationId)
     }
     fun showOptionMenu() {
         // 더보기 버튼

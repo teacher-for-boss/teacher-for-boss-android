@@ -123,8 +123,8 @@ class TeacherTalkBodyActivity : BindingActivity<ActivityTeachertalkBodyBinding>(
     }
 
     fun readNotification(){
-        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
-        notificationViewModel.readNotification(notifiationId)
+        val notificationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        if(notificationId!=-1L) notificationViewModel.readNotification(notificationId)
     }
 
 

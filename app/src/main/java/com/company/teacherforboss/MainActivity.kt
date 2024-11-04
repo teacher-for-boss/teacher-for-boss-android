@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.company.teacherforboss.data.tokenmanager.TokenManager
 import com.company.teacherforboss.databinding.ActivityMainBinding
 import com.company.teacherforboss.presentation.ui.community.boss_talk.main.basic.BossTalkMainFragment
 import com.company.teacherforboss.presentation.ui.home.HomeFragment
@@ -88,8 +90,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     fun readNotification(){
-        val notifiationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
-        notificationViewModel.readNotification(notifiationId)
+        val notificationId=intent.getLongExtra(NOTIFICATION_ID,-1L)
+        if(notificationId!=-1L) notificationViewModel.readNotification(notificationId)
     }
 
     private fun clickBottomNavigation() {

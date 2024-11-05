@@ -126,7 +126,7 @@ class LoginViewModel @Inject constructor(
         }
         if(!data?.result?.refreshToken.isNullOrEmpty()){
             data?.result?.refreshToken.let{
-                TokenManager.saveRefreshToken(context, it!!)
+                tokenManager.saveRefreshToken(context, it!!)
             }
         }
     }

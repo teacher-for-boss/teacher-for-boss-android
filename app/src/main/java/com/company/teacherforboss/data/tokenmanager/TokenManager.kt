@@ -56,6 +56,7 @@ object TokenManager {
      fun clearData(context:Context){
         val editor=context.getSharedPreferences(USER_INFO,Context.MODE_PRIVATE).edit()
         editor.clear()
+        editor.apply()
      }
 }
 

@@ -81,6 +81,19 @@ class LocalDataSource @Inject constructor(
         return prefs.getBoolean(key,false)
     }
 
+    // 탈퇴시
+    fun clearAllPreferences() {
+        val prefs = getPreferences(APP_PREF)
+        prefs.edit().clear().apply() // 모든 데이터 삭제
+
+        val userPrefs = getPreferences(USER_INFO)
+        userPrefs.edit().clear().apply()
+
+        val signupPrefs = getPreferences(SIGNUP_TYPE)
+        signupPrefs.edit().clear().apply()
+    }
+
+
     companion object {
         const val USER_INFO="USER_INFO"
         const val INFO_NULL="INFO_NULL"

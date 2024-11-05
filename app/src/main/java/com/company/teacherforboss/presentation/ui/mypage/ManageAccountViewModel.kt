@@ -83,6 +83,7 @@ class ManageAccountViewModel @Inject constructor(
                 if(signupType== SIGNUP_SOCIAL_KAKAO) withdrawKakao()
 
                 localDataSource.resetSignupType()
+                localDataSource.clearAllPreferences()
 
             }.onFailure { exception: Throwable ->
                 _withdrawState.value=UiState.Error(exception.message)

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -55,9 +56,15 @@ class rvAdapterCommentTeacher(private val answerList: List<TeacherTalkAnswerList
             val member = answer.memberInfo
 
             if (member?.memberId == 0L) {
+                binding.userName.text = context.getString(R.string.nickname_none)
                 binding.profileStar.visibility = View.GONE
                 binding.profileLevel.visibility = View.GONE
                 binding.createdAt.visibility = View.GONE
+
+                val params = binding.userName.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = binding.userImage.id
+                params.bottomToBottom = binding.userImage.id
+                binding.userName.layoutParams = params
 
                 binding.userImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
             } else {

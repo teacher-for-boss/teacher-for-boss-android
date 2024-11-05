@@ -31,8 +31,8 @@ android {
         applicationId = "com.company.teacherforboss"
         minSdk = 28
         targetSdk = 34
-        versionCode = 24
-        versionName = "1.0"
+        versionCode = 25
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

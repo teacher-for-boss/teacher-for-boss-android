@@ -22,6 +22,7 @@ class AskPaymentFragment : BindingFragment<FragmentAskPaymentBinding>(R.layout.f
             AskPaymentItemData("베이직 구독권", "티처톡 열람권 + 질문권 3개","14,700", "33% 할인", " -> 9,900원"),
             AskPaymentItemData("스탠다드 구독권", "티처톡 열람권 + 질문권 5개","24,500", "40% 할인", " -> 14,900원"),
             AskPaymentItemData("프리미엄 구독권", "티처톡 열람권 + 질문권 10개","49,000", "33% 할인", " -> 25,900원"),
+            AskPaymentItemData("추가 질문권 1개", "구독권 이용자만 구매 가능", "", "", "4,900원")
             )
 
         val adapter = AskPaymentAdapter(items) { isItemSelected ->

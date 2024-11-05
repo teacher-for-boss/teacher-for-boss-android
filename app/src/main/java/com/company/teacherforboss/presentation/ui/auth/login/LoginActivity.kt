@@ -89,7 +89,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
-        if (!token.isNullOrBlank() && localDataSource.getUserInfo(USER_ROLE) != TEACHER_RV) { gotoMainActivity() }
+//        if (!token.isNullOrBlank() && localDataSource.getUserInfo(USER_ROLE) != TEACHER_RV) { gotoMainActivity() }
 
         // 소셜 로그인
         lifecycleScope.launch {

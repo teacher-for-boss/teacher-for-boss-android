@@ -24,6 +24,11 @@ class NotificationFragment: BindingFragment<FragmentNotificationBinding>(R.layou
     private val viewModel: NotificationSettingViewModel by viewModels()
     var isListenerEnabled: Boolean = false
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.clearData()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

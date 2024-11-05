@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -65,8 +66,22 @@ class rvAdapterRecommentBoss(
                     profileLevel.visibility = View.GONE
                     createdAt.visibility = View.GONE
 
+                    val params = binding.userName.layoutParams as ConstraintLayout.LayoutParams
+                    params.topToTop = binding.userImage.id
+                    params.bottomToBottom = binding.userImage.id
+                    binding.userName.layoutParams = params
+
                     userImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
                 } else {
+
+                    binding.userLevel.visibility = View.VISIBLE
+                    binding.profileLevel.visibility = View.VISIBLE
+
+                    val params = binding.userName.layoutParams as ConstraintLayout.LayoutParams
+                    params.topToTop = binding.userImage.id
+                    params.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+                    binding.userName.layoutParams = params
+
                     member?.profileImg?.let {
                         if (it.isNotEmpty()) {
                             binding.userImage.loadProfileImgFromUrlCoil(it) }

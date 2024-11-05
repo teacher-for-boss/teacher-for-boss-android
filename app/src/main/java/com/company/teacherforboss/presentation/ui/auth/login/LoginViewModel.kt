@@ -116,6 +116,9 @@ class LoginViewModel @Inject constructor(
 
     fun getAcessToken()=tokenManager.getAccessToken(context)
 
+    fun getRefreshToken()=tokenManager.getRefreshToken(context)
+
+
 
     fun <T: LoginResponseInterface>saveToken(data: T?){
         if(!data?.result?.accessToken.isNullOrEmpty()){

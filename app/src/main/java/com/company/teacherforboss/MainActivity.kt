@@ -52,10 +52,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private var backPressedOnce = false
     private val exitHandler = Handler(Looper.getMainLooper())
     private val resetBackPressed = Runnable { backPressedOnce = false }
-    private var isResultDialogShown = false
+//    private var isResultDialogShown = false
 
     private val notificationViewModel by viewModels<NotificationViewModel>()
-    private val notificationSettingViewModel by viewModels<NotificationSettingViewModel>()
+//    private val notificationSettingViewModel by viewModels<NotificationSettingViewModel>()
     @Inject lateinit var localDataSource: LocalDataSource
 
     // fcm messaging 권한 요청
@@ -77,8 +77,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setFragment()
         askNotificationPermission()
         readNotification()
-        getNotificationPermission()
-        collectData()
+//        getNotificationPermission()
+//        collectData()
 
         val snackBarMsg = intent.getStringExtra(SNACK_BAR_MSG)?.toString()
         if (snackBarMsg!=null){
@@ -185,114 +185,114 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     }
 
-    private fun getNotificationPermission() {
-        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL))
+//    private fun getNotificationPermission() {
+//        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL))
+//
+//        if(!agreementStatus) {
+//            showDialogFragment("Notification")
+//        }
+//    }
 
-        if(!agreementStatus) {
-            showDialogFragment("Notification")
-        }
-    }
+//    private fun showDialogFragment(index: String) {
+//        when(index) {
+//            "Notification" -> {
+//                DialogPopupFragment(
+//                    getString(R.string.notification_permission_title),
+//                    getString(R.string.notification_permission_content),
+//                    getString(R.string.notification_permission_deny),
+//                    getString(R.string.notification_permission_accept),
+//                    {
+//                        notificationSettingViewModel.setServiceNotification(false)
+//                        showDialogFragment("MarketingPush")
+//                    },
+//                    {
+//                        notificationSettingViewModel.setServiceNotification(true)
+//                        showDialogFragment("MarketingPush")
+//                    },
+//                    backgroundClickable = false
+//                ).show(supportFragmentManager, NOTIFICATION_DIALOG)
+//            }
+//
+//            "MarketingPush" -> {
+//                DialogPopupFragment(
+//                    getString(R.string.notification_marketing_title),
+//                    getString(R.string.notification_marketing_content_push),
+//                    getString(R.string.notification_permission_deny),
+//                    getString(R.string.notification_permission_accept),
+//                    {
+//                        notificationSettingViewModel.setMarketingPush(false)
+//                        notificationSettingViewModel.postNotificationSetting()
+//                    },
+//                    {
+//                        notificationSettingViewModel.setMarketingPush(true)
+//                        notificationSettingViewModel.postNotificationSetting()
+//                    },
+//                    backgroundClickable = false
+//                ).show(supportFragmentManager, MARKETING_DIALOG)
+//            }
+//
+//            "Result" -> {
+//                DialogPopupFragment(
+//                    getString(R.string.notification_permission_result_title),
+//                    getNotificationResult(),
+//                    "",
+//                    getString(R.string.notification_permission_confirm),
+//                    {},
+//                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL), true) },
+//                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL), true) }
+//                ).show(supportFragmentManager, NOTIFICATION_RESULT_DIALOG)
+//            }
+//        }
+//    }
 
-    private fun showDialogFragment(index: String) {
-        when(index) {
-            "Notification" -> {
-                DialogPopupFragment(
-                    getString(R.string.notification_permission_title),
-                    getString(R.string.notification_permission_content),
-                    getString(R.string.notification_permission_deny),
-                    getString(R.string.notification_permission_accept),
-                    {
-                        notificationSettingViewModel.setServiceNotification(false)
-                        showDialogFragment("MarketingPush")
-                    },
-                    {
-                        notificationSettingViewModel.setServiceNotification(true)
-                        showDialogFragment("MarketingPush")
-                    },
-                    backgroundClickable = false
-                ).show(supportFragmentManager, NOTIFICATION_DIALOG)
-            }
+//    private fun getNotificationResult(): String {
+//        var notificationResult = ""
+//
+//        if(notificationSettingViewModel.serviceNotification.value!! == false)
+//            notificationResult += getString(R.string.notification_permission_result_1)
+//        else
+//            notificationResult += getString(R.string.notification_permission_result_2)
+//
+//        if(notificationSettingViewModel.marketingNotificationPush.value!! == false)
+//            notificationResult += getString(R.string.notification_permission_result_3)
+//        else
+//            notificationResult += getString(R.string.notification_permission_result_4)
+//
+//        if(notificationSettingViewModel.marketingNotificationEmail.value!! == false)
+//            notificationResult += getString(R.string.notification_permission_result_5)
+//        else
+//            notificationResult += getString(R.string.notification_permission_result_6)
+//
+//        if(notificationSettingViewModel.marketingNotificationSMS.value!! == false)
+//            notificationResult += getString(R.string.notification_permission_result_7)
+//        else
+//            notificationResult += getString(R.string.notification_permission_result_8)
+//
+//        notificationResult += getString(R.string.notification_permission_info)
+//        return notificationResult
+//    }
 
-            "MarketingPush" -> {
-                DialogPopupFragment(
-                    getString(R.string.notification_marketing_title),
-                    getString(R.string.notification_marketing_content_push),
-                    getString(R.string.notification_permission_deny),
-                    getString(R.string.notification_permission_accept),
-                    {
-                        notificationSettingViewModel.setMarketingPush(false)
-                        notificationSettingViewModel.postNotificationSetting()
-                    },
-                    {
-                        notificationSettingViewModel.setMarketingPush(true)
-                        notificationSettingViewModel.postNotificationSetting()
-                    },
-                    backgroundClickable = false
-                ).show(supportFragmentManager, MARKETING_DIALOG)
-            }
-
-            "Result" -> {
-                DialogPopupFragment(
-                    getString(R.string.notification_permission_result_title),
-                    getNotificationResult(),
-                    "",
-                    getString(R.string.notification_permission_confirm),
-                    {},
-                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL), true) },
-                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(USER_EMAIL), true) }
-                ).show(supportFragmentManager, NOTIFICATION_RESULT_DIALOG)
-            }
-        }
-    }
-
-    private fun getNotificationResult(): String {
-        var notificationResult = ""
-
-        if(notificationSettingViewModel.serviceNotification.value!! == false)
-            notificationResult += getString(R.string.notification_permission_result_1)
-        else
-            notificationResult += getString(R.string.notification_permission_result_2)
-
-        if(notificationSettingViewModel.marketingNotificationPush.value!! == false)
-            notificationResult += getString(R.string.notification_permission_result_3)
-        else
-            notificationResult += getString(R.string.notification_permission_result_4)
-
-        if(notificationSettingViewModel.marketingNotificationEmail.value!! == false)
-            notificationResult += getString(R.string.notification_permission_result_5)
-        else
-            notificationResult += getString(R.string.notification_permission_result_6)
-
-        if(notificationSettingViewModel.marketingNotificationSMS.value!! == false)
-            notificationResult += getString(R.string.notification_permission_result_7)
-        else
-            notificationResult += getString(R.string.notification_permission_result_8)
-
-        notificationResult += getString(R.string.notification_permission_info)
-        return notificationResult
-    }
-
-    private fun collectData() {
-        notificationSettingViewModel.postNotificationSettingState.flowWithLifecycle(lifecycle).
-                onEach { NotificationSettingState ->
-                    when(NotificationSettingState) {
-                        is UiState.Success -> {
-                            val notificationSetting = NotificationSettingState.data
-
-                            notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
-                            notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
-                            notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
-                            notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
-
-                            if(!isResultDialogShown) {
-                                showDialogFragment("Result")
-                                isResultDialogShown = true
-                            }
-                        }
-                        else -> Unit
-                    }
-                }.launchIn(lifecycleScope)
-    }
+//    private fun collectData() {
+//        notificationSettingViewModel.postNotificationSettingState.flowWithLifecycle(lifecycle).
+//                onEach { NotificationSettingState ->
+//                    when(NotificationSettingState) {
+//                        is UiState.Success -> {
+//                            val notificationSetting = NotificationSettingState.data
+//
+//                            notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
+//                            notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
+//                            notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
+//                            notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
+//
+//                            if(!isResultDialogShown) {
+//                                showDialogFragment("Result")
+//                                isResultDialogShown = true
+//                            }
+//                        }
+//                        else -> Unit
+//                    }
+//                }.launchIn(lifecycleScope)
+//    }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null && ev?.action == MotionEvent.ACTION_DOWN) {
@@ -313,7 +313,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
-    companion object {
-        private val AGREEMENT_STATUS = "AgreementStatus"
-    }
+//    companion object {
+//        private val AGREEMENT_STATUS = "AgreementStatus"
+//    }
 }

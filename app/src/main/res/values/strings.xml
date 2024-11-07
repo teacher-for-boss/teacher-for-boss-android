@@ -325,7 +325,7 @@
     <string name="use_point1">TP(티처 포인트) 이용 안내</string>
     <string name="use_point2">티처톡에서 답변하고 티포(티처 포인트)를 얻어요\n채택 1번당 1TP의 리워드를 얻어요\n24시간 365일 답변하고 채택받을 수 있어요</string>
     <string name="point_info1">이용 방법 : 티포(TP)는 ‘티처톡’에서 답변을 통해 얻을 수 있습니다. 남긴 답변이 채택되면 1TP를 얻습니다.\n</string>
-    <string name="point_info2">출금 방법 : 모은 티포는 10TP 이상부터 1TP 단위로 출금할 수 있습니다.\n</string>
+    <string name="point_info2">출금 방법 : 모은 질문권은 50TP 이상부터 10TP 단위로 출금할 수 있습니다.\n</string>
     <string name="point_info3">출금 금액 : 1TP는 1000원으로 환산됩니다. (환전 수수료 10% 별도)</string>
     <string name="point_info4">최소 550tp 이상 교환할 수 있습니다.</string>
     <string name="point_info5">100tp 단위로 교환할 수 있습니다.</string>

@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.company.teacherforboss.MainActivity
@@ -26,7 +27,9 @@ import com.company.teacherforboss.presentation.ui.auth.login.social.SocialLoginV
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivity
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
+import com.company.teacherforboss.presentation.ui.mypage.notification_setting.NotificationSettingViewModel
 import com.company.teacherforboss.util.CustomSnackBar
+import com.company.teacherforboss.util.UUIDManager
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
@@ -46,6 +49,8 @@ import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_EMAIL_AGREEMENT
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_KAKAO
 import com.company.teacherforboss.util.base.LocalDataSource.Companion.SOCIAL_MARKETING_SMS_AGREEMENT
+import com.company.teacherforboss.util.component.DialogPopupFragment
+import com.company.teacherforboss.util.view.UiState
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -59,6 +64,8 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -70,6 +77,11 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     private val signupViewModel by viewModels<SignupViewModel>()
     private val loginViewModel by viewModels<LoginViewModel>()
     private val socialLoginViewModel by viewModels<SocialLoginViewModel>()
+    private val notificationSettingViewModel by viewModels<NotificationSettingViewModel>()
+
+    val uuidManager = UUIDManager(this)
+    val deviceUUID = uuidManager.getOrCreateUUID()
+    private var isResultDialogShown = false
     private val context=this
     @Inject lateinit var localDataSource: LocalDataSource
 
@@ -86,6 +98,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         handleLoginResult()
         handleSocialLoginResult()
         addListeners()
+        getNotificationPermission()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
@@ -602,5 +615,119 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     Log.e("FCM Log login", "Failed to get new FCM token", task.exception)
                 }
             }
+    }
+
+    private fun getNotificationPermission() {
+        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, deviceUUID)
+
+        if(!agreementStatus) {
+            showDialogFragment("Notification")
+        }
+    }
+
+    private fun showDialogFragment(index: String) {
+        when(index) {
+            "Notification" -> {
+                DialogPopupFragment(
+                    getString(R.string.notification_permission_title),
+                    getString(R.string.notification_permission_content),
+                    getString(R.string.notification_permission_deny),
+                    getString(R.string.notification_permission_accept),
+                    {
+                        notificationSettingViewModel.setServiceNotification(false)
+                        showDialogFragment("MarketingPush")
+                    },
+                    {
+                        notificationSettingViewModel.setServiceNotification(true)
+                        showDialogFragment("MarketingPush")
+                    },
+                    backgroundClickable = false
+                ).show(supportFragmentManager, ConstsUtils.NOTIFICATION_DIALOG)
+            }
+
+            "MarketingPush" -> {
+                DialogPopupFragment(
+                    getString(R.string.notification_marketing_title),
+                    getString(R.string.notification_marketing_content_push),
+                    getString(R.string.notification_permission_deny),
+                    getString(R.string.notification_permission_accept),
+                    {
+                        notificationSettingViewModel.setMarketingPush(false)
+//                        notificationSettingViewModel.postNotificationSetting()  서버통신
+                    },
+                    {
+                        notificationSettingViewModel.setMarketingPush(true)
+//                        notificationSettingViewModel.postNotificationSetting() 서버통신
+                    },
+                    backgroundClickable = false
+                ).show(supportFragmentManager, ConstsUtils.MARKETING_DIALOG)
+            }
+
+            "Result" -> {
+                DialogPopupFragment(
+                    getString(R.string.notification_permission_result_title),
+                    getNotificationResult(),
+                    "",
+                    getString(R.string.notification_permission_confirm),
+                    {},
+                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(deviceUUID), true) },
+                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(deviceUUID), true) }
+                ).show(supportFragmentManager, ConstsUtils.NOTIFICATION_RESULT_DIALOG)
+            }
+        }
+    }
+
+    private fun getNotificationResult(): String {
+        var notificationResult = ""
+
+        if(notificationSettingViewModel.serviceNotification.value!! == false)
+            notificationResult += getString(R.string.notification_permission_result_1)
+        else
+            notificationResult += getString(R.string.notification_permission_result_2)
+
+        if(notificationSettingViewModel.marketingNotificationPush.value!! == false)
+            notificationResult += getString(R.string.notification_permission_result_3)
+        else
+            notificationResult += getString(R.string.notification_permission_result_4)
+
+        if(notificationSettingViewModel.marketingNotificationEmail.value!! == false)
+            notificationResult += getString(R.string.notification_permission_result_5)
+        else
+            notificationResult += getString(R.string.notification_permission_result_6)
+
+        if(notificationSettingViewModel.marketingNotificationSMS.value!! == false)
+            notificationResult += getString(R.string.notification_permission_result_7)
+        else
+            notificationResult += getString(R.string.notification_permission_result_8)
+
+        notificationResult += getString(R.string.notification_permission_info)
+        return notificationResult
+    }
+
+    // 팝업 수신 서버 통신 결과
+//    private fun collectNotificationSettingData() {
+//        notificationSettingViewModel.postNotificationSettingState.flowWithLifecycle(lifecycle).
+//        onEach { NotificationSettingState ->
+//            when(NotificationSettingState) {
+//                is UiState.Success -> {
+//                    val notificationSetting = NotificationSettingState.data
+//
+//                    notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
+//                    notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
+//                    notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
+//                    notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
+//
+//                    if(!isResultDialogShown) {
+//                        showDialogFragment("Result")
+//                        isResultDialogShown = true
+//                    }
+//                }
+//                else -> Unit
+//            }
+//        }.launchIn(lifecycleScope)
+//    }
+
+    companion object {
+        private val AGREEMENT_STATUS = "AgreementStatus"
     }
 }

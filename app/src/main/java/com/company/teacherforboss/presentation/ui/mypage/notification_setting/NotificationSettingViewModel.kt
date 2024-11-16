@@ -67,6 +67,15 @@ class NotificationSettingViewModel @Inject constructor(
 
     }
 
+    fun clearData() {
+        _getNotificationSettingState.value = UiState.Empty
+        _postNotificationSettingState.value = UiState.Empty
+        _serviceNotification.value = false
+        _marketingNotificationPush.value = false
+        _marketingNotificationEmail.value = false
+        _marketingNotificationSMS.value = false
+    }
+
     fun setServiceNotification(value: Boolean) {
         _serviceNotification.value = value
     }

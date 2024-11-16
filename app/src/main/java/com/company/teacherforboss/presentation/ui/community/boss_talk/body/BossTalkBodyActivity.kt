@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -310,9 +311,14 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
 
                 if (body.memberInfo.toMemberDto().memberId == 0L) {
                     userNickname.text = getString(R.string.nickname_none)
-                    userLevel.visibility = View.INVISIBLE
-                    profileLevel.visibility = View.INVISIBLE
-                    date.visibility= View.INVISIBLE
+                    userLevel.visibility = View.GONE
+                    profileLevel.visibility = View.GONE
+                    date.visibility= View.GONE
+
+                    val params = userNickname.layoutParams as ConstraintLayout.LayoutParams
+                    params.topToTop = profileImage.id
+                    params.bottomToBottom = profileImage.id
+                    userNickname.layoutParams = params
 
                     profileImage.load(rvAdapterCommentBoss.IMG_BASE_URL + "profile_cat_owner.png")
 
@@ -331,6 +337,7 @@ class BossTalkBodyActivity : BindingActivity<ActivityBosstalkBodyBinding>(R.layo
                         profileLevel.text = body.memberInfo.toMemberDto().level
                         userLevel.visibility = View.VISIBLE
                         profileLevel.visibility = View.VISIBLE
+
 
                         body.memberInfo.toMemberDto().profileImg?.let {
                             binding.profileImage.loadProfileImgFromUrlCoil(it)

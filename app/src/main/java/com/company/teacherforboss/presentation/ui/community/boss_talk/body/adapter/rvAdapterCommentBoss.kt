@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
@@ -72,8 +73,22 @@ class rvAdapterCommentBoss(
 
             if(member?.memberId == 0L) {
                 binding.userName.text = context.getString(R.string.nickname_none)
+                binding.userLevel.visibility = View.GONE
+                binding.profileLevel.visibility = View.GONE
+
+                val params = binding.userName.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = binding.userImage.id
+                params.bottomToBottom = binding.userImage.id
+                binding.userName.layoutParams = params
             }
             else {
+                binding.userLevel.visibility = View.VISIBLE
+                binding.profileLevel.visibility = View.VISIBLE
+
+                val params = binding.userName.layoutParams as ConstraintLayout.LayoutParams
+                params.topToTop = binding.userImage.id
+                params.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+                binding.userName.layoutParams = params
                 if (member?.role == TEACHER)
                     binding.userName.text = context.getString(R.string.boss_talk_nickname_teacher, member.name)
                 else if (member?.role == BOSS)

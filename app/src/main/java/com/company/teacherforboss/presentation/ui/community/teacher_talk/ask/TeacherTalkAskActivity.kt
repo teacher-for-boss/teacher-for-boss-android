@@ -100,92 +100,99 @@ class TeacherTalkAskActivity : BindingActivity<ActivityTeachertalkAskBinding>(R.
     }
 
     private fun initLayout() {
-        if(purpose=="modify") {
-            viewModel.questionId = intent.getLongExtra(TEACHER_QUESTIONID,-1L)
-            Log.d("test modi",intent.getLongExtra(TEACHER_QUESTIONID,-1L).toString())
-            //title
+        // Intent로부터 카테고리 이름 받아오기
+        val categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME) ?: ""
+
+        if (purpose == "modify") {
+            viewModel.questionId = intent.getLongExtra(TEACHER_QUESTIONID, -1L)
             val fullText = intent.getStringExtra(POST_TITLE).toString()
             val modifiedText = if (fullText.length > 3) fullText.substring(3) else ""
             viewModel._title.value = modifiedText
-            //content
             viewModel._content.value = intent.getStringExtra(POST_BODY).toString()
-            //category
-            viewModel.categoryName = intent.getStringExtra(TEACHER_CATAEGORYNAME)!!
-            categoryIndex = viewModel.categoryList.indexOf(viewModel.categoryName)
+        }
+
+        // 카테고리 초기화
+        if (categoryName.isNotEmpty()) {
+            Log.d("CategoryDebug", "Received categoryName: $categoryName")
+            viewModel.categoryName = categoryName
+
+            // 리스트에서 인덱스 찾기 (RecyclerView용)
+            categoryIndex = viewModel.categoryList.indexOf(categoryName).takeIf { it >= 0 } ?: 0
+            Log.d("CategoryDebug", "Calculated categoryIndex: $categoryIndex")
+
+            // ViewModel에 선택된 카테고리 설정
+            viewModel.selectCategoryId(categoryName)
+
+            // UI 초기화: 카테고리에 따라 초기 상태 설정
+            initializeCategoryUI(categoryName)
+        } else {
+            viewModel.categoryName = viewModel.categoryList.firstOrNull() ?: ""
+            categoryIndex = 0
             viewModel.selectCategoryId(viewModel.categoryName)
-            // extraData
-            intent.getStringExtra(FIFTH_FIELD)
-            viewModel._secondField.value = intent.getStringExtra(SECOND_FIELD).takeIf {it != "-"}
-            viewModel._thirdField.value = intent.getStringExtra(THIRD_FIELD).takeIf {it != "-"}
-            viewModel._fourthField.value = intent.getStringExtra(FOURTH_FIELD).takeIf {it != "-"}
-            viewModel._fifthField.value = intent.getStringExtra(FIFTH_FIELD).takeIf {it != "-"}
-            viewModel._sixthField.value = intent.getStringExtra(SIXTH_FIELD).takeIf {it != "-"}
-
-            if(viewModel.categoryName == getString(R.string.home_teacher_talk_policy)) {
-                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.investigation_first_field_button1)) {
-                    binding.firstFieldButton1.isChecked = true
-                    viewModel.setButtonSelected(1)
-                }
-                else {
-                    binding.firstFieldButton2.isChecked = true
-                    viewModel.setButtonSelected(2)
-                }
-            }
-            else if(viewModel.categoryName == getString(R.string.home_teacher_talk_employee)) {
-                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.labor_first_field_button1)) {
-                    binding.firstFieldButton1.isChecked = true
-                    viewModel.setButtonSelected(1)
-                }
-                else {
-                    binding.firstFieldButton2.isChecked = true
-                    viewModel.setButtonSelected(2)
-                }
-            }
-            else if(viewModel.categoryName == getString(R.string.home_teacher_talk_area) || viewModel.categoryName == getString(R.string.home_teacher_talk_operate)) {
-                if(intent.getStringExtra(FIRST_FIELD).toString() == getString(R.string.business_first_field_button1)) {
-                    binding.firstFieldButton1.isChecked = true
-                    viewModel.setButtonSelected(1)
-                }
-                else {
-                    binding.firstFieldButton2.isChecked = true
-                    viewModel.setButtonSelected(2)
-                }
-            }
-            // image
-            if(intent.getStringExtra(POST_ISTAGLIST).toString()=="true")
-                viewModel.hashTagList = intent.getStringArrayListExtra("tagList")!!
-            if(intent.getStringExtra(POST_ISIMGLIST).toString()=="true"){
-                viewModel.imageList = intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
-                viewModel.initImageUrlList=intent.getStringArrayListExtra("imgList")!!
-                viewModel.initImgUriList=intent.getStringArrayListExtra("imgList")!!.map { it->Uri.parse((it)) } as ArrayList<Uri>
-                viewModel.initImageSize=viewModel.imageList.size
-                viewModel.initImgUrl=intent.getStringArrayListExtra("imgList")!!.get(0)
-                viewModel.extractUuid()
-            }
+            Log.d("CategoryDebug", "Default categoryName: ${viewModel.categoryName}")
         }
 
-        //FlexboxLayoutManager
-        val layoutManager = FlexboxLayoutManager(this)
-        layoutManager.flexDirection = FlexDirection.ROW
-        layoutManager.justifyContent = JustifyContent.FLEX_START
-
-        with(binding){
-            rvHashtag.adapter = adapterTag
-            rvImage.adapter = adapterImage
-            rvCategory.adapter = adapterCategory
-        }
-
+        // RecyclerView 초기화 및 선택된 카테고리로 스크롤
         val categoryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        // 선택된 카테고리 index로 스크롤
-        if (categoryIndex != -1) {
+        binding.rvCategory.layoutManager = categoryLayoutManager
+        binding.rvCategory.adapter = adapterCategory
+
+        if (categoryIndex >= 0) {
             binding.rvCategory.post {
                 categoryLayoutManager.scrollToPosition(categoryIndex)
             }
         }
 
-        // 글자수 및 editText 배경
+        // 글자수 및 EditText 배경
         setTextLength()
         setTextColor()
+    }
+    private fun initializeCategoryUI(categoryName: String) {
+        when (categoryName) {
+            getString(R.string.home_teacher_talk_policy) -> {
+                binding.firstFieldButton1.text = getString(R.string.investigation_first_field_button1)
+                binding.firstFieldButton2.text = getString(R.string.investigation_first_field_button2)
+                binding.tvQuestionDetail1.text = getString(R.string.investigation_second_field_title)
+                binding.etQuestionDetail1.hint = getString(R.string.investigation_second_field_hint)
+                binding.tvQuestionDetail2.text = getString(R.string.investigation_third_field_title)
+                binding.etQuestionDetail2.hint = getString(R.string.investigation_third_field_hint)
+                binding.tvQuestionDetail3.text = getString(R.string.investigation_fourth_field_title)
+                binding.etQuestionDetail3.hint = getString(R.string.investigation_fourth_field_hint)
+                binding.tvQuestionDetail4.text = getString(R.string.investigation_fifth_field_title)
+                binding.etQuestionDetail4.hint = getString(R.string.investigation_fifth_field_hint)
+                binding.tvQuestionDetail5.text = getString(R.string.investigation_sixth_field_title)
+                binding.etQuestionDetail5.hint = getString(R.string.investigation_sixth_field_hint)
+            }
+            getString(R.string.home_teacher_talk_employee) -> {
+                binding.firstFieldButton1.text = getString(R.string.labor_first_field_button1)
+                binding.firstFieldButton2.text = getString(R.string.labor_first_field_button2)
+                binding.tvQuestionDetail1.text = getString(R.string.investigation_second_field_title)
+                binding.etQuestionDetail1.hint = getString(R.string.investigation_second_field_hint)
+                binding.tvQuestionDetail2.text = getString(R.string.labor_third_field_title)
+                binding.etQuestionDetail2.hint = getString(R.string.labor_third_field_hint)
+                binding.tvQuestionDetail3.text = getString(R.string.labor_fourth_field_title)
+                binding.etQuestionDetail3.hint = getString(R.string.labor_fourth_field_hint)
+                binding.tvQuestionDetail4.text = getString(R.string.labor_fifth_field_title)
+                binding.etQuestionDetail4.hint = getString(R.string.labor_fifth_field_hint)
+                binding.tvQuestionDetail5.text = getString(R.string.labor_sixth_field_title)
+                binding.etQuestionDetail5.hint = getString(R.string.labor_sixth_field_hint)
+            }
+            getString(R.string.home_teacher_talk_area), getString(R.string.home_teacher_talk_operate) -> {
+                binding.firstFieldButton1.text = getString(R.string.business_first_field_button1)
+                binding.firstFieldButton2.text = getString(R.string.business_first_field_button2)
+                binding.tvQuestionDetail1.text = getString(R.string.business_second_field_title)
+                binding.etQuestionDetail1.hint = getString(R.string.business_second_field_hint)
+                binding.tvQuestionDetail2.text = getString(R.string.business_third_field_title)
+                binding.etQuestionDetail2.hint = getString(R.string.business_third_field_hint)
+                binding.tvQuestionDetail3.text = getString(R.string.business_fourth_field_title)
+                binding.etQuestionDetail3.hint = getString(R.string.business_fourth_field_hint)
+                binding.tvQuestionDetail4.text = getString(R.string.business_fifth_field_title)
+                binding.etQuestionDetail4.hint = getString(R.string.business_fifth_field_hint)
+                binding.tvQuestionDetail5.text = getString(R.string.business_sixth_field_title)
+                binding.etQuestionDetail5.hint = getString(R.string.business_sixth_field_hint)
+            }
+            // 나중에 카테고리 더 바꾸기 !!
+        }
     }
 
     private fun addListeners() {

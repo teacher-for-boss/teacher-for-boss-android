@@ -7,6 +7,7 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,8 @@ import com.company.teacherforboss.databinding.ActivitySignupFinishBinding
 import com.company.teacherforboss.databinding.ActivitySignupJudgeBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MEMBER_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,14 +35,18 @@ class SignupJudgeActivity : BindingActivity<ActivitySignupJudgeBinding>(R.layout
 
         binding= DataBindingUtil.setContentView(this, R.layout.activity_signup_judge)
         binding.lifecycleOwner=this
+        val memberId = intent.getLongExtra(MEMBER_ID, 0)
 
         setContentView(binding.root)
         initView()
 
+        Log.d("memberId in signupJudge", memberId.toString())
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent=Intent(this,LoginActivity::class.java).apply { }
-            startActivity(intent)
-            finish()
+            Intent(this, LoginActivity::class.java).apply {
+                putExtra(FROM_SIGNUP, true)
+                putExtra(MEMBER_ID, memberId)
+                startActivity(this)
+            }
         }, 5000)
     }
     fun initView(){
@@ -59,6 +66,7 @@ class SignupJudgeActivity : BindingActivity<ActivitySignupJudgeBinding>(R.layout
     companion object{
         const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
         const val HOME="HOME"
+        const val FROM_SIGNUP = "FROM_SIGNUP"
     }
 
 }

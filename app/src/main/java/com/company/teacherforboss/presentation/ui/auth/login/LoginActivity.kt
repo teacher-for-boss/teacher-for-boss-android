@@ -29,11 +29,11 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivit
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.mypage.notification_setting.NotificationSettingViewModel
 import com.company.teacherforboss.util.CustomSnackBar
-import com.company.teacherforboss.util.UUIDManager
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MEMBER_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_RV
@@ -79,8 +79,6 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     private val socialLoginViewModel by viewModels<SocialLoginViewModel>()
     private val notificationSettingViewModel by viewModels<NotificationSettingViewModel>()
 
-    val uuidManager = UUIDManager(this)
-    val deviceUUID = uuidManager.getOrCreateUUID()
     private var isResultDialogShown = false
     private val context=this
     @Inject lateinit var localDataSource: LocalDataSource
@@ -99,6 +97,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         handleSocialLoginResult()
         addListeners()
         getNotificationPermission()
+        collectNotificationSettingData()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
@@ -618,9 +617,10 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     }
 
     private fun getNotificationPermission() {
-        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, deviceUUID)
-
-        if(!agreementStatus) {
+        val isFromSignup = intent.getBooleanExtra(FROM_SIGNUP, false)
+        if(isFromSignup) {
+            Log.d("memberID", intent.getLongExtra(MEMBER_ID, 0).toString())
+            notificationSettingViewModel.setMemberId(intent.getLongExtra(MEMBER_ID, 0))
             showDialogFragment("Notification")
         }
     }
@@ -653,11 +653,11 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     getString(R.string.notification_permission_accept),
                     {
                         notificationSettingViewModel.setMarketingPush(false)
-//                        notificationSettingViewModel.postNotificationSetting()  서버통신
+                        notificationSettingViewModel.firstNotificationSetting()
                     },
                     {
                         notificationSettingViewModel.setMarketingPush(true)
-//                        notificationSettingViewModel.postNotificationSetting() 서버통신
+                        notificationSettingViewModel.firstNotificationSetting()
                     },
                     backgroundClickable = false
                 ).show(supportFragmentManager, ConstsUtils.MARKETING_DIALOG)
@@ -669,9 +669,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     getNotificationResult(),
                     "",
                     getString(R.string.notification_permission_confirm),
-                    {},
-                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(deviceUUID), true) },
-                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(deviceUUID), true) }
+                    {}, {}
                 ).show(supportFragmentManager, ConstsUtils.NOTIFICATION_RESULT_DIALOG)
             }
         }
@@ -705,29 +703,29 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     }
 
     // 팝업 수신 서버 통신 결과
-//    private fun collectNotificationSettingData() {
-//        notificationSettingViewModel.postNotificationSettingState.flowWithLifecycle(lifecycle).
-//        onEach { NotificationSettingState ->
-//            when(NotificationSettingState) {
-//                is UiState.Success -> {
-//                    val notificationSetting = NotificationSettingState.data
-//
-//                    notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
-//                    notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
-//                    notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
-//                    notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
-//
-//                    if(!isResultDialogShown) {
-//                        showDialogFragment("Result")
-//                        isResultDialogShown = true
-//                    }
-//                }
-//                else -> Unit
-//            }
-//        }.launchIn(lifecycleScope)
-//    }
+    private fun collectNotificationSettingData() {
+        notificationSettingViewModel.firstNotificationSettingState.flowWithLifecycle(lifecycle).
+        onEach { NotificationSettingState ->
+            when(NotificationSettingState) {
+                is UiState.Success -> {
+                    val notificationSetting = NotificationSettingState.data
+
+                    notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
+                    notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
+                    notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
+                    notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
+
+                    if(!isResultDialogShown) {
+                        showDialogFragment("Result")
+                        isResultDialogShown = true
+                    }
+                }
+                else -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
 
     companion object {
-        private val AGREEMENT_STATUS = "AgreementStatus"
+        const val FROM_SIGNUP = "FROM_SIGNUP"
     }
 }

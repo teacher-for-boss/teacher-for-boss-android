@@ -7,6 +7,7 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.company.teacherforboss.R
 import com.company.teacherforboss.databinding.ActivitySignupFinishBinding
 import com.company.teacherforboss.presentation.ui.auth.login.LoginActivity
 import com.company.teacherforboss.util.base.BindingActivity
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MEMBER_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_NICKNAME
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_ROLE
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,13 +34,18 @@ class SignupFinishActivity : BindingActivity<ActivitySignupFinishBinding>(R.layo
         binding= DataBindingUtil.setContentView(this, R.layout.activity_signup_finish)
         binding.lifecycleOwner=this
         val role = intent.getIntExtra(USER_ROLE,0)
+        val memberId = intent.getLongExtra(MEMBER_ID, 0)
 
         setContentView(binding.root)
 
         initView(role)
+        Log.d("memberId in signupFinish", memberId.toString())
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent=Intent(this,LoginActivity::class.java).apply { }
-            startActivity(intent)
+            Intent(this,LoginActivity::class.java).apply {
+                putExtra(FROM_SIGNUP, true)
+                putExtra(MEMBER_ID, memberId)
+                startActivity(this)
+            }
             finish()
         }, 2000)
     }
@@ -65,6 +72,7 @@ class SignupFinishActivity : BindingActivity<ActivitySignupFinishBinding>(R.layo
     companion object{
         const val FRAGMENT_DESTINATION="FRAGMENT_DESTINATION"
         const val HOME="HOME"
+        const val FROM_SIGNUP = "FROM_SIGNUP"
     }
 
 }

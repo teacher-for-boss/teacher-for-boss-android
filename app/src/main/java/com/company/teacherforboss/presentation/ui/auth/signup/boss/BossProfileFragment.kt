@@ -25,6 +25,7 @@ import com.company.teacherforboss.util.base.BindingFragment
 import com.company.teacherforboss.util.base.BindingImgAdapter
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_BOSS_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MEMBER_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_DEFAULT
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_PROFILE_IMAGE_DIALOG
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.USER_BIRTHDATE
@@ -166,7 +167,8 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    showSplash()
+                    Log.d("signup",it.data?.result.toString())
+                    showSplash(it.data!!.result.memberId)
                 }
                 is BaseResponse.Error->{
                     CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
@@ -182,7 +184,9 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    showSplash()
+                    // 여기 수정하기
+                    Log.d("socialSignup", it.data?.result.toString())
+                    showSplash(it.data!!.result.memberId)
                 }
                 is BaseResponse.Error->{
                     CustomSnackBar.make(binding.root,it.msg.toString(),1000).show()
@@ -226,8 +230,9 @@ class BossProfileFragment : BindingFragment<FragmentBossProfileBinding>(R.layout
         viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
     }
 
-    private fun showSplash(){
+    private fun showSplash(memberId: Long){
         val intent = Intent(activity, SignupFinishActivity::class.java)
+        intent.putExtra(MEMBER_ID, memberId)
         intent.putExtra(USER_NICKNAME,binding.nicknameBox.text.toString())
         intent.putExtra(USER_ROLE,viewModel.role.value)
         startActivity(intent)

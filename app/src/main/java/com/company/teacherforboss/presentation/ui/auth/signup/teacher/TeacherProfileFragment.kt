@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -174,7 +173,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    Log.d("signup",it.data?.result.toString())
                     showSplash(it.data!!.result.memberId)
                 }
                 is BaseResponse.Error->{
@@ -193,8 +191,6 @@ class TeacherProfileFragment : BindingFragment<FragmentTeacherProfileBinding>(R.
             when(it){
                 is BaseResponse.Loading->{ }
                 is BaseResponse.Success->{
-                    // 여기 수정하기
-                    Log.d("social signup",it.data?.result.toString())
                     showSplash(it.data!!.result.memberId)
                 }
                 is BaseResponse.Error->{

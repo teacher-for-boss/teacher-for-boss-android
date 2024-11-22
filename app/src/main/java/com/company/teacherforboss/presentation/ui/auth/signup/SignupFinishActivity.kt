@@ -7,7 +7,6 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +38,6 @@ class SignupFinishActivity : BindingActivity<ActivitySignupFinishBinding>(R.layo
         setContentView(binding.root)
 
         initView(role)
-        Log.d("memberId in signupFinish", memberId.toString())
         Handler(Looper.getMainLooper()).postDelayed({
             Intent(this,LoginActivity::class.java).apply {
                 putExtra(FROM_SIGNUP, true)

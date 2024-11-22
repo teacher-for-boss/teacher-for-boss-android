@@ -7,7 +7,6 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +39,6 @@ class SignupJudgeActivity : BindingActivity<ActivitySignupJudgeBinding>(R.layout
         setContentView(binding.root)
         initView()
 
-        Log.d("memberId in signupJudge", memberId.toString())
         Handler(Looper.getMainLooper()).postDelayed({
             Intent(this, LoginActivity::class.java).apply {
                 putExtra(FROM_SIGNUP, true)

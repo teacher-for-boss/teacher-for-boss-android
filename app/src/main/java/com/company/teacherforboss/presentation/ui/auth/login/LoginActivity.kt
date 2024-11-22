@@ -619,9 +619,11 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     private fun getNotificationPermission() {
         val isFromSignup = intent.getBooleanExtra(FROM_SIGNUP, false)
         if(isFromSignup) {
-            Log.d("memberID", intent.getLongExtra(MEMBER_ID, 0).toString())
-            notificationSettingViewModel.setMemberId(intent.getLongExtra(MEMBER_ID, 0))
-            showDialogFragment("Notification")
+            val memberId = intent.getLongExtra(MEMBER_ID, 0)
+            if(memberId != 0L) {
+                notificationSettingViewModel.setMemberId(memberId)
+                showDialogFragment("Notification")
+            }
         }
     }
 

@@ -19,4 +19,15 @@ data class SocialSignupBossRequest(
     var phone: String,
     @SerializedName("profileImg")
     var profileImg:String?,
+    @SerializedName("deviceInfo")
+    var deviceInfo: DeviceInfo
+){
+    data class DeviceInfo(
+        @SerializedName("fcmToken")
+        var fcmToken: String,
+
+        @SerializedName("platform")
+        var platform: String
     )
+
+}

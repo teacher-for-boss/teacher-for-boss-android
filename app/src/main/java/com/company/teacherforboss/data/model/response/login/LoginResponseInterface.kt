@@ -6,6 +6,7 @@ interface LoginResponseInterface {
     var message:String
     var result: Result
     data class Result(
+        val memberId: Long,
         val role:String,
         val name:String,
         var accessToken:String,

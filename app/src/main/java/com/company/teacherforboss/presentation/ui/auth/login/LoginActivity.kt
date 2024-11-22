@@ -29,11 +29,11 @@ import com.company.teacherforboss.presentation.ui.auth.signup.SignupJudgeActivit
 import com.company.teacherforboss.presentation.ui.auth.signup.SignupViewModel
 import com.company.teacherforboss.presentation.ui.mypage.notification_setting.NotificationSettingViewModel
 import com.company.teacherforboss.util.CustomSnackBar
-import com.company.teacherforboss.util.UUIDManager
 import com.company.teacherforboss.util.base.BindingActivity
 import com.company.teacherforboss.util.base.ConstsUtils
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.ACTIVITY_DESTINATION
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.MEMBER_ID
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_KAKAO
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.SIGNUP_SOCIAL_NAVER
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_RV
@@ -54,6 +54,7 @@ import com.company.teacherforboss.util.view.UiState
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.AuthError
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
@@ -79,8 +80,6 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     private val socialLoginViewModel by viewModels<SocialLoginViewModel>()
     private val notificationSettingViewModel by viewModels<NotificationSettingViewModel>()
 
-    val uuidManager = UUIDManager(this)
-    val deviceUUID = uuidManager.getOrCreateUUID()
     private var isResultDialogShown = false
     private val context=this
     @Inject lateinit var localDataSource: LocalDataSource
@@ -99,6 +98,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         handleSocialLoginResult()
         addListeners()
         getNotificationPermission()
+        collectNotificationSettingData()
 
         //기본 로그인
         val token=loginViewModel.getAcessToken()
@@ -114,16 +114,18 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     when(uiState){
                         SocialLoginUiState.KakaoLogin->{
                             handleKakaoLogin()
+                            socialLoginViewModel.setUiStateIdle()
                         }
                         SocialLoginUiState.NaverLogin->{
                             handleNaverLogin()
+                            socialLoginViewModel.setUiStateIdle()
                         }
                         SocialLoginUiState.KakaoLoginSuccess->{
                             getKakaoUserInfo()
                             checkKakaoAgreement()
                         }
                         SocialLoginUiState.LoginFail->{
-                            CustomSnackBar.make(binding.root, getString(R.string.social_login_fail), 2000).show()
+//                            CustomSnackBar.make(binding.root, getString(R.string.social_login_fail), 2000).show()
                         }
                         else->{
                         }
@@ -340,6 +342,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
                 Log.e("naver", "$errorCode $errorDescription")
+                socialLoginViewModel.naverLoginFail()
             }
             override fun onError(errorCode: Int, message: String) {
                 onFailure(errorCode, message)
@@ -357,6 +360,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
+                socialLoginViewModel.kakaoLoginFail()
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
                 socialLoginViewModel.kakaoLoginSuccess()
@@ -372,7 +376,11 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
 
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
-                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                    if(
+                        (error is ClientError && error.message?.contains("user cancelled") == true) ||
+                        (error is AuthError && error.message?.contains("User denied access") == true)
+                        ) {
+                        socialLoginViewModel.kakaoLoginFail()
                         return@loginWithKakaoTalk
                     }
 
@@ -618,10 +626,13 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     }
 
     private fun getNotificationPermission() {
-        val agreementStatus = localDataSource.getAgreementStatus(AGREEMENT_STATUS, deviceUUID)
-
-        if(!agreementStatus) {
-            showDialogFragment("Notification")
+        val isFromSignup = intent.getBooleanExtra(FROM_SIGNUP, false)
+        if(isFromSignup) {
+            val memberId = intent.getLongExtra(MEMBER_ID, 0)
+            if(memberId != 0L) {
+                notificationSettingViewModel.setMemberId(memberId)
+                showDialogFragment("Notification")
+            }
         }
     }
 
@@ -653,11 +664,11 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     getString(R.string.notification_permission_accept),
                     {
                         notificationSettingViewModel.setMarketingPush(false)
-//                        notificationSettingViewModel.postNotificationSetting()  서버통신
+                        notificationSettingViewModel.firstNotificationSetting()
                     },
                     {
                         notificationSettingViewModel.setMarketingPush(true)
-//                        notificationSettingViewModel.postNotificationSetting() 서버통신
+                        notificationSettingViewModel.firstNotificationSetting()
                     },
                     backgroundClickable = false
                 ).show(supportFragmentManager, ConstsUtils.MARKETING_DIALOG)
@@ -669,9 +680,7 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
                     getNotificationResult(),
                     "",
                     getString(R.string.notification_permission_confirm),
-                    {},
-                    { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(deviceUUID), true) },
-                    clickBackground = { localDataSource.saveNotificationStatus(AGREEMENT_STATUS, localDataSource.getUserInfo(deviceUUID), true) }
+                    {}, {}
                 ).show(supportFragmentManager, ConstsUtils.NOTIFICATION_RESULT_DIALOG)
             }
         }
@@ -705,29 +714,29 @@ class LoginActivity: BindingActivity<ActivityLoginBinding>(R.layout.activity_log
     }
 
     // 팝업 수신 서버 통신 결과
-//    private fun collectNotificationSettingData() {
-//        notificationSettingViewModel.postNotificationSettingState.flowWithLifecycle(lifecycle).
-//        onEach { NotificationSettingState ->
-//            when(NotificationSettingState) {
-//                is UiState.Success -> {
-//                    val notificationSetting = NotificationSettingState.data
-//
-//                    notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
-//                    notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
-//                    notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
-//                    notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
-//
-//                    if(!isResultDialogShown) {
-//                        showDialogFragment("Result")
-//                        isResultDialogShown = true
-//                    }
-//                }
-//                else -> Unit
-//            }
-//        }.launchIn(lifecycleScope)
-//    }
+    private fun collectNotificationSettingData() {
+        notificationSettingViewModel.firstNotificationSettingState.flowWithLifecycle(lifecycle).
+        onEach { NotificationSettingState ->
+            when(NotificationSettingState) {
+                is UiState.Success -> {
+                    val notificationSetting = NotificationSettingState.data
+
+                    notificationSettingViewModel.setServiceNotification(notificationSetting.serviceNotification)
+                    notificationSettingViewModel.setMarketingPush(notificationSetting.marketingNotification.push)
+                    notificationSettingViewModel.setMarketingEmail(notificationSetting.marketingNotification.email)
+                    notificationSettingViewModel.setMarketingSMS(notificationSetting.marketingNotification.sms)
+
+                    if(!isResultDialogShown) {
+                        showDialogFragment("Result")
+                        isResultDialogShown = true
+                    }
+                }
+                else -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
 
     companion object {
-        private val AGREEMENT_STATUS = "AgreementStatus"
+        const val FROM_SIGNUP = "FROM_SIGNUP"
     }
 }

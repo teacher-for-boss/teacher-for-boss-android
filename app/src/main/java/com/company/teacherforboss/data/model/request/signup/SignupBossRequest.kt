@@ -45,4 +45,15 @@ data class SignupBossRequest(
     @SerializedName("agreementLocation")
     var agreementLocation:String,
 
+    @SerializedName("deviceInfo")
+    var deviceInfo: DeviceInfo
+){
+    data class DeviceInfo(
+        @SerializedName("fcmToken")
+        var fcmToken: String,
+
+        @SerializedName("platform")
+        var platform: String
     )
+
+}

@@ -8,6 +8,7 @@ class ConstsUtils {
         const val SIGNUP_DEFAULT="SIGNUP_DEFAULT"
 
         const val USER_NAME="USER_NAME"
+        const val MEMBER_ID = "MEMBER_ID"
         const val USER_NICKNAME="USER_NICKNAME"
         const val USER_ROLE="USER_ROLE"
         const val USER_EMAIL="USER_EMAIL"

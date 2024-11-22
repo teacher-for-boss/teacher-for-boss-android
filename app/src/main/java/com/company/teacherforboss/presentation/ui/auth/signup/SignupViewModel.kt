@@ -1,6 +1,7 @@
 package com.company.teacherforboss.presentation.ui.auth.signup
 
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,6 +36,8 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_IMG_FI
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ConstsUtils.Companion.DEFAULT_TEACHER_PROFILE_IMG_URL
 import com.company.teacherforboss.util.base.ErrorUtils
+import com.company.teacherforboss.util.base.LocalDataSource
+import com.company.teacherforboss.util.base.LocalDataSource.Companion.FCM_TOKEN
 import com.company.teacherforboss.util.base.parseErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -52,6 +55,8 @@ class SignupViewModel @Inject constructor(
 //    private val userRepo: UserRepository
 
 ): ViewModel() {
+    @Inject lateinit var localDataSource: LocalDataSource
+
     var _socialType = MutableLiveData<Int>(0)
     val socialType:LiveData<Int>
         get() = _socialType
@@ -231,6 +236,11 @@ class SignupViewModel @Inject constructor(
     val isPhoneVerified:LiveData<Boolean>
         get()=_isPhoneVerified
 
+    val model = Build.MODEL.toString() // 모델명
+    val brand = Build.BRAND.toString() // 브랜드명
+    val device = Build.DEVICE.toString() // 기기명
+    val product = Build.PRODUCT.toString() // 제품명
+
     init{
         role.observeForever {
             when(role.value){
@@ -393,7 +403,11 @@ class SignupViewModel @Inject constructor(
                         agreementAge=agreementAge.value!!,
                         agreementSms=agreementSms.value!!,
                         agreementEmail=agreementEmail.value!!,
-                        agreementLocation=agreementLocation.value!!
+                        agreementLocation=agreementLocation.value!!,
+                        deviceInfo = SignupBossRequest.DeviceInfo(
+                            fcmToken = localDataSource.getUserInfo(FCM_TOKEN),
+                            platform = model + "/" + brand
+                        )
                     )
                     val response = userRepo.signupBoss(signupRequest = signupBossRequest)
 
@@ -438,7 +452,11 @@ class SignupViewModel @Inject constructor(
                         agreementAge=agreementAge.value!!,
                         agreementSms=agreementSms.value!!,
                         agreementEmail=agreementEmail.value!!,
-                        agreementLocation=agreementLocation.value!!
+                        agreementLocation=agreementLocation.value!!,
+                        deviceInfo = SignupTeacherRequest.DeviceInfo(
+                            fcmToken = localDataSource.getUserInfo(FCM_TOKEN),
+                            platform = model + "/" + brand
+                        )
                     )
                     val response = userRepo.signupTeacher(signupRequest = signupTeacherRequest)
 
@@ -492,6 +510,10 @@ class SignupViewModel @Inject constructor(
 //                        birthDate = LocalDate.parse(birthDate.value),
                         phone = phone.value.toString(),
                         profileImg=profileImg.value?:null,
+                        deviceInfo = SocialSignupBossRequest.DeviceInfo(
+                            fcmToken = localDataSource.getUserInfo(FCM_TOKEN),
+                            platform = model + "/" + brand
+                        )
 
                     )
                     val response = userRepo.socialBossSignup(socialType=type_num,signupRequest = signupBossRequest)
@@ -531,6 +553,10 @@ class SignupViewModel @Inject constructor(
                         bank=bank.value?:"null",
                         accountNumber=accountNum.value?:"",
                         accountHolder=accountHoler.value?:"",
+                        deviceInfo = SocialSignupTeacherRequest.DeviceInfo(
+                            fcmToken = localDataSource.getUserInfo(FCM_TOKEN),
+                            platform = model + "/" + brand
+                        )
                     )
                     val response = userRepo.socialTeacherSignup(socialType=type_num,signupRequest = signupTeacherRequest)
 

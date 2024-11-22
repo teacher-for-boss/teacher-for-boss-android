@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.teacherforboss.domain.model.notification.NotificationSettingEntity
+import com.company.teacherforboss.domain.usecase.auth.NotificationSettingUseCase
 import com.company.teacherforboss.domain.usecase.notification.NotificationSettingGetUseCase
 import com.company.teacherforboss.domain.usecase.notification.NotificationSettingPostUseCase
 import com.company.teacherforboss.util.view.UiState
@@ -17,13 +18,17 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationSettingViewModel @Inject constructor(
     private val notificationSettingUseCase: NotificationSettingGetUseCase,
-    private val notificationSettingPostUseCase: NotificationSettingPostUseCase
+    private val notificationSettingPostUseCase: NotificationSettingPostUseCase,
+    private val notificationFirstSettingUseCase: NotificationSettingUseCase
 ): ViewModel() {
     private val _getNotificationSettingState: MutableStateFlow<UiState<NotificationSettingEntity>> = MutableStateFlow(UiState.Empty)
     val getNotificationSettingState get() = _getNotificationSettingState.asStateFlow()
 
     private val _postNotificationSettingState: MutableStateFlow<UiState<NotificationSettingEntity>> = MutableStateFlow(UiState.Empty)
     val postNotificationSettingState get() = _postNotificationSettingState.asStateFlow()
+
+    private val _firstNotificationSettingState: MutableStateFlow<UiState<NotificationSettingEntity>> = MutableStateFlow(UiState.Empty)
+    val firstNotificationSettingState get() = _firstNotificationSettingState
 
     private val _serviceNotification =  MutableLiveData<Boolean>(false)
     val serviceNotification: LiveData<Boolean> get() = _serviceNotification
@@ -36,6 +41,9 @@ class NotificationSettingViewModel @Inject constructor(
 
     private val _marketingNotificationSMS =  MutableLiveData<Boolean>(false)
     val marketingNotificationSMS: LiveData<Boolean> get() = _marketingNotificationSMS
+
+    private val _memberId = MutableLiveData<Long>(0L)
+    val memberId: LiveData<Long> get() = _memberId
 
     fun getNotificationSetting() {
         viewModelScope.launch {
@@ -67,6 +75,26 @@ class NotificationSettingViewModel @Inject constructor(
 
     }
 
+    fun firstNotificationSetting() {
+        viewModelScope.launch {
+            notificationFirstSettingUseCase(
+                memberId = memberId.value!!,
+                notificationSettingEntity = NotificationSettingEntity(
+                    serviceNotification = serviceNotification.value!!,
+                    marketingNotification = NotificationSettingEntity.MarketingNotificationSettingEntity(
+                        push = marketingNotificationPush.value!!,
+                        email = marketingNotificationEmail.value!!,
+                        sms = marketingNotificationSMS.value!!
+                    )
+                )
+            ).onSuccess { NotificationSettingEntity ->
+                _firstNotificationSettingState.value = UiState.Success(NotificationSettingEntity)
+            }.onFailure { exception: Throwable ->
+                _firstNotificationSettingState.value = UiState.Error(exception.message)
+            }
+        }
+    }
+
     fun setServiceNotification(value: Boolean) {
         _serviceNotification.value = value
     }
@@ -78,5 +106,8 @@ class NotificationSettingViewModel @Inject constructor(
     }
     fun setMarketingSMS(value: Boolean) {
         _marketingNotificationSMS.value = value
+    }
+    fun setMemberId(memberId: Long) {
+        _memberId.value = memberId
     }
 }

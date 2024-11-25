@@ -98,5 +98,6 @@ class AuthAuthenticator @Inject constructor(
     companion object{
         const val AUTHORIZATION="Authorization"
         const val AUTH_ERROR_CODE="AUTH4041"
+        //
         }
     }

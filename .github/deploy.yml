@@ -1,0 +1,41 @@
+name: Deploy to Google Play
+
+on:
+  push:
+    branches:
+      - production  # production 브랜치로 푸시될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Set up Ruby
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'  # Fastlane에 적합한 Ruby 버전
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      # 4. Run Fastlane
+      - name: Run Fastlane
+        run: bundle exec fastlane deploy
+        env:
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+
+      # 5. Notify Slack
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: '{"text": "Deployment to Google Play Store completed successfully!"}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

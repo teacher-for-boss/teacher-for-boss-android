@@ -9,7 +9,7 @@ import com.company.teacherforboss.util.base.BaseResponse
 import javax.inject.Inject
 
 class NotificationRemoteDataSourceImpl @Inject constructor(
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
 ):NotificationRemoteDataSource {
     override suspend fun getNotifications(notificationRequestDto: NotificationRequestDto): BaseResponse<NotificationListDto> =
         notificationService.getNotifications(notificationRequestDto.notificationId)
@@ -19,5 +19,6 @@ class NotificationRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getNotificationSetting(): BaseResponse<NotificationSettingDto> = notificationService.getNotificationSetting()
 
-    override suspend fun postNotificationSetting(notificationSettingDto: NotificationSettingDto): BaseResponse<NotificationSettingDto> = notificationService.postNotificationSetting(notificationSettingDto = notificationSettingDto)
+    override suspend fun postNotificationSetting(notificationSettingDto: NotificationSettingDto): BaseResponse<NotificationSettingDto> =
+        notificationService.postNotificationSetting(notificationSettingDto = notificationSettingDto)
 }

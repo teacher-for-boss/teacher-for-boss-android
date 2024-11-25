@@ -1,4 +1,4 @@
-package com.company.teacherforboss.domain.usecase
+package com.company.teacherforboss.domain.usecase.auth
 
 import com.company.teacherforboss.domain.model.signup.SignupEntity
 import com.company.teacherforboss.domain.model.signup.SignupResultEntity

@@ -46,5 +46,15 @@ data class SocialSignupTeacherRequest(
 
     @SerializedName("accountHolder")
     var accountHolder:String,
+    @SerializedName("deviceInfo")
+    var deviceInfo: DeviceInfo
+){
+    data class DeviceInfo(
+        @SerializedName("fcmToken")
+        var fcmToken: String,
 
-)
+        @SerializedName("platform")
+        var platform: String
+    )
+
+}

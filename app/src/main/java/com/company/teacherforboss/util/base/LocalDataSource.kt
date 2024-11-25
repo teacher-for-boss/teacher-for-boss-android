@@ -52,24 +52,6 @@ class LocalDataSource @Inject constructor(
         editor.apply()
     }
 
-    fun getAgreementStatus(key: String, userinfo: String): Boolean {
-        val prefs = getPreferences(APP_PREF)
-        val keyWithInfo = key + "_" + userinfo
-
-        return when (keyWithInfo) {
-            "${AGREEMENT_STATUS}_${userinfo}" -> prefs.getBoolean("${AGREEMENT_STATUS}_${userinfo}", false)
-            else -> false
-        }
-    }
-
-    fun saveNotificationStatus(key: String, userinfo: String, value: Boolean) {
-        val prefs = getPreferences(APP_PREF)
-        val editor = prefs.edit()
-
-        editor.putBoolean("${key}_${userinfo}", value)
-        editor.commit()
-    }
-
     fun saveMarketingAgreementStatus(key:String,value: Boolean){
         val prefs=getPreferences(APP_PREF)
         val editor=prefs.edit()

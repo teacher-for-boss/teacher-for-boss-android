@@ -40,6 +40,7 @@ import javax.inject.Inject
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.transition.TransitionManager
 import com.company.teacherforboss.presentation.ui.mypage.subscription.AskPaymentFragment
+import com.company.teacherforboss.util.base.ConstsUtils.Companion.TEACHER_CATAEGORYNAME
 
 @AndroidEntryPoint
 class TeacherTalkMainFragment :
@@ -302,7 +303,14 @@ class TeacherTalkMainFragment :
     }
 
     fun navigateToTeacherTalkWrite(){
-        val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java)
+        val categoryName = viewModel.category.value
+        val intent = Intent(requireContext(), TeacherTalkAskActivity::class.java).apply {
+            if (categoryName != null) {
+                putExtra(TEACHER_CATAEGORYNAME, categoryName)
+            } else {
+                Log.w("NavigateToWrite", "Category name is null, no category will be passed.")
+            }
+        }
         startActivity(intent)
     }
 

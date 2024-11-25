@@ -16,8 +16,9 @@ import com.company.teacherforboss.domain.usecase.Member.ProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.TeacherDetailProfileUseCase
 import com.company.teacherforboss.domain.usecase.Member.TeacherRecentAnswersUseCase
 import com.company.teacherforboss.domain.usecase.PresignedUrlUseCase
-import com.company.teacherforboss.domain.usecase.SignupUseCase
+import com.company.teacherforboss.domain.usecase.auth.SignupUseCase
 import com.company.teacherforboss.domain.usecase.auth.LogoutUsecase
+import com.company.teacherforboss.domain.usecase.auth.NotificationSettingUseCase
 import com.company.teacherforboss.domain.usecase.auth.WithdrawUsecase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkBodyUseCase
 import com.company.teacherforboss.domain.usecase.community.boss.BossTalkBookmarkUseCase
@@ -78,7 +79,7 @@ import javax.inject.Singleton
 class UseCaseModule {
     @Provides
     @Singleton
-    fun providesSignupUseCase(signupRepository: SignupRepository):SignupUseCase =
+    fun providesSignupUseCase(signupRepository: SignupRepository): SignupUseCase =
         SignupUseCase(signupRepository=signupRepository)
 
     @Provides
@@ -354,6 +355,11 @@ class UseCaseModule {
     @Singleton
     fun providesNotificationPostSetting(notificationRepository: NotificationRepository): NotificationSettingPostUseCase =
         NotificationSettingPostUseCase(notificationRepository)
+
+    @Provides
+    @Singleton
+    fun providesNotificationFirstSetting(signupRepository: SignupRepository): NotificationSettingUseCase =
+        NotificationSettingUseCase(signupRepository)
 
     @Provides
     @Singleton

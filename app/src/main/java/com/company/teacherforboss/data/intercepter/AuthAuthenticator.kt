@@ -76,7 +76,7 @@ class AuthAuthenticator @Inject constructor(
                 }
             }
 
-        }else if(response.code()==404){
+        }else if(response.code()==401){
             val errorCode = response?.let { parseErrorCode(it) }
             if(errorCode==AUTH_ERROR_CODE) gotoLoginActivity()
         }

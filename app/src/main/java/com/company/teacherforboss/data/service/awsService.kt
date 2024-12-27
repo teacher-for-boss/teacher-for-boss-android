@@ -4,6 +4,7 @@ import com.company.teacherforboss.data.model.response.aws.ResponsePresignedUrlDt
 import com.company.teacherforboss.util.base.BaseResponse
 import retrofit2.Call
 import okhttp3.RequestBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -21,7 +22,7 @@ interface awsService {
     ):BaseResponse<ResponsePresignedUrlDto>
 
     @PUT
-    fun uploadImg(@Url url:String,@Body file:RequestBody,
-                  @Header("Content-Type") fileType:String):Call<Void>
+    suspend fun uploadImg(@Url url:String,@Body file:RequestBody,
+                  @Header("Content-Type") fileType:String): Response<Void>
 
 }

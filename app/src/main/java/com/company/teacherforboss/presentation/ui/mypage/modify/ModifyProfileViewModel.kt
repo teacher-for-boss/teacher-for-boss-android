@@ -225,10 +225,11 @@ class ModifyProfileViewModel @Inject constructor(
         }
     }
 
-    fun modifyBossProfile() {
+    fun modifyBossProfile(url: String) {
         var finalProfileImg=""
         if (isUserImgSelected.value==true){
-            getFilteredPresingedUrl()?.let { finalProfileImg=it }
+//            getFilteredPresingedUrl()?.let { finalProfileImg=it }
+            getFilteredPresigndUrl2(url)?.let{finalProfileImg=it}
         }else finalProfileImg=profileImg.value!!
 
         viewModelScope.launch {
@@ -244,27 +245,44 @@ class ModifyProfileViewModel @Inject constructor(
         }
     }
 
-    fun getPresignedUrlList(){
-        viewModelScope.launch {
-            try{
-                val presignedUrlListEntity= presignedUrlUseCase(
-                    getPresingedUrlEntity(
-                        uuid = uuid.value,
-                        lastIndex=lastIndex.value?:0,
-                        imageCount = 1,
-                        origin="profiles"
-                    )
+    suspend fun getPresignedUrlList():String{
+        return try {
+            val presignedUrlListEntity = presignedUrlUseCase(
+                getPresingedUrlEntity(
+                    uuid = uuid.value,
+                    lastIndex = lastIndex.value ?: 0,
+                    imageCount = 1,
+                    origin = "profiles"
                 )
-                _profilePresignedUrl.value=presignedUrlListEntity.presignedUrlList[0]
-            }catch (ex:Exception){
-                throw ex
-            }
+            )
+            val presignedUrl=presignedUrlListEntity.presignedUrlList[0]
+
+            presignedUrl
+        } catch (ex: Exception) {
+            throw ex
         }
+//        viewModelScope.launch {
+//            try{
+//                val presignedUrlListEntity= presignedUrlUseCase(
+//                    getPresingedUrlEntity(
+//                        uuid = uuid.value,
+//                        lastIndex=lastIndex.value?:0,
+//                        imageCount = 1,
+//                        origin="profiles"
+//                    )
+//                )
+//                _profilePresignedUrl.value=presignedUrlListEntity.presignedUrlList[0]
+//            }catch (ex:Exception){
+//                throw ex
+//            }
+//        }
     }
 
     fun getPresignedUrl()=profilePresignedUrl.value?:""
 
     fun getFilteredPresingedUrl()= profilePresignedUrl.value?.substringBefore(("?"))
+
+    fun getFilteredPresigndUrl2(url:String)=url.substringBefore("?")
 
     fun phone_validation(): Boolean {
         val pattern= Pattern.compile("010\\d{3,4}\\d{4}")

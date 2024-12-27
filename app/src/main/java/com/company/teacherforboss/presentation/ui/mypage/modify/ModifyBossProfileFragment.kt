@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.company.teacherforboss.MainActivity
 import com.company.teacherforboss.R
 import com.company.teacherforboss.data.model.response.BaseResponse
@@ -30,6 +31,7 @@ import com.company.teacherforboss.util.base.ConstsUtils.Companion.MYPAGE
 import com.company.teacherforboss.util.base.SvgBindingAdapter.loadImageFromUrlCoil
 import com.company.teacherforboss.util.base.UploadUtil
 import com.company.teacherforboss.util.view.loadCircularImage
+import kotlinx.coroutines.launch
 
 class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBinding>(R.layout.fragment_modify_boss_profile) {
     private val viewModel by activityViewModels<ModifyProfileViewModel>()
@@ -44,7 +46,7 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
         setNicknameTextWatcher()
         checkNickname()
 
-        modifyTeacherProfile()
+        modifyBossProfile()
         showProfileImageDialog()
         setObserver()
         setupEditTextListeners()
@@ -140,19 +142,33 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
         }
     }
 
-    private fun modifyTeacherProfile() {
+    private fun modifyBossProfile() {
         binding.nextBtn.setOnClickListener {
+            lifecycleScope.launch {
+                val presingedUrl=viewModel.getPresignedUrlList()
 
-            viewModel.modifyBossProfile()
+                uploadImgtoS3_ver2(presingedUrl)
+                viewModel.modifyBossProfile(presingedUrl)
+                viewModel.modifyBossProfileLiveData.observe(viewLifecycleOwner, Observer {
+                    Intent(requireActivity(), MainActivity::class.java).apply {
+                        putExtra(FRAGMENT_DESTINATION,MYPAGE)
+                        startActivity(this)
+                    }
+                })
 
-            viewModel.modifyBossProfileLiveData.observe(viewLifecycleOwner, Observer {
-                Intent(requireActivity(), MainActivity::class.java).apply {
-                    putExtra(FRAGMENT_DESTINATION,MYPAGE)
-                    startActivity(this)
-                }
-            })
+            }
         }
     }
+
+//    suspend fun requestModifyBossProfile(){
+//        viewModel.modifyBossProfile()
+//        viewModel.modifyBossProfileLiveData.observe(viewLifecycleOwner, Observer {
+//            Intent(requireActivity(), MainActivity::class.java).apply {
+//                putExtra(FRAGMENT_DESTINATION,MYPAGE)
+//                startActivity(this)
+//            }
+//        })
+//    }
 
     private fun observeProfile() {
         with(viewModel){
@@ -173,18 +189,23 @@ class ModifyBossProfileFragment : BindingFragment<FragmentModifyBossProfileBindi
             })
 
             // presigned url
-            profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
-                uploadImgtoS3()
-            })
+//            profilePresignedUrl.observe(viewLifecycleOwner,{presingedUrl->
+//                lifecycleScope.launch { uploadImgtoS3()}
+//            })
 
         }
 
 
     }
 
-    private fun uploadImgtoS3(){
+//    private fun uploadImgtoS3(){
+//        val uploadUtil=UploadUtil(requireContext())
+//        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
+//    }
+
+    suspend private fun uploadImgtoS3_ver2(url:String){
         val uploadUtil=UploadUtil(requireContext())
-        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage(viewModel.getPresignedUrl(),it,viewModel.getFileType()) }
+        viewModel.getUserImageUri()?.let { uploadUtil.uploadProfileImage_v2(url,it,viewModel.getFileType()) }
     }
 
     private fun showProfileImageDialog() {
